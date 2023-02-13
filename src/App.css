@@ -11,16 +11,16 @@ body {
 .App {
  /* text-align: center; */
 }
-a {
+/* a {
  color: white;
 }
 nav {
- /* border: 1px solid green; */
+ border: 0px solid green;
  display: flex;
  justify-content: space-between;
 }
 .nav_one {
- /* border: 1px solid yellow; */
+ border: 0px solid yellow;
  display: flex;
  justify-content: space-around;
  width: 13rem;
@@ -37,7 +37,7 @@ nav {
  color: #ffd660;
 }
 .nav_two {
- /* border: 1px solid peru; */
+ border: 0px solid peru;
  width: 25rem;
  display: flex;
  justify-content: space-around;
@@ -59,3 +59,5 @@ nav {
   rotateZ(0deg) translateX(0px) translateY(-8px) translateZ(0px) skewX(0deg)
   skewY(0deg);
 }
+ */
+

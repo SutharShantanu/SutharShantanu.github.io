@@ -1,0 +1,126 @@
+.about.section {
+ background-color: #1a1a1a;
+ height: auto;
+ padding: 40px 0px 60px 0px;
+ display: flex;
+ flex-direction: column;
+ gap: 40px;
+ color: white;
+ font-size: 20px;
+}
+
+.aboutH1 {
+ text-align: center;
+ color: white;
+ font-size: 40px;
+}
+
+.aboutWrapper {
+ width: 80%;
+ margin: auto;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+
+.aboutWrapperDiv {
+ width: 60%;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 20px;
+ font-size: 20px;
+ line-height: 25px;
+ text-align: justify;
+}
+
+.aboutMe {
+ width: 60%;
+ background-color: white;
+ color: #1a1a1a;
+ padding: 20px;
+ border-radius: 5px;
+}
+
+.about-socialLink {
+ width: 25%;
+ height: 82px;
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+}
+
+.about-socialLink img {
+ width: 30%;
+ cursor: pointer;
+}
+
+.about-socialLink img:hover {
+ transform: scale(1.2);
+ -moz-transition: all 0.2s ease-in-out;
+ -o-transition: all 0.2s ease-in-out;
+ -webkit-transition: all 0.2s ease-in-out;
+ transition: all 0.2s ease-in-out;
+}
+
+.aboutWrapperImg {
+ width: 40%;
+}
+
+.aboutWrapperImg > img {
+ display: block;
+ margin: auto;
+}
+
+/* meidum screens */
+@media all and (min-width: 768px) and (max-width: 1024px) {
+ .aboutMe {
+  width: 100%;
+  background-color: white;
+  color: #1a1a1a;
+  padding: 20px;
+  border-radius: 5px;
+ }
+
+ .about-socialLink {
+  width: 30%;
+ }
+}
+
+/* small screens */
+@media all and (min-width: 280px) and (max-width: 767px) {
+ .aboutWrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin: auto;
+ }
+
+ .aboutWrapperImg {
+  width: 40%;
+  margin: auto;
+ }
+
+ .aboutWrapperDiv {
+  width: 90%;
+  margin: auto;
+ }
+
+ .aboutMe {
+  width: 100%;
+  background-color: white;
+  color: #1a1a1a;
+  padding: 20px;
+  border-radius: 5px;
+ }
+
+ .about-socialLink {
+  width: 50%;
+ }
+
+ .about-socialLink img {
+  width: 35%;
+ }
+}
