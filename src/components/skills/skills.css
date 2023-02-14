@@ -1,87 +1,147 @@
 .skills-main {
-  background-color: #e2e4e3;
-  padding: 40px 0px 60px 0px;
+ background-color: #1a1a1a;
+ padding: 40px 0px 60px 0px;
 }
 
 .skillsWrapper {
-  width: 90%;
-  margin: auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
+ width: 80%;
+ margin: auto;
+ text-align: center;
+ /* display: flex;
+ flex-direction: column; */
+ /* align-items: center; */
+ /* justify-content: center;
+ gap: 40px; */
+ border: 0px solid red;
+ display: grid;
+ grid-template-columns: repeat(2, auto);
+ /* gap: 20px; */
 }
 
 .skills-heading {
-  font-size: 40px;
+ color: white;
+ font-size: 40px;
+ margin-bottom: 60px;
 }
 
 .skillsTechnologiesDiv {
-  width: 100%;
-  margin: auto;
-  display: grid;
-  justify-content: space-evenly;
-  grid-template-columns: repeat(5, auto);
-  gap: 40px;
-  padding: 20px 0px;
+ border: 0px solid green;
+ /* width: 100%; */
+ margin: auto;
+ display: grid;
+ justify-content: space-evenly;
+ grid-template-columns: repeat(4, auto);
+ gap: 20px;
+ padding: 20px 0px;
 }
 
-.skillsProficienciesDiv {
+/* .skillsProficienciesDiv {
   width: 100%;
   margin: auto;
-  display: grid;
-  justify-content: space-evenly;
-  grid-template-columns: repeat(3, auto);
-  gap: 40px;
-  padding: 20px 0px;
-}
+ display: grid;
+ justify-content: space-evenly;
+ grid-template-columns: repeat(3, auto);
+ gap: 40px;
+ padding: 20px 0px;
+} */
 
 .skillsToolsDiv {
-  width: 100%;
-  margin: auto;
-  display: grid;
-  justify-content: space-evenly;
-  grid-template-columns: repeat(4, auto);
-  gap: 40px;
-  padding: 20px 0px;
+ border: 0px solid yellow;
+ /* width: 100%; */
+ margin: auto;
+ display: grid;
+ justify-content: space-evenly;
+ grid-template-columns: repeat(2, auto);
+ gap: 20px;
+ padding: 20px 0px;
 }
 
 /* meidum screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
-  .skillsWrapper {
-    width: 100%;
-  }
+ .skillsWrapper {
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  /* width: 100%; */
+ }
 
-  .skillsTechnologiesDiv {
-    grid-template-columns: repeat(3, auto);
-  }
+ .skillsTechnologiesDiv {
+  grid-template-columns: repeat(3, auto);
+ }
 
-  .skillsProficienciesDiv {
-    grid-template-columns: repeat(3, auto);
-  }
+ /* .skillsProficienciesDiv {
+  grid-template-columns: repeat(3, auto);
+ } */
 
-  .skillsToolsDiv {
-    grid-template-columns: repeat(3, auto);
-  }
+ .skillsToolsDiv {
+  grid-template-columns: repeat(3, auto);
+ }
 }
 
 /* small screens */
+
+@media all and (min-width: 1025px) and (max-width: 1470px) {
+ .skillsWrapper {
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  /* width: 100%; */
+ }
+
+ .skillsTechnologiesDiv {
+  grid-template-columns: repeat(3, auto);
+ }
+
+ /* .skillsProficienciesDiv {
+  grid-template-columns: repeat(3, auto);
+ } */
+
+ .skillsToolsDiv {
+  grid-template-columns: repeat(3, auto);
+ }
+}
+
 @media all and (min-width: 280px) and (max-width: 767px) {
-  .skillsWrapper {
-    width: 100%;
-  }
+ .skillsWrapper {
+  /* width: 100%; */
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+ }
 
-  .skillsTechnologiesDiv {
-    grid-template-columns: repeat(2, auto);
-  }
+ .skillsTechnologiesDiv {
+  grid-template-columns: repeat(2, auto);
+ }
 
-  .skillsProficienciesDiv {
-    grid-template-columns: repeat(2, auto);
-  }
+ .skillsProficienciesDiv {
+  grid-template-columns: repeat(2, auto);
+ }
 
-  .skillsToolsDiv {
-    grid-template-columns: repeat(2, auto);
-  }
+ .skillsToolsDiv {
+  grid-template-columns: repeat(2, auto);
+ }
+}
+
+.text-divider {
+  width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  color: white;
+}
+
+.text-divider span {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 1rem;
+}
+
+.text-divider::before, .text-divider::after {
+  content: '';
+  display: inline-block;
+  height: 1px;
+  width: 20px;
+  flex-grow: 1;
+  background: hsl(240, 4%, 90%);
+  vertical-align: middle;
 }

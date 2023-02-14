@@ -24,7 +24,7 @@ function Navbar() {
         <div className="wrapperLeft">
           <Link to="home" smooth={true} offset={-100} duration={500}>
             <img
-              src="../Images/Nav_Logo.png"
+              src={process.env.PUBLIC_URL + "./Images/Nav_Logo.png"}
               alt="icon"
             />
           </Link>

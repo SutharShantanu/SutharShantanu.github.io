@@ -1,50 +1,47 @@
 .skills-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 180px;
-  background-color: transparent;
-  padding: 10px;
-  color: #005685;
-  font-style: normal;
-  font-size: 20px;
-  font-weight: 600;
-  border-radius: 10px;
-  background-color: white;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 10px;
+ width: 180px;
+ padding: 10px;
+ color: white;
+ font-style: normal;
+ font-size: 20px;
+ font-weight: 600;
+ border: 4px solid #1a1a1a;
+ border-radius: 10px;
+ background-color: #1a1a1a;
+ transition: all 0.5s ease-in-out;
 }
 
 .skills-card:hover {
-  transform: scale(1.1);
-  color: #ff8a2e;
-  -moz-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  -webkit-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
+ background-color: #5a5a5a;
+ border: 4px solid #5a5a5a;
+ color: white;
 }
 
 .skills-card > div {
-  width: 150px;
-  height: 150px;
+ width: 65px;
+ /* height: 150px; */
 }
 
 .skills-card img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  margin: auto;
+ width: 100%;
+ display: block;
+ margin: auto;
 }
 
 /* small screens */
 @media all and (min-width: 280px) and (max-width: 767px) {
-  .skills-card {
-    width: 140px;
-    padding: 8px;
-  }
+ .skills-card {
+  width: 140px;
+  padding: 8px;
+ }
 
-  .skills-card > div {
-    width: 80px;
-    height: 80px;
-  }
+ .skills-card > div {
+  width: 40px;
+  /* height: 80px; */
+ }
 }

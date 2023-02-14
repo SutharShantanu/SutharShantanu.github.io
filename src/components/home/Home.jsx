@@ -1,7 +1,9 @@
 import "./home.css";
 import { FaCloudDownloadAlt } from "react-icons/fa";
+import { HiDownload } from "react-icons/hi";
 
-function Home() {
+
+function Home () {
   const openLink = (url) => {
     window.open(url);
   };
@@ -27,7 +29,7 @@ function Home() {
               className="home-resume"
               id="resume-button-2"
             >
-              Resume <FaCloudDownloadAlt />
+              Resume <HiDownload />
             </div>
           </a>
         </div>
@@ -35,7 +37,7 @@ function Home() {
         <div className="homeright">
           <img
             className="home-img"
-            src={""}
+            src={process.env.PUBLIC_URL + "./Images/IMG_7729_2-modified.png"}
             alt="profile"
           />
         </div>

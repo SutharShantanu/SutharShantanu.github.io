@@ -19,3 +19,30 @@
 .projects-heading {
   font-size: 40px;
 }
+
+.text-divider {
+  width: 95%;
+  margin: 2rem auto;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  color: white;
+}
+
+.text-divider span {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 1rem;
+}
+
+.text-divider::before, .text-divider::after {
+  content: '';
+  display: inline-block;
+  height: 1px;
+  width: 20px;
+  flex-grow: 1;
+  background: hsl(240, 4%, 90%);
+  vertical-align: middle;
+}

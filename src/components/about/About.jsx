@@ -1,12 +1,13 @@
 import "./about.css";
 
-function About() {
+function About () {
   const openLink = (url) => {
     window.open(url);
   };
 
   return (
     <div className="about section" id="about">
+      <div class="text-divider"></div>
       <h1 className="aboutH1">About me</h1>
       <div className="aboutWrapper">
         <div className="aboutWrapperDiv">
@@ -22,21 +23,21 @@ function About() {
           <div className="about-socialLink">
             <img
               onClick={() => openLink("https://github.com/SutharShantanu")}
-              src={process.env.PUBLIC_URL + "./Images/github.svg"}
+              src={process.env.PUBLIC_URL + "./Images/github.png"}
               alt="About"
             />
             <img
               onClick={() =>
                 openLink("https://www.linkedin.com/in/")
               }
-              src={process.env.PUBLIC_URL + "./Images/linkedin.svg"}
+              src={process.env.PUBLIC_URL + "./Images/linkedin.png"}
               alt="About"
             />
           </div>
         </div>
         <div className="aboutWrapperImg">
           <img
-            src={process.env.PUBLIC_URL + "./Images/About.png"}
+            src={process.env.PUBLIC_URL + "./Images/Right_Side.gif"}
             alt="About"
           />
         </div>

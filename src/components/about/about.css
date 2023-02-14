@@ -16,6 +16,7 @@
 }
 
 .aboutWrapper {
+ border: 0px solid wheat;
  width: 80%;
  margin: auto;
  display: flex;
@@ -35,9 +36,9 @@
 }
 
 .aboutMe {
- width: 60%;
- background-color: white;
- color: #1a1a1a;
+ width: 80%;
+ background-color: #1a1a1a;
+ color: white;
  padding: 20px;
  border-radius: 5px;
 }
@@ -51,12 +52,12 @@
 }
 
 .about-socialLink img {
- width: 30%;
+ width: 20%;
  cursor: pointer;
 }
 
 .about-socialLink img:hover {
- transform: scale(1.2);
+ transform: scale(1.1);
  -moz-transition: all 0.2s ease-in-out;
  -o-transition: all 0.2s ease-in-out;
  -webkit-transition: all 0.2s ease-in-out;
@@ -75,9 +76,9 @@
 /* meidum screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
  .aboutMe {
-  width: 100%;
-  background-color: white;
-  color: #1a1a1a;
+  /* width: 100%; */
+  background-color: #1a1a1a;
+  color: white;
   padding: 20px;
   border-radius: 5px;
  }
@@ -93,8 +94,8 @@
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
-  gap: 20px;
-  width: 100%;
+  /* gap: 20px; */
+  /* width: 100%; */
   margin: auto;
  }
 
@@ -110,9 +111,9 @@
 
  .aboutMe {
   width: 100%;
-  background-color: white;
-  color: #1a1a1a;
-  padding: 20px;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 0px;
   border-radius: 5px;
  }
 
@@ -121,6 +122,33 @@
  }
 
  .about-socialLink img {
-  width: 35%;
+  width: 25%;
  }
+}
+
+.text-divider {
+  width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  color: white;
+}
+
+.text-divider span {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 1rem;
+}
+
+.text-divider::before, .text-divider::after {
+  content: '';
+  display: inline-block;
+  height: 1px;
+  width: 20px;
+  flex-grow: 1;
+  background: hsl(240, 4%, 90%);
+  vertical-align: middle;
 }

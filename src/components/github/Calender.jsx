@@ -26,16 +26,17 @@ function Calender() {
 
   return (
     <div className="github-main">
+      <div class="text-divider"></div>
       <h1 className="github-heading">GitHub</h1>
       <div className="github-calender">
         <GitHubCalendar
           transformData={selectLast12Months}
           username="SutharShantanu"
-          color={"#1a1a1a"}
+          color={"#f66066"}
           blockSize={20}
-          fontSize={20}
-          hideColorLegend
-          hideTotalCount
+          fontSize={25}
+          showColorLegend
+          showTotalCount
           style={{ padding: "10px 20px" }}
         >
           <ReactTooltip delayShow={20} html />
@@ -44,21 +45,22 @@ function Calender() {
       <div className="github-stats">
         <div>
           <img
-            src="https://github-readme-streak-stats.herokuapp.com?user=sutharshantanu&theme=sea&hide_border=true&border_radius=10&date_format=j%20M%5B%20Y%5D&background=005685"
+            src="https://github-readme-streak-stats.herokuapp.com?user=sutharshantanu&theme=sea&hide_border=true&border_radius=10&date_format=j%20M%5B%20Y%5D&background=8f3e41"
             alt="Ahmad Stats"
             id="github-streak-stats"
           />
         </div>
         <div>
           <img
-            src="https://github-readme-stats.vercel.app/api/top-langs/?username=sutharshantanu&title_color=005685&text_color=005685&icon_color=005685&bg_color=ffffff&border_radius=10&border_color=005685"
+            src="https://github-readme-stats.vercel.app/api/top-langs/?username=sutharshantanu&title_color=ffffff&text_color=ffffff&icon_color=ffffff&bg_color=8f3e41&border_radius=10&border_color=1a1a1a"
             alt="Ahmad Language"
             id="github-top-langs"
           />
         </div>
         <div>
           <img
-            src="https://github-readme-stats.vercel.app/api?username=sutharshantanu&show_icons=true&title_color=005685&text_color=005685&icon_color=005685&bg_color=ffffff&border_radius=10&border_color=005685"
+            src="https://github-readme-stats.vercel.app/api?username=sutharshantanu&show_icons=true&title_color=ffffff&text_color=ffffff&icon_color=ffffff&bg_color=8f3e41&border_radius=10&border_color=1a1a1a"
+            // src="https://github-readme-stats.vercel.app/api?username=sutharshantanu&count_private=true&show_icons=true&theme=tokyonight"
             alt="Ahmad Stats"
             id="github-stats-card"
           />

@@ -1,54 +1,55 @@
 .github-main {
-  padding: 40px 0px 40px 0px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
+ padding: 40px 0px 40px 0px;
+ background-color: #1a1a1a;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 20px;
+ color: white;
 }
 
 .github-heading {
-  font-size: 40px;
+ font-size: 40px;
 }
 
 .github-stats {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ width: 90%;
 }
 
 /* meidum screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
-  .github-calender {
-    width: 90%;
-    height: auto;
-  }
+ .github-calender {
+  width: 90%;
+  height: auto;
+ }
 
-  .github-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-  }
+ .github-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+ }
 }
 
 /* small screens */
 @media all and (min-width: 280px) and (max-width: 767px) {
-  .github-calender {
-    width: 90%;
-    height: auto;
-  }
+ .github-calender {
+  width: 90%;
+  height: auto;
+ }
 
-  .github-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-  }
+ .github-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+ }
 }
