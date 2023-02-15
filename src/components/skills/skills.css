@@ -119,16 +119,16 @@
  }
 }
 
-.text-divider {
+.text-divider-skill {
   width: 80%;
-  margin: 2rem auto;
+  margin: 2rem auto 100px auto;
   display: flex;
   text-align: center;
   align-items: center;
   color: white;
 }
 
-.text-divider span {
+.text-divider-skill span {
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -136,7 +136,7 @@
   padding: 0 1rem;
 }
 
-.text-divider::before, .text-divider::after {
+.text-divider-skill::before, .text-divider-skill::after {
   content: '';
   display: inline-block;
   height: 1px;

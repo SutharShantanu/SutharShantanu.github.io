@@ -26,10 +26,11 @@ function Calender() {
 
   return (
     <div className="github-main">
-      <div class="text-divider"></div>
+      <div class="text-divider-git"></div>
       <h1 className="github-heading">GitHub</h1>
       <div className="github-calender">
         <GitHubCalendar
+          className="github-calendar-class"
           transformData={selectLast12Months}
           username="SutharShantanu"
           color={"#f66066"}
@@ -37,7 +38,7 @@ function Calender() {
           fontSize={25}
           showColorLegend
           showTotalCount
-          style={{ padding: "10px 20px" }}
+          style={{ padding: "10px 20px"}}
         >
           <ReactTooltip delayShow={20} html />
         </GitHubCalendar>

@@ -13,17 +13,17 @@ function Home () {
         <div className="homeLeft">
           <div id="user-detail-name">Hello, I'm Shantanu</div>
           <div>
-            A skilled{" "}
+            A skilled
             <strong id="user-detail-intro">Full Stack Web Developer 💻</strong>
           </div>
           <a
-            href=""
+            href="https://drive.google.com/uc?id=173kc0AW6miCrWOsqeYN3ad348otgyA13&export=download"
             id="resume-link-2"
           >
             <div
               onClick={() =>
                 openLink(
-                  ""
+                  "https://drive.google.com/file/d/173kc0AW6miCrWOsqeYN3ad348otgyA13/view?usp=share_link"
                 )
               }
               className="home-resume"

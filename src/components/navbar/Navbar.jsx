@@ -87,14 +87,14 @@ function Navbar() {
           </div>
           <div>
             <a
-              href=""
+              href="https://drive.google.com/uc?id=173kc0AW6miCrWOsqeYN3ad348otgyA13&export=download"
               className="nav-link resume"
               id="resume-link-1"
             >
               <div
                 onClick={() =>
                   openLink(
-                    ""
+                    "https://drive.google.com/file/d/173kc0AW6miCrWOsqeYN3ad348otgyA13/view?usp=share_link"
                   )
                 }
                 className="navbar-resume"
@@ -169,13 +169,13 @@ function Navbar() {
                     </Link>
                   </div>
                   <div>
-                    <a href="">
+                    <a href="https://drive.google.com/uc?id=173kc0AW6miCrWOsqeYN3ad348otgyA13&export=download">
                       <div
                         className="navbar-resume"
                         onClick={() => {
                           onClose();
                           openLink(
-                            ""
+                            "https://drive.google.com/file/d/173kc0AW6miCrWOsqeYN3ad348otgyA13/view?usp=share_link"
                           );
                         }}
                       >

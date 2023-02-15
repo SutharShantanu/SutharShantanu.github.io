@@ -7,7 +7,7 @@ function About () {
 
   return (
     <div className="about section" id="about">
-      <div class="text-divider"></div>
+      <div class="text-divider-about"></div>
       <h1 className="aboutH1">About me</h1>
       <div className="aboutWrapper">
         <div className="aboutWrapperDiv">
