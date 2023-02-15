@@ -37,7 +37,7 @@ function Calender() {
           blockSize={20}
           fontSize={25}
           showColorLegend
-          showTotalCount
+          hideTotalCount
           style={{ padding: "10px 20px"}}
         >
           <ReactTooltip delayShow={20} html />

@@ -22,10 +22,6 @@
 
 /* meidum screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
- .styles_footer__ltlVl {
-  display: block;
-  font-size: 12px;
- }
  .github-calender {
   width: 90%;
   height: auto;
@@ -43,10 +39,6 @@
 
 /* small screens */
 @media all and (min-width: 280px) and (max-width: 767px) {
- .styles_footer__ltlVl {
-  display: block;
-  font-size: 12px;
- }
  .github-calender {
   width: 90%;
   height: auto;
@@ -62,30 +54,31 @@
  }
 }
 
+
+
 .text-divider-git {
- width: 80%;
- margin: 2rem auto 100px auto;
- display: flex;
- text-align: center;
- align-items: center;
- color: white;
+  width: 80%;
+  margin: 2rem auto 100px auto;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  color: white;
 }
 
 .text-divider-git span {
- font-size: 0.75rem;
- letter-spacing: 0.1em;
- text-transform: uppercase;
- white-space: nowrap;
- padding: 0 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 1rem;
 }
 
-.text-divider-git::before,
-.text-divider-git::after {
- content: "";
- display: inline-block;
- height: 1px;
- width: 20px;
- flex-grow: 1;
- background: hsl(240, 4%, 90%);
- vertical-align: middle;
+.text-divider-git::before, .text-divider-git::after {
+  content: '';
+  display: inline-block;
+  height: 1px;
+  width: 20px;
+  flex-grow: 1;
+  background: hsl(240, 4%, 90%);
+  vertical-align: middle;
 }
