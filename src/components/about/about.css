@@ -1,154 +1,155 @@
 .about.section {
- background-color: #1a1a1a;
- height: auto;
- padding: 40px 0px 60px 0px;
- display: flex;
- flex-direction: column;
- gap: 40px;
- color: white;
- font-size: 20px;
+    background-color: #1a1a1a;
+    height: auto;
+    padding: 40px 0px 60px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    color: white;
+    font-size: 20px;
 }
 
 .aboutH1 {
- text-align: center;
- color: white;
- font-size: 40px;
+    text-align: center;
+    color: white;
+    font-size: 40px;
 }
 
 .aboutWrapper {
- border: 0px solid wheat;
- width: 80%;
- margin: auto;
- display: flex;
- justify-content: space-between;
- align-items: center;
+    border: 0px solid wheat;
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .aboutWrapperDiv {
- width: 60%;
- display: flex;
- flex-direction: column;
- align-items: center;
- gap: 20px;
- font-size: 20px;
- line-height: 25px;
- text-align: justify;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    font-size: 20px;
+    line-height: 25px;
+    text-align: justify;
 }
 
 .aboutMe {
- width: 80%;
- background-color: #1a1a1a;
- color: white;
- padding: 20px;
- border-radius: 5px;
+    width: 80%;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 .about-socialLink {
- width: 25%;
- height: 82px;
- display: flex;
- justify-content: space-around;
- align-items: center;
+    width: 25%;
+    height: 82px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .about-socialLink img {
- width: 20%;
- cursor: pointer;
+    width: 20%;
+    cursor: pointer;
 }
 
 .about-socialLink img:hover {
- transform: scale(1.1);
- -moz-transition: all 0.2s ease-in-out;
- -o-transition: all 0.2s ease-in-out;
- -webkit-transition: all 0.2s ease-in-out;
- transition: all 0.2s ease-in-out;
+    transform: scale(1.1);
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .aboutWrapperImg {
- width: 40%;
+    width: 40%;
 }
 
 .aboutWrapperImg > img {
- display: block;
- margin: auto;
+    display: block;
+    margin: auto;
 }
 
 /* meidum screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
- .aboutMe {
-  /* width: 100%; */
-  background-color: #1a1a1a;
-  color: white;
-  padding: 20px;
-  border-radius: 5px;
- }
+    .aboutMe {
+        /* width: 100%; */
+        background-color: #1a1a1a;
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+    }
 
- .about-socialLink {
-  width: 30%;
- }
+    .about-socialLink {
+        width: 30%;
+    }
 }
 
 /* small screens */
 @media all and (min-width: 280px) and (max-width: 767px) {
- .aboutWrapper {
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-  /* gap: 20px; */
-  /* width: 100%; */
-  margin: auto;
- }
+    .aboutWrapper {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: center;
+        /* gap: 20px; */
+        /* width: 100%; */
+        margin: auto;
+    }
 
- .aboutWrapperImg {
-  width: 40%;
-  margin: auto;
- }
+    .aboutWrapperImg {
+        width: 40%;
+        margin: auto;
+    }
 
- .aboutWrapperDiv {
-  width: 90%;
-  margin: auto;
- }
+    .aboutWrapperDiv {
+        width: 90%;
+        margin: auto;
+    }
 
- .aboutMe {
-  width: 100%;
-  background-color: #1a1a1a;
-  color: white;
-  padding: 0px;
-  border-radius: 5px;
- }
+    .aboutMe {
+        width: 100%;
+        background-color: #1a1a1a;
+        color: white;
+        padding: 0px;
+        border-radius: 5px;
+    }
 
- .about-socialLink {
-  width: 50%;
- }
+    .about-socialLink {
+        width: 50%;
+    }
 
- .about-socialLink img {
-  width: 25%;
- }
+    .about-socialLink img {
+        width: 25%;
+    }
 }
 
 .text-divider-about {
-  width: 80%;
-  margin: 2rem auto;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  color: white;
+    width: 80%;
+    margin: 2rem auto;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    color: white;
 }
 
 .text-divider-about span {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  padding: 0 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0 1rem;
 }
 
-.text-divider-about::before, .text-divider-about::after {
-  content: '';
-  display: inline-block;
-  height: 1px;
-  width: 20px;
-  flex-grow: 1;
-  background: hsl(240, 4%, 90%);
-  vertical-align: middle;
+.text-divider-about::before,
+.text-divider-about::after {
+    content: "";
+    display: inline-block;
+    height: 1px;
+    width: 20px;
+    flex-grow: 1;
+    background: hsl(240, 4%, 90%);
+    vertical-align: middle;
 }

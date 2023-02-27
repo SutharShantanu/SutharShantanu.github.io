@@ -1,6 +1,7 @@
 .contact-main {
-  background-color: white;
+  background-color: #1a1a1a;
   padding: 40px 0px 60px 0px;
+  color: white;
 }
 
 .headingwrapper {
@@ -15,6 +16,8 @@
 .contactheading {
   color: #1a1a1a;
   font-size: 40px;
+  color: white;
+
 }
 
 .headingwrapperDiv {
