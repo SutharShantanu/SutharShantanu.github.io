@@ -29,7 +29,7 @@ function Projects() {
                 <div className="project-card">
                     <div
                         data-aos-mirror="true"
-                        data-aos="fade-up"
+                        data-aos="fade-left"
                         data-aos-duration="3000"
                         className="project-card-container">
                         <div className="project-img">
@@ -148,12 +148,12 @@ function Projects() {
                     </div>
                 </div>
 
-                <div
-                    data-aos-mirror="true"
-                    data-aos="fade-up"
-                    data-aos-duration="3000"
-                    className="project-card">
-                    <div className="project-card-container">
+                <div className="project-card">
+                    <div
+                        data-aos-mirror="true"
+                        data-aos="fade-right"
+                        data-aos-duration="3000"
+                        className="project-card-container">
                         <div className="project-img">
                             <img
                                 src={
@@ -246,12 +246,12 @@ function Projects() {
                     </div>
                 </div>
 
-                <div
-                    data-aos-mirror="true"
-                    data-aos="fade-up"
-                    data-aos-duration="3000"
-                    className="project-card">
-                    <div className="project-card-container">
+                <div className="project-card">
+                    <div
+                        data-aos-mirror="true"
+                        data-aos="fade-left"
+                        data-aos-duration="3000"
+                        className="project-card-container">
                         <div className="project-img">
                             <img
                                 src={
@@ -332,12 +332,12 @@ function Projects() {
                     </div>
                 </div>
 
-                <div
-                    data-aos-mirror="true"
-                    data-aos="fade-up"
-                    data-aos-duration="3000"
-                    className="project-card">
-                    <div className="project-card-container">
+                <div className="project-card">
+                    <div
+                        data-aos-mirror="true"
+                        data-aos="fade-right"
+                        data-aos-duration="3000"
+                        className="project-card-container">
                         <div className="project-img">
                             <img
                                 src={

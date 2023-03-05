@@ -17,10 +17,19 @@
  display: flex;
  justify-content: space-between;
  align-items: center;
- width: 90%;
+ width: 75%;
+}
+#wide_left{
+  width: 35%;
+}
+#mid{
+  width: 25%;
+}
+#wide_right{
+  width: 35%;
 }
 
-/* meidum screens */
+/* medium screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
  .github-calender {
   width: 90%;

@@ -21,7 +21,7 @@
 }
 
 .text-divider-project {
-    width: 90%;
+    width: 76%;
     margin: 2rem auto;
     display: flex;
     text-align: center;
@@ -51,7 +51,7 @@
 /* ----------------------------- */
 
 .project-card {
-    width: 80%;
+    width: 75%;
     margin: auto;
     background-color: #1a1a1a;
     color: whites;
@@ -61,9 +61,8 @@
     transition: all 0.3s ease-in-out;
 }
 .project-card:hover {
-    transform: scale(0.98);
+    background-color:rgba(255, 255, 255, 0.125) ;
 }
-
 .project-card-container {
     padding: 10px;
     display: flex;
@@ -78,10 +77,11 @@
 }
 
 .project-card-container > div:nth-child(1) > img {
-    border: 3px solid #8f3e41;
+    border: 3px solid rgba(255, 255, 255, 0.125);
     border-radius: 10px;
     display: block;
-    margin: auto;
+    /* margin: auto; */
+    width: 100%;
 }
 
 .project-card-text {
@@ -94,13 +94,7 @@
 }
 
 .project-title {
-    /* color: #8f3e41; */
-    background: -webkit-linear-gradient(
-        rgb(243, 129, 123) 0%,
-        rgb(203, 163, 164) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: white;
     font-size: 30px;
     font-weight: bold;
 }
@@ -157,10 +151,7 @@
 }
 
 .project-card-btn div:hover {
-    background: repeating-linear-gradient(
-        rgba(181, 68, 63, 1) 0%,
-        rgb(176, 66, 70) 100%
-    );
+    background: rgba(255, 255, 255, 0.125);
     -moz-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;

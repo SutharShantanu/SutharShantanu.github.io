@@ -1,10 +1,6 @@
 import "./contact.css";
-import { SiGmail } from "react-icons/si";
-import { IoMdCall } from "react-icons/io";
 
 import {
-    Container,
-    Flex,
     Box,
     Heading,
     Text,
@@ -12,8 +8,6 @@ import {
     Button,
     VStack,
     HStack,
-    Wrap,
-    WrapItem,
     FormControl,
     FormLabel,
     Input,
@@ -22,6 +16,13 @@ import {
     Textarea,
 } from "@chakra-ui/react";
 import {
+    AiOutlineInstagram,
+    AiOutlineCodepen,
+    AiFillLinkedin,
+} from "react-icons/ai";
+import { FiSend } from "react-icons/fi";
+
+import {
     MdPhone,
     MdEmail,
     MdLocationOn,
@@ -29,6 +30,10 @@ import {
     MdOutlineEmail,
 } from "react-icons/md";
 import { BsGithub, BsDiscord, BsPerson } from "react-icons/bs";
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
+// ..
+AOS.init();
 
 function Contact() {
     const openLink = (url) => {
@@ -36,9 +41,8 @@ function Contact() {
     };
     return (
         <div className="contact-main" id="contact">
+            <div className="text-divider-contact"></div>
             <div className="headingwrapper">
-                <div class="text-divider-project"></div>
-
                 <h1 className="contactheading">Contact</h1>
                 {/* <div className="headingwrapperDiv">
           <div className="headingwrapperDivLeft">
@@ -81,7 +85,7 @@ function Contact() {
                     color="white"
                     border={"1px solid rgba(255, 255, 255, 0.125)"}
                     borderRadius="15px"
-                    m={{ sm: 4, md: 16, lg: 10 }}
+                    m={{ sm: 2, md: 12, lg: 8 }}
                     p={{ sm: 5, md: 5, lg: 16 }}>
                     <Box
                         display={"flex"}
@@ -89,9 +93,12 @@ function Contact() {
                         flexDirection={"row"}
                         // spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}
                     >
-                        <Box>
+                        <Box
+                            data-aos="fade-right"
+                            data-aos-duration="3000"
+                            data-aos-mirror="true">
                             <Box>
-                                <Heading>Contact</Heading>
+                                <Heading>Details</Heading>
                                 <Text
                                     mt={{ sm: 3, md: 3, lg: 5 }}
                                     color="gray.500">
@@ -118,9 +125,13 @@ function Contact() {
                                             variant="ghost"
                                             color="#DCE2FF"
                                             textAlign="left"
+                                            id="contact-phone"
                                             _hover={{
                                                 border: "2px solid rgba(255, 255, 255, 0.125)",
                                             }}
+                                            onClick={() =>
+                                                openLink("tel:7732962110")
+                                            }
                                             leftIcon={
                                                 <MdPhone
                                                     color="#8f3e41"
@@ -137,10 +148,16 @@ function Contact() {
                                             width="80%"
                                             variant="ghost"
                                             color="#DCE2FF"
+                                            id="contact-email"
                                             textAlign="left"
                                             _hover={{
                                                 border: "2px solid rgba(255, 255, 255, 0.125)",
                                             }}
+                                            onClick={() =>
+                                                openLink(
+                                                    "mailto:shantanusut2000@gmail.com"
+                                                )
+                                            }
                                             leftIcon={
                                                 <MdEmail
                                                     color="#8f3e41"
@@ -158,6 +175,11 @@ function Contact() {
                                             variant="ghost"
                                             color="#DCE2FF"
                                             textAlign="left"
+                                            onClick={() =>
+                                                openLink(
+                                                    "https://goo.gl/maps/iZk5aqYGHrk9kk2Z8"
+                                                )
+                                            }
                                             _hover={{
                                                 border: "2px solid rgba(255, 255, 255, 0.125)",
                                             }}
@@ -181,6 +203,11 @@ function Contact() {
                                         variant="ghost"
                                         size="lg"
                                         isRound={true}
+                                        onClick={() =>
+                                            openLink(
+                                                "https://www.facebook.com/SutharShantanu"
+                                            )
+                                        }
                                         _hover={{
                                             bg: "rgba(255, 255, 255, 0.125)",
                                         }}
@@ -191,26 +218,73 @@ function Contact() {
                                         variant="ghost"
                                         size="lg"
                                         isRound={true}
+                                        id="contact-github"
+                                        onClick={() =>
+                                            openLink(
+                                                "https://github.com/SutharShantanu"
+                                            )
+                                        }
                                         _hover={{
                                             bg: "rgba(255, 255, 255, 0.125)",
                                         }}
                                         icon={<BsGithub size="28px" />}
                                     />
                                     <IconButton
-                                        aria-label="discord"
+                                        aria-label="codepen"
+                                        variant="ghost"
+                                        size="lg"
+                                        isRound={true}
+                                        onClick={() =>
+                                            openLink(
+                                                "https://codepen.io/sutharshantanu7"
+                                            )
+                                        }
+                                        _hover={{
+                                            bg: "rgba(255, 255, 255, 0.125)",
+                                        }}
+                                        icon={<AiOutlineCodepen size="28px" />}
+                                    />
+                                    <IconButton
+                                        aria-label="linkedin"
+                                        id="contact-linkedin"
+                                        variant="ghost"
+                                        size="lg"
+                                        isRound={true}
+                                        onClick={() =>
+                                            openLink(
+                                                "https://www.linkedin.com/in/shantanu-suthar-8347031ab/"
+                                            )
+                                        }
+                                        _hover={{
+                                            bg: "rgba(255, 255, 255, 0.125)",
+                                        }}
+                                        icon={<AiFillLinkedin size="28px" />}
+                                    />
+                                    <IconButton
+                                        aria-label="instagram"
                                         variant="ghost"
                                         size="lg"
                                         isRound={true}
                                         _hover={{
                                             bg: "rgba(255, 255, 255, 0.125)",
                                         }}
-                                        icon={<BsDiscord size="28px" />}
+                                        onClick={() =>
+                                            openLink(
+                                                "https://www.instagram.com/shantanu.suthar/"
+                                            )
+                                        }
+                                        icon={
+                                            <AiOutlineInstagram size="28px" />
+                                        }
                                     />
                                 </HStack>
                             </Box>
                         </Box>
 
                         <Box
+                            data-aos="fade-left"
+                            data-aos-duration="3000"
+                            data-aos-mirror="true"
                             bg="rgba(255, 255, 255, 0.125)"
                             borderRadius="lg"
                             border={"1px solid rgba(255, 255, 255, 0.125)"}>
@@ -253,10 +327,18 @@ function Contact() {
                                     <FormControl id="name" float="right">
                                         <Button
                                             variant="solid"
-                                            bg="#0D74FF"
+                                            border={"2px solid transparent"}
+                                            bg="#8f3e41"
+                                            transition={"all .2s ease-in-out"}
                                             color="white"
-                                            _hover={{}}>
-                                            Send Message
+                                            _hover={{
+                                                bgColor: "transparent",
+                                                border: "2px solid #8f3e41",
+                                                boxShadow:
+                                                    "rgba(255, 255, 255, 0.125) 0px 3px 8px",
+                                            }}>
+                                            Send Message <span>&nbsp;</span>{" "}
+                                            <FiSend />
                                         </Button>
                                     </FormControl>
                                 </VStack>

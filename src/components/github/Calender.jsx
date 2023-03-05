@@ -49,7 +49,7 @@ function Calender() {
                   username="SutharShantanu"
                   color={"#f66066"}
                   blockSize={20}
-                  fontSize={25}
+                  fontSize={23}
                   showColorLegend
                   hideTotalCount
                   style={{ padding: "10px 20px" }}>
@@ -61,25 +61,25 @@ function Calender() {
               data-aos-mirror="true"
               data-aos="fade-up"
               data-aos-duration="3000">
-              <div>
+              <div id="wide_left">
                   <img
-                      src="https://github-readme-streak-stats.herokuapp.com?user=sutharshantanu&theme=sea&hide_border=true&border_radius=10&date_format=j%20M%5B%20Y%5D&background=8f3e41"
-                      alt="Ahmad Stats"
+                      src="https://github-readme-streak-stats.herokuapp.com?user=SutharShantanu&theme=sea&hide_border=true&border_radius=10&date_format=j%20M%5B%20Y%5D&background=8f3e41"
+                      alt="Shantanu Stats"
                       id="github-streak-stats"
                   />
               </div>
-              <div>
+              <div id="mid">
                   <img
-                      src="https://github-readme-stats.vercel.app/api/top-langs/?username=sutharshantanu&title_color=ffffff&text_color=ffffff&icon_color=ffffff&bg_color=8f3e41&border_radius=10&border_color=1a1a1a"
-                      alt="Ahmad Language"
+                      src="https://github-readme-stats.vercel.app/api/top-langs/?username=SutharShantanu&title_color=ffffff&text_color=ffffff&icon_color=ffffff&bg_color=8f3e41&border_radius=10&border_color=1a1a1a"
+                      alt="Shantanu Language"
                       id="github-top-langs"
                   />
               </div>
-              <div>
+              <div id="wide_right">
                   <img
-                      src="https://github-readme-stats.vercel.app/api?username=sutharshantanu&show_icons=true&title_color=ffffff&text_color=ffffff&icon_color=ffffff&bg_color=8f3e41&border_radius=10&border_color=1a1a1a"
+                      src="https://github-readme-stats.vercel.app/api?username=SutharShantanu&show_icons=true&title_color=ffffff&text_color=ffffff&icon_color=ffffff&bg_color=8f3e41&border_radius=10&border_color=1a1a1a"
                       // src="https://github-readme-stats.vercel.app/api?username=sutharshantanu&count_private=true&show_icons=true&theme=tokyonight"
-                      alt="Ahmad Stats"
+                      alt="Shantanu Stats"
                       id="github-stats-card"
                   />
               </div>

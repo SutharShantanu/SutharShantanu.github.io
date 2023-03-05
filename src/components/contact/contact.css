@@ -5,7 +5,7 @@
 }
 
 .headingwrapper {
-  width: 60%;
+  width: 80%;
   margin: auto;
   text-align: center;
   display: flex;
@@ -36,7 +36,6 @@
   font-size: 20px;
   width: min-content;
 }
-
 .headingwrapperDivRight > div {
   display: flex;
   align-items: center;
@@ -63,6 +62,34 @@
   -webkit-transition: all 0.2s ease-in;
   transition: all 0.2s ease-in;
 }
+.text-divider-contact {
+    width: 76%;
+    margin: 2rem auto;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    color: white;
+}
+
+.text-divider-contact span {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0 1rem;
+}
+
+.text-divider-contact::before,
+.text-divider-contact::after {
+    content: "";
+    display: inline-block;
+    height: 1px;
+    width: 20px;
+    flex-grow: 1;
+    background: hsl(240, 4%, 90%);
+    vertical-align: middle;
+}
+
 
 /* meidum screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
