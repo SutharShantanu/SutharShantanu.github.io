@@ -1,5 +1,5 @@
 import "./projects.css";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { HiExternalLink } from "react-icons/hi";
 // import ProjectSet from "./ProjectSet";
 // import data from "../../db.json";
