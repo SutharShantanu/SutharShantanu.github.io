@@ -8,6 +8,7 @@ import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
 AOS.init();
 
+
 function Projects() {
     const openLink = (url) => {
         window.open(url);
