@@ -161,12 +161,12 @@
 }
 
 /* large screens */
-@media all and (min-width: 1025px) and (max-width: 100px) {
+@media all and (min-width: 1025px) and (max-width: 1200px) {
     /* .project-card {
         width: 85%;
     }
 
-    .project-tech-stack p {
+    .project-tech-stack {
         display: none;
     } */
 
@@ -198,9 +198,9 @@
         padding: 5px 12px;
         font-size: 16px;
     }
-    .project-skills-card {
+    /* .project-skills-card {
         width: 13%;
-    }
+    } */
     .project-card-container {
         display: flex;
         flex-direction: column;
@@ -219,8 +219,9 @@
         margin-top: 20px;
     }
 
-    .project-tech-stack p {
-        display: none;
+    .project-tech-stack {
+        /* display: grid; */
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .project-card-btn {

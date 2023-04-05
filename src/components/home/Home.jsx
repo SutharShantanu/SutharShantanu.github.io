@@ -3,6 +3,7 @@ import { FaCloudDownloadAlt } from "react-icons/fa";
 import { HiDownload } from "react-icons/hi";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
+import NavigateTop from "../NavigateTop/NavigateTop";
 // ..
 AOS.init();
 
@@ -53,6 +54,7 @@ function Home() {
                     />
                 </div>
             </div>
+            <NavigateTop/>
         </div>
     );
 }

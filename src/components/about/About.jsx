@@ -27,9 +27,16 @@ function About() {
                         data-aos-duration="3000"
                         className="aboutMe"
                         id="user-detail-intro">
-                        <span id="user-detail-name">I am Shantanu </span> an
-                        analytical and detail oriented aspiring full stack web
-                        developer with a passion for coding and new
+                        <span id="user-detail-name">
+                            I am Shantanu
+                            <br />
+                            Full-Stack Web Developer
+                            <br />
+                            Lives in Hanumangarh, Rajasthan
+                            <br />
+                        </span>
+                        an analytical and detail oriented aspiring full stack
+                        web developer with a passion for coding and new
                         technologies. Strong skillset in technologies such as
                         React, JavaScript, Next.js, Redux, Node.js, and MongoDB.
                         Capable of building both single-page and multi-page web

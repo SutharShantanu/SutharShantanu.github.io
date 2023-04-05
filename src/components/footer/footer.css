@@ -1,9 +1,16 @@
 .footer {
-  background-color: gray;
-  padding: 20px 0px 20px 0px;
+    background-color: gray;
+    padding: 20px 0px 20px 0px;
 }
 
 .love {
-  font-size: 20px;
-  text-align: center;
+    font-size: 20px;
+    text-align: center;
+}
+@media all and (min-width: 280px) and (max-width: 767px) {
+    .love {
+        width: 85%;
+        margin: auto;
+        font-size: revert;
+    }
 }

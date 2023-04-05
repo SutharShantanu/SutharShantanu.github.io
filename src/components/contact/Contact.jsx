@@ -1,5 +1,5 @@
 import "./contact.css";
-
+import emailjs from "@emailjs/browser";
 import {
     Box,
     Heading,
@@ -7,13 +7,13 @@ import {
     IconButton,
     Button,
     VStack,
-    HStack,
     FormControl,
     FormLabel,
     Input,
     InputGroup,
     InputLeftElement,
     Textarea,
+    useToast,
 } from "@chakra-ui/react";
 import {
     AiOutlineInstagram,
@@ -32,12 +32,66 @@ import {
 import { BsGithub, BsPerson } from "react-icons/bs";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
+import { useRef, useState } from "react";
 // ..
 AOS.init();
 
 function Contact() {
     const openLink = (url) => {
         window.open(url);
+    };
+    const toast = useToast();
+    const form = useRef();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+        if (name === "" || email === "" || message === "") {
+            toast({
+                title: "Please fill all details !",
+                description: "",
+                status: "warning",
+                variant: "left-accent",
+                duration: 2500,
+                isClosable: true,
+                position: "top",
+            });
+        } else {
+            emailjs
+                .sendForm(
+                    "service_nkw8tig", //YOUR_SERVICE_ID
+                    "template_can7fvb", //YOUR_TEMPLATE_ID
+                    e.target,
+                    "73_-qTWrUzxfELamL" //YOUR_PUBLIC_KEY
+                )
+                .then(
+                    (result) => {
+                        toast({
+                            title: "Message sent",
+                            description:
+                                "Your message have been sent successfully",
+                            status: "success",
+                            duration: 2500,
+                            isClosable: true,
+                            position: "top",
+                        });
+                        console.log(result.text);
+                    },
+                    (error) => {
+                        toast({
+                            title: "Error occurred",
+                            description: "Something went wrong",
+                            status: "error",
+                            duration: 2500,
+                            isClosable: true,
+                            position: "top",
+                        });
+                        console.log(error.text);
+                    }
+                );
+        }
     };
     return (
         <div className="contact-main" id="contact">
@@ -258,9 +312,17 @@ function Contact() {
                             id="contact_fill"
                             border={"1px solid rgba(255, 255, 255, 0.125)"}>
                             <Box m={8} color="white">
-                                <VStack spacing={5}>
+                                <form
+                                    // spacing={5}
+                                    ref={form}
+                                    onSubmit={sendEmail}>
                                     <FormControl id="name">
-                                        <FormLabel>Your Name</FormLabel>
+                                        <FormLabel
+                                            style={{
+                                                margin: "20px 0px 0px 0px",
+                                            }}>
+                                            Your Name
+                                        </FormLabel>
                                         <InputGroup borderColor="#E0E1E7">
                                             <InputLeftElement
                                                 pointerEvents="none"
@@ -268,11 +330,24 @@ function Contact() {
                                                     <BsPerson color="gray.800" />
                                                 }
                                             />
-                                            <Input type="text" size="md" />
+                                            <Input
+                                                type="text"
+                                                size="md"
+                                                value={name}
+                                                onChange={(e) =>
+                                                    setName(e.target.value)
+                                                }
+                                                placeholder="Your name"
+                                            />
                                         </InputGroup>
                                     </FormControl>
                                     <FormControl id="name">
-                                        <FormLabel>Mail</FormLabel>
+                                        <FormLabel
+                                            style={{
+                                                margin: "20px 0px 0px 0px",
+                                            }}>
+                                            Email
+                                        </FormLabel>
                                         <InputGroup borderColor="#E0E1E7">
                                             <InputLeftElement
                                                 pointerEvents="none"
@@ -280,37 +355,59 @@ function Contact() {
                                                     <MdOutlineEmail color="gray.800" />
                                                 }
                                             />
-                                            <Input type="text" size="md" />
+                                            <Input
+                                                type="text"
+                                                size="md"
+                                                placeholder="Email address"
+                                                value={email}
+                                                onChange={(e) =>
+                                                    setEmail(e.target.value)
+                                                }
+                                            />
                                         </InputGroup>
                                     </FormControl>
                                     <FormControl id="name">
-                                        <FormLabel>Message</FormLabel>
+                                        <FormLabel
+                                            style={{
+                                                margin: "20px 0px 0px 0px",
+                                            }}>
+                                            Message
+                                        </FormLabel>
                                         <Textarea
                                             borderColor="gray.300"
                                             _hover={{
                                                 borderRadius: "gray.300",
                                             }}
-                                            placeholder="message"
+                                            placeholder="Write your greeting"
+                                            value={message}
+                                            onChange={(e) =>
+                                                setMessage(e.target.value)
+                                            }
                                         />
                                     </FormControl>
                                     <FormControl id="name" float="right">
                                         <Button
+                                            style={{
+                                                margin: "20px 0px 0px 0px",
+                                            }}
                                             variant="solid"
                                             border={"2px solid transparent"}
                                             bg="#8f3e41"
                                             transition={"all .2s ease-in-out"}
                                             color="white"
+                                            type="submit"
+                                            value="Send"
                                             _hover={{
                                                 bgColor: "transparent",
                                                 border: "2px solid #8f3e41",
                                                 boxShadow:
                                                     "rgba(255, 255, 255, 0.125) 0px 3px 8px",
                                             }}>
-                                            Send Message <span>&nbsp;</span>{" "}
+                                            Send Message <span>&nbsp;</span>
                                             <FiSend />
                                         </Button>
                                     </FormControl>
-                                </VStack>
+                                </form>
                             </Box>
                         </Box>
                     </Box>
