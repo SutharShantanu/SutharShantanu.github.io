@@ -29,7 +29,7 @@ import {
     MdFacebook,
     MdOutlineEmail,
 } from "react-icons/md";
-import { BsGithub, BsDiscord, BsPerson } from "react-icons/bs";
+import { BsGithub, BsPerson } from "react-icons/bs";
 import AOS from "aos";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
@@ -44,59 +44,27 @@ function Contact() {
             <div className="text-divider-contact"></div>
             <div className="headingwrapper">
                 <h1 className="contactheading">Contact</h1>
-                {/* <div className="headingwrapperDiv">
-          <div className="headingwrapperDivLeft">
-            <img
-              src="https://www.genscript.com/gsimages/support/image-contactus.png"
-              alt="contactme"
-            />
-          </div>
-          <div className="headingwrapperDivRight">
-            <div className="contact-gmail" id="contact-email">
-              <SiGmail /> Shantanusut2000@gmail.com
-            </div>
-            <div className="contact-number" id="contact-phone">
-              <IoMdCall /> +917732962110
-            </div>
-            <div className="contact-location">
-              <MdLocationOn /> Hanumangarh, Rajasthan
-            </div>
-            <div className="contact-socialLink">
-              <img
-                onClick={() => openLink("https://github.com/SutharShantanu")}
-                src={process.env.PUBLIC_URL + "./Images/github.svg"}
-                alt="About"
-                id="contact-github"
-              />
-              <img
-                onClick={() =>
-                  openLink("https://www.linkedin.com/in/SutharShantanu")
-                }
-                src={process.env.PUBLIC_URL + "./Images/linkedin.svg"}
-                alt="About"
-                id="contact-linkedin"
-              />
-            </div>
-          </div>
-        </div> */}
 
                 <Box
                     bg="#1a1a1a"
                     color="white"
+                    id="contact_all"
                     border={"1px solid rgba(255, 255, 255, 0.125)"}
                     borderRadius="15px"
                     m={{ sm: 2, md: 12, lg: 8 }}
                     p={{ sm: 5, md: 5, lg: 16 }}>
                     <Box
-                        display={"flex"}
-                        justifyContent={"space-between"}
-                        flexDirection={"row"}
+                        // display={"flex"}
+                        // justifyContent={"space-between"}
+                        // flexDirection={"row"}
+                        className="contact_main"
                         // spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}
                     >
                         <Box
                             data-aos="fade-right"
                             data-aos-duration="3000"
-                            data-aos-mirror="true">
+                            data-aos-mirror="true"
+                            id="contact_details">
                             <Box>
                                 <Heading>Details</Heading>
                                 <Text
@@ -164,7 +132,7 @@ function Contact() {
                                                     size="20px"
                                                 />
                                             }>
-                                            Shantanusut2000.com
+                                            Shantanusut2000@Gmail.com
                                         </Button>
                                         <Button
                                             // display={"block"}
@@ -193,7 +161,7 @@ function Contact() {
                                         </Button>
                                     </VStack>
                                 </Box>
-                                <HStack
+                                <Box
                                     mt={{ lg: 10, md: 10 }}
                                     spacing={5}
                                     px={5}
@@ -277,16 +245,17 @@ function Contact() {
                                             <AiOutlineInstagram size="28px" />
                                         }
                                     />
-                                </HStack>
+                                </Box>
                             </Box>
                         </Box>
 
                         <Box
-                            data-aos="fade-left"
+                            data-aos="fade-right"
                             data-aos-duration="3000"
                             data-aos-mirror="true"
                             bg="rgba(255, 255, 255, 0.125)"
                             borderRadius="lg"
+                            id="contact_fill"
                             border={"1px solid rgba(255, 255, 255, 0.125)"}>
                             <Box m={8} color="white">
                                 <VStack spacing={5}>

@@ -14,7 +14,7 @@ function Skills() {
                 <div>
                     <h1
                         data-aos-mirror="true"
-                        data-aos="fade-left"
+                        data-aos="fade-right"
                         data-aos-duration="3000"
                         className="skills-heading">
                         Languages & Frameworks
@@ -39,7 +39,7 @@ function Skills() {
                     </h1>
                     <div
                         data-aos-mirror="true"
-                        data-aos="fade-up-left"
+                        data-aos="fade-up-right"
                         data-aos-duration="3000"
                         className="skillsToolsDiv">
                         {data.tools.map((elm) => (

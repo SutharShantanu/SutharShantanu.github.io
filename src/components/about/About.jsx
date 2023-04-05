@@ -27,7 +27,7 @@ function About() {
                         data-aos-duration="3000"
                         className="aboutMe"
                         id="user-detail-intro">
-                        <span id="user-detail-name">I am Shantanu</span> an
+                        <span id="user-detail-name">I am Shantanu </span> an
                         analytical and detail oriented aspiring full stack web
                         developer with a passion for coding and new
                         technologies. Strong skillset in technologies such as

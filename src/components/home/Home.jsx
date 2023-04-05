@@ -20,7 +20,7 @@ function Home() {
                     className="homeLeft">
                     <div id="user-detail-name">Hello, I'm Shantanu</div>
                     <div>
-                        A skilled
+                        A skilled <span>&nbsp;</span>
                         <strong id="user-detail-intro">
                             Full Stack Web Developer 💻
                         </strong>

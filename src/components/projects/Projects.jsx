@@ -8,7 +8,6 @@ import "aos/dist/aos.css"; // You can also use <link> for styles
 // ..
 AOS.init();
 
-
 function Projects() {
     const openLink = (url) => {
         window.open(url);
@@ -30,26 +29,22 @@ function Projects() {
                 <div className="project-card">
                     <div
                         data-aos-mirror="true"
-                        data-aos="fade-left"
+                        data-aos="fade-right"
                         data-aos-duration="3000"
                         className="project-card-container">
                         <div className="project-img">
                             <img
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    "./Images/paperfury.png"
-                                }
+                                src="https://user-images.githubusercontent.com/110021464/229436194-106bfbb6-5200-4bf6-830e-99c9c6fe0a86.png"
                                 alt=""
                             />
                         </div>
                         <div className="project-card-text">
-                            <h1 className="project-title">Paperfury</h1>
+                            <h1 className="project-title">GadgetGalaxy</h1>
                             <p className="project-description">
-                                Paperfury is a retailer of technology products,
-                                services and solutions. We work every day to
-                                bring you the best technology possible with the
-                                goal of making life simpler, easier and better
-                                for everyone who uses technology.
+                                GadgetGalaxy is a clone of an Indian online
+                                store that specializes in selling a wide range
+                                of designer mobile phone cases, laptop sleeves,
+                                and other tech accessories
                             </p>
                             <div className="project-tech-stack">
                                 <div
@@ -104,12 +99,12 @@ function Projects() {
                                     className="project-skills-card"
                                     key={Date.now() + Math.random()}>
                                     <img
-                                        src="https://cdn-icons-png.flaticon.com/512/136/136525.png"
+                                        src="https://lh5.googleusercontent.com/fIY8_nCkUbVDqzQA_RNU_H7u6X3hKQB9hm89AoK_6R4s3nGcUqLiK5UEJaNBlOksqVI=w2400"
                                         alt=""
                                         className="project-skills-card-img"
                                     />
                                     <p className="project-skills-card-name">
-                                        JSON
+                                        Redux
                                     </p>
                                 </div>
                                 <div
@@ -122,6 +117,343 @@ function Projects() {
                                     />
                                     <p className="project-skills-card-name">
                                         Chakra UI
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://avatars.githubusercontent.com/u/79146003?s=200&v=4"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Mantine UI
+                                    </p>
+                                </div>
+
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://cdn-icons-png.flaticon.com/512/5968/5968322.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Node JS
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/expressjs/expressjs-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Express JS
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/mongodb/mongodb-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        MongoDB
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="project-card-btn">
+                                <div
+                                    onClick={() =>
+                                        openLink(
+                                            `https://github.com/uzairansari11/native-order-609`
+                                        )
+                                    }
+                                    className="project-github-link">
+                                    GitHub <FaGithub />
+                                </div>
+                                <div
+                                    onClick={() =>
+                                        openLink(
+                                            `https://gadgetgalaxy.netlify.app/`
+                                        )
+                                    }
+                                    className="project-deployed-link">
+                                    Deploy <HiExternalLink />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="project-card">
+                    <div
+                        data-aos-mirror="true"
+                        data-aos="fade-right"
+                        data-aos-duration="3000"
+                        className="project-card-container">
+                        <div className="project-img">
+                            <img
+                                src="https://user-images.githubusercontent.com/110021464/222483483-7eb2c6ac-b8d7-447d-89e6-19ed1845c597.png"
+                                alt=""
+                            />
+                        </div>
+                        <div className="project-card-text">
+                            <h1 className="project-title">Aerowear</h1>
+                            <p className="project-description">
+                                Aerowear is known for its trendy and affordable
+                                clothing, with a focus on casual wear such as
+                                t-shirts, hoodies, and jeans. The brand also
+                                offers a range of accessories such as bags.
+                            </p>
+                            <div className="project-tech-stack">
+                                <div
+                                    key={Date.now() + Math.random()}
+                                    className="project-skills-card">
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        HTML
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/w3_css/w3_css-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        CSS
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        JavaScript
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        React Js
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://lh5.googleusercontent.com/fIY8_nCkUbVDqzQA_RNU_H7u6X3hKQB9hm89AoK_6R4s3nGcUqLiK5UEJaNBlOksqVI=w2400"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Redux
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://img.icons8.com/color/256/chakra-ui.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Chakra UI
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://mui.com/static/logo.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Material UI
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://cdn-icons-png.flaticon.com/512/136/136525.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        JSON
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="project-card-btn">
+                                <div
+                                    onClick={() =>
+                                        openLink(
+                                            `https://github.com/suhail3535/thinkable-slope-4107`
+                                        )
+                                    }
+                                    className="project-github-link">
+                                    GitHub <FaGithub />
+                                </div>
+                                <div
+                                    onClick={() =>
+                                        openLink(
+                                            `https://thinkable-slope.vercel.app/`
+                                        )
+                                    }
+                                    className="project-deployed-link">
+                                    Deploy <HiExternalLink />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="project-card">
+                    <div
+                        data-aos-mirror="true"
+                        data-aos="fade-right"
+                        data-aos-duration="3000"
+                        className="project-card-container">
+                        <div className="project-img">
+                            <img
+                                src={
+                                    process.env.PUBLIC_URL +
+                                    "./Images/paperfury.png"
+                                }
+                                alt=""
+                            />
+                        </div>
+                        <div className="project-card-text">
+                            <h1 className="project-title">Paperfury</h1>
+                            <p className="project-description">
+                                Papperfury is a clone of paperfry which is an
+                                Indian online furniture and home decor retailer.
+                                The company offers a wide range of products
+                                including furniture, home decor, lighting,
+                                kitchen and dining, and other home essentials.
+                            </p>
+                            <div className="project-tech-stack">
+                                <div
+                                    key={Date.now() + Math.random()}
+                                    className="project-skills-card">
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        HTML
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://www.vectorlogo.zone/logos/w3_css/w3_css-icon.svg"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        CSS
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        JavaScript
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://camo.githubusercontent.com/48d099290b4cb2d7937bcd96e8497cf1845b54a810a6432c70cf944b60b40c77/68747470733a2f2f7261776769742e636f6d2f676f72616e67616a69632f72656163742d69636f6e732f6d61737465722f72656163742d69636f6e732e737667"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        React Icons
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://avatars.githubusercontent.com/u/2918581?s=200&v=4"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Bootstrap
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://img.icons8.com/color/256/chakra-ui.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Chakra UI
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://mui.com/static/logo.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        Material UI
+                                    </p>
+                                </div>
+                                <div
+                                    className="project-skills-card"
+                                    key={Date.now() + Math.random()}>
+                                    <img
+                                        src="https://cdn-icons-png.flaticon.com/512/136/136525.png"
+                                        alt=""
+                                        className="project-skills-card-img"
+                                    />
+                                    <p className="project-skills-card-name">
+                                        JSON
                                     </p>
                                 </div>
                             </div>
@@ -139,271 +471,6 @@ function Projects() {
                                     onClick={() =>
                                         openLink(
                                             `https://paperfury.netlify.app/`
-                                        )
-                                    }
-                                    className="project-deployed-link">
-                                    Deploy <HiExternalLink />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="project-card">
-                    <div
-                        data-aos-mirror="true"
-                        data-aos="fade-right"
-                        data-aos-duration="3000"
-                        className="project-card-container">
-                        <div className="project-img">
-                            <img
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    "./Images/zee-flix.png"
-                                }
-                                alt=""
-                            />
-                        </div>
-                        <div className="project-card-text">
-                            <h1 className="project-title">Zee Flix</h1>
-                            <p className="project-description">
-                                Zee Flix is a retailer of technology products,
-                                services and solutions. We work every day to
-                                bring you the best technology possible with the
-                                goal of making life simpler, easier and better
-                                for everyone who uses technology.
-                            </p>
-                            <div className="project-tech-stack">
-                                <div
-                                    key={Date.now() + Math.random()}
-                                    className="project-skills-card">
-                                    <img
-                                        src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-icon.svg"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        HTML
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://www.vectorlogo.zone/logos/w3_css/w3_css-icon.svg"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        CSS
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        JavaScript
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://cdn-icons-png.flaticon.com/512/136/136525.png"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        JSON
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="project-card-btn">
-                                <div
-                                    onClick={() =>
-                                        openLink(
-                                            `https://github.com/SutharShantanu/-fit-hook-8952`
-                                        )
-                                    }
-                                    className="project-github-link">
-                                    GitHub <FaGithub />
-                                </div>
-                                <div
-                                    onClick={() =>
-                                        openLink(
-                                            `https://zee-flix.netlify.app/`
-                                        )
-                                    }
-                                    className="project-deployed-link">
-                                    Deploy <HiExternalLink />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="project-card">
-                    <div
-                        data-aos-mirror="true"
-                        data-aos="fade-left"
-                        data-aos-duration="3000"
-                        className="project-card-container">
-                        <div className="project-img">
-                            <img
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    "./Images/geeky.png"
-                                }
-                                alt=""
-                            />
-                        </div>
-                        <div className="project-card-text">
-                            <h1 className="project-title">Geeky Cart</h1>
-                            <p className="project-description">
-                                Geeky Cart is a retailer of technology products,
-                                services and solutions.  We work every day to
-                                bring you the best technology possible with the
-                                goal of making life simpler, easier and better
-                                for everyone who uses technology.
-                            </p>
-                            <div className="project-tech-stack">
-                                <div
-                                    key={Date.now() + Math.random()}
-                                    className="project-skills-card">
-                                    <img
-                                        src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-icon.svg"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        HTML
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://www.vectorlogo.zone/logos/w3_css/w3_css-icon.svg"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        CSS
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        JavaScript
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="project-card-btn">
-                                <div
-                                    onClick={() =>
-                                        openLink(
-                                            `https://github.com/SutharShantanu/-absurd-stage-2740`
-                                        )
-                                    }
-                                    className="project-github-link">
-                                    GitHub <FaGithub />
-                                </div>
-                                <div
-                                    onClick={() =>
-                                        openLink(
-                                            `https://geekycart.netlify.app/`
-                                        )
-                                    }
-                                    className="project-deployed-link">
-                                    Deploy <HiExternalLink />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="project-card">
-                    <div
-                        data-aos-mirror="true"
-                        data-aos="fade-right"
-                        data-aos-duration="3000"
-                        className="project-card-container">
-                        <div className="project-img">
-                            <img
-                                src={
-                                    process.env.PUBLIC_URL + "./Images/todo.png"
-                                }
-                                alt=""
-                            />
-                        </div>
-                        <div className="project-card-text">
-                            <h1 className="project-title">Todo App</h1>
-                            <p className="project-description">
-                                Todo App is a retailer of technology products,
-                                services and solutions. We work every day to
-                                bring you the best technology possible with the
-                                goal of making life simpler, easier and better
-                                for everyone who uses technology.
-                            </p>
-                            <div className="project-tech-stack">
-                                <div
-                                    key={Date.now() + Math.random()}
-                                    className="project-skills-card">
-                                    <img
-                                        src="https://www.vectorlogo.zone/logos/w3_html5/w3_html5-icon.svg"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        HTML
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://www.vectorlogo.zone/logos/w3_css/w3_css-icon.svg"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        CSS
-                                    </p>
-                                </div>
-                                <div
-                                    className="project-skills-card"
-                                    key={Date.now() + Math.random()}>
-                                    <img
-                                        src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png"
-                                        alt=""
-                                        className="project-skills-card-img"
-                                    />
-                                    <p className="project-skills-card-name">
-                                        JavaScript
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="project-card-btn">
-                                <div
-                                    onClick={() => openLink(``)}
-                                    className="project-github-link">
-                                    GitHub <FaGithub />
-                                </div>
-                                <div
-                                    onClick={() =>
-                                        openLink(
-                                            `https://masai-todo-app.netlify.app/`
                                         )
                                     }
                                     className="project-deployed-link">

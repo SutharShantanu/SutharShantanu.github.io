@@ -61,7 +61,7 @@
     transition: all 0.3s ease-in-out;
 }
 .project-card:hover {
-    background-color:rgba(255, 255, 255, 0.125) ;
+    background-color: rgba(255, 255, 255, 0.125);
 }
 .project-card-container {
     padding: 10px;
@@ -101,11 +101,13 @@
 
 .project-description {
     font-size: 20px;
-    text-align: justify;
+    text-align: left;
 }
 
 .project-tech-stack {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
     align-items: center;
 }
 
@@ -115,13 +117,12 @@
 }
 
 .project-tech-stack img {
-    width: 50px;
+    width: 30px;
     display: block;
     margin: auto;
 }
 
 .project-card-btn {
-    width: 50%;
     display: flex;
     justify-content: space-between;
 }
@@ -159,10 +160,24 @@
     color: white;
 }
 
-/* meidum screens */
+/* large screens */
+@media all and (min-width: 1025px) and (max-width: 100px) {
+    /* .project-card {
+        width: 85%;
+    }
+
+    .project-tech-stack p {
+        display: none;
+    } */
+
+    .project-card-btn {
+        width: 50%;
+    }
+}
+/* medium screens */
 @media all and (min-width: 768px) and (max-width: 1024px) {
     .project-card {
-        width: 90%;
+        width: 85%;
     }
 
     .project-tech-stack p {
@@ -177,9 +192,15 @@
 /* small screens */
 @media all and (min-width: 280px) and (max-width: 767px) {
     .project-card {
-        width: 90%;
+        width: 85%;
     }
-
+    .project-card-btn div {
+        padding: 5px 12px;
+        font-size: 16px;
+    }
+    .project-skills-card {
+        width: 13%;
+    }
     .project-card-container {
         display: flex;
         flex-direction: column;
