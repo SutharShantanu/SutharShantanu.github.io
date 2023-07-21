@@ -48,17 +48,7 @@ function Contact() {
 
     const sendEmail = (e) => {
         e.preventDefault();
-        if (name === "" || email === "" || message === "") {
-            toast({
-                title: "Please fill all details !",
-                description: "",
-                status: "warning",
-                variant: "left-accent",
-                duration: 2500,
-                isClosable: true,
-                position: "top",
-            });
-        } else {
+        if (name !== "" || email !== "" || message !== "") {
             emailjs
                 .sendForm(
                     "service_nkw8tig", //YOUR_SERVICE_ID
@@ -68,6 +58,7 @@ function Contact() {
                 )
                 .then(
                     (result) => {
+                        console.log(name, email, message);
                         toast({
                             title: "Message sent",
                             description:
@@ -77,6 +68,9 @@ function Contact() {
                             isClosable: true,
                             position: "top",
                         });
+                        setName("");
+                        setEmail("");
+                        setMessage("");
                         console.log(result.text);
                     },
                     (error) => {
@@ -91,6 +85,16 @@ function Contact() {
                         console.log(error.text);
                     }
                 );
+        } else if (name === "" || email === "" || message === "") {
+            toast({
+                title: "Please fill all details !",
+                description: "",
+                status: "warning",
+                variant: "left-accent",
+                duration: 2500,
+                isClosable: true,
+                position: "top",
+            });
         }
     };
     return (
@@ -333,6 +337,7 @@ function Contact() {
                                             <Input
                                                 type="text"
                                                 size="md"
+                                                name="name"
                                                 value={name}
                                                 onChange={(e) =>
                                                     setName(e.target.value)
@@ -356,8 +361,9 @@ function Contact() {
                                                 }
                                             />
                                             <Input
-                                                type="text"
+                                                type="email"
                                                 size="md"
+                                                name="email"
                                                 placeholder="Email address"
                                                 value={email}
                                                 onChange={(e) =>
@@ -379,6 +385,7 @@ function Contact() {
                                                 borderRadius: "gray.300",
                                             }}
                                             placeholder="Write your greeting"
+                                            name="message"
                                             value={message}
                                             onChange={(e) =>
                                                 setMessage(e.target.value)
@@ -389,6 +396,8 @@ function Contact() {
                                         <Button
                                             style={{
                                                 margin: "20px 0px 0px 0px",
+                                                padding: "10px 15px",
+                                                borderRadius: "25px",
                                             }}
                                             variant="solid"
                                             border={"2px solid transparent"}

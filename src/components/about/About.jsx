@@ -27,7 +27,7 @@ function About() {
                         data-aos-duration="3000"
                         className="aboutMe"
                         id="user-detail-intro">
-                        <span id="user-detail-name">
+                        <span className="about_name" id="user-detail-name">
                             I am Shantanu
                             <br />
                             Full-Stack Web Developer
@@ -35,14 +35,12 @@ function About() {
                             Lives in Hanumangarh, Rajasthan
                             <br />
                         </span>
-                        an analytical and detail oriented aspiring full stack
-                        web developer with a passion for coding and new
-                        technologies. Strong skillset in technologies such as
-                        React, JavaScript, Next.js, Redux, Node.js, and MongoDB.
-                        Capable of building both single-page and multi-page web
-                        applications, continuously seeking to learn and grow as
-                        a developer and bring skills and passion to a new
-                        opportunity.
+                        <hr style={{ margin: "20px auto" }} />A passionate
+                        aspiring Full Stack Developer skilled in MERN stack,
+                        molded and shaped by Masai School's numerous training.
+                        Actively ready to join the great living team of a good
+                        start-up to adapt me in any situation and the
+                        environment with ease and perform the best.
                     </div>
                     <div
                         data-aos-mirror="true"

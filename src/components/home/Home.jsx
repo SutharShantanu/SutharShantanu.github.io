@@ -19,7 +19,10 @@ function Home() {
                     data-aos-duration="3000"
                     data-aos-mirror="true"
                     className="homeLeft">
-                    <div id="user-detail-name">Hello, I'm Shantanu</div>
+                    <div id="user-detail-name">
+                        Hello,
+                        <br /> I'm Shantanu
+                    </div>
                     <div>
                         A skilled <span>&nbsp;</span>
                         <strong id="user-detail-intro">
@@ -54,7 +57,7 @@ function Home() {
                     />
                 </div>
             </div>
-            <NavigateTop/>
+            <NavigateTop />
         </div>
     );
 }

@@ -1,3 +1,8 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
 .contact-main {
     background-color: #1a1a1a;
     padding: 40px 0px 60px 0px;
@@ -63,7 +68,7 @@
 }
 .text-divider-contact {
     width: 76%;
-    margin: 2rem auto;
+    margin: 0rem auto;
     display: flex;
     text-align: center;
     align-items: center;

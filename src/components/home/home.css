@@ -1,3 +1,7 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .home-main {
     background-color: #1a1a1a;
     background-image: url(https://assets.website-files.com/6319f69c5ef0f35ae3db6df0/631eeb7aaf19c44331c49ab0_Gradient%20Bg.webp);
@@ -20,7 +24,7 @@
 }
 
 .homeLeft > div:nth-child(1) {
-    width: 80%;
+    /* width: 90%; */
     font-size: 80px;
     font-style: normal;
     font-weight: 1000;
@@ -53,34 +57,43 @@
     background-color: white;
     text-align: center;
     color: #1a1a1a;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 10px 15px;
+    border-radius: 25px;
     font-size: 20px;
     font-style: normal;
     cursor: pointer;
 }
 
 .home-resume:hover {
-    background: rgba(255, 255, 255, 0.125);
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    background: rgba(225, 83, 76, 0.489);
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
     color: white;
+    box-shadow: rgba(255, 255, 255, 0.125) 10px 10px 0px 0px;
 }
 
 .homeright {
     width: 500px;
     /* height: 500px; */
-    /* border: 1px solid #1a1a1a; */
-    border-radius: 50%;
+    border: 0px solid #1a1a1a;
+    /* border-radius: 50%; */
 }
 
 .home-img {
     width: 80%;
-    /* height: 100%; */
+    height: 80%;
     display: block;
     margin: auto;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.home-img:hover {
+    box-shadow: rgba(255, 255, 255, 0.125) 0px 10px 10px 10px;
+    transform: scale(0.95);
+    filter: brightness(0.8);
 }
 
 /* meidum screens */

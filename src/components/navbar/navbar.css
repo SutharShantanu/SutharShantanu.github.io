@@ -2,7 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap");
 * {
     /* font-family: "General Sans", sans-serif; */
-    font-family: "Source Code Pro", monospace;
+    /* font-family: "Source Code Pro", monospace; */
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .navbar {
@@ -14,7 +15,7 @@
     color: white;
     backdrop-filter: blur(12px) saturate(180%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.125);
-    transition: all 0.2s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .wrapper {
@@ -54,7 +55,7 @@
     /* filter: blur(2px); */
     backdrop-filter: blur(12px) saturate(180%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.125);
-    transition: all 0.2s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .wrapperRight > div {
@@ -73,19 +74,20 @@
     width: 125px;
     text-align: center;
     color: #1a1a1a;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 10px 15px;
+    border-radius: 25px;
     font-style: normal;
     cursor: pointer;
 }
 
 .navbar-resume:hover {
     color: white;
-    background: rgba(255, 255, 255, 0.125);
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    -webkit-transition: all 0.2s ease-in-out;
-    transition: all 0.3s ease-in-out;
+    background: rgba(225, 83, 76, 0.489);
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    box-shadow: rgba(255, 255, 255, 0.125) 10px 10px 0px 0px;
 }
 
 .wrapperRight a:hover {
@@ -128,7 +130,9 @@
     }
 
     .navbar-resume:hover {
-        background: rgba(255, 255, 255, 0.125);
+        background: rgba(225, 83, 76, 0.769);
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+            rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     }
 }
 @media all and (min-width: 280px) and (max-width: 767px) {
@@ -154,12 +158,14 @@
         cursor: pointer;
         color: #6a6a6a;
     }
-
     .navbar-resume {
-        background-color: #1a1a1a;
+        background-color: rgb(225, 83, 76);
         color: white;
     }
+
     .navbar-resume:hover {
-        background: rgba(255, 255, 255, 0.125);
+        background: rgba(225, 83, 76, 0.769);
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+            rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     }
 }
