@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "@/Components/Navbar";
-import { Toaster } from "@/Components/ui/toaster";
 import { ThemeProvider } from "@/Components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +26,6 @@ export default function RootLayout({ children }) {
                         {children}
                     </ThemeProvider>
                 </ChakraProvider>
-                <Toaster />
             </body>
         </html>
     );
