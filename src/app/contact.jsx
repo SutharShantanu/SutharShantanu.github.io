@@ -16,12 +16,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
-import { useToast } from "@/Components/ui/use-toast";
 
 
 const Contact = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const { toast } = useToast();
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -110,16 +108,16 @@ const Contact = () => {
             if (response) {
                 const data = await response.json();
                 console.log(data);
-                toast({
-                    title: "Message sent successfully!",
-                });
+                // toast({
+                //     title: "Message sent successfully!",
+                // });
             }
         } catch (error) {
             console.log(error);
-            toast({
-                variant: "Error occurred",
-                title: "An error occurred while sending your message. Please try again later.",
-            });
+            // toast({
+            //     variant: "Error occurred",
+            //     title: "An error occurred while sending your message. Please try again later.",
+            // });
         } finally {
             setIsLoading(false);
         }
