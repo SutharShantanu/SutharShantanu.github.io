@@ -1,0 +1,238 @@
+{
+    "Repos": [
+        {
+            "id": "0",
+            "description": "Built a Todo application using Redux Toolkit for streamlined state management. Reduced boilerplate code, implemented async operations, and embraced immutability. Mastered Redux Toolkit's best practices, enhancing overall efficiency in state management.",
+            "name": "Redux-Toolkit",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Redux-Toolkit",
+            "tags": [
+                "react",
+                "redux",
+                "redux-toolkit"
+            ],
+            "img": "https://storytale-public2.b-cdn.net/2021/08/16/4a9652d7-4c81-42ae-95d9-9387aeb6d876-Workflow.png?height=600",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://open-redux-toolkit.vercel.app",
+            "updated_at": "2024-01-14"
+        },
+        {
+            "id": "1",
+            "description": "Developed a backend repository for RazorPay payment integration in Node.js + MongoDB. Implemented seamless payment processing, leveraging RazorPay's capabilities. Integrated Node.js for server-side logic and MongoDB for data storage. The project focused on creating a robust backend solution, enabling secure and efficient payment transactions.",
+            "name": "RazorPay-Gateway",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/RazorPay-Gateway",
+            "tags": [
+                "dotenv",
+                "mongodb",
+                "node-js",
+                "express-js",
+                "razorpay"
+            ],
+            "img": "https://storytale-public2.b-cdn.net/2021/08/16/4a9652d7-4c81-42ae-95d9-9387aeb6d876-Workflow.png?height=600",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://fair-cyan-perch-wear.cyclic.cloud",
+            "updated_at": "2023-09-15"
+        },
+        {
+            "id": "2",
+            "description": "Calcy is a sleek and intuitive web calculator application inspired by the aesthetic design and functionality of the Google Calculator from the Android platform. Built using React.js, this web app aims to provide users with a seamless and familiar experience while offering a convenient way to perform calculations online.",
+            "name": "Calcy",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Calcy",
+            "tags": [
+                "redux",
+                "react-js",
+                "react-icons",
+                "react-router-dom",
+                "chakra-ui",
+                "font-awesome",
+                "tailwind"
+            ],
+            "img": "https://storytale-public2.b-cdn.net/2021/08/16/4a9652d7-4c81-42ae-95d9-9387aeb6d876-Workflow.png?height=600",
+            "type": "individual",
+            "status": "ongoing",
+            "deployments_url": "https://open-calcy.vercel.app",
+            "updated_at": "2023-09-07"
+        },
+        {
+            "id": "3",
+            "description": "Todo's is a project management tool that helps you stay organized by creating and managing tasks. It allows you to prioritize and track your progress, ensuring you stay productive and efficient.",
+            "name": "Todo",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Todo",
+            "tags": [
+                "redux",
+                "react-js",
+                "react-icons",
+                "react-router-dom",
+                "chakra-ui"
+            ],
+            "img": "https://github-production-user-asset-6210df.s3.amazonaws.com/110021464/255202031-4cd0ff9e-5f9f-4cf6-ab8a-e25c307db047.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240323%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240323T050332Z&X-Amz-Expires=300&X-Amz-Signature=1d97429556e47edf33e6f610fa43c4087612f45ea2e4984c126a3d6af49d5ae3&X-Amz-SignedHeaders=host&actor_id=110021464&key_id=0&repo_id=663171316",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://opentodos.vercel.app",
+            "updated_at": "2023-07-30"
+        },
+        {
+            "id": "4",
+            "description": "OpenWeather is a project that provides weather data and services to developers and businesses. It offers a comprehensive set of APIs and tools for accessing real-time and historical weather data for locations worldwide.",
+            "name": "OpenWeather",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/OpenWeather",
+            "tags": [
+                "redux",
+                "axios",
+                "react-js",
+                "react-loading-skeleton",
+                "react-icons",
+                "react-router-dom",
+                "chakra-ui"
+            ],
+            "img": "https://github.com/SutharShantanu/OpenWeather/blob/main/public/Images/OpenWeather.png?raw=true",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://openweathers.vercel.app",
+            "updated_at": "2023-06-27"
+        },
+        {
+            "id": "5",
+            "description": "The React Hooks project is a collection of practical examples that demonstrate how to use React Hooks in web development. It provides easy-to-understand examples of popular hooks like useState, useEffect, useContext, and useRef.",
+            "name": "React-Hooks",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/React-Hooks",
+            "tags": [
+                "react-js",
+                "react-icons"
+            ],
+            "img": "https://storytale-public2.b-cdn.net/2021/08/16/4a9652d7-4c81-42ae-95d9-9387aeb6d876-Workflow.png?height=600",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://react-hooks-public.vercel.app",
+            "updated_at": "2023-06-09"
+        },
+        {
+            "id": "6",
+            "description": "Boozeblues is a dynamic and immersive e-commerce platform designed for the discerning connoisseurs of fine liquors.",
+            "name": "Boozeblues",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Boozeblues",
+            "tags": [
+                "express-js",
+                "mongodb",
+                "node-js",
+                "chakra-ui",
+                "react-icons",
+                "react-router-dom",
+                "redux",
+                "jwt"
+            ],
+            "img":"https://storytale-public2.b-cdn.net/2021/08/16/4a9652d7-4c81-42ae-95d9-9387aeb6d876-Workflow.png?height=600",
+            "type": "individual",
+            "status": "ongoing",
+            "deployments_url": "#",
+            "updated_at": "2023-09-07"
+        },
+        {
+            "id": "7",
+            "description": "GadgetGalaxy is a clone of an Indian online store that specializes in selling a wide range of designer mobile phone cases, laptop sleeves, and other tech accessories",
+            "name": "GadgetGalaxy",
+            "owner": "uzairansari11",
+            "git_url": "https://github.com/uzairansari11/GadgetGalaxy",
+            "tags": [
+                "react-js",
+                "express-js",
+                "jsonwebtoken",
+                "mongodb",
+                "react-icons",
+                "chakra-ui",
+                "react-redux",
+                "react-router-dom",
+                "styled Components"
+            ],
+            "img": "https://user-images.githubusercontent.com/110021464/229436194-106bfbb6-5200-4bf6-830e-99c9c6fe0a86.png",
+            "type": "team",
+            "status": "completed",
+            "deployments_url": "https://gadgetgalaxy.netlify.app",
+            "updated_at": "2023-07-03"
+        },
+        {
+            "id": "8",
+            "description": "AeroWear is the clone of Aeropostle.com, it is known for its trendy and affordable clothing, with a focus on casual wear such as t-shirts, hoodies, and jeans. The brand also offers a range of accessories such as bags.",
+            "name": "AeroWear",
+            "owner": "suhail3535",
+            "git_url": "https://github.com/suhail3535/AeroWear",
+            "tags": [
+                "react-js",
+                "react-icons",
+                "chakra-ui",
+                "json-server",
+                "redux",
+                "axios",
+                "react-router-dom",
+                "styled Components"
+            ],
+            "img": "https://user-images.githubusercontent.com/110021464/222483483-7eb2c6ac-b8d7-447d-89e6-19ed1845c597.png",
+            "type": "team",
+            "status": "completed",
+            "deployments_url": "https://thinkable-slope-suhail3535.vercel.app",
+            "updated_at": "2024-01-07"
+        },
+        {
+            "id": "9",
+            "description": "Papperfury is a clone of paperfry which is an Indian online furniture and home decor retailer. The company offers a wide range of products including furniture, home decor, lighting, kitchen and dining, and other home essentials.",
+            "name": "Papperfury",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Papperfury",
+            "tags": [
+                "react-js",
+                "react-icons",
+                "axios",
+                "react-router-dom",
+                "react-slideshow-image",
+                "styled Components"
+            ],
+            "img": "https://github.com/SutharShantanu/Papperfury/blob/main/public/Paperfury.png?raw=true",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://paperfury.vercel.app",
+            "updated_at": "2023-06-01"
+        },
+        {
+            "id": "10",
+            "description": "Zeeflix is a clone of ZEE5 which is an Indian video streaming platform owned by Zee Entertainment Enterprises Limited, a subsidiary of Essel Group. It was launched in February 2018 and offers a wide range of content in multiple languages including Hindi, Tamil, Telugu, Malayalam, Kannada, Bengali, Marathi, and Punjabi.",
+            "name": "Zeeflix",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Zeeflix",
+            "tags": [
+                "html",
+                "css",
+                "javascript"
+            ],
+            "img": "https://raw.githubusercontent.com/SutharShantanu/Zeeflix/main/screencapture-zee-flix-netlify-app-movies-2024-03-22-15_42_32.png",
+            "type": "team",
+            "status": "completed",
+            "deployments_url": "https://zee-flix.netlify.app",
+            "updated_at": "2023-07-29"
+        },
+        {
+            "id": "11",
+            "description": "Geekycart is a clone of Best Buy which is an American multinational consumer electronics retailer that sells a wide range of products, including computers, mobile phones, televisions, appliances, and more. Best Buy is known for its large selection of products, competitive pricing, and knowledgeable sales associates.",
+            "name": "Geekycart",
+            "owner": "SutharShantanu",
+            "git_url": "https://github.com/SutharShantanu/Geekycart",
+            "tags": [
+                "html",
+                "css",
+                "javascript"
+            ],
+            "img": "https://github.com/SutharShantanu/Geekycart/blob/main/img/home.png?raw=true",
+            "type": "individual",
+            "status": "completed",
+            "deployments_url": "https://geekycart.netlify.app",
+            "updated_at": "2023-07-29"
+        }
+    ]
+}
