@@ -6,6 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Navbar from "@/Components/Navbar";
 import { ThemeProvider } from "@/Components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // export const metadata = {
 //     title: "Create Next App",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
                         <Navbar />
                         {children}
                     </ThemeProvider>
+                    <SpeedInsights />
                 </ChakraProvider>
             </body>
         </html>
