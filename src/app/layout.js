@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/Components/Navbar";
 import "./globals.css";
+import Footer from "@/Components/Footer";
 
 // export const metadata = {
 //     title: "Create Next App",
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
                         disableTransitionOnChange>
                         <Navbar />
                         {children}
+                        <Footer />
                         <SpeedInsights />
                         <Analytics />
                     </ThemeProvider>

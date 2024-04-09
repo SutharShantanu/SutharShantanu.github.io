@@ -67,7 +67,7 @@ const Navbar = () => {
     useEffect(() => {
         const handleScroll = () => {
             const sections = document.querySelectorAll("section");
-            const scrollPosition = window.scrollY + 110;
+            const scrollPosition = window.scrollY + 10;
 
             sections.forEach((section) => {
                 const sectionTop = section.offsetTop;
