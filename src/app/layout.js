@@ -1,12 +1,13 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { ChakraProvider } from "@chakra-ui/react";
-import Navbar from "@/Components/Navbar";
-import { ThemeProvider } from "@/Components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
+import { ChakraProvider } from "@chakra-ui/react";
+import { ThemeProvider } from "@/Components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+import Navbar from "@/Components/Navbar";
+import "./globals.css";
 
 // export const metadata = {
 //     title: "Create Next App",
@@ -25,8 +26,9 @@ export default function RootLayout({ children }) {
                         disableTransitionOnChange>
                         <Navbar />
                         {children}
+                        <SpeedInsights />
+                        <Analytics />
                     </ThemeProvider>
-                    <SpeedInsights />
                 </ChakraProvider>
             </body>
         </html>
