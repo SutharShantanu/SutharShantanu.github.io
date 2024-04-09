@@ -16,9 +16,9 @@ At Masai, I grew into a trained and creative developer who derived great satisfa
 
 Besides being a web developer, I enjoy traveling and playing video games. I am outgoing and fun-loving by nature which helps me bring out my creative side.`;
     return (
-        <div
+        <section
             id="about"
-            className="border border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border min-h-[87vh] border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
                 About
                 <MoveRight
@@ -35,7 +35,7 @@ Besides being a web developer, I enjoy traveling and playing video games. I am o
                     <TextGenerateEffect words={words} />
                 </h2>
             </div>
-        </div>
+        </section>
     );
 };
 

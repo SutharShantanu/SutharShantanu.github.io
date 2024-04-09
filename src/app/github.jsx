@@ -52,9 +52,9 @@ const Github = () => {
     };
 
     return (
-        <div
+        <section
             id="github"
-            className="border border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border min-h-[87vh] border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
                 Github
                 <MoveRight
@@ -276,7 +276,7 @@ const Github = () => {
                     alt="Shantanu Stats"
                 />
             </div>
-        </div>
+        </section>
     );
 };
 
