@@ -6,6 +6,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { ThemeProvider } from "@/Components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "sonner";
 import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
@@ -30,6 +31,11 @@ export default function RootLayout({ children }) {
                         <Footer />
                         <SpeedInsights />
                         <Analytics />
+                        <Toaster
+                            position="bottom-right"
+                            richColors
+                            closeButton
+                        />
                     </ThemeProvider>
                 </ChakraProvider>
             </body>
