@@ -16,7 +16,8 @@ const SkillCard = ({ card }) => {
                 <Image
                     width={100}
                     height={100}
-                    objectFit="fill"
+                    // layout="fill"
+                    objectFit="cover"
                     src={card.imageUrl}
                     alt={card.title}
                 />
