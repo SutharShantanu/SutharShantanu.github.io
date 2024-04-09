@@ -18,9 +18,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Avatar } from "@nextui-org/react";
 import { memo } from "react";
-import { useToast } from "./ui/use-toast";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 import {
     Sheet,
     SheetContent,
@@ -42,7 +42,6 @@ import { AvatarFallback, AvatarImage } from "./ui/avatar";
 const Navbar = () => {
     const [current, setCurrent] = useState("homepage");
     const [isDownloading, setIsDownloading] = useState(false);
-    const { toast } = useToast();
 
     const links = [
         { id: "homepage", title: "Home", icon: "Home" },
@@ -92,24 +91,23 @@ const Navbar = () => {
 
     const handleView = () => {
         setIsDownloading(true);
-        // toast({
-        //     title: "Downloading Resume File !",
-        //     description: new Date().toLocaleString("en-US", {
-        //         weekday: "long",
-        //         year: "numeric",
-        //         month: "long",
-        //         day: "numeric",
-        //         hour: "numeric",
-        //         minute: "numeric",
-        //         timeZone: "UTC",
-        //     }),
-        // });
+        toast.success("Downloading Resume !", {
+            description: new Date().toLocaleString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                timeZone: "UTC",
+            }),
+        });
 
         setTimeout(() => {
             setIsDownloading(false);
-            const googleDriveLink =
-                "https://drive.google.com/file/d/173kc0AW6miCrWOsqeYN3ad348otgyA13/view?usp=drive_link";
-            window.open(googleDriveLink, "_blank");
+            // const googleDriveLink =
+            //     "https://drive.google.com/file/d/173kc0AW6miCrWOsqeYN3ad348otgyA13/view?usp=drive_link";
+            // window.open(googleDriveLink, "_blank");
         }, 2000);
     };
 
@@ -150,7 +148,7 @@ const Navbar = () => {
                         <Button
                             disabled={isDownloading}
                             onClick={handleView}
-                            className="rounded-xl shadow-lg ">
+                            className="rounded-md shadow-lg ">
                             {isDownloading ? (
                                 <div className="flex">
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -182,7 +180,7 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
 
     return (
         <span
-            className={`flex items-center px-4 cursor-pointer rounded-xl transition-all ${
+            className={`flex items-center px-4 cursor-pointer rounded-md transition-all ${
                 isActive
                     ? "bg-black dark:bg-white text-white shadow-lg"
                     : "hover:bg-gray-200"
