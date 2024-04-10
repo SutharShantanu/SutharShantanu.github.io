@@ -127,20 +127,11 @@ const Navbar = () => {
                     ))}
                 </div>
                 <div className="flex flex-row space-x-4">
-                    <TooltipProvider>
-                        <TooltipProvider>
-                            <Tooltip>
-                                <Avatar>
-                                    <TooltipTrigger>
-                                        <AvatarImage src="https://avatars.githubusercontent.com/u/110021464?v=4" />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <AvatarFallback>ST</AvatarFallback>
-                                    </TooltipContent>
-                                </Avatar>
-                            </Tooltip>
-                        </TooltipProvider>
-                    </TooltipProvider>
+                    <Avatar>
+                        <AvatarImage src="https://avatars.githubusercontent.com/u/110021464?v=4" />
+                        <AvatarFallback>ST</AvatarFallback>
+                    </Avatar>
+                    
                     {/* <ThemeSwitch /> */}
                     <Link
                         prefetch={true}
