@@ -10,12 +10,12 @@ export default function Home() {
     return (
         <div className="scroll-smooth">
             <Homepage />
-            <About />
+            {/* <About />
             <Experience />
             <Skills />
             <Github />
             <Projects />
-            <Contact />
+            <Contact /> */}
         </div>
     );
 }

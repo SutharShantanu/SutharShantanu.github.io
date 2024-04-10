@@ -260,7 +260,7 @@ const Github = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex items-center justify-between mt-4 shadow-sm border border-gray-200 h-64 space-x-4 rounded-xl p-5">
+            {/* <div className="flex items-center justify-between mt-4 shadow-sm border border-gray-200 h-64 space-x-4 rounded-xl p-5">
                 <img
                     src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Stats"
@@ -275,7 +275,7 @@ const Github = () => {
                     src="https://github-readme-stats.vercel.app/api?username=SutharShantanu&count_private=true&show_icons=true&hide_border=true&border_radius=12&title_color=000000&text_color=808080&icon_color=9CA3AF"
                     alt="Shantanu Stats"
                 />
-            </div>
+            </div> */}
         </section>
     );
 };
