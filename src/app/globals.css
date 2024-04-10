@@ -2,28 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbar style */
-/* Works on Chrome, Edge, and Safari */
-::-webkit-scrollbar {
-  width: 8px;
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #B0BEC5 #FFAB91;
 }
 
-::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+*::-webkit-scrollbar {
+  width: 17px;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 4px;
+*::-webkit-scrollbar-track {
+  background: #FFAB91;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #B0BEC5;
+  border-radius: 14px;
+  border: 3px solid #FFAB91;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-/* Works on Firefox */
-/* You may need to add `!important` to override Firefox's default styles */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
+  background-color: #A5D6A7;
 }
