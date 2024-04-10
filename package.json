@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.8.2",
-    "@emailjs/browser": "^4.3.3",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.4",
@@ -37,8 +36,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.5",
-    "emailjs": "^4.0.3",
-    "emailjs-com": "^3.2.0",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "^8.0.0",
     "embla-carousel-wheel-gestures": "^8.0.0-rc05",
