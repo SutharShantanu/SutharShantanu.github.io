@@ -50,17 +50,24 @@ export const CardStack = () => {
     };
 
     return (
-        <div className="relative sm:h-80 sm:w-60">
+        <div className="relative sm:h-80 sm:w-60 border border-orange-600 h-60 w-full">
             {cards.map((card, index) => (
                 <motion.div
                     key={card.key}
-                    className={`absolute dark:bg-black bg-white sm:h-96 sm:w-96
+                    className={`absolute dark:bg-black bg-white h-48 w-48 sm:h-96 sm:w-96
          rounded-3xl p-4 shadow-xl border border-neutral-200 dark:border-white/[0.1]  shadow-black/[0.1] dark:shadow-white/[0.05] flex flex-col justify-between transition-all ${
              index > 0 ? "blur-sm" : ""
          } hover:blur-none `}
                     style={{
                         transformOrigin: "top center",
                     }}
+                    // animate={{
+                    //     left: isMobile ? 0 : index * 70,
+                    //     top: isMobile ? 0 : index * -30,
+                    //     rotateY: isMobile ? 0 : index * -5,
+                    //     translateZ: isMobile ? 0 : index * -50,
+                    //     zIndex: cards.length - index,
+                    // }}
                     animate={{
                         left: index * 70,
                         top: index * -30,

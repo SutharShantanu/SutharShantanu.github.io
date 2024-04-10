@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import {
     Home,
     User,
@@ -10,17 +12,10 @@ import {
     Loader2,
     ArrowDownCircle,
     Menu,
+    X,
     LampDesk,
     Puzzle,
 } from "lucide-react";
-import { Card } from "./ui/card";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Avatar } from "@nextui-org/react";
-import { memo } from "react";
-import Image from "next/image";
-import { Button } from "./ui/button";
-import { toast } from "sonner";
 import {
     Sheet,
     SheetContent,
@@ -29,7 +24,15 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "./ui/sheet";
+import { Card } from "./ui/card";
+import { useEffect, useState } from "react";
+import { Avatar } from "@nextui-org/react";
+import { memo } from "react";
+import { Button } from "./ui/button";
+import { toast } from "sonner";
 import { Separator } from "./ui/separator";
+import { AvatarFallback, AvatarImage } from "./ui/avatar";
+
 import {
     Tooltip,
     TooltipContent,
@@ -37,7 +40,7 @@ import {
     TooltipTrigger,
 } from "./ui/tooltip";
 import ThemeSwitch from "./Theme";
-import { AvatarFallback, AvatarImage } from "./ui/avatar";
+import banner from "../../public/banner2.jpeg";
 
 const Navbar = () => {
     const [current, setCurrent] = useState("homepage");
@@ -131,7 +134,7 @@ const Navbar = () => {
                         <AvatarImage src="https://avatars.githubusercontent.com/u/110021464?v=4" />
                         <AvatarFallback>ST</AvatarFallback>
                     </Avatar>
-                    
+
                     {/* <ThemeSwitch /> */}
                     <Link
                         prefetch={true}
@@ -159,6 +162,71 @@ const Navbar = () => {
                     </Link>
                 </div>
             </Card>
+            <Card className="flex p-4 w-full lg:hidden justify-between">
+                <Sheet>
+                    <SheetTrigger>
+                        <Button
+                            variant="outline"
+                            className="rounded-xl w-fit group">
+                            <Menu
+                                size={20}
+                                strokeWidth={1.5}
+                                className="group-hover:hidden "
+                            />
+                            <X
+                                size={20}
+                                strokeWidth={1.5}
+                                className="hidden group-hover:block "
+                            />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left">
+                        <SheetHeader>
+                            <SheetTitle>
+                                <Image
+                                    src={banner}
+                                    width={500}
+                                    height={500}
+                                    alt=""
+                                    className="w-[100%] h-24 object-cover rounded-md"
+                                />
+                            </SheetTitle>
+                            <SheetDescription className="border border-gray-200 shadow-sm my-2 rounded-lg p-2">
+                                {links.map((ele) => (
+                                    <NavItem
+                                        key={ele.id}
+                                        id={ele.id}
+                                        title={ele.title}
+                                        icon={ele.icon}
+                                        current={current}
+                                        onClick={handleClick}
+                                    />
+                                ))}
+                            </SheetDescription>
+                        </SheetHeader>
+                    </SheetContent>
+                </Sheet>
+
+                <Link
+                    target="_blank"
+                    prefetch={true}
+                    href="https://drive.google.com/uc?export=download&id=173kc0AW6miCrWOsqeYN3ad348otgyA13">
+                    <Button
+                        disabled={isDownloading}
+                        onClick={handleView}
+                        className="rounded-xl shadow-lg">
+                        {isDownloading ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                            <ArrowDownCircle
+                                className="h-5 w-5 text-white animate-pulse"
+                                size={20}
+                                strokeWidth={1.5}
+                            />
+                        )}
+                    </Button>
+                </Link>
+            </Card>
         </div>
     );
 };
@@ -171,13 +239,13 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
 
     return (
         <span
-            className={`flex items-center px-4 cursor-pointer rounded-md transition-all ${
+            className={`flex items-center md:px-4 px-4 py-2 mb-2 md:mb-0 cursor-pointer rounded-md transition-all duration-75 animate-out ${
                 isActive
                     ? "bg-black dark:bg-white text-white shadow-lg"
                     : "hover:bg-gray-200"
             }`}
             onClick={handleClick}>
-            <span className="mr-2">{title}</span>
+            <span className="mr-2 hidden md:inline-block">{title}</span>
             {icon === "Home" ? (
                 <Home size={18} strokeWidth={1.5} />
             ) : icon === "User" ? (
@@ -193,117 +261,7 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
             ) : icon === "BadgeInfo" ? (
                 <BadgeInfo size={18} strokeWidth={1.5} />
             ) : null}
+            <span className="ml-2 inline-block md:hidden">{title}</span>
         </span>
     );
 });
-
-{
-    /* <Card className="flex p-4 w-full lg:hidden justify-between">
-    <Sheet>
-        <SheetTrigger>
-            <Button variant="outline" className="rounded-xl w-fit">
-                <Menu size={20} strokeWidth={1.5} />
-            </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-            <SheetHeader>
-                <SheetTitle>
-                    <Image
-                                    src="/public/images/banner.png"
-                                    width={500}
-                                    height={500}
-                                    alt=""
-                                />
-                </SheetTitle>
-
-                <SheetDescription>
-                    <Separator className="my-4" />
-                    {links.map((link, index) => (
-                        <Link
-                            key={index}
-                            href={link.href}
-                            className={`flex items-center mb-2  p-4  rounded-xl animate-out transition-all  ${
-                                link.isActive
-                                    ? "bg-black text-white p-4 rounded-xl transition-all shadow-lg"
-                                    : "hover:bg-gray-200"
-                            }`}
-                            onTap={() => toggleActiveLink(index)}>
-                            {(() => {
-                                switch (link.icon) {
-                                    case "Home":
-                                        return (
-                                            <Home size={18} strokeWidth={1.5} />
-                                        );
-                                    case "User":
-                                        return (
-                                            <User size={18} strokeWidth={1.5} />
-                                        );
-                                    case "FolderGit2":
-                                        return (
-                                            <FolderGit2
-                                                size={18}
-                                                strokeWidth={1.5}
-                                            />
-                                        );
-                                    case "Github":
-                                        return (
-                                            <Github
-                                                size={18}
-                                                strokeWidth={1.5}
-                                            />
-                                        );
-                                    case "Puzzle":
-                                        return (
-                                            <Puzzle
-                                                size={18}
-                                                strokeWidth={1.5}
-                                            />
-                                        );
-                                    case "LampDesk":
-                                        return (
-                                            <LampDesk
-                                                size={18}
-                                                strokeWidth={1.5}
-                                            />
-                                        );
-                                    case "BadgeInfo":
-                                        return (
-                                            <BadgeInfo
-                                                size={18}
-                                                strokeWidth={1.5}
-                                            />
-                                        );
-                                    default:
-                                        return null;
-                                }
-                            })()}
-                            <span className="ml-2">{link.title}</span>
-                        </Link>
-                    ))}
-                </SheetDescription>
-            </SheetHeader>
-        </SheetContent>
-    </Sheet>
-
-    <Link
-        target="_blank"
-        prefetch={true}
-        href="https://drive.google.com/uc?export=download&id=173kc0AW6miCrWOsqeYN3ad348otgyA13"
-    >
-        <Button
-            disabled={isDownloading}
-            onClick={handleView}
-            className="rounded-xl shadow-lg">
-            {isDownloading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-                <ArrowDownCircle
-                    className="h-5 w-5 text-white animate-pulse"
-                    size={20}
-                    strokeWidth={1.5}
-                />
-            )}
-        </Button>
-    </Link>
-</Card>; */
-}

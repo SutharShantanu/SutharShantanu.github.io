@@ -17,7 +17,6 @@ import {
 import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
 
-
 const Contact = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -105,19 +104,26 @@ const Contact = () => {
                 },
                 body: JSON.stringify(formData),
             });
-            if (response) {
-                const data = await response.json();
-                console.log(data);
-                // toast({
-                //     title: "Message sent successfully!",
-                // });
+            if (response.ok) {
+                toast.success("Message sent successfully.", {
+                    description: new Date().toLocaleString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        timeZone: "UTC",
+                    }),
+                });
+            } else {
+                const error = await response.text();
+                toast.error("Failed to send message:", error);
             }
         } catch (error) {
-            console.log(error);
-            // toast({
-            //     variant: "Error occurred",
-            //     title: "An error occurred while sending your message. Please try again later.",
-            // });
+            toast.error("An error occurred:", {
+                description: `${error.message}`,
+            });
         } finally {
             setIsLoading(false);
         }
