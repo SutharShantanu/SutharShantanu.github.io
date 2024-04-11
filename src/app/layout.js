@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
                         disableTransitionOnChange>
                         <Navbar />
                         {children}
-                        <Footer />
+                        {/* <Footer /> */}
                         <SpeedInsights />
                         <Analytics />
                         <Toaster
