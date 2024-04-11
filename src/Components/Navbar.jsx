@@ -18,6 +18,9 @@ import {
 } from "lucide-react";
 import {
     Sheet,
+    SheetClose,
+    SheetFooter,
+    SheetOverlay,
     SheetContent,
     SheetDescription,
     SheetHeader,
@@ -164,7 +167,7 @@ const Navbar = () => {
             </Card>
             <Card className="flex p-4 w-full lg:hidden justify-between">
                 <Sheet>
-                    <SheetTrigger>
+                    <SheetTrigger asChild>
                         <Button
                             variant="outline"
                             className="rounded-xl w-fit group">
@@ -204,6 +207,9 @@ const Navbar = () => {
                                 ))}
                             </SheetDescription>
                         </SheetHeader>
+                        <SheetFooter>
+                            <SheetClose asChild></SheetClose>
+                        </SheetFooter>
                     </SheetContent>
                 </Sheet>
 
