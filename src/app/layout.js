@@ -3,13 +3,13 @@
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 import { ChakraProvider } from "@chakra-ui/react";
-import { ThemeProvider } from "@/Components/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
 import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
+import Provider from "@/Components/Provider";
 
 // export const metadata = {
 //     title: "Create Next App",
@@ -18,17 +18,13 @@ import Footer from "@/Components/Footer";
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
                 <ChakraProvider>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange>
+                    <Provider>
                         <Navbar />
                         {children}
-                        {/* <Footer /> */}
+                        <Footer />
                         <SpeedInsights />
                         <Analytics />
                         <Toaster
@@ -36,7 +32,7 @@ export default function RootLayout({ children }) {
                             richColors
                             closeButton
                         />
-                    </ThemeProvider>
+                    </Provider>
                 </ChakraProvider>
             </body>
         </html>
