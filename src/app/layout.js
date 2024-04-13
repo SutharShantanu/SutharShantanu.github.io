@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
-import Provider from "@/Components/Provider";
+import { Provider } from "@/Components/Provider";
 
 // export const metadata = {
 //     title: "Create Next App",
@@ -20,7 +20,6 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
-                <ChakraProvider>
                     <Provider>
                         <Navbar />
                         {children}
@@ -33,7 +32,6 @@ export default function RootLayout({ children }) {
                             closeButton
                         />
                     </Provider>
-                </ChakraProvider>
             </body>
         </html>
     );

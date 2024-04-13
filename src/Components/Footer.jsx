@@ -17,7 +17,7 @@ const Footer = () => {
     return (
         <div
             id="footer"
-            className="border border-gray-200 dark:bg-black w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-gray-200 dark:border-gray-700 dark:bg-gray-950 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="flex gap-4 items-center justify-between box-border">
                 <span className="flex justify-between items-center hover:shadow-sm rounded-2xl cursor-pointer border hover:border-gray-200 dark:border-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white px-2 py-1 transition-all duration-75 ">
                     <History size={20} strokeWidth={1.75} className="mr-1" />
