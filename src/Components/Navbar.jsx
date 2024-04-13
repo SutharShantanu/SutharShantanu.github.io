@@ -3,11 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "./ui/tooltip";
+import {
     Home,
     User,
     FolderGit2,
     Github,
-    Code2,
     BadgeInfo,
     Loader2,
     ArrowDownCircle,
@@ -20,7 +25,6 @@ import {
     Sheet,
     SheetClose,
     SheetFooter,
-    SheetOverlay,
     SheetContent,
     SheetDescription,
     SheetHeader,
@@ -29,21 +33,11 @@ import {
 } from "./ui/sheet";
 import { Card } from "./ui/card";
 import { useEffect, useState } from "react";
-import { Avatar } from "@nextui-org/react";
 import { memo } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { Separator } from "./ui/separator";
-import { AvatarFallback, AvatarImage } from "./ui/avatar";
-
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "./ui/tooltip";
 import ThemeSwitch from "./Theme";
-import banner from "../../public/banner2.jpeg";
+import banner from "../../public/image-3.png";
 
 const Navbar = () => {
     const [current, setCurrent] = useState("homepage");
@@ -133,12 +127,7 @@ const Navbar = () => {
                     ))}
                 </div>
                 <div className="flex flex-row space-x-4">
-                    <Avatar>
-                        <AvatarImage src="https://avatars.githubusercontent.com/u/110021464?v=4" />
-                        <AvatarFallback>ST</AvatarFallback>
-                    </Avatar>
-
-                    {/* <ThemeSwitch /> */}
+                    <ThemeSwitch />
                     <Link
                         prefetch={true}
                         href="https://drive.google.com/uc?export=download&id=173kc0AW6miCrWOsqeYN3ad348otgyA13">
@@ -155,7 +144,7 @@ const Navbar = () => {
                                 <div className="flex ">
                                     <span>Download Resume &nbsp;</span>
                                     <ArrowDownCircle
-                                        className="mr-2 h-5 w-5 text-white"
+                                        className="h-5 w-5 text-white"
                                         size={20}
                                         strokeWidth={1.5}
                                     />
@@ -170,7 +159,8 @@ const Navbar = () => {
                     <SheetTrigger asChild>
                         <Button
                             variant="outline"
-                            className="rounded-xl w-fit group">
+                            size="icon"
+                            className="rounded-full group shadow-sm">
                             <Menu
                                 size={20}
                                 strokeWidth={1.5}
@@ -191,7 +181,7 @@ const Navbar = () => {
                                     width={500}
                                     height={500}
                                     alt=""
-                                    className="w-[100%] h-24 object-cover rounded-md"
+                                    className="w-[100%] max-h-24 object-fill rounded-md"
                                 />
                             </SheetTitle>
                             <SheetDescription className="border border-gray-200 shadow-sm my-2 rounded-lg p-2">
@@ -208,7 +198,9 @@ const Navbar = () => {
                             </SheetDescription>
                         </SheetHeader>
                         <SheetFooter>
-                            <SheetClose asChild></SheetClose>
+                            <SheetClose asChild>
+                                2024 Shantanu, Inc. All rights reserved.
+                            </SheetClose>
                         </SheetFooter>
                     </SheetContent>
                 </Sheet>
@@ -220,7 +212,8 @@ const Navbar = () => {
                     <Button
                         disabled={isDownloading}
                         onClick={handleView}
-                        className="rounded-xl shadow-lg">
+                        size="icon"
+                        className="rounded-full shadow-lg">
                         {isDownloading ? (
                             <Loader2 className="h-5 w-5 animate-spin" />
                         ) : (
@@ -245,7 +238,7 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
 
     return (
         <span
-            className={`flex items-center md:px-4 px-4 py-2 mb-2 md:mb-0 cursor-pointer rounded-md transition-all duration-75 animate-out ${
+            className={`flex items-center md:px-4 px-4 py-3 mb-2 md:mb-0 cursor-pointer rounded-md transition-all duration-75 animate-out ${
                 isActive
                     ? "bg-black dark:bg-white text-white shadow-lg"
                     : "hover:bg-gray-200"
