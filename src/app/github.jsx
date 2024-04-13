@@ -22,13 +22,14 @@ import RepoCard from "@/Components/RepoCard";
 const Github = () => {
     const [loading, setLoading] = useState("Loading...");
 
-    const githubData = GithubFetch();
-    const { userData, repoData } = githubData
-        ? githubData
-        : { userData: null, repoData: null };
+    const { userData, repoData } = GithubFetch() ?? {
+        userData: null,
+        repoData: null,
+    };
+    const Repos = repoData;
+
 
     const OPTIONS = { dragFree: true, loop: true };
-    const Repos = repoData;
 
     const selectLast12Months = (contributions) => {
         const today = new Date();

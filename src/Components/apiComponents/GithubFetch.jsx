@@ -1,13 +1,13 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 const GithubFetch = () => {
     const username = process.env.NEXT_PUBLIC_Username;
     const token = process.env.NEXT_PUBLIC_Token;
+    const repoName = process.env.NEXT_PUBLIC_REPONAME;
     const [userData, setUserData] = useState(null);
     const [repoData, setRepoData] = useState(null);
+    const [specificRepoData, setSpecificRepoData] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -33,6 +33,18 @@ const GithubFetch = () => {
                     }
                 );
                 setRepoData(repoResponse.data);
+
+                if (repoName) {
+                    const specificRepoResponse = await axios.get(
+                        `https://api.github.com/repos/${username}/${repoName}`,
+                        {
+                            headers: {
+                                Authorization: `token ${token}`,
+                            },
+                        }
+                    );
+                    setSpecificRepoData(specificRepoResponse.data);
+                }
             } catch (error) {
                 setError(error.message);
             }
@@ -41,9 +53,11 @@ const GithubFetch = () => {
         if ((username, token)) {
             fetchData();
         }
-    }, [username, token]);
+    }, [username, token, repoName]);
 
-    return userData && repoData ? { userData, repoData } : error;
+    return userData && repoData && specificRepoData
+        ? { userData, repoData, specificRepoData }
+        : error;
 };
 
 export default GithubFetch;
