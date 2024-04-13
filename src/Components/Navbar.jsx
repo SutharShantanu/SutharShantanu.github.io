@@ -113,7 +113,7 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-0 backdrop-blur-sm z-50 w-full">
-            <Card className="hidden lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
+            <Card className="hidden border dark:border-gray-700 lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
                 <div className="flex space-x-4 ">
                     {links.map((ele) => (
                         <NavItem
@@ -134,7 +134,7 @@ const Navbar = () => {
                         <Button
                             disabled={isDownloading}
                             onClick={handleView}
-                            className="rounded-md shadow-lg ">
+                            className="rounded-md shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
                             {isDownloading ? (
                                 <div className="flex">
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -154,13 +154,13 @@ const Navbar = () => {
                     </Link>
                 </div>
             </Card>
-            <Card className="flex p-4 w-full lg:hidden justify-between">
+            <Card className="flex items-center p-4 w-full lg:hidden justify-between">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button
                             variant="outline"
                             size="icon"
-                            className="rounded-full group shadow-sm">
+                            className="rounded-full group shadow-sm hover:shadow-none border hover:border-gray-200 dark:border-gray-700">
                             <Menu
                                 size={20}
                                 strokeWidth={1.5}
@@ -173,7 +173,9 @@ const Navbar = () => {
                             />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left">
+                    <SheetContent
+                        side="left"
+                        className="border dark:border-gray-700">
                         <SheetHeader>
                             <SheetTitle>
                                 <Image
@@ -181,10 +183,10 @@ const Navbar = () => {
                                     width={500}
                                     height={500}
                                     alt=""
-                                    className="w-[100%] max-h-24 object-fill rounded-md"
+                                    className="w-[100%] max-h-24 object-fill border rounded-md dark:border-gray-700 shadow-sm"
                                 />
                             </SheetTitle>
-                            <SheetDescription className="border border-gray-200 shadow-sm my-2 rounded-lg p-2">
+                            <SheetDescription className="border border-gray-200 dark:border-gray-700 shadow-sm my-2 rounded-lg p-2">
                                 {links.map((ele) => (
                                     <NavItem
                                         key={ele.id}
@@ -197,34 +199,34 @@ const Navbar = () => {
                                 ))}
                             </SheetDescription>
                         </SheetHeader>
-                        <SheetFooter>
-                            <SheetClose asChild>
-                                2024 Shantanu, Inc. All rights reserved.
-                            </SheetClose>
+                        <SheetFooter className="mt-4 text-xs text-center dark:text-gray-500">
+                            2024 Shantanu, Inc. All rights reserved.
                         </SheetFooter>
                     </SheetContent>
                 </Sheet>
-
-                <Link
-                    target="_blank"
-                    prefetch={true}
-                    href="https://drive.google.com/uc?export=download&id=173kc0AW6miCrWOsqeYN3ad348otgyA13">
-                    <Button
-                        disabled={isDownloading}
-                        onClick={handleView}
-                        size="icon"
-                        className="rounded-full shadow-lg">
-                        {isDownloading ? (
-                            <Loader2 className="h-5 w-5 animate-spin" />
-                        ) : (
-                            <ArrowDownCircle
-                                className="h-5 w-5 text-white animate-pulse"
-                                size={20}
-                                strokeWidth={1.5}
-                            />
-                        )}
-                    </Button>
-                </Link>
+                <div className="flex item-center justify-between space-x-1 border dark:border-gray-700 p-1 bg-gray-100 dark:bg-gray-800 rounded-full">
+                    <ThemeSwitch />
+                    <Link
+                        prefetch={true}
+                        href="https://drive.google.com/uc?export=download&id=173kc0AW6miCrWOsqeYN3ad348otgyA13">
+                        <Button
+                            disabled={isDownloading}
+                            onClick={handleView}
+                            size="icon"
+                            className="rounded-full shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-950 dark:hover:bg-gray-700 dark:text-white
+                        ">
+                            {isDownloading ? (
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                            ) : (
+                                <ArrowDownCircle
+                                    className="h-5 w-5 text-white animate-pulse"
+                                    size={20}
+                                    strokeWidth={1.5}
+                                />
+                            )}
+                        </Button>
+                    </Link>
+                </div>
             </Card>
         </div>
     );
@@ -240,8 +242,8 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
         <span
             className={`flex items-center md:px-4 px-4 py-3 mb-2 md:mb-0 cursor-pointer rounded-md transition-all duration-75 animate-out ${
                 isActive
-                    ? "bg-black dark:bg-white text-white shadow-lg"
-                    : "hover:bg-gray-200"
+                    ? "bg-black dark:bg-gray-700 text-white  dark:text-gray-200 shadow-lg"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-900"
             }`}
             onClick={handleClick}>
             <span className="mr-2 hidden md:inline-block">{title}</span>
