@@ -53,7 +53,7 @@ const SheetContent = React.forwardRef(
                 {...props}>
                 {children}
                 <SheetPrimitive.Close className="absolute right-1 top-2 rounded-sm transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
-                    <X className="h-8 w-8 border bg-white border-gray-200 shadow-sm rounded-full p-1" />
+                    <X className="h-8 w-8 border border-gray-200 dark:border-gray-700 bg-gray-100 hover:bg-gray-200  dark:bg-gray-800 dark:hover:bg-gray-700  shadow-sm rounded-full p-1" />
                     <span className="sr-only">Close</span>
                 </SheetPrimitive.Close>
             </SheetPrimitive.Content>
@@ -76,7 +76,7 @@ SheetHeader.displayName = "SheetHeader";
 const SheetFooter = ({ className, ...props }) => (
     <div
         className={cn(
-            "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+            "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 absolute bottom-8 mx-auto w-fit left-0 right-0",
             className
         )}
         {...props}
