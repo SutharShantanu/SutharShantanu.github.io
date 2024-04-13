@@ -1,35 +1,40 @@
 "use client";
 
 import React from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, SunDim } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 
-const ThemeSwitch = () => {
-    const { theme, setTheme } = useTheme();
+const ThemeSwitcher = () => {
+    const { systemTheme, theme, setTheme } = useTheme();
 
-    const handleTheme = () => {
-        setTheme(theme === "light" ? "dark" : "light");
+    const renderThemeChanger = () => {
+        const currentTheme = theme === "system" ? systemTheme : theme;
+
+        if (currentTheme === "dark") {
+            return (
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setTheme("light")}
+                    className="rounded-full shadow-sm hover:shadow-none border hover:border-gray-200 dark:border-gray-700">
+                    <SunDim className="w-6 h-6 text-yellow-500 animate-in transition-all duration-75" />
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setTheme("dark")}
+                    className="rounded-full shadow-sm hover:shadow-none border hover:border-gray-200 dark:border-gray-700">
+                    <Moon className="w-6 h-6 animate-in transition-all duration-75" />
+                </Button>
+            );
+        }
     };
 
-    return (
-        <Button
-            variant="outline"
-            size="icon"
-            className="rounded-3xl shadow-md hover:shadow-none"
-            onClick={handleTheme}>
-            {theme === "light" ? (
-                <>
-                    <Sun className="h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
-                </>
-            ) : (
-                <>
-                    <Moon className="h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
-                </>
-            )}
-            <span className="sr-only">Toggle theme</span>
-        </Button>
-    );
+    return <>{renderThemeChanger()}</>;
 };
 
-export default ThemeSwitch;
+export default ThemeSwitcher;
