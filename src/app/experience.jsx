@@ -4,25 +4,26 @@ import React from "react";
 import { MoveRight } from "lucide-react";
 import { Building2, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Experience = () => {
     return (
         <section
             id="experience"
-            className="border  border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div
+            className="border border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            <p
                 id="about"
-                className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
+                className="group inline-block text-left text-3xl sm:text-54 w-fit hover:font-bold hover transition-all p-4">
                 Experience
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4"
                     size={40}
                     strokeWidth={2.5}
                 />
-            </div>
+            </p>
             <div className="m-8">
                 <ol class="relative border-s border-neutral-200 dark:border-neutral-700">
-                    <li class="mb-10 ms-8 border border-neutral-200 p-4 rounded-lg group">
+                    <li class="mb-10 ms-8 border border-neutral-700 p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full -start-4 ring-8 ring-white dark:ring-neutral-900 dark:bg-blue-900 ">
                             <svg
                                 class="w-5 h-5 text-yellow-600 dark:text-yellow-300 lucide lucide-circle-dot"
@@ -39,26 +40,26 @@ const Experience = () => {
                                 <circle cx="12" cy="12" r="1" />
                             </svg>
                         </span>
-                        <h3 class="flex items-center mb-1 text-xl font-semibold text-neutral-900 dark:text-white">
+                        <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
                             Technology Operations Associates
-                            <span class="bg-yellow-100 rounded-lg text-yellow-600 text-sm font-medium me-2 px-2.5 py-0.5 border border-yellow-200 dark:bg-yellow-900 dark:text-yellow-300 ms-3">
+                            <span class="bg-yellow-100 rounded-lg w-fit text-yellow-600 text-xs sm:text-sm font-medium  px-2.5 py-0.5 border border-yellow-200 dark:bg-yellow-900 dark:text-yellow-300 my-2">
                                 Oct 2023 - Present
                             </span>
                         </h3>
 
-                        <time class="flex items-center mb-2 text-base font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
+                        <time class="flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
                             Operations & IT Team,
                             <Building2
                                 size={18}
                                 className="mx-2"
                                 strokeWidth={1.75}
                             />
-                            <p className="flex items-center  text-neutral-600 font-semibold">
+                            <p className="flex items-center ">
                                 Infyni
-                                <a
+                                <Link
                                     target="_blank"
                                     href="https://infyni.com"
-                                    className="hover:underline ml-2 transition-all opacity-0 group-hover:opacity-100 ">
+                                    className="underline ml-2 transition-all opacity-100 ">
                                     <motion.span
                                         initial={{ x: -20, opacity: 0 }}
                                         animate={{ x: 0, opacity: 1 }}
@@ -70,10 +71,10 @@ const Experience = () => {
                                             strokeWidth={1.75}
                                         />
                                     </motion.span>
-                                </a>
+                                </Link>
                             </p>
                         </time>
-                        <p class="mb-4 text-lg font-normal text-neutral-500 dark:text-neutral-400">
+                        <p class="mb-4 text-sm sm:text-lg font-normal text-neutral-500 dark:text-neutral-400 ">
                             Get access to over 20+ pages including a dashboard
                             layout, charts, kanban board, calendar, and
                             pre-order E-commerce & Marketing pages.
