@@ -38,7 +38,7 @@ const RepoCard = (props) => {
                             <div
                                 className="pl-1 flex-shrink-0 w-full mx-4"
                                 key={index}>
-                                <div className="shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 rounded-xl text-sm p-4">
+                                <div className="shadow-sm hover:shadow-md transition-all duration-300 border border-neutral-200 rounded-xl text-sm p-4">
                                     <div>
                                         <p className="font-semibold text-2xl ">
                                             {ele.name}
@@ -51,7 +51,7 @@ const RepoCard = (props) => {
                                                 <Languages
                                                     size={18}
                                                     strokeWidth={1.75}
-                                                    className="text-gray-500 mr-2"
+                                                    className="text-neutral-500 mr-2"
                                                 />
                                                 {ele.Languages
                                                     ? ele.language
@@ -61,7 +61,7 @@ const RepoCard = (props) => {
                                                 <GitCommitVertical
                                                     size={18}
                                                     strokeWidth={1.75}
-                                                    className="text-gray-500 mr-2"
+                                                    className="text-neutral-500 mr-2"
                                                 />
                                                 {new Date(
                                                     ele.pushed_at
@@ -82,7 +82,7 @@ const RepoCard = (props) => {
                                                 <GitBranch
                                                     size={18}
                                                     strokeWidth={1.75}
-                                                    className="text-gray-500 mr-2"
+                                                    className="text-neutral-500 mr-2"
                                                 />
                                                 {ele.default_branch}
                                             </p>
@@ -94,7 +94,7 @@ const RepoCard = (props) => {
                                                 <Link2
                                                     size={18}
                                                     strokeWidth={1.75}
-                                                    className="text-gray-500 group-hover:mr-2"
+                                                    className="text-neutral-500 group-hover:mr-2"
                                                 />
                                                 <p className="hidden group-hover:inline transition duration-300">
                                                     Check more
@@ -125,7 +125,7 @@ const RepoCard = (props) => {
                         <DotButton
                             key={index}
                             onClick={() => onDotButtonClick(index)}
-                            className={`border border-gray-200 rounded-full m-2 shadow-sm bg-gray-100 select-none flex items-center justify-center cursor-pointer ${
+                            className={`border border-neutral-200 rounded-full m-2 shadow-sm bg-neutral-100 select-none flex items-center justify-center cursor-pointer ${
                                 index === selectedIndex
                                     ? "border-transparent bg-transparent w-4 h-4 outline outline-[0.8px] outline-offset-4"
                                     : "hover:bg-slate-200 hover:shadow-lg w-6 h-6"

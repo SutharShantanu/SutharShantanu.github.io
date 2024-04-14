@@ -36,7 +36,7 @@ const Skills = () => {
     return (
         <section
             id="skills"
-            className="border border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
                 Skills
                 <MoveRight
@@ -49,7 +49,7 @@ const Skills = () => {
                 <div className="w-[65%]">
                     <div className="w-full h-fit" onChange={handleTabChange}>
                         <div className="w-full">
-                            <div className="flex border border-gray-200 rounded-xl mb-4 p-2 bg-gray-100">
+                            <div className="flex border border-neutral-200 rounded-xl mb-4 p-2 bg-neutral-100">
                                 <button
                                     onClick={() => handleTabChange("all")}
                                     className={`${
@@ -113,8 +113,8 @@ const Skills = () => {
                             disabled={currentPage === 1}
                             className={`${
                                 currentPage === 1
-                                    ? "bg-gray-200 border border-gray-300 text-gray-400 cursor-not-allowed"
-                                    : "bg-gray-200 border border-gray-300 text-gray-700 hover:bg-gray-300 cursor-pointer"
+                                    ? "bg-neutral-200 border border-neutral-300 text-neutral-400 cursor-not-allowed"
+                                    : "bg-neutral-200 border border-neutral-300 text-neutral-700 hover:bg-neutral-300 cursor-pointer"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
                             Previous
                         </button>
@@ -130,9 +130,9 @@ const Skills = () => {
                                 onClick={() => setCurrentPage(index + 1)}
                                 className={`${
                                     currentPage === index + 1
-                                        ? "bg-white border border-gray-400"
-                                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                                } border border-gray-300 py-1 px-3 rounded-xl  transition-all ease-in-out cursor-pointer shadow-sm`}>
+                                        ? "bg-white border border-neutral-400"
+                                        : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
+                                } border border-neutral-300 py-1 px-3 rounded-xl  transition-all ease-in-out cursor-pointer shadow-sm`}>
                                 {index + 1}
                             </button>
                         ))}
@@ -145,8 +145,8 @@ const Skills = () => {
                             className={`${
                                 currentPage ===
                                 Math.ceil(filteredCards.length / skillsPerPage)
-                                    ? "bg-gray-200 border border-gray-300 text-gray-400 cursor-not-allowed"
-                                    : "bg-gray-200 border border-gray-300 text-gray-700 hover:bg-gray-300 cursor-pointer"
+                                    ? "bg-neutral-200 border border-neutral-300 text-neutral-400 cursor-not-allowed"
+                                    : "bg-neutral-200 border border-neutral-300 text-neutral-700 hover:bg-neutral-300 cursor-pointer"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
                             Next
                         </button>

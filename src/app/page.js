@@ -10,8 +10,8 @@ export default function Home() {
     return (
         <div className="scroll-smooth">
             <Homepage />
-            {/* <About />
-            <Experience />
+            <About />
+            {/* <Experience />
             <Skills />
             <Github />
             <Projects />

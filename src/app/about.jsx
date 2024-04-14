@@ -5,7 +5,6 @@ import { TextGenerateEffect } from "@/Components/ui/text-generate-effect";
 import Splines from "@/Components/Splines";
 import { MoveRight } from "lucide-react";
 
-
 const About = () => {
     const words = `I remember when I was preparing for Govt jobs after my graduation, some of my friends were practicing HTML CSS, and some other tech stack. Somehow I became interested too
 
@@ -18,8 +17,8 @@ Besides being a web developer, I enjoy traveling and playing video games. I am o
     return (
         <section
             id="about"
-            className="border  border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
+            className="border min-h-[80vh] w-[90%]  border-neutral-800 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all p-4">
                 About
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4 group-hover:line-through"
@@ -27,11 +26,11 @@ Besides being a web developer, I enjoy traveling and playing video games. I am o
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="flex justify-between">
-                <div className="w-2/6 max-h-[500px]">
+            <div className="flex justify-between flex-col">
+                <div className="w-full md:w-2/6 h-[60vh] md:max-h-[500px] ">
                     <Splines />
                 </div>
-                <h2 className=" w-4/6">
+                <h2 className="p-4 w-full md:w-4/6">
                     <TextGenerateEffect words={words} />
                 </h2>
             </div>

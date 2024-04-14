@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const SkillCard = ({ card }) => {
     return (
-        <div className="p-4 rounded-xl cursor-pointer border border-gray-200 shadow-sm hover:bg-gray-50  transition-all">
+        <div className="p-4 rounded-xl cursor-pointer border border-neutral-200 shadow-sm hover:bg-neutral-50  transition-all">
             <div className="flex justify-between items-center">
                 <span
                     className="inline-block mr-2 border border-green-100

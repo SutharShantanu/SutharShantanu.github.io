@@ -55,7 +55,7 @@ const Github = () => {
     return (
         <section
             id="github"
-            className="border border-gray-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
                 Github
                 <MoveRight
@@ -65,7 +65,7 @@ const Github = () => {
                 />
             </div>
             <div className="mt-4 flex items-start justify-between box-border">
-                <div className="border border-gray-200 rounded-xl w-[33%] p-5 box-border">
+                <div className="border border-neutral-200 rounded-xl w-[33%] p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
@@ -84,10 +84,10 @@ const Github = () => {
                                 <ExternalLink
                                     size={30}
                                     strokeWidth={0.75}
-                                    className="text-gray-600 ml-2 hidden group-hover:inline"
+                                    className="text-neutral-600 ml-2 hidden group-hover:inline"
                                 />
                             </Link>
-                            <div className="flex ml-1 border border-green-200 my-2 w-fit px-2 py-[1.5px] font-medium items-start rounded-lg shadow-sm bg-green-100 hover:bg-gray-100 hover:border-gray-300 duration-300 transition-all">
+                            <div className="flex ml-1 border border-green-200 my-2 w-fit px-2 py-[1.5px] font-medium items-start rounded-lg shadow-sm bg-green-100 hover:bg-neutral-100 hover:border-neutral-300 duration-300 transition-all">
                                 <Image
                                     className="w-4 h-4 mr-1"
                                     width={100}
@@ -103,26 +103,26 @@ const Github = () => {
                     </div>
                     <Separator className="my-5" />
                     <div>
-                        <p className="flex items-center text-gray-600 font-light">
+                        <p className="flex items-center text-neutral-600 font-light">
                             <CircleUser
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-gray-400 mr-2"
+                                className="text-neutral-400 mr-2"
                             />
                             {userData ? userData.bio : loading}
                         </p>
-                        <p className="flex mt-2 items-center text-gray-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-600 font-light">
                             <Users
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-gray-400 mr-2"
+                                className="text-neutral-400 mr-2"
                             />
                             <b className="font-medium">
                                 {userData ? userData.followers : loading}&nbsp;
                             </b>
                             followers
                             <Separator
-                                className="h-5 bg-gray-300 mx-2"
+                                className="h-5 bg-neutral-300 mx-2"
                                 orientation="vertical"
                             />
                             <b className="font-medium">
@@ -130,11 +130,11 @@ const Github = () => {
                             </b>
                             &nbsp;following
                         </p>
-                        <p className="flex mt-2 items-center text-gray-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-600 font-light">
                             <MapPin
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-gray-400 mr-2"
+                                className="text-neutral-400 mr-2"
                             />
                             <Link
                                 href="https://maps.app.goo.gl/ZXzT7SteAp3m8J867"
@@ -147,11 +147,11 @@ const Github = () => {
                                 </b>
                             </Link>
                         </p>
-                        <p className="flex mt-2 items-center text-gray-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-600 font-light">
                             <Mail
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-gray-400 mr-2"
+                                className="text-neutral-400 mr-2"
                             />
                             <Link
                                 href={`mailto:${
@@ -164,15 +164,15 @@ const Github = () => {
                                 <ExternalLink
                                     size={18}
                                     strokeWidth={1.25}
-                                    className="text-gray-600 ml-2 hidden group-hover:block"
+                                    className="text-neutral-600 ml-2 hidden group-hover:block"
                                 />
                             </Link>
                         </p>
-                        <p className="flex mt-2 items-center text-gray-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-600 font-light">
                             <LinkIcon
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-gray-400 mr-2"
+                                className="text-neutral-400 mr-2"
                             />
                             <Link
                                 href="https://linktr.ee/shantanu_suthar"
@@ -183,7 +183,7 @@ const Github = () => {
                                 <ExternalLink
                                     size={18}
                                     strokeWidth={1.25}
-                                    className="text-gray-600 ml-2 hidden group-hover:block"
+                                    className="text-neutral-600 ml-2 hidden group-hover:block"
                                 />
                             </Link>
                         </p>
@@ -223,7 +223,7 @@ const Github = () => {
                     <div>
                         <p>Organizations</p>
                         <div className="flex items-center justify-between w-fit mt-2 gap-3">
-                            <div className="border border-gray-200 rounded-full px-3 py-1 shadow-sm hover:shadow-md">
+                            <div className="border border-neutral-200 rounded-full px-3 py-1 shadow-sm hover:shadow-md">
                                 <Image
                                     src="https://infyni-prod-upgrade.s3.amazonaws.com/static/assets/images/logos/logo.png"
                                     alt="infyni logo"
@@ -231,7 +231,7 @@ const Github = () => {
                                     height={40}
                                 />
                             </div>
-                            <div className="border border-gray-200 rounded-full px-1 py-0 shadow-sm hover:shadow-md">
+                            <div className="border border-neutral-200 rounded-full px-1 py-0 shadow-sm hover:shadow-md">
                                 <Image
                                     src="https://masai-website-images.s3.ap-south-1.amazonaws.com/logo.png"
                                     alt="masai logo"
@@ -242,13 +242,13 @@ const Github = () => {
                         </div>
                     </div>
                 </div>
-                <div className="border border-gray-200 rounded-xl w-[65%] p-5">
+                <div className="border border-neutral-200 rounded-xl w-[65%] p-5">
                     <RepoCard slides={Repos} options={OPTIONS} />
                     <Separator className="my-5" />
                     <p className="mt-4 text-4xl font-extralight">
                         Github Calender
                     </p>
-                    <div className="shadow-sm rounded-xl border border-gray-200 p-4 mt-4">
+                    <div className="shadow-sm rounded-xl border border-neutral-200 p-4 mt-4">
                         <GitHubCalendar
                             transformData={selectLast12Months}
                             username="SutharShantanu"
@@ -261,7 +261,7 @@ const Github = () => {
                     </div>
                 </div>
             </div>
-            {/* <div className="flex items-center justify-between mt-4 shadow-sm border border-gray-200 h-64 space-x-4 rounded-xl p-5">
+            {/* <div className="flex items-center justify-between mt-4 shadow-sm border border-neutral-200 h-64 space-x-4 rounded-xl p-5">
                 <img
                     src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Stats"

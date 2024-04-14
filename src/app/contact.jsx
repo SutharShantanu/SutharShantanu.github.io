@@ -132,7 +132,7 @@ const Contact = () => {
     return (
         <section
             id="contact"
-            className="border min-h-[87vh] border-gray-200 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border min-h-[87vh] border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
                 Contact
                 <MoveRight
@@ -149,7 +149,7 @@ const Contact = () => {
                             <Mailbox
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-gray-100 mr-6"
+                                className="text-neutral-100 mr-6"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px]">
@@ -169,7 +169,7 @@ const Contact = () => {
                             <Phone
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-gray-100 mr-6"
+                                className="text-neutral-100 mr-6"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px]">
@@ -186,7 +186,7 @@ const Contact = () => {
                             <Map
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-gray-100 mr-6"
+                                className="text-neutral-100 mr-6"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px]">
@@ -207,7 +207,7 @@ const Contact = () => {
                             <Clock
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-gray-100 mr-6"
+                                className="text-neutral-100 mr-6"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px]">
@@ -220,7 +220,7 @@ const Contact = () => {
                     </div>
                 </div>
 
-                <div className="w-2/4 rounded-xl border h-[430px] border-gray-200 p-4">
+                <div className="w-2/4 rounded-xl border h-[430px] border-neutral-200 p-4">
                     <h2 className="text-4xl font-extralight">Get in touch</h2>
                     <Separator className="my-5" />
                     <form id="contact-form" onSubmit={handleSubmit}>
@@ -231,7 +231,7 @@ const Contact = () => {
                                 <Type
                                     size={24}
                                     strokeWidth={1.75}
-                                    className="text-gray-600"
+                                    className="text-neutral-600"
                                 />
                             </label>
                             <Separator
@@ -247,7 +247,7 @@ const Contact = () => {
                                     placeholder="Full Name"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    className="w-full px-2 py-[4px] rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400 ring-offset-2 focus:shadow-md hover:shadow-sm hover:bg-gray-100 transition-all duration-150 focus:bg-gray-50 "
+                                    className="w-full px-2 py-[4px] rounded-md border border-neutral-300 focus:outline-none focus:ring-1 focus:ring-neutral-400 ring-offset-2 focus:shadow-md hover:shadow-sm hover:bg-neutral-100 transition-all duration-150 focus:bg-neutral-50 "
                                     required
                                 />
                                 {formData.error && formData.error.fullName && (
@@ -264,7 +264,7 @@ const Contact = () => {
                                 <AtSign
                                     size={24}
                                     strokeWidth={1.75}
-                                    className="text-gray-600"
+                                    className="text-neutral-600"
                                 />
                             </label>
                             <Separator
@@ -280,7 +280,7 @@ const Contact = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="example@mail.com"
-                                    className="w-full px-2 py-[4px] rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400 ring-offset-2 focus:shadow-md hover:shadow-sm hover:bg-gray-100 transition-all duration-150 focus:bg-gray-50"
+                                    className="w-full px-2 py-[4px] rounded-md border border-neutral-300 focus:outline-none focus:ring-1 focus:ring-neutral-400 ring-offset-2 focus:shadow-md hover:shadow-sm hover:bg-neutral-100 transition-all duration-150 focus:bg-neutral-50"
                                     required
                                 />
                                 {formData.error && formData.error.email && (
@@ -297,7 +297,7 @@ const Contact = () => {
                                 <MessageSquareText
                                     size={24}
                                     strokeWidth={1.75}
-                                    className="text-gray-600 mr-1"
+                                    className="text-neutral-600 mr-1"
                                 />
                             </label>
                             <Separator
@@ -313,7 +313,7 @@ const Contact = () => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     placeholder="Please write your message here..."
-                                    className="w-full px-2 py-[4px] h-24 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400 ring-offset-2 focus:shadow-md hover:shadow-sm hover:bg-gray-100 transition-all duration-150 focus:bg-gray-50 resize-none"
+                                    className="w-full px-2 py-[4px] h-24 rounded-md border border-neutral-300 focus:outline-none focus:ring-1 focus:ring-neutral-400 ring-offset-2 focus:shadow-md hover:shadow-sm hover:bg-neutral-100 transition-all duration-150 focus:bg-neutral-50 resize-none"
                                     required
                                 />
                                 {formData.error && formData.error.message && (
