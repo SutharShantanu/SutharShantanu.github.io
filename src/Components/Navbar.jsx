@@ -113,7 +113,7 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-0 backdrop-blur-sm z-50 w-full">
-            <Card className="hidden border dark:border-gray-700 lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
+            <Card className="hidden border dark:bg-neutral-900 dark:border-neutral-800 lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
                 <div className="flex space-x-4 ">
                     {links.map((ele) => (
                         <NavItem
@@ -126,7 +126,7 @@ const Navbar = () => {
                         />
                     ))}
                 </div>
-                <div className="flex flex-row space-x-4">
+                <div className="flex items-center flex-row space-x-4">
                     <ThemeSwitch />
                     <Link
                         prefetch={true}
@@ -134,7 +134,7 @@ const Navbar = () => {
                         <Button
                             disabled={isDownloading}
                             onClick={handleView}
-                            className="rounded-md shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+                            className="rounded-md shadow-lg border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white">
                             {isDownloading ? (
                                 <div className="flex">
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -154,13 +154,14 @@ const Navbar = () => {
                     </Link>
                 </div>
             </Card>
-            <Card className="flex items-center p-4 w-full lg:hidden justify-between">
+            <Card className="flex items-center p-4 w-full lg:hidden justify-between dark:bg-neutral-900 dark:border-neutral-800">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button
                             variant="outline"
                             size="icon"
-                            className="rounded-full group shadow-sm hover:shadow-none border hover:border-gray-200 dark:border-gray-700">
+                            className="rounded-full group shadow-sm hover:shadow-none border hover:border-neutral-200 dark:border-neutral-700
+                            dark:hover:bg-neutral-700 dark:bg-neutral-800">
                             <Menu
                                 size={20}
                                 strokeWidth={1.5}
@@ -175,7 +176,7 @@ const Navbar = () => {
                     </SheetTrigger>
                     <SheetContent
                         side="left"
-                        className="border dark:border-gray-700">
+                        className="border dark:border-neutral-700 dark:bg-neutral-900">
                         <SheetHeader>
                             <SheetTitle>
                                 <Image
@@ -183,10 +184,10 @@ const Navbar = () => {
                                     width={500}
                                     height={500}
                                     alt=""
-                                    className="w-[100%] max-h-24 object-fill border rounded-md dark:border-gray-700 shadow-sm"
+                                    className="w-[100%] max-h-24 object-fill border rounded-md dark:border-neutral-700 shadow-sm"
                                 />
                             </SheetTitle>
-                            <SheetDescription className="border border-gray-200 dark:border-gray-700 shadow-sm my-2 rounded-lg p-2">
+                            <SheetDescription className="space-y-2 border border-neutral-200 dark:border-neutral-700 shadow-sm my-2 rounded-lg p-2 dark:bg-neutral-800">
                                 {links.map((ele) => (
                                     <NavItem
                                         key={ele.id}
@@ -199,12 +200,12 @@ const Navbar = () => {
                                 ))}
                             </SheetDescription>
                         </SheetHeader>
-                        <SheetFooter className="mt-4 text-xs text-center dark:text-gray-500">
+                        <SheetFooter className="mt-4 text-xs text-center dark:text-neutral-500">
                             2024 Shantanu, Inc. All rights reserved.
                         </SheetFooter>
                     </SheetContent>
                 </Sheet>
-                <div className="flex item-center justify-between space-x-1 border dark:border-gray-700 p-1 bg-gray-100 dark:bg-gray-800 rounded-full">
+                <div className="flex item-center justify-between space-x-1 border dark:border-neutral-700 p-1 bg-neutral-100 dark:bg-neutral-800 rounded-full">
                     <ThemeSwitch />
                     <Link
                         prefetch={true}
@@ -213,7 +214,7 @@ const Navbar = () => {
                             disabled={isDownloading}
                             onClick={handleView}
                             size="icon"
-                            className="rounded-full shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-950 dark:hover:bg-gray-700 dark:text-white
+                            className="rounded-full shadow-lg border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-950 dark:hover:bg-neutral-700 dark:text-white
                         ">
                             {isDownloading ? (
                                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -240,10 +241,10 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
 
     return (
         <span
-            className={`flex items-center md:px-4 px-4 py-3 mb-2 md:mb-0 cursor-pointer rounded-md transition-all duration-75 animate-out ${
+            className={`flex items-center md:px-4 px-4 py-3 cursor-pointer rounded-md transition-all duration-75 animate-out ${
                 isActive
-                    ? "bg-black dark:bg-gray-700 text-white  dark:text-gray-200 shadow-lg"
-                    : "hover:bg-gray-200 dark:hover:bg-gray-900"
+                    ? "bg-black dark:bg-neutral-700 shadow-lg dark:text-white"
+                    : "hover:bg-neutral-200 dark:hover:bg-neutral-900 dark:text-slate-300"
             }`}
             onClick={handleClick}>
             <span className="mr-2 hidden md:inline-block">{title}</span>
