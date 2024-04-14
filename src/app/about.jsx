@@ -17,20 +17,20 @@ Besides being a web developer, I enjoy traveling and playing video games. I am o
     return (
         <section
             id="about"
-            className="border min-h-[80vh] w-[90%]  border-neutral-800 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border min-h-[80vh] w-[90%] border-neutral-800 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            <p className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 About
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4 group-hover:line-through"
                     size={40}
                     strokeWidth={2.5}
                 />
-            </div>
-            <div className="flex justify-between flex-col">
-                <div className="w-full md:w-2/6 h-[60vh] md:max-h-[500px] ">
+            </p>
+            <div className="flex justify-between items-start flex-col md:flex-row">
+                <div className="w-full h-[200px] md:w-2/6 md:h-[55vh] ">
                     <Splines />
                 </div>
-                <h2 className="p-4 w-full md:w-4/6">
+                <h2 className="p-4 sm:p-0 w-full md:w-4/6">
                     <TextGenerateEffect words={words} />
                 </h2>
             </div>

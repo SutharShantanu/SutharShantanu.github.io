@@ -11,8 +11,8 @@ export default function Home() {
         <div className="scroll-smooth">
             <Homepage />
             <About />
-            {/* <Experience />
-            <Skills />
+            <Experience />
+            {/* <Skills />
             <Github />
             <Projects />
             <Contact /> */}

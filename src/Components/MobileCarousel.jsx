@@ -22,10 +22,10 @@ const MobileCarousel = ({ slides, options }) => {
                     {slides &&
                         slides.map((ele, index) => (
                             <div
-                                className="pl-1 flex-shrink-0 w-full mx-4"
+                                className="flex-shrink-0 w-full mx-4"
                                 key={index}>
                                 <Image
-                                    className="w-[90%] mx-auto h-5/6 object-cover object-top rounded-md border border-neutral-200"
+                                    className="w-[90%] mx-auto h-[100%] object-cover object-top rounded-md border border-neutral-700"
                                     src={ele.image}
                                     alt=""
                                 />
