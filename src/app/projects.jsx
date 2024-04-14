@@ -41,7 +41,7 @@ const Projects = () => {
     return (
         <section
             id="projects"
-            className="border  border-gray-200 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border  border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
                 Projects
                 <MoveRight
@@ -53,7 +53,7 @@ const Projects = () => {
             <div className="mt-4 grid grid-cols-2 gap-4 items-start justify-between box-border">
                 {Repos.Repos.slice(0, numProjects).map((ele) => (
                     <Card
-                        className="border border-gray-200 flex flex-col justify-between h-[670px] p-4 rounded-xl shadow-sm min-h-[350px] transition-all duration-300 group"
+                        className="border border-neutral-200 flex flex-col justify-between h-[670px] p-4 rounded-xl shadow-sm min-h-[350px] transition-all duration-300 group"
                         key={ele.id}>
                         <CardHeader>
                             <CardTitle className="">{ele.name}</CardTitle>
@@ -71,7 +71,7 @@ const Projects = () => {
                                     height={500}
                                     className="h-[430px] w-full object-cover mx-auto object-top"
                                 />
-                                <div className="absolute bottom-0 left-0 right-0 px-4 py-3  bg-gradient-to-t from-gray-600 to-transparent rounded-xl">
+                                <div className="absolute bottom-0 left-0 right-0 px-4 py-3  bg-gradient-to-t from-neutral-600 to-transparent rounded-xl">
                                     <div className="flex items-center h-5 mb-2">
                                         <p
                                             className={`border w-fit flex items-center mr-2 rounded-full text-sm font-normal px-2 py-[.7px] ${
@@ -103,7 +103,7 @@ const Projects = () => {
                                             <History
                                                 size={16}
                                                 strokeWidth={1.75}
-                                                className="text-gray-500 mr-2"
+                                                className="text-neutral-500 mr-2"
                                             />
                                             {ele.updated_at}
                                         </p>
@@ -113,7 +113,7 @@ const Projects = () => {
                                             {ele.tags.map((tag, index) => (
                                                 <span
                                                     key={index}
-                                                    className="bg-gray-100 rounded-full text-[12px] font-normal px-2 py-1 dark:bg-green-900 dark:text-green-300">
+                                                    className="bg-neutral-100 rounded-full text-[12px] font-normal px-2 py-1 dark:bg-green-900 dark:text-green-300">
                                                     {tag}
                                                 </span>
                                             ))}
@@ -125,13 +125,13 @@ const Projects = () => {
                                                 <User
                                                     size={16}
                                                     strokeWidth={1.75}
-                                                    className="text-gray-500 mr-1"
+                                                    className="text-neutral-500 mr-1"
                                                 />
                                             ) : (
                                                 <Users
                                                     size={16}
                                                     strokeWidth={1.75}
-                                                    className="text-gray-500 mr-1"
+                                                    className="text-neutral-500 mr-1"
                                                 />
                                             )}
                                             {`${ele.type
@@ -143,12 +143,12 @@ const Projects = () => {
                                         <Link
                                             target="_blank"
                                             href={ele.deployments_url}
-                                            className="flex items-center group gap-2 text-md shadow-sm px-2 py-1 bg-white hover:bg-gray-200 rounded-xl transition-all duration-300 transform hover:-translate-y-[2px]">
+                                            className="flex items-center group gap-2 text-md shadow-sm px-2 py-1 bg-white hover:bg-neutral-200 rounded-xl transition-all duration-300 transform hover:-translate-y-[2px]">
                                             Preview
                                             <Telescope
                                                 size={20}
                                                 strokeWidth={1.75}
-                                                className="text-gray-500"
+                                                className="text-neutral-500"
                                             />
                                         </Link>
                                     </div>
@@ -160,7 +160,7 @@ const Projects = () => {
             </div>
             {Repos.Repos.length > 4 && (
                 <Button
-                    className={`mt-4 bg-gray-100 border flex items-center mx-auto border-gray-200 px-3 py-1 rounded-full hover:bg-gray-200 hover:border-gray-300 shadow-sm
+                    className={`mt-4 bg-neutral-100 border flex items-center mx-auto border-neutral-200 px-3 py-1 rounded-full hover:bg-neutral-200 hover:border-neutral-300 shadow-sm
     }`}
                     onClick={toggleProjectsVisibility}
                     disabled={isLoading}>
@@ -174,19 +174,19 @@ const Projects = () => {
                             />
                         </div>
                     ) : numProjects === Repos.Repos.length ? (
-                        <div className="text-gray-600 flex items-center text-sm">
+                        <div className="text-neutral-600 flex items-center text-sm">
                             <span>Show Less</span>
                             <ChevronUp
-                                className="ml-1 text-gray-600"
+                                className="ml-1 text-neutral-600"
                                 size={20}
                                 strokeWidth={1.75}
                             />
                         </div>
                     ) : (
-                        <div className="text-gray-600 flex items-center text-sm">
+                        <div className="text-neutral-600 flex items-center text-sm">
                             <span>Show More</span>
                             <ChevronDown
-                                className="ml-1 text-gray-600"
+                                className="ml-1 text-neutral-600"
                                 size={20}
                                 strokeWidth={1.75}
                             />

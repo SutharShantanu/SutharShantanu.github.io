@@ -43,7 +43,7 @@ export const PrevButton = (props) => {
 
     return (
         <button
-            className="bg-gray-100 select-none flex items-center justify-center cursor-pointer border border-gray-200 shadow-sm w-10 h-10 rounded-full text-black hover:shadow-md hover:bg-gray-200 hover:border-gray-300"
+            className="bg-neutral-100 select-none flex items-center justify-center cursor-pointer border border-neutral-200 shadow-sm w-10 h-10 rounded-full text-black hover:shadow-md hover:bg-neutral-200 hover:border-neutral-300"
             type="button"
             {...restProps}>
             <ChevronLeft size={24} strokeWidth={1.75} />
@@ -57,7 +57,7 @@ export const NextButton = (props) => {
 
     return (
         <button
-            className="bg-gray-100 select-none flex items-center justify-center cursor-pointer border border-gray-200 shadow-sm w-10 h-10 rounded-full text-black hover:shadow-md hover:bg-gray-200 hover:border-gray-300"
+            className="bg-neutral-100 select-none flex items-center justify-center cursor-pointer border border-neutral-200 shadow-sm w-10 h-10 rounded-full text-black hover:shadow-md hover:bg-neutral-200 hover:border-neutral-300"
             type="button"
             {...restProps}>
             <ChevronRight size={24} strokeWidth={1.75} />

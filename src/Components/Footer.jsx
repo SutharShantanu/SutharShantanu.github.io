@@ -17,9 +17,9 @@ const Footer = () => {
     return (
         <div
             id="footer"
-            className="border border-gray-200 dark:border-gray-700 dark:bg-gray-950 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-950 w-full 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="flex gap-4 items-center justify-between box-border">
-                <span className="flex justify-between items-center hover:shadow-sm rounded-2xl cursor-pointer border hover:border-gray-200 dark:border-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white px-2 py-1 transition-all duration-75 ">
+                <span className="flex justify-between items-center hover:shadow-sm rounded-2xl cursor-pointer border hover:border-neutral-200 dark:border-neutral-700 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white px-2 py-1 transition-all duration-75 ">
                     <History size={20} strokeWidth={1.75} className="mr-1" />
                     {updatedDate}
                 </span>
@@ -32,14 +32,14 @@ const Footer = () => {
                         prefetch={true}
                         href="https://github.com/yourgithubusername"
                         target="_blank"
-                        className="border hover:border-gray-200 bg-gray-100 hover:bg-gray-200 shadow-sm rounded-full p-2 transition-all duration-75 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+                        className="border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200 shadow-sm rounded-full p-2 transition-all duration-75 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white">
                         <Github size={20} strokeWidth={1.75} />
                     </Link>
                     <Link
                         href="https://linkedin.com/in/yourlinkedinusername"
                         prefetch={true}
                         target="_blank"
-                        className="border hover:border-gray-200 bg-gray-100 hover:bg-gray-200 shadow-sm rounded-full p-2 transition-all duration-75 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+                        className="border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200 shadow-sm rounded-full p-2 transition-all duration-75 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white">
                         <Linkedin size={20} strokeWidth={1.75} />
                     </Link>
                 </div>

@@ -14,8 +14,12 @@ const ThemeSwitcher = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme("light")}
-                className="rounded-full shadow-sm hover:shadow-none border hover:border-gray-200 dark:hover:border-gray-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:bg-gray-800">
-                <SunDim className=" text-yellow-500 animate-in transition-all duration-75" />
+                className="rounded-full shadow-sm hover:shadow-none border hover:border-neutral-200 dark:hover:border-neutral-600 dark:border-neutral-700 dark:hover:bg-neutral-700 dark:bg-neutral-800">
+                <SunDim
+                    size={20}
+                    strokeWidth={1.75}
+                    className=" text-yellow-500 animate-in transition-all duration-75"
+                />
             </Button>
         );
     }
@@ -26,11 +30,16 @@ const ThemeSwitcher = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme("dark")}
-                className="rounded-full shadow-sm hover:shadow-none border hover:border-gray-200 bg-white hover:bg-white">
-                <Moon className=" animate-in transition-all duration-75" />
+                className="rounded-full shadow-sm hover:shadow-none border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200">
+                <Moon
+                    size={20}
+                    strokeWidth={1.75}
+                    className=" animate-in transition-all duration-75"
+                />
             </Button>
         );
     }
+    // <AArrowDown  />;
 };
 
 export default ThemeSwitcher;
