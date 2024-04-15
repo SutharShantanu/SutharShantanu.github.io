@@ -3,11 +3,11 @@ import Image from "next/image";
 
 const SkillCard = ({ card }) => {
     return (
-        <div className="p-4 rounded-xl cursor-pointer border border-neutral-200 shadow-sm hover:bg-neutral-50  transition-all">
-            <div className="flex justify-between items-center">
+        <div className="p-4 rounded-xl cursor-pointer shadow-sm dark:bg-neutral-900 dark:hover:bg-neutral-800  transition-all">
+            <div className="flex justify-between items-center space-x-1">
                 <span
-                    className="inline-block mr-2 border border-green-100
-                    bg-green-100 rounded-lg text-green-500 text-sm font-normal me-2 px-2.5 py-0.5  dark:bg-green-900 dark:text-green-300">
+                    className="inline-block border border-green-200 dark:border-green-400
+                    bg-green-100 dark:bg-green-900 rounded-lg text-green-500 text-xs sm:text-sm font-normal me-2 px-2.5 py-0.5 dark:text-green-300">
                     {card.category}
                 </span>
                 <span className="font-medium">{card.title}</span>
