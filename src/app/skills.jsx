@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MoveRight } from "lucide-react";
+import { MoveRight, ChevronRight, ChevronLeft } from "lucide-react";
 import SkillCard from "@/Components/SkillCard";
 
 const Skills = () => {
@@ -36,8 +36,8 @@ const Skills = () => {
     return (
         <section
             id="skills"
-            className="border border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
+            className="border border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Skills
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4 group-hover:line-through"
@@ -45,36 +45,36 @@ const Skills = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="flex items-stretch justify-between mt-4">
-                <div className="w-[65%]">
+            <div className="flex items-stretch justify-between sm:mt-4 mx-2">
+                <div className="w-full sm:w-[65%]">
                     <div className="w-full h-fit" onChange={handleTabChange}>
                         <div className="w-full">
-                            <div className="flex border border-neutral-200 rounded-xl mb-4 p-2 bg-neutral-100">
+                            <div className="flex border border-neutral-200 dark:border-neutral-800 rounded-2xl mb-4 p-2 bg-neutral-100 dark:bg-neutral-900 space-x-1">
                                 <button
                                     onClick={() => handleTabChange("all")}
                                     className={`${
                                         selectedTab === "all"
-                                            ? "bg-white shadow-md"
-                                            : ""
-                                    } w-1/4 p-2 text-center rounded-xl  mr-2 hover:cursor-pointer transition-all duration-300 ease-in-out`}>
+                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
+                                            : "hover:bg-neutral-800"
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
                                     All
                                 </button>
                                 <button
                                     onClick={() => handleTabChange("Frontend")}
                                     className={`${
                                         selectedTab === "Frontend"
-                                            ? "bg-white rounded-xl shadow-md"
-                                            : ""
-                                    } w-1/4 p-2 text-center hover:cursor-pointer transition-all ease-in-out`}>
+                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
+                                            : "hover:bg-neutral-800"
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
                                     Frontend
                                 </button>
                                 <button
                                     onClick={() => handleTabChange("Backend")}
                                     className={`${
                                         selectedTab === "Backend"
-                                            ? "bg-white rounded-xl shadow-md"
-                                            : ""
-                                    } w-1/4 p-2 text-center hover:cursor-pointer transition-all ease-in-out`}>
+                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
+                                            : "hover:bg-neutral-800"
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
                                     Backend
                                 </button>
                                 <button
@@ -83,24 +83,23 @@ const Skills = () => {
                                     }
                                     className={`${
                                         selectedTab === "Deployment"
-                                            ? "bg-white rounded-xl shadow-md"
-                                            : ""
-                                    } w-1/4 p-2 text-center hover:cursor-pointer transition-all ease-in-out`}>
+                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
+                                            : "hover:bg-neutral-800"
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
                                     Deployment
                                 </button>
-
                                 <button
                                     onClick={() => handleTabChange("Tools")}
                                     className={`${
                                         selectedTab === "Tools"
-                                            ? "bg-white rounded-xl shadow-md"
-                                            : ""
-                                    } w-1/4 p-2 text-center hover:cursor-pointer transition-all ease-in-out `}>
+                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
+                                            : "hover:bg-neutral-800"
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
                                     Tools
                                 </button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 grid-rows-2 gap-4 w-full">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 grid-rows-1 sm:grid-rows-2 gap-4 w-full">
                             {visibleCards.map((card) => (
                                 <SkillCard key={card.index} card={card} />
                             ))}
@@ -113,10 +112,10 @@ const Skills = () => {
                             disabled={currentPage === 1}
                             className={`${
                                 currentPage === 1
-                                    ? "bg-neutral-200 border border-neutral-300 text-neutral-400 cursor-not-allowed"
-                                    : "bg-neutral-200 border border-neutral-300 text-neutral-700 hover:bg-neutral-300 cursor-pointer"
+                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800 text-neutral-700 cursor-not-allowed"
+                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
-                            Previous
+                            <ChevronLeft size={20} strokeWidth={1.75} />
                         </button>
 
                         {Array.from({
@@ -130,9 +129,9 @@ const Skills = () => {
                                 onClick={() => setCurrentPage(index + 1)}
                                 className={`${
                                     currentPage === index + 1
-                                        ? "bg-white border border-neutral-400"
-                                        : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
-                                } border border-neutral-300 py-1 px-3 rounded-xl  transition-all ease-in-out cursor-pointer shadow-sm`}>
+                                        ? "bg-neutral-200 dark:bg-neutral-800  border-neutral-400 dark:border-neutral-700 "
+                                        : "bg-neutral-200 dark:bg-neutral-800 text-neutral-400 hover:bg-neutral-300 dark:border-neutral-800"
+                                } border-2 border-neutral-200 py-1 px-3 rounded-xl  transition-all ease-in-out cursor-pointer shadow-sm`}>
                                 {index + 1}
                             </button>
                         ))}
@@ -145,20 +144,21 @@ const Skills = () => {
                             className={`${
                                 currentPage ===
                                 Math.ceil(filteredCards.length / skillsPerPage)
-                                    ? "bg-neutral-200 border border-neutral-300 text-neutral-400 cursor-not-allowed"
-                                    : "bg-neutral-200 border border-neutral-300 text-neutral-700 hover:bg-neutral-300 cursor-pointer"
+                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800 text-neutral-700 cursor-not-allowed"
+                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
-                            Next
+                            <ChevronRight size={20} strokeWidth={1.75} />
                         </button>
                     </div>
                 </div>
-                <div className="grid grid-cols-4 grid-rows-3 gap-4 w-[33%] max-h-[600px] lg:w-40%">
+
+                {/* <div className="grid grid-cols-4 grid-rows-3 gap-4 w-[33%] max-h-[600px] lg:w-40%">
                     <SkillGridFull unit="1200+" title="Hrs Coding" />
                     <SkillGrid unit="30+" title="Mini Projects" />
                     <SkillGrid unit="5+" title="Major Projects" />
                     <SkillGrid unit="300+" title="DSA Problems" />
                     <SkillGrid unit="200+" title="Hrs Soft Skills" />
-                </div>
+                </div> */}
             </div>
         </section>
     );
