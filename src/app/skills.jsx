@@ -348,7 +348,6 @@ const cards = [
         index: 24,
         title: "GitHub",
         category: "Tools",
-        imageUrl:
-            "https://seeklogo.com/images/G/github-logo-5F384D0265-seeklogo.com.png",
+        imageUrl: "https://cdn-icons-png.flaticon.com/512/733/733553.png",
     },
 ];
