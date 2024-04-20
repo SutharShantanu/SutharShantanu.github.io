@@ -49,14 +49,14 @@ const Skills = () => {
                 <div className="w-full sm:w-[65%]">
                     <div className="w-full h-fit" onChange={handleTabChange}>
                         <div className="w-full">
-                            <div className="flex border border-neutral-200 dark:border-neutral-800 rounded-2xl mb-4 p-2 bg-neutral-100 dark:bg-neutral-900 space-x-1">
+                            <div className="flex border border-neutral-200 dark:border-neutral-800 rounded-2xl mb-4 p-1 sm:p-2 bg-neutral-100 dark:bg-neutral-900 space-x-1">
                                 <button
                                     onClick={() => handleTabChange("all")}
                                     className={`${
                                         selectedTab === "all"
                                             ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
                                             : "hover:bg-neutral-800"
-                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
+                                    } w-1/4 sm:p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     All
                                 </button>
                                 <button
@@ -65,7 +65,7 @@ const Skills = () => {
                                         selectedTab === "Frontend"
                                             ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
                                             : "hover:bg-neutral-800"
-                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Frontend
                                 </button>
                                 <button
@@ -74,7 +74,7 @@ const Skills = () => {
                                         selectedTab === "Backend"
                                             ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
                                             : "hover:bg-neutral-800"
-                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Backend
                                 </button>
                                 <button
@@ -85,7 +85,7 @@ const Skills = () => {
                                         selectedTab === "Deployment"
                                             ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
                                             : "hover:bg-neutral-800"
-                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Deployment
                                 </button>
                                 <button
@@ -94,7 +94,7 @@ const Skills = () => {
                                         selectedTab === "Tools"
                                             ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
                                             : "hover:bg-neutral-800"
-                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out`}>
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Tools
                                 </button>
                             </div>
