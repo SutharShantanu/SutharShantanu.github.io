@@ -6,14 +6,7 @@ import Splines from "@/Components/Splines";
 import { MoveRight } from "lucide-react";
 
 const About = () => {
-    const words = `I remember when I was preparing for Govt jobs after my graduation, some of my friends were practicing HTML CSS, and some other tech stack. Somehow I became interested too
-
-Later, I found myself interested in programming and I also remember my first experience where I was happy to see the result of my code on the screen, this experience triggered me to change my field.
-My interest further prompted me to enroll myself in Masai School to pursue a 30-week, full-time, Full Stack Web Development course, in which I got an opportunity to enhance my skills in front-end and back-end technologies.
-
-At Masai, I grew into a trained and creative developer who derived great satisfaction from his work. I created many user-friendly and interactive web applications during this course. Apart from being a good technocrat, I wish to contribute towards the betterment of society with the knowledge I have gained so far and I will in the coming years.
-
-Besides being a web developer, I enjoy traveling and playing video games. I am outgoing and fun-loving by nature which helps me bring out my creative side.`;
+    const words = `During my post-graduation, while preparing for government jobs, I observed some friends delving into HTML, CSS, and various tech stacks. Intrigued, I joined them, and the experience sparked a fascination with programming. Witnessing the tangible results of my code on the screen filled me with joy, prompting a shift in my career aspirations. This newfound interest led me to enroll in Masai School's intensive 30-week Full Stack Web Development course, where I honed my skills in both front-end and back-end technologies. At Masai, I evolved into a proficient and imaginative developer, deriving immense satisfaction from crafting user-friendly and interactive web applications. Beyond my technical prowess, I harbor a desire to leverage my knowledge for societal betterment in the years ahead. In addition to my passion for web development, I find solace in traveling and indulging in video games. With an outgoing and fun-loving nature, I strive to cultivate my creative instincts in every endeavor.`;
     return (
         <section
             id="about"
@@ -28,7 +21,7 @@ Besides being a web developer, I enjoy traveling and playing video games. I am o
             </p>
             <div className="flex justify-between items-start flex-col md:flex-row">
                 <div className="w-full h-[200px] md:w-2/6 md:h-[55vh] ">
-                    <Splines />
+                    {/* <Splines /> */}
                 </div>
                 <h2 className="p-4 sm:p-0 w-full md:w-4/6">
                     <TextGenerateEffect words={words} />
