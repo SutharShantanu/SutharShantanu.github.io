@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 import A from "../../../public/A.jpg";
 import B from "../../../public/B.jpg";
