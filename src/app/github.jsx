@@ -4,8 +4,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Link as LinkIcon } from "lucide-react";
-// import ReactTooltip from "react-tooltip";
+import { Copy, CopyCheck, Link as LinkIcon, CheckCheck } from "lucide-react";
+import { Badge } from "@/Components/ui/badge";
 import GitHubCalendar from "react-github-calendar";
 import {
     MoveRight,
@@ -21,13 +21,19 @@ import RepoCard from "@/Components/RepoCard";
 
 const Github = () => {
     const [loading, setLoading] = useState("Loading...");
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(userData.email);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     const { userData, repoData } = GithubFetch() ?? {
         userData: null,
         repoData: null,
     };
     const Repos = repoData;
-
 
     const OPTIONS = { dragFree: true, loop: true };
 
@@ -55,39 +61,41 @@ const Github = () => {
     return (
         <section
             id="github"
-            className="border border-neutral-200 w-full 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-5xl w-fit hover:font-bold hover transition-all">
+            className="border border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Github
                 <MoveRight
-                    className="hidden transition-all group-hover:inline-block group-hover:ml-4 group-hover:line-through"
+                    className="hidden transition-all group-hover:inline-block group-hover:ml-4"
                     size={40}
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="mt-4 flex items-start justify-between box-border">
-                <div className="border border-neutral-200 rounded-xl w-[33%] p-5 box-border">
+            <div className="sm:mt-4 flex flex-col sm:flex-row items-start justify-between box-border px-2 sm:p-4">
+                <div className="border border-neutral-800 rounded-xl w-full sm:w-[33%] p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
                             height={70}
-                            className="rounded-full box-border mr-4"
+                            className="w-14 h-14 sm:w-[70px] sm:h-[70px] rounded-full box-border mr-4"
                             src="https://avatars.githubusercontent.com/u/110021464?v=4"
                             alt="Github Profile Picture"
                         />
-                        <div className="">
+                        <div>
                             <Link
                                 href="https://github.com/SutharShantanu"
                                 target="_black"
                                 prefetch={true}
-                                className="w-fit text-4xl font-extralight group items-center text-center flex hover:underline underline-offset-8 decoration-1 duration-300 transition-all">
+                                className="w-fit text-xl sm:text-4xl font-extralight group items-center text-center flex hover:underline  dark:text-neutral-200  underline-offset-8 decoration-1 duration-300 transition-all">
                                 @{userData ? userData.login : loading}
                                 <ExternalLink
                                     size={30}
                                     strokeWidth={0.75}
-                                    className="text-neutral-600 ml-2 hidden group-hover:inline"
+                                    className="text-neutral-600 dark:text-neutral-200 w-5 h-5 ml-2 sm:hidden group-hover:inline"
                                 />
                             </Link>
-                            <div className="flex ml-1 border border-green-200 my-2 w-fit px-2 py-[1.5px] font-medium items-start rounded-lg shadow-sm bg-green-100 hover:bg-neutral-100 hover:border-neutral-300 duration-300 transition-all">
+                            <Badge
+                                variant="outline"
+                                className="flex ml-1 border border-green-200 dark:border-green-400 bg-green-100 dark:bg-green-900 my-2 w-fit px-2 py-[1.5px] font-medium items-start rounded-lg shadow-sm duration-300 transition-all">
                                 <Image
                                     className="w-4 h-4 mr-1"
                                     width={100}
@@ -95,19 +103,19 @@ const Github = () => {
                                     src="https://cdn-icons-png.flaticon.com/512/3176/3176382.png"
                                     alt=""
                                 />
-                                <p className="font-light text-[12px] text-green-600">
+                                <p className="font-light text-xs text-green-500 dark:text-green-300">
                                     Focusing
                                 </p>
-                            </div>
+                            </Badge>
                         </div>
                     </div>
-                    <Separator className="my-5" />
+                    <Separator className="my-5 dark:bg-neutral-800" />
                     <div>
                         <p className="flex items-center text-neutral-600 font-light">
                             <CircleUser
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-neutral-400 mr-2"
+                                className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             {userData ? userData.bio : loading}
                         </p>
@@ -122,7 +130,7 @@ const Github = () => {
                             </b>
                             followers
                             <Separator
-                                className="h-5 bg-neutral-300 mx-2"
+                                className="h-5 bg-neutral-300 dark:bg-neutral-800 mx-2"
                                 orientation="vertical"
                             />
                             <b className="font-medium">
@@ -136,16 +144,10 @@ const Github = () => {
                                 strokeWidth={1.75}
                                 className="text-neutral-400 mr-2"
                             />
-                            <Link
-                                href="https://maps.app.goo.gl/ZXzT7SteAp3m8J867"
-                                className="hover:underline underline-offset-2 transition-all duration-300"
-                                prefetch={true}
-                                target="_black">
-                                <b className="font-light">
-                                    {userData ? userData.location : loading},
-                                    Rajasthan
-                                </b>
-                            </Link>
+                            <b className="font-light">
+                                {userData ? userData.location : loading},
+                                Rajasthan
+                            </b>
                         </p>
                         <p className="flex mt-2 items-center text-neutral-600 font-light">
                             <Mail
@@ -153,20 +155,25 @@ const Github = () => {
                                 strokeWidth={1.75}
                                 className="text-neutral-400 mr-2"
                             />
-                            <Link
-                                href={`mailto:${
-                                    userData ? userData.email : loading
-                                }?subject=Greeting%20Message&body=Dear%20Shantanu,%0D%0A%0D%0AHow%20are%20you%20doing%20today?`}
-                                target="_blank"
-                                prefetch={true}
-                                className="hover:underline underline-offset-2 flex items-center group transition-all duration-300">
-                                {userData ? userData.email : loading}
-                                <ExternalLink
-                                    size={18}
-                                    strokeWidth={1.25}
-                                    className="text-neutral-600 ml-2 hidden group-hover:block"
-                                />
-                            </Link>
+                            {userData ? userData.email : loading}
+                            <Copy
+                                size={18}
+                                strokeWidth={1.25}
+                                className={` ml-2 cursor-pointer ${
+                                    copied ? "hidden" : "text-neutral-400"
+                                }`}
+                                onClick={handleCopy}
+                                title="Copy email address"
+                            />
+                            <CheckCheck
+                                size={18}
+                                strokeWidth={1.25}
+                                className={` ml-2 cursor-pointer ${
+                                    copied
+                                        ? "text-green-300 flex"
+                                        : "text-neutral-400 hidden"
+                                }`}
+                            />
                         </p>
                         <p className="flex mt-2 items-center text-neutral-600 font-light">
                             <LinkIcon
@@ -178,20 +185,14 @@ const Github = () => {
                                 href="https://linktr.ee/shantanu_suthar"
                                 target="_blank"
                                 prefetch={true}
-                                className="hover:underline underline-offset-2 flex items-center group transition-all duration-300">
+                                className="hover:underline underline-offset-2 flex items-center transition-all duration-300">
                                 https://linktr.ee/shantanu_suthar
-                                <ExternalLink
-                                    size={18}
-                                    strokeWidth={1.25}
-                                    className="text-neutral-600 ml-2 hidden group-hover:block"
-                                />
                             </Link>
                         </p>
                     </div>
-                    <Separator className="my-5" />
+                    <Separator className="my-5 dark:bg-neutral-800" />
                     <div>
-                        <p>Achievements</p>
-
+                        <p className="pb-2">Achievements</p>
                         <div className="flex items-center justify-around w-fit">
                             <div className="relative">
                                 <Image
@@ -200,11 +201,10 @@ const Github = () => {
                                     width={80}
                                     height={80}
                                 />
-                                <p className="absolute bottom-2 right-0 shadow-sm bg-red-100 rounded-2xl text-red-600 text-xs px-2.5 py-0.5 border border-red-200">
+                                <p className="absolute bottom-2 right-0 shadow-sm border border-red-200 dark:border-red-400 text-red-500 dark:text-red-300 bg-red-100 dark:bg-red-900 rounded-2xl  text-xs px-2.5 py-0.5">
                                     X2
                                 </p>
                             </div>
-
                             <Image
                                 src="https://github.githubassets.com/assets/quickdraw-default-39c6aec8ff89.png"
                                 alt="Quickdraw"
@@ -219,30 +219,34 @@ const Github = () => {
                             />
                         </div>
                     </div>
-                    <Separator className="my-5" />
+                    <Separator className="my-5 dark:bg-neutral-800" />
                     <div>
-                        <p>Organizations</p>
+                        <p className="pb-2">Organizations</p>
                         <div className="flex items-center justify-between w-fit mt-2 gap-3">
-                            <div className="border border-neutral-200 rounded-full px-3 py-1 shadow-sm hover:shadow-md">
+                            <div className="relative rounded-md overflow-hidden">
                                 <Image
                                     src="https://infyni-prod-upgrade.s3.amazonaws.com/static/assets/images/logos/logo.png"
                                     alt="infyni logo"
-                                    width={80}
+                                    width={90}
                                     height={40}
+                                    className="border border-neutral-200 dark:border-neutral-800 shadow-sm m-2 px-2 py-1"
                                 />
+                                <div className="absolute inset-0 opacity-20 mix-blend-color bg-neutral-500 m-2"></div>
                             </div>
-                            <div className="border border-neutral-200 rounded-full px-1 py-0 shadow-sm hover:shadow-md">
+                            <div className="relative rounded-md overflow-hidden">
                                 <Image
                                     src="https://masai-website-images.s3.ap-south-1.amazonaws.com/logo.png"
                                     alt="masai logo"
-                                    width={100}
+                                    width={90}
                                     height={40}
+                                    className="border border-neutral-200 dark:border-neutral-800 shadow-sm m-2 px-2 py-1"
                                 />
+                                <div className="absolute inset-0 opacity-20 bg-neutral-500 m-2 mix-blend-color "></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="border border-neutral-200 rounded-xl w-[65%] p-5">
+                <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl w-full sm:w-[65%] p-5 my-4 sm:my-0">
                     <RepoCard slides={Repos} options={OPTIONS} />
                     <Separator className="my-5" />
                     <p className="mt-4 text-4xl font-extralight">

@@ -3,8 +3,9 @@
 import React from "react";
 import { MoveRight } from "lucide-react";
 import { Building2, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import { Badge } from "@/Components/ui/badge";
+
 
 const Experience = () => {
     return (
@@ -40,11 +41,11 @@ const Experience = () => {
                         </span>
                         <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
                             Technology Operations Associates
-                            <span
+                            <Badge variant="outline"
                                 class="bg-yellow-100 dark:bg-yellow-900 rounded-lg w-fit text-yellow-600 text-xs sm:text-sm font-medium  px-2.5 py-0.5 border border-yellow-200
                             dark:border-yellow-400 dark:text-yellow-300 my-2">
                                 Oct 2023 - Present
-                            </span>
+                            </Badge>
                         </h3>
                         <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
                             <p>
@@ -57,7 +58,7 @@ const Experience = () => {
                                     target="_blank"
                                     href="https://infyni.com"
                                     className="flex items-center mx-2">
-                                    Infyni
+                                    Infyni &nbsp;
                                     <ExternalLink
                                         size={16}
                                         strokeWidth={1.75}
@@ -90,9 +91,9 @@ const Experience = () => {
                         </span>
                         <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
                             Front-End Web Developer
-                            <span class="bg-green-100 dark:bg-green-900 rounded-lg w-fit text-green-600 text-xs sm:text-sm font-medium px-2.5 py-0.5 border border-green-200 dark:border-green-400 dark:text-green-300 my-2">
+                            <Badge variant="outline" class="bg-green-100 dark:bg-green-900 rounded-lg w-fit text-green-600 text-xs sm:text-sm font-medium px-2.5 py-0.5 border border-green-200 dark:border-green-400 dark:text-green-300 my-2">
                                 Aug 2023 - Oct 2023
-                            </span>
+                            </Badge>
                         </h3>
                         <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
                             <p>
@@ -106,7 +107,7 @@ const Experience = () => {
                                     target="_blank"
                                     href="https://brandingpioneers.com/"
                                     className="flex items-center mx-2">
-                                    Branding Pioneers
+                                    Branding Pioneers &nbsp;
                                     <ExternalLink
                                         size={16}
                                         strokeWidth={1.75}

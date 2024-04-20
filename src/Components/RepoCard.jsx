@@ -30,20 +30,22 @@ const RepoCard = (props) => {
 
     return (
         <section className="mx-auto">
-            <p className="mb-4 text-4xl font-extralight">Repositories</p>
+            <p className="mb-4 text-2xl sm:text-4xl font-extralight">
+                Repositories
+            </p>
             <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex ">
+                <div className="flex">
                     {slides &&
                         slides.map((ele, index) => (
                             <div
                                 className="pl-1 flex-shrink-0 w-full mx-4"
                                 key={index}>
-                                <div className="shadow-sm hover:shadow-md transition-all duration-300 border border-neutral-200 rounded-xl text-sm p-4">
+                                <div className="shadow-sm hover:shadow-md transition-all duration-300 border border-neutral-200 dark:border-neutral-800 rounded-xl text-sm p-4">
                                     <div>
-                                        <p className="font-semibold text-2xl ">
+                                        <p className="font-semibold text-2xl text-neutral-200">
                                             {ele.name}
                                         </p>
-                                        <p className="font-extralight text-lg">
+                                        <p className="font-extralight text-lg text-neutral-200">
                                             {ele.description}
                                         </p>
                                         <div className="flex w-fit gap-6 justify-between items-center my-4">
