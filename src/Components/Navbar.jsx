@@ -220,7 +220,7 @@ const Navbar = () => {
                                 <Loader2 className="h-5 w-5 animate-spin" />
                             ) : (
                                 <ArrowDownCircle
-                                    className="h-5 w-5 text-white animate-pulse"
+                                    className="h-5 w-5 text-white"
                                     size={20}
                                     strokeWidth={1.5}
                                 />
