@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
+import { toast } from "sonner";
+import axios from "axios";
 
 const Contact = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -97,14 +99,12 @@ const Contact = () => {
 
         try {
             setIsLoading(true);
-            const response = await fetch("/api/email", {
-                method: "POST",
+            const response = await axios.post("/api/email", formData, {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
             });
-            if (response.ok) {
+            if (response && response.status === 200) {
                 toast.success("Message sent successfully.", {
                     description: new Date().toLocaleString("en-US", {
                         weekday: "long",
@@ -117,12 +117,13 @@ const Contact = () => {
                     }),
                 });
             } else {
-                const error = await response.text();
-                toast.error("Failed to send message:", error);
+                const error = response?.data?.message || "Unknown error";
+                toast.error("Failed to send message:", { description: error });
             }
         } catch (error) {
             toast.error("An error occurred:", {
                 description: `${error.message}`,
+                error,
             });
         } finally {
             setIsLoading(false);
