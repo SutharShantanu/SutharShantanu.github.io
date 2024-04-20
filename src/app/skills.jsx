@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { MoveRight, ChevronRight, ChevronLeft } from "lucide-react";
 import SkillCard from "@/Components/SkillCard";
+import { Separator } from "@/Components/ui/separator";
 
 const Skills = () => {
     const [selectedTab, setSelectedTab] = useState("all");
@@ -45,7 +46,7 @@ const Skills = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="flex items-stretch justify-between sm:mt-4 mx-2">
+            <div className="flex flex-col sm:flex-row items-stretch justify-between sm:mt-4 mx-2">
                 <div className="w-full sm:w-[65%]">
                     <div className="w-full h-fit" onChange={handleTabChange}>
                         <div className="w-full">
@@ -106,7 +107,7 @@ const Skills = () => {
                         </div>
                     </div>
 
-                    <div className="flex justify-center mt-4 space-x-4">
+                    <div className="flex justify-center my-4 space-x-4">
                         <button
                             onClick={handlePreviousPage}
                             disabled={currentPage === 1}
@@ -151,14 +152,14 @@ const Skills = () => {
                         </button>
                     </div>
                 </div>
-
-                {/* <div className="grid grid-cols-4 grid-rows-3 gap-4 w-[33%] max-h-[600px] lg:w-40%">
+                <Separator className="mb-2 sm:hidden dark:bg-neutral-800" />
+                <div className="grid grid-cols-4 grid-rows-3 gap-4 p-2 pb-4 sm:w-[33%] max-h-[600px] lg:w-40%">
                     <SkillGridFull unit="1200+" title="Hrs Coding" />
                     <SkillGrid unit="30+" title="Mini Projects" />
                     <SkillGrid unit="5+" title="Major Projects" />
                     <SkillGrid unit="300+" title="DSA Problems" />
                     <SkillGrid unit="200+" title="Hrs Soft Skills" />
-                </div> */}
+                </div>
             </div>
         </section>
     );
@@ -168,7 +169,7 @@ export default Skills;
 
 const SkillGrid = ({ unit, title }) => {
     return (
-        <div className="col-span-2 row-span-1 bg-black rounded-xl text-white">
+        <div className="col-span-2 row-span-1 bg-neutral-900 rounded-xl text-neutral-200">
             <div className="h-full flex items-center justify-center">
                 <div className="text-center p-4">
                     <div className="text-3xl">{unit}</div>
@@ -181,7 +182,7 @@ const SkillGrid = ({ unit, title }) => {
 
 const SkillGridFull = ({ unit, title }) => {
     return (
-        <div className="col-span-4 row-span-1 bg-black rounded-xl text-white">
+        <div className="col-span-4 row-span-1 bg-neutral-900 rounded-xl text-neutral-200">
             <div className="h-full flex items-center justify-center">
                 <div className="text-center p-4">
                     <div className="text-3xl">{unit}</div>
