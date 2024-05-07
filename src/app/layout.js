@@ -10,6 +10,7 @@ import Head from "next/head";
 import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
+import { Suspense } from "react";
 
 export default function RootLayout({ children }) {
     return (
