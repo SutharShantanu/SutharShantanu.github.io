@@ -61,7 +61,7 @@ const Github = () => {
     return (
         <section
             id="github"
-            className="border border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Github
                 <MoveRight
@@ -71,7 +71,7 @@ const Github = () => {
                 />
             </div>
             <div className="sm:mt-4 flex flex-col sm:flex-row items-start justify-between box-border px-2 sm:p-4">
-                <div className="border border-neutral-800 rounded-xl w-full sm:w-[33%] p-5 box-border">
+                <div className="border bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full sm:w-[33%] p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
@@ -95,7 +95,7 @@ const Github = () => {
                             </Link>
                             <Badge
                                 variant="outline"
-                                className="flex ml-1 border border-green-200 dark:border-green-400 bg-green-100 dark:bg-green-900 my-2 w-fit px-2 py-[1.5px] font-medium items-start rounded-lg shadow-sm duration-300 transition-all">
+                                className="flex ml-1 border bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 my-2 w-fit px-2 py-[1.5px] font-medium items-start rounded-lg shadow-sm duration-300 transition-all">
                                 <Image
                                     className="w-4 h-4 mr-1"
                                     width={100}
@@ -109,9 +109,9 @@ const Github = () => {
                             </Badge>
                         </div>
                     </div>
-                    <Separator className="my-5 dark:bg-neutral-800" />
+                    <Separator className="my-5 dark:bg-neutral-700" />
                     <div>
-                        <p className="flex items-center text-neutral-600 font-light">
+                        <p className="flex items-center text-neutral-300 font-light">
                             <CircleUser
                                 size={20}
                                 strokeWidth={1.75}
@@ -119,7 +119,7 @@ const Github = () => {
                             />
                             {userData ? userData.bio : loading}
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-300 font-light">
                             <Users
                                 size={20}
                                 strokeWidth={1.75}
@@ -130,7 +130,7 @@ const Github = () => {
                             </b>
                             followers
                             <Separator
-                                className="h-5 bg-neutral-300 dark:bg-neutral-800 mx-2"
+                                className="h-5 bg-neutral-300 dark:bg-neutral-700 mx-2"
                                 orientation="vertical"
                             />
                             <b className="font-medium">
@@ -138,7 +138,7 @@ const Github = () => {
                             </b>
                             &nbsp;following
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-300 font-light">
                             <MapPin
                                 size={20}
                                 strokeWidth={1.75}
@@ -149,7 +149,7 @@ const Github = () => {
                                 Rajasthan
                             </b>
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-300 font-light">
                             <Mail
                                 size={20}
                                 strokeWidth={1.75}
@@ -175,7 +175,7 @@ const Github = () => {
                                 }`}
                             />
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-600 font-light">
+                        <p className="flex mt-2 items-center text-neutral-300 font-light">
                             <LinkIcon
                                 size={20}
                                 strokeWidth={1.75}
@@ -190,7 +190,7 @@ const Github = () => {
                             </Link>
                         </p>
                     </div>
-                    <Separator className="my-5 dark:bg-neutral-800" />
+                    <Separator className="my-5 dark:bg-neutral-700" />
                     <div>
                         <p className="pb-2">Achievements</p>
                         <div className="flex items-center justify-around w-fit">
@@ -219,68 +219,68 @@ const Github = () => {
                             />
                         </div>
                     </div>
-                    <Separator className="my-5 dark:bg-neutral-800" />
+                    <Separator className="my-5 dark:bg-neutral-700" />
                     <div>
                         <p className="pb-2">Organizations</p>
                         <div className="flex items-center justify-between w-fit mt-2 gap-3">
-                            <div className="relative rounded-md overflow-hidden">
-                                <Image
-                                    src="https://infyni-prod-upgrade.s3.amazonaws.com/static/assets/images/logos/logo.png"
-                                    alt="infyni logo"
-                                    width={90}
-                                    height={40}
-                                    className="border border-neutral-200 dark:border-neutral-800 shadow-sm m-2 px-2 py-1"
-                                />
-                                <div className="absolute inset-0 opacity-20 mix-blend-color bg-neutral-500 m-2"></div>
-                            </div>
-                            <div className="relative rounded-md overflow-hidden">
-                                <Image
-                                    src="https://masai-website-images.s3.ap-south-1.amazonaws.com/logo.png"
-                                    alt="masai logo"
-                                    width={90}
-                                    height={40}
-                                    className="border border-neutral-200 dark:border-neutral-800 shadow-sm m-2 px-2 py-1"
-                                />
-                                <div className="absolute inset-0 opacity-20 bg-neutral-500 m-2 mix-blend-color "></div>
-                            </div>
+                            {/* <div className="relative  overflow-hidden"> */}
+                            <Image
+                                src="https://infyni-prod-upgrade.s3.amazonaws.com/static/assets/images/logos/logo.png"
+                                alt="infyni logo"
+                                width={90}
+                                height={40}
+                                className="border border-neutral-200 dark:border-neutral-700 shadow-sm m-2 px-2 py-1 rounded-xl"
+                            />
+
+                            {/* </div> */}
+                            {/* <div className="relative overflow-hidden"> */}
+                            <Image
+                                src="https://masai-website-images.s3.ap-south-1.amazonaws.com/logo.png"
+                                alt="masai logo"
+                                width={90}
+                                height={40}
+                                className="border border-neutral-200 dark:border-neutral-700 shadow-sm m-2 px-2 py-1 rounded-xl"
+                            />
+                            {/* </div> */}
                         </div>
                     </div>
                 </div>
-                <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl w-full sm:w-[65%] p-5 my-4 sm:my-0">
+                <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 rounded-xl w-full sm:w-[65%] p-5 my-4 sm:my-0">
                     <RepoCard slides={Repos} options={OPTIONS} />
-                    <Separator className="my-5" />
+                    <Separator className="my-5 dark:bg-neutral-700" />
                     <p className="mt-4 text-4xl font-extralight">
                         Github Calender
                     </p>
-                    <div className="shadow-sm rounded-xl border border-neutral-200 p-4 mt-4">
+                    <div className="shadow-sm rounded-xl p-4 mt-4">
                         <GitHubCalendar
                             transformData={selectLast12Months}
                             username="SutharShantanu"
                             colorScheme="light"
                             blockSize={12.8}
                             fontSize={14}
-                            showColorLegend>
-                            {/* <ReactTooltip delayShow={20} html /> */}
-                        </GitHubCalendar>
+                            showColorLegend></GitHubCalendar>
                     </div>
                 </div>
             </div>
-            {/* <div className="flex items-center justify-between mt-4 shadow-sm border border-neutral-200 h-64 space-x-4 rounded-xl p-5">
+            <div className="flex flex-col sm:flex-row items-center justify-between mx-2 mb-2 sm:mb-0 sm:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 sm:h-64 gap-4 rounded-xl p-5">
                 <img
                     src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Stats"
+                    className="filter dark:invert grayscale"
                 />
-                <Separator orientation="vertical" />
+                <Separator orientation="vertical" className="hidden sm:block" />
                 <img
                     src="https://github-readme-stats.vercel.app/api/top-langs/?username=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Language"
+                    className="filter dark:invert grayscale"
                 />
-                <Separator orientation="vertical" />
+                <Separator orientation="vertical" className="hidden sm:block" />
                 <img
                     src="https://github-readme-stats.vercel.app/api?username=SutharShantanu&count_private=true&show_icons=true&hide_border=true&border_radius=12&title_color=000000&text_color=808080&icon_color=9CA3AF"
                     alt="Shantanu Stats"
+                    className="filter dark:invert grayscale"
                 />
-            </div> */}
+            </div>
         </section>
     );
 };

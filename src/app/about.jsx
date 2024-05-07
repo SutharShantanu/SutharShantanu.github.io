@@ -10,7 +10,7 @@ const About = () => {
     return (
         <section
             id="about"
-            className="border min-h-[80vh] w-[90%] border-neutral-800 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border min-h-[80vh] w-[90%] border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <p className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 About
                 <MoveRight

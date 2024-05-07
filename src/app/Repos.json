@@ -70,7 +70,7 @@
                 "react-router-dom",
                 "chakra-ui"
             ],
-            "img": "https://github-production-user-asset-6210df.s3.amazonaws.com/110021464/255202031-4cd0ff9e-5f9f-4cf6-ab8a-e25c307db047.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240323%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240323T050332Z&X-Amz-Expires=300&X-Amz-Signature=1d97429556e47edf33e6f610fa43c4087612f45ea2e4984c126a3d6af49d5ae3&X-Amz-SignedHeaders=host&actor_id=110021464&key_id=0&repo_id=663171316",
+            "img": "https://github-production-user-asset-6210df.s3.amazonaws.com/110021464/255202031-4cd0ff9e-5f9f-4cf6-ab8a-e25c307db047.png",
             "type": "individual",
             "status": "completed",
             "deployments_url": "https://opentodos.vercel.app",

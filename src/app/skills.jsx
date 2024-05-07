@@ -1,28 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MoveRight, ChevronRight, ChevronLeft } from "lucide-react";
 import SkillCard from "@/Components/SkillCard";
 import { Separator } from "@/Components/ui/separator";
+import CardSkeleton from "@/Components/Skeleton";
+import CircularLoader from "@/Components/Spinners";
 
 const Skills = () => {
     const [selectedTab, setSelectedTab] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
     const skillsPerPage = 8;
 
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 2000);
+    }, []);
+
     const handleTabChange = (value) => {
+        setLoading(true);
         setSelectedTab(value);
         setCurrentPage(1);
+        setTimeout(() => setLoading(false), 2000);
     };
 
     const handlePreviousPage = () => {
+        setLoading(true);
         setCurrentPage((prev) => Math.max(prev - 1, 1));
+        setTimeout(() => setLoading(false), 2000);
     };
 
     const handleNextPage = () => {
+        setLoading(true);
         setCurrentPage((prev) =>
             Math.min(prev + 1, Math.ceil(filteredCards.length / skillsPerPage))
         );
+        setTimeout(() => setLoading(false), 2000);
     };
 
     const filteredCards =
@@ -37,7 +50,7 @@ const Skills = () => {
     return (
         <section
             id="skills"
-            className="border border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Skills
                 <MoveRight
@@ -99,11 +112,19 @@ const Skills = () => {
                                     Tools
                                 </button>
                             </div>
-                        </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 grid-rows-1 sm:grid-rows-2 gap-4 w-full">
-                            {visibleCards.map((card) => (
-                                <SkillCard key={card.index} card={card} />
-                            ))}
+                            {loading ? (
+                                // <CardSkeleton />
+                                <CircularLoader />
+                            ) : (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 grid-rows-1 sm:grid-rows-2 gap-4 w-full">
+                                    {visibleCards.map((card) => (
+                                        <SkillCard
+                                            key={card.index}
+                                            card={card}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -118,7 +139,6 @@ const Skills = () => {
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
                             <ChevronLeft size={20} strokeWidth={1.75} />
                         </button>
-
                         {Array.from({
                             length: Math.min(
                                 5,
@@ -127,7 +147,13 @@ const Skills = () => {
                         }).map((_, index) => (
                             <button
                                 key={index}
-                                onClick={() => setCurrentPage(index + 1)}
+                                onClick={() => {
+                                    setLoading(true);
+                                    setTimeout(() => {
+                                        setLoading(false);
+                                    }, 2000);
+                                    setCurrentPage(index + 1);
+                                }}
                                 className={`${
                                     currentPage === index + 1
                                         ? "bg-neutral-200 dark:bg-neutral-800  border-neutral-400 dark:border-neutral-700 "
@@ -136,6 +162,7 @@ const Skills = () => {
                                 {index + 1}
                             </button>
                         ))}
+
                         <button
                             onClick={handleNextPage}
                             disabled={
@@ -169,7 +196,7 @@ export default Skills;
 
 const SkillGrid = ({ unit, title }) => {
     return (
-        <div className="col-span-2 row-span-1 bg-neutral-900 rounded-xl text-neutral-200">
+        <div className="col-span-2 row-span-1 bg-neutral-800 rounded-xl text-neutral-200">
             <div className="h-full flex items-center justify-center">
                 <div className="text-center p-4">
                     <div className="text-3xl">{unit}</div>
@@ -182,7 +209,7 @@ const SkillGrid = ({ unit, title }) => {
 
 const SkillGridFull = ({ unit, title }) => {
     return (
-        <div className="col-span-4 row-span-1 bg-neutral-900 rounded-xl text-neutral-200">
+        <div className="col-span-4 row-span-1 bg-neutral-800 rounded-xl text-neutral-200">
             <div className="h-full flex items-center justify-center">
                 <div className="text-center p-4">
                     <div className="text-3xl">{unit}</div>
