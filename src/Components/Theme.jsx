@@ -39,7 +39,6 @@ const ThemeSwitcher = () => {
             </Button>
         );
     }
-    // <AArrowDown  />;
 };
 
 export default ThemeSwitcher;

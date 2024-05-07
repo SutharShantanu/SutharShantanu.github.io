@@ -4,7 +4,7 @@ import { Badge } from "@/Components/ui/badge";
 
 const SkillCard = ({ card }) => {
     return (
-        <div className="p-4 rounded-xl cursor-pointer shadow-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 transition-all">
+        <div className="p-4 rounded-xl cursor-pointer shadow-sm dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-all">
             <div className="flex flex-col sm:flex-row sm:justify-around items-center space-x-1 mb-2 sm:mb-0">
                 <Badge
                     className="inline-block border border-green-200 dark:border-green-400 bg-green-100 dark:bg-green-900 dark:text-green-300 rounded-lg text-green-500 text-xs sm:text-sm font-normal sm:me-2 m-auto sm:m-0 px-2.5 py-0.5 "
