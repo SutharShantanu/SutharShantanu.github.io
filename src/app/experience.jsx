@@ -6,12 +6,11 @@ import { Building2, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/Components/ui/badge";
 
-
 const Experience = () => {
     return (
         <section
             id="experience"
-            className="border border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <p className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Experience
                 <MoveRight
@@ -21,8 +20,8 @@ const Experience = () => {
                 />
             </p>
             <div className="m-8">
-                <ol class="relative border-s border-neutral-200 dark:border-neutral-700">
-                    <li class="mb-10 ms-8 border border-neutral-700 p-4 rounded-lg">
+                <ol class="relative border-s border-neutral-200 dark:border-neutral-800">
+                    <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 hover:dark:bg-neutral-800 transition-all p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full -start-4 dark:bg-yellow-900 ">
                             <svg
                                 class="w-5 h-5 text-yellow-600 dark:text-yellow-300 lucide lucide-circle-dot"
@@ -41,9 +40,9 @@ const Experience = () => {
                         </span>
                         <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
                             Technology Operations Associates
-                            <Badge variant="outline"
-                                class="bg-yellow-100 dark:bg-yellow-900 rounded-lg w-fit text-yellow-600 text-xs sm:text-sm font-medium  px-2.5 py-0.5 border border-yellow-200
-                            dark:border-yellow-400 dark:text-yellow-300 my-2">
+                            <Badge
+                                variant="outline"
+                                class="bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-lg w-fit text-xs sm:text-sm font-medium  px-2.5 py-0.5 border my-2">
                                 Oct 2023 - Present
                             </Badge>
                         </h3>
@@ -72,7 +71,7 @@ const Experience = () => {
                             pre-order E-commerce & Marketing pages.
                         </p>
                     </li>
-                    <li class="mb-10 ms-8 border border-neutral-700 p-4 rounded-lg">
+                    <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 hover:dark:bg-neutral-800 transition-all p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
                             <svg
                                 class="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"
@@ -91,7 +90,9 @@ const Experience = () => {
                         </span>
                         <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
                             Front-End Web Developer
-                            <Badge variant="outline" class="bg-green-100 dark:bg-green-900 rounded-lg w-fit text-green-600 text-xs sm:text-sm font-medium px-2.5 py-0.5 border border-green-200 dark:border-green-400 dark:text-green-300 my-2">
+                            <Badge
+                                variant="outline"
+                                class="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border  my-2">
                                 Aug 2023 - Oct 2023
                             </Badge>
                         </h3>
