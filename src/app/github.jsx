@@ -18,9 +18,9 @@ import {
 import { Separator } from "@/Components/ui/separator";
 import GithubFetch from "@/Components/apiComponents/GithubFetch";
 import RepoCard from "@/Components/RepoCard";
+import Loading from "./Loading";
 
 const Github = () => {
-    const [loading, setLoading] = useState("Loading...");
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
@@ -86,7 +86,7 @@ const Github = () => {
                                 target="_black"
                                 prefetch={true}
                                 className="w-fit text-xl sm:text-4xl font-extralight group items-center text-center flex hover:underline  dark:text-neutral-200  underline-offset-8 decoration-1 duration-300 transition-all">
-                                @{userData ? userData.login : loading}
+                                @{userData ? userData.login : <Loading />}
                                 <ExternalLink
                                     size={30}
                                     strokeWidth={0.75}
@@ -117,7 +117,7 @@ const Github = () => {
                                 strokeWidth={1.75}
                                 className="min-w-[20px] text-neutral-400 mr-2"
                             />
-                            {userData ? userData.bio : loading}
+                            {userData ? userData.bio : <Loading />}
                         </p>
                         <p className="flex mt-2 items-center text-neutral-300 font-light">
                             <Users
@@ -126,7 +126,8 @@ const Github = () => {
                                 className="text-neutral-400 mr-2"
                             />
                             <b className="font-medium">
-                                {userData ? userData.followers : loading}&nbsp;
+                                {userData ? userData.followers : <Loading />}
+                                &nbsp;
                             </b>
                             followers
                             <Separator
@@ -134,7 +135,7 @@ const Github = () => {
                                 orientation="vertical"
                             />
                             <b className="font-medium">
-                                {userData ? userData.following : loading}
+                                {userData ? userData.following : <Loading />}
                             </b>
                             &nbsp;following
                         </p>
@@ -145,7 +146,7 @@ const Github = () => {
                                 className="text-neutral-400 mr-2"
                             />
                             <b className="font-light">
-                                {userData ? userData.location : loading},
+                                {userData ? userData.location : <Loading />},
                                 Rajasthan
                             </b>
                         </p>
@@ -155,7 +156,7 @@ const Github = () => {
                                 strokeWidth={1.75}
                                 className="text-neutral-400 mr-2"
                             />
-                            {userData ? userData.email : loading}
+                            {userData ? userData.email : <Loading />}
                             <Copy
                                 size={18}
                                 strokeWidth={1.25}
