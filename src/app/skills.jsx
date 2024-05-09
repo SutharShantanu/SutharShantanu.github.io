@@ -113,8 +113,8 @@ const Skills = () => {
                                 </button>
                             </div>
                             {loading ? (
-                                // <CardSkeleton />
-                                <CircularLoader />
+                                <CardSkeleton />
+                                // <CircularLoader />
                             ) : (
                                 <div className="grid grid-cols-2 sm:grid-cols-4 grid-rows-1 sm:grid-rows-2 gap-4 w-full">
                                     {visibleCards.map((card) => (

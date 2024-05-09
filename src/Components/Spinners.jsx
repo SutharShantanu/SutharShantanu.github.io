@@ -1,5 +1,5 @@
 import React from "react";
-import { HashLoader } from "react-spinners";
+import { HashLoader, PuffLoader } from "react-spinners";
 
 const CircularLoader = () => {
     return (
@@ -23,8 +23,9 @@ export default CircularLoader;
 
 export const MainLoader = () => {
     return (
-        <div className="hash">
-            <HashLoader color="rgba(38, 38, 38, 1)" />
+        <div className="hash border-4 w-full border-red-900 bg-neutral-50">
+            <PuffLoader color="rgba(38, 38, 38, 1)" size="150" />
+            {/* <HashLoader color="rgba(38, 38, 38, 1)" /> */}
         </div>
     );
 };
