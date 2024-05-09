@@ -17,11 +17,16 @@ export default function RootLayout({ children }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        const fetchData = async () => {
+            const { userData, repoData } = await GithubFetch();
+            if (userData && repoData) {
+                setIsLoading(false);
+            }
+        };
+
         const handleLoad = () => {
             setIsLoading(true);
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 3000);
+            fetchData();
         };
 
         window.addEventListener("load", handleLoad);
@@ -58,8 +63,7 @@ export default function RootLayout({ children }) {
                 <meta name="theme-color" content="#F42727" />
             </Head>
             <html lang="en" suppressHydrationWarning>
-                <body
-                    className={`${inter.className}   dark:bg-neutral-950 `}>
+                <body className={`${inter.className}   dark:bg-neutral-950 `}>
                     {isLoading ? (
                         <Loading />
                     ) : (
