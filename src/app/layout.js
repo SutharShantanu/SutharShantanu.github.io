@@ -2,6 +2,7 @@
 
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
+import { useEffect, useState } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
@@ -10,9 +11,31 @@ import Head from "next/head";
 import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
-import { Suspense } from "react";
+import Loading from "./Loading";
 
 export default function RootLayout({ children }) {
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const handleLoad = () => {
+            setIsLoading(true);
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 3000);
+        };
+
+        window.addEventListener("load", handleLoad);
+
+        const clearLoadingState = setTimeout(() => {
+            setIsLoading(false);
+        }, 3000);
+
+        return () => {
+            window.removeEventListener("load", handleLoad);
+            clearTimeout(clearLoadingState);
+        };
+    }, []);
+
     return (
         <>
             <Head>
@@ -35,19 +58,24 @@ export default function RootLayout({ children }) {
                 <meta name="theme-color" content="#F42727" />
             </Head>
             <html lang="en" suppressHydrationWarning>
-                <body className={inter.className}>
-                    <Provider>
-                        <Navbar />
-                        {children}
-                        <Footer />
-                        <SpeedInsights />
-                        <Analytics />
-                        <Toaster
-                            position="bottom-right"
-                            richColors
-                            closeButton
-                        />
-                    </Provider>
+                <body
+                    className={`${inter.className}   dark:bg-neutral-950 `}>
+                    {isLoading ? (
+                        <Loading />
+                    ) : (
+                        <Provider>
+                            <Navbar />
+                            {children}
+                            <Footer />
+                            <SpeedInsights />
+                            <Analytics />
+                            <Toaster
+                                position="bottom-right"
+                                richColors
+                                closeButton
+                            />
+                        </Provider>
+                    )}
                 </body>
             </html>
         </>
