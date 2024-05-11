@@ -3,12 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "./ui/tooltip";
-import {
     Home,
     User,
     FolderGit2,
@@ -38,6 +32,7 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import ThemeSwitch from "./Theme";
 import banner from "../../public/image-3.png";
+import banner2 from "../../public/banner2.jpeg";
 
 const Navbar = () => {
     const [current, setCurrent] = useState("homepage");
@@ -154,7 +149,7 @@ const Navbar = () => {
                     </Link>
                 </div>
             </Card>
-            <Card className="flex items-center p-4 w-full lg:hidden justify-between dark:bg-neutral-900 dark:border-neutral-800">
+            <Card className="flex items-center p-4 w-full lg:hidden justify-between bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button
@@ -180,14 +175,30 @@ const Navbar = () => {
                         <SheetHeader>
                             <SheetTitle>
                                 <Image
-                                    src={banner}
+                                    priority
+                                    quality={100}
+                                    src={banner2}
                                     width={500}
-                                    height={500}
+                                    // height={500}
                                     alt=""
-                                    className="w-[100%] max-h-24 object-fill border rounded-md dark:border-neutral-700 shadow-sm"
+                                    className="w-[100%]  object-cover aspect-video max-h-36 border rounded-md dark:border-neutral-700 shadow-sm"
                                 />
+                                {/* <video
+                                    width="320"
+                                    height="240"
+                                    controls
+                                    autoPlay
+                                    muted
+                                    playsInline
+                                    loop
+                                    preload="auto">
+                                    <source
+                                        src="../../public/MAROONED.mp4"
+                                        type="video/mp4"
+                                    />
+                                </video> */}
                             </SheetTitle>
-                            <SheetDescription className="space-y-2 border border-neutral-200 dark:border-neutral-700 shadow-sm my-2 rounded-lg p-2 dark:bg-neutral-800">
+                            <SheetDescription className="space-y-4 border border-neutral-200 dark:border-neutral-700 shadow-sm my-2 rounded-lg p-2 dark:bg-neutral-800">
                                 {links.map((ele) => (
                                     <NavItem
                                         key={ele.id}
@@ -243,8 +254,8 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
         <span
             className={`flex items-center md:px-4 px-4 py-3 cursor-pointer rounded-md transition-all duration-75 animate-out ${
                 isActive
-                    ? "bg-black dark:bg-neutral-700 shadow-lg dark:text-white"
-                    : "hover:bg-neutral-200 dark:hover:bg-neutral-900 dark:text-slate-300"
+                    ? "bg-neutral-900 dark:bg-neutral-700 shadow-lg dark:text-neutral-50 text-neutral-50"
+                    : "hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-slate-300"
             }`}
             onClick={handleClick}>
             <span className="mr-2 hidden md:inline-block">{title}</span>
