@@ -333,7 +333,7 @@ const Contact = () => {
                         <div className="flex justify-end mr-3 sm:mr-5 mt-6">
                             <Button
                                 type="submit"
-                                className="rounded-xl shadow-lg group bg-neutral-900 dark:bg-neutral-300"
+                                className="rounded-2xl shadow-lg group bg-neutral-900 dark:bg-neutral-300"
                                 disabled={isLoading}
                                 onClick={handleSubmit}>
                                 {isLoading ? (

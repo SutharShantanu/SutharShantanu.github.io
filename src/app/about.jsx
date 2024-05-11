@@ -21,7 +21,7 @@ const About = () => {
             </p>
             <div className="flex justify-between items-start flex-col md:flex-row">
                 <div className="w-full h-[200px] md:w-2/6 md:h-[55vh] ">
-                    {/* <Splines /> */}
+                    <Splines />
                 </div>
                 <h2 className="p-4 sm:p-0 w-full md:w-4/6">
                     <TextGenerateEffect words={words} />
