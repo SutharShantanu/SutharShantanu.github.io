@@ -25,7 +25,7 @@ const MobileCarousel = ({ slides, options }) => {
                                 className="flex-shrink-0 w-full mx-4"
                                 key={index}>
                                 <Image
-                                    className="w-[90%] mx-auto h-[100%] object-cover object-top rounded-md border border-neutral-700"
+                                    className="w-[90%] mx-auto h-[100%] object-cover object-top rounded-md border border-neutral-200 dark:border-neutral-800"
                                     src={ele.image}
                                     alt=""
                                 />
