@@ -16,16 +16,16 @@ const MobileCarousel = ({ slides, options }) => {
     }, [emblaApi]);
 
     return (
-        <section className="mx-auto">
+        <section className="mx-auto mt-6">
             <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex">
                     {slides &&
                         slides.map((ele, index) => (
                             <div
-                                className="flex-shrink-0 w-full mx-4"
+                                className="flex shrink-0 w-full mx-4"
                                 key={index}>
                                 <Image
-                                    className="w-[90%] mx-auto h-[100%] object-cover object-top rounded-md border border-neutral-200 dark:border-neutral-800"
+                                    className="w-full object-cover object-top rounded-md border border-neutral-200 dark:border-neutral-800"
                                     src={ele.image}
                                     alt=""
                                 />

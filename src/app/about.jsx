@@ -6,11 +6,15 @@ import Splines from "@/Components/Splines";
 import { MoveRight } from "lucide-react";
 
 const About = () => {
-    const words = `During my post-graduation, while preparing for government jobs, I observed some friends delving into HTML, CSS, and various tech stacks. Intrigued, I joined them, and the experience sparked a fascination with programming. Witnessing the tangible results of my code on the screen filled me with joy, prompting a shift in my career aspirations. This newfound interest led me to enroll in Masai School's intensive 30-week Full Stack Web Development course, where I honed my skills in both front-end and back-end technologies. At Masai, I evolved into a proficient and imaginative developer, deriving immense satisfaction from crafting user-friendly and interactive web applications. Beyond my technical prowess, I harbor a desire to leverage my knowledge for societal betterment in the years ahead. In addition to my passion for web development, I find solace in traveling and indulging in video games. With an outgoing and fun-loving nature, I strive to cultivate my creative instincts in every endeavor.`;
+    const words = `My journey to web development wasn't exactly linear. While prepping for government exams, I found myself captivated by the world my friends were building with lines of code. Witnessing their creations come alive on the screen sparked a curiosity within me. I craved that same magic – the thrill of crafting something tangible from scratch. So, I took a leap of faith and enrolled in Masai School's grueling 30-week bootcamp. Let's just say those weeks were a whirlwind of challenges and triumphs. But with every hurdle cleared and every line of code mastered, my passion for web development only intensified.
+
+Today, I'm not just a developer; I'm an artist who paints with code. I find immense satisfaction in building user-friendly interfaces and interactive web applications that not only function flawlessly but leave a lasting impression. But my ambitions extend beyond the digital realm. In the years to come, I aspire to leverage my technical expertise to create solutions that make a positive impact on society.
+
+When I'm not glued to the screen, you might find me exploring new destinations, unwinding with a good video game, or simply cracking jokes and bringing laughter to those around me. My outgoing personality and creative spirit fuel my drive to excel in everything I do.`;
     return (
         <section
             id="about"
-            className="border min-h-[80vh] w-[90%] border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border min-h-[80vh] w-[90%] border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <p className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 About
                 <MoveRight
