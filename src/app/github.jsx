@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Copy, CopyCheck, Link as LinkIcon, CheckCheck } from "lucide-react";
+import { Copy, Link as LinkIcon, CheckCheck } from "lucide-react";
 import { Badge } from "@/Components/ui/badge";
 import GitHubCalendar from "react-github-calendar";
 import {
@@ -111,7 +111,7 @@ const Github = () => {
                     </div>
                     <Separator className="my-5 dark:bg-neutral-700" />
                     <div>
-                        <p className="flex items-center text-neutral-300 font-light">
+                        <p className="flex items-center text-sm sm:text-base text-neutral-300 font-light">
                             <CircleUser
                                 size={20}
                                 strokeWidth={1.75}
@@ -119,7 +119,7 @@ const Github = () => {
                             />
                             {userData ? userData.bio : <Loading />}
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-300 font-light">
+                        <p className="flex mt-2 text-sm sm:text-base items-center text-neutral-300 font-light">
                             <Users
                                 size={20}
                                 strokeWidth={1.75}
@@ -139,7 +139,7 @@ const Github = () => {
                             </b>
                             &nbsp;following
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-300 font-light">
+                        <p className="flex mt-2 text-sm sm:text-base items-center text-neutral-300 font-light">
                             <MapPin
                                 size={20}
                                 strokeWidth={1.75}
@@ -150,7 +150,7 @@ const Github = () => {
                                 Rajasthan
                             </b>
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-300 font-light">
+                        <p className="flex mt-2 text-sm sm:text-base items-center text-neutral-300 font-light">
                             <Mail
                                 size={20}
                                 strokeWidth={1.75}
@@ -176,7 +176,7 @@ const Github = () => {
                                 }`}
                             />
                         </p>
-                        <p className="flex mt-2 items-center text-neutral-300 font-light">
+                        <p className="flex mt-2 text-sm sm:text-base items-center text-neutral-300 font-light">
                             <LinkIcon
                                 size={20}
                                 strokeWidth={1.75}
@@ -201,6 +201,7 @@ const Github = () => {
                                     alt="Pull Shark"
                                     width={80}
                                     height={80}
+                                    className="w-16 sm:w-20"
                                 />
                                 <p className="absolute bottom-2 right-0 shadow-sm border border-red-200 dark:border-red-400 text-red-500 dark:text-red-300 bg-red-100 dark:bg-red-900 rounded-2xl  text-xs px-2.5 py-0.5">
                                     X2
@@ -211,12 +212,14 @@ const Github = () => {
                                 alt="Quickdraw"
                                 width={80}
                                 height={80}
+                                className="w-16 sm:w-20"
                             />
                             <Image
                                 src="https://github.githubassets.com/assets/yolo-default-be0bbff04951.png"
                                 alt="Yolo"
                                 width={80}
                                 height={80}
+                                className="w-16 sm:w-20"
                             />
                         </div>
                     </div>

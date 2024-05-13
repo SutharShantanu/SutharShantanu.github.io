@@ -1,5 +1,5 @@
 import React from "react";
-import { HashLoader, PuffLoader } from "react-spinners";
+import { HashLoader, PuffLoader, ClimbingBoxLoader } from "react-spinners";
 
 const CircularLoader = () => {
     return (
@@ -23,9 +23,10 @@ export default CircularLoader;
 
 export const MainLoader = () => {
     return (
-        <div className="hash border-4 w-full border-red-900 bg-neutral-50">
-            <PuffLoader color="rgba(38, 38, 38, 1)" size="150" />
-            {/* <HashLoader color="rgba(38, 38, 38, 1)" /> */}
+        <div className="hash w-full bg-neutral-50">
+            {/* <ClimbingBoxLoader color="rgba(38, 38, 38, 1)" size="30" /> */}
+            {/* <PuffLoader color="rgba(38, 38, 38, 1)" size="150" /> */}
+            <HashLoader color="rgba(38, 38, 38, 1)" size="80" />
         </div>
     );
 };
