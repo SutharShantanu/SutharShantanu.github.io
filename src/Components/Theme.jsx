@@ -14,7 +14,7 @@ const ThemeSwitcher = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme("light")}
-                className="rounded-full shadow-sm hover:shadow-none border hover:border-neutral-200 dark:hover:border-neutral-600 dark:border-neutral-700 dark:hover:bg-neutral-700 dark:bg-neutral-800">
+                className="rounded-full shadow-sm hover:shadow-none border dark:hover:border-neutral-700 dark:border-neutral-800 dark:hover:bg-neutral-800 dark:bg-neutral-900">
                 <SunDim
                     size={20}
                     strokeWidth={1.75}
@@ -30,7 +30,7 @@ const ThemeSwitcher = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme("dark")}
-                className="rounded-full shadow-sm hover:shadow-none border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200">
+                className="rounded-full shadow-sm hover:shadow-none border border-neutral-200 hover:border-neutral-300 bg-neutral-100 hover:bg-neutral-200">
                 <Moon
                     size={20}
                     strokeWidth={1.75}

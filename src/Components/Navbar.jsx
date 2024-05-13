@@ -108,7 +108,7 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-0 backdrop-blur-sm z-50 w-full">
-            <Card className="hidden border dark:bg-neutral-900 dark:border-neutral-800 lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
+            <Card className="hidden border bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
                 <div className="flex space-x-4 ">
                     {links.map((ele) => (
                         <NavItem
@@ -129,7 +129,7 @@ const Navbar = () => {
                         <Button
                             disabled={isDownloading}
                             onClick={handleView}
-                            className="rounded-md shadow-lg border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white">
+                            className="rounded-md shadow-lg border border-neutral-200 bg-neutral-800 dark:border-neutral-700 dark:bg-neutral-200 dark:hover:bg-neutral-300 text-neutral-50 dark:text-neutral-900">
                             {isDownloading ? (
                                 <div className="flex">
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -139,7 +139,7 @@ const Navbar = () => {
                                 <div className="flex ">
                                     <span>Download Resume &nbsp;</span>
                                     <ArrowDownCircle
-                                        className="h-5 w-5 text-white"
+                                        className="h-5 w-5 text-neutral-50 dark:text-neutral-900"
                                         size={20}
                                         strokeWidth={1.5}
                                     />
@@ -216,7 +216,7 @@ const Navbar = () => {
                         </SheetFooter>
                     </SheetContent>
                 </Sheet>
-                <div className="flex item-center justify-between space-x-1 border dark:border-neutral-700 p-1 bg-neutral-100 dark:bg-neutral-800 rounded-full">
+                <div className="flex item-center justify-between space-x-1 border border-neutral-200 dark:border-neutral-800 p-1 bg-neutral-200 dark:bg-neutral-800 rounded-full">
                     <ThemeSwitch />
                     <Link
                         prefetch={true}
@@ -225,13 +225,13 @@ const Navbar = () => {
                             disabled={isDownloading}
                             onClick={handleView}
                             size="icon"
-                            className="rounded-full shadow-lg border border-neutral-200 dark:border-neutral-700 dark:bg-neutral-950 dark:hover:bg-neutral-700 dark:text-white
+                            className="rounded-full shadow-lg border border-neutral-200 bg-neutral-800 dark:border-neutral-700 dark:bg-neutral-200 dark:hover:bg-neutral-300 text-neutral-50 dark:text-neutral-900
                         ">
                             {isDownloading ? (
                                 <Loader2 className="h-5 w-5 animate-spin" />
                             ) : (
                                 <ArrowDownCircle
-                                    className="h-5 w-5 text-white"
+                                    className="h-5 w-5 text-neutral dark:text-neutral-900"
                                     size={20}
                                     strokeWidth={1.5}
                                 />
@@ -254,8 +254,8 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
         <span
             className={`flex items-center md:px-4 px-4 py-3 cursor-pointer rounded-md transition-all duration-75 animate-out ${
                 isActive
-                    ? "bg-neutral-900 dark:bg-neutral-700 shadow-lg dark:text-neutral-50 text-neutral-50"
-                    : "hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-slate-300"
+                    ? "bg-neutral-800 dark:bg-neutral-200 shadow-lg dark:text-neutral-900 text-neutral-50"
+                    : "hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-200"
             }`}
             onClick={handleClick}>
             <span className="mr-2 hidden md:inline-block">{title}</span>

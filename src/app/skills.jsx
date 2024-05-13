@@ -5,7 +5,7 @@ import { MoveRight, ChevronRight, ChevronLeft } from "lucide-react";
 import SkillCard from "@/Components/SkillCard";
 import { Separator } from "@/Components/ui/separator";
 import CardSkeleton from "@/Components/Skeleton";
-import CircularLoader from "@/Components/Spinners";
+// import CircularLoader from "@/Components/Spinners";
 
 const Skills = () => {
     const [selectedTab, setSelectedTab] = useState("all");
@@ -50,7 +50,7 @@ const Skills = () => {
     return (
         <section
             id="skills"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Skills
                 <MoveRight
@@ -68,17 +68,17 @@ const Skills = () => {
                                     onClick={() => handleTabChange("all")}
                                     className={`${
                                         selectedTab === "all"
-                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
-                                            : "hover:bg-neutral-800"
-                                    } w-1/4 sm:p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
+                                            ? "bg-neutral-300 dark:bg-neutral-700 shadow-md"
+                                            : "hover:dark:bg-neutral-800 hover:bg-neutral-200"
+                                    } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     All
                                 </button>
                                 <button
                                     onClick={() => handleTabChange("Frontend")}
                                     className={`${
                                         selectedTab === "Frontend"
-                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
-                                            : "hover:bg-neutral-800"
+                                            ? "bg-neutral-300 dark:bg-neutral-700 shadow-md"
+                                            : "hover:dark:bg-neutral-800 hover:bg-neutral-200"
                                     } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Frontend
                                 </button>
@@ -86,8 +86,8 @@ const Skills = () => {
                                     onClick={() => handleTabChange("Backend")}
                                     className={`${
                                         selectedTab === "Backend"
-                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
-                                            : "hover:bg-neutral-800"
+                                            ? "bg-neutral-300 dark:bg-neutral-700 shadow-md"
+                                            : "hover:dark:bg-neutral-800 hover:bg-neutral-200"
                                     } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Backend
                                 </button>
@@ -97,8 +97,8 @@ const Skills = () => {
                                     }
                                     className={`${
                                         selectedTab === "Deployment"
-                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
-                                            : "hover:bg-neutral-800"
+                                            ? "bg-neutral-300 dark:bg-neutral-700 shadow-md"
+                                            : "hover:dark:bg-neutral-800 hover:bg-neutral-200"
                                     } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Deployment
                                 </button>
@@ -106,16 +106,16 @@ const Skills = () => {
                                     onClick={() => handleTabChange("Tools")}
                                     className={`${
                                         selectedTab === "Tools"
-                                            ? "bg-neutral-200 dark:bg-neutral-700 shadow-md"
-                                            : "hover:bg-neutral-800"
+                                            ? "bg-neutral-300 dark:bg-neutral-700 shadow-md"
+                                            : "hover:dark:bg-neutral-800 hover:bg-neutral-200"
                                     } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}>
                                     Tools
                                 </button>
                             </div>
                             {loading ? (
                                 <CardSkeleton />
-                                // <CircularLoader />
                             ) : (
+                                // <CircularLoader />
                                 <div className="grid grid-cols-2 sm:grid-cols-4 grid-rows-1 sm:grid-rows-2 gap-4 w-full">
                                     {visibleCards.map((card) => (
                                         <SkillCard
@@ -134,8 +134,8 @@ const Skills = () => {
                             disabled={currentPage === 1}
                             className={`${
                                 currentPage === 1
-                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800 text-neutral-700 cursor-not-allowed"
-                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer"
+                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800 text-neutral-400 dark:text-neutral-300 cursor-not-allowed "
+                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer text-neutral-700 dark:text-neutral-300"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
                             <ChevronLeft size={20} strokeWidth={1.75} />
                         </button>
