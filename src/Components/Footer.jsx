@@ -46,7 +46,7 @@ const Footer = () => {
     return (
         <div
             id="footer"
-            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-50 w-full 2xl:w-4/5 xl:w-5/6 m-auto sm:my-4 py-6 px-2 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-50 w-full 2xl:w-4/5 xl:w-5/6 m-auto py-6 px-2 sm:p-8 rounded-lg shadow-sm">
             <div className="flex gap-4 items-center justify-between box-border">
                 <span
                     onClick={() => {

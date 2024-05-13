@@ -65,7 +65,7 @@ const RepoCard = (props) => {
                                     </p>
 
                                     <div className="flex flex-wrap sm:flex-nowrap w-fit gap-2 sm:gap-6 justify-between items-center my-4">
-                                        <p className=" flex items-center bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800  dark:hover:bg-neutral-700 w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700  transition-all duration-300">
+                                        <p className=" flex items-center bg-neutral-100 dark:bg-neutral-800   w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border border-neutral-200  dark:border-neutral-700  transition-all duration-300">
                                             <Languages
                                                 size={18}
                                                 strokeWidth={1.75}
@@ -75,7 +75,7 @@ const RepoCard = (props) => {
                                                 ? ele.language
                                                 : "Javascript"}
                                         </p>
-                                        <p className="flex items-center bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800  dark:hover:bg-neutral-700 w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border  border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700 transition-all duration-300 ">
+                                        <p className="flex items-center bg-neutral-100 dark:bg-neutral-800   w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border border-neutral-200  dark:border-neutral-700  transition-all duration-300 ">
                                             <GitCommitVertical
                                                 size={18}
                                                 strokeWidth={1.75}
@@ -96,7 +96,7 @@ const RepoCard = (props) => {
 
                                         <p
                                             onClick={() => ele.url}
-                                            className="flex items-center bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800  dark:hover:bg-neutral-700 w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border  border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700 transition-all duration-300 ">
+                                            className="flex items-center bg-neutral-100 dark:bg-neutral-800   w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border border-neutral-200  dark:border-neutral-700  transition-all duration-300">
                                             <GitBranch
                                                 size={18}
                                                 strokeWidth={1.75}

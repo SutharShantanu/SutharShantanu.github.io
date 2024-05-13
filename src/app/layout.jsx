@@ -56,14 +56,14 @@ export default function RootLayout({ children }) {
                     content="keywords, separated, by, commas"
                 />
                 <link rel="icon" href="/favicon.ico" />
-                <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
+
                 <title>Shantanu Suthar&apos;s Portfolio</title>
 
                 <meta name="theme-color" content="#F42727" />
             </Head>
             <html lang="en" suppressHydrationWarning>
-                <body className={`${inter.className}   dark:bg-neutral-950 `}>
+                <body className={`${inter.className}   dark:bg-neutral-950 bg-neutral-50`}>
                     {isLoading ? (
                         <Loading />
                     ) : (

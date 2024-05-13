@@ -10,8 +10,8 @@ const Experience = () => {
     return (
         <section
             id="experience"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <p className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            <p className="group inline-block dark:text-neutral-50 text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Experience
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4"
@@ -21,7 +21,7 @@ const Experience = () => {
             </p>
             <div className="m-8">
                 <ol class="relative border-s border-neutral-200 dark:border-neutral-800">
-                    <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 hover:dark:bg-neutral-800 transition-all p-4 rounded-lg">
+                    <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full -start-4 dark:bg-yellow-900 ">
                             <svg
                                 class="w-5 h-5 text-yellow-600 dark:text-yellow-300 lucide lucide-circle-dot"
@@ -38,18 +38,20 @@ const Experience = () => {
                                 <circle cx="12" cy="12" r="1" />
                             </svg>
                         </span>
-                        <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
+                        <h3 class="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                             Technology Operations Associates
                             <Badge
                                 variant="outline"
-                                class="bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-lg w-fit text-xs sm:text-sm font-medium  px-2.5 py-0.5 border my-2">
+                                class="bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-lg w-fit text-xs sm:text-sm font-medium  px-2.5 py-0.5 border my-2 md:m-0">
                                 Oct 2023 - Present
                             </Badge>
                         </h3>
                         <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
-                            <p>
+                            <p className="flex">
                                 Operations & IT Team
-                                <span className="sm:flex hidden">&#44;</span>
+                                <span className="sm:flex hidden sm:mr-1">
+                                    &#44;
+                                </span>
                             </p>
                             <p className="flex items-center my-2 sm:my-0">
                                 <Building2 size={16} strokeWidth={1.75} />
@@ -65,13 +67,34 @@ const Experience = () => {
                                 </Link>
                             </p>
                         </div>
-                        <p class="mb-4 text-sm sm:text-lg font-normal text-neutral-500 dark:text-neutral-400 ">
-                            Get access to over 20+ pages including a dashboard
-                            layout, charts, kanban board, calendar, and
-                            pre-order E-commerce & Marketing pages.
-                        </p>
+                        <ul className="pl-6 text-sm sm:text-lg font-normal text-neutral-500 dark:text-neutral-400 list-disc list-outside ">
+                            <li>
+                                Technical Support Specialist (Current Role):
+                                Effectively collaborate with the back-office and
+                                QA teams to facilitate the thorough testing of
+                                our new website launch.
+                            </li>
+                            <li>
+                                Cross-Functional Collaboration: Utilize my
+                                technical knowledge to assist the Operations
+                                team and provide valuable support to customer
+                                service representatives for a central government
+                                project.
+                            </li>
+                            <li>
+                                Product Expertise: Successfully introduced and
+                                guided customers on new feature integrations
+                                within a government project.
+                            </li>
+                            <li>
+                                Testing Initiation: Played a pivotal role in the
+                                initial testing phases of this crucial
+                                government project, marking a significant step
+                                forward in my experience with software testing.
+                            </li>
+                        </ul>
                     </li>
-                    <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 hover:dark:bg-neutral-800 transition-all p-4 rounded-lg">
+                    <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
                             <svg
                                 class="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"
@@ -88,20 +111,21 @@ const Experience = () => {
                                 <path d="m9 12 2 2 4-4" />
                             </svg>
                         </span>
-                        <h3 class="flex flex-col sm:flex-row  sm:w-full mb-1 text-md sm:text-xl font-semibold text-neutral-900 dark:text-white">
+                        <h3 class="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                             Front-End Web Developer
                             <Badge
                                 variant="outline"
-                                class="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border  my-2">
+                                class="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border my-2 md:m-0">
                                 Aug 2023 - Oct 2023
                             </Badge>
                         </h3>
                         <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
-                            <p>
+                            <p className="flex">
                                 Web Team
-                                <span className="sm:flex hidden">&#44;</span>
+                                <span className="sm:flex hidden sm:mr-1">
+                                    &#44;
+                                </span>
                             </p>
-
                             <p className="flex items-center my-2 sm:my-0">
                                 <Building2 size={16} strokeWidth={1.75} />
                                 <Link
@@ -116,11 +140,25 @@ const Experience = () => {
                                 </Link>
                             </p>
                         </div>
-                        <p class="mb-4 text-sm sm:text-lg font-normal text-neutral-500 dark:text-neutral-400 ">
-                            Get access to over 20+ pages including a dashboard
-                            layout, charts, kanban board, calendar, and
-                            pre-order E-commerce & Marketing pages.
-                        </p>
+                        <ul className="pl-6 text-sm sm:text-lg font-normal text-neutral-500 dark:text-neutral-400 list-disc list-outside ">
+                            <li>
+                                Front-End Developer: Leveraged my expertise in
+                                HTML, CSS, JavaScript, and jQuery to develop and
+                                maintain client websites, including both
+                                pre-existing projects and new builds.
+                            </li>
+                            <li>
+                                Website Development: Played a key role in the
+                                development and maintenance of the
+                                company&apos;s official website, ensuring a
+                                user-friendly and visually appealing experience.
+                            </li>
+                            <li>
+                                Landing Page Creation: Designed and implemented
+                                engaging landing pages for SaaS tools, fostering
+                                lead generation and user acquisition.
+                            </li>
+                        </ul>
                     </li>
                 </ol>
             </div>

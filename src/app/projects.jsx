@@ -73,7 +73,7 @@ const Projects = () => {
                                     height={500}
                                     className="h-[430px] w-full object-cover mx-auto object-top rounded-xl "
                                 />
-                                <div className="absolute bottom-0 left-0 right-0 px-4 py-3  bg-gradient-to-t from-neutral-600 to-transparent rounded-xl">
+                                <div className="absolute bottom-0 left-0 right-0 px-4 py-3  bg-gradient-to-t from-neutral-600 to-transparent rounded-xl backdrop-filter backdrop-blur-sm">
                                     <div className="flex items-center h-5 mb-2">
                                         <p
                                             className={`border w-fit flex items-center mr-2 rounded-full text-xs sm:text-sm font-normal px-2 py-1 sm:py-[.7px] ${
