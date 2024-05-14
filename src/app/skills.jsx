@@ -59,8 +59,8 @@ const Skills = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="flex flex-col sm:flex-row items-stretch justify-between sm:mt-4 mx-2">
-                <div className="w-full sm:w-[65%]">
+            <div className="flex flex-col md:flex-row items-stretch justify-between sm:mt-4 mx-2">
+                <div className="w-full md:w-[65%]">
                     <div className="w-full h-fit" onChange={handleTabChange}>
                         <div className="w-full">
                             <div className="flex border border-neutral-200 dark:border-neutral-800 rounded-2xl mb-4 p-1 sm:p-2 bg-neutral-100 dark:bg-neutral-900 space-x-1">
@@ -116,7 +116,7 @@ const Skills = () => {
                                 <CardSkeleton />
                             ) : (
                                 // <CircularLoader />
-                                <div className="grid grid-cols-2 sm:grid-cols-4 grid-rows-1 sm:grid-rows-2 gap-4 w-full">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
                                     {visibleCards.map((card) => (
                                         <SkillCard
                                             key={card.index}
@@ -134,8 +134,8 @@ const Skills = () => {
                             disabled={currentPage === 1}
                             className={`${
                                 currentPage === 1
-                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800 text-neutral-400 dark:text-neutral-300 cursor-not-allowed "
-                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer text-neutral-700 dark:text-neutral-300"
+                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-400 dark:text-neutral-600 cursor-not-allowed "
+                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer text-neutral-700 dark:text-neutral-300"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
                             <ChevronLeft size={20} strokeWidth={1.75} />
                         </button>
@@ -156,8 +156,8 @@ const Skills = () => {
                                 }}
                                 className={`${
                                     currentPage === index + 1
-                                        ? "bg-neutral-200 dark:bg-neutral-800  border-neutral-400 dark:border-neutral-700 "
-                                        : "bg-neutral-200 dark:bg-neutral-800 text-neutral-400 hover:bg-neutral-300 dark:border-neutral-800"
+                                        ? "bg-neutral-200 dark:bg-neutral-800  border-neutral-400 dark:border-neutral-600 text-neutral-800 dark:text-neutral-100"
+                                        : "bg-neutral-200 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100 hover:bg-neutral-300 dark:border-neutral-800"
                                 } border-2 border-neutral-200 py-1 px-3 rounded-xl  transition-all ease-in-out cursor-pointer shadow-sm`}>
                                 {index + 1}
                             </button>
@@ -172,15 +172,18 @@ const Skills = () => {
                             className={`${
                                 currentPage ===
                                 Math.ceil(filteredCards.length / skillsPerPage)
-                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800 text-neutral-700 cursor-not-allowed"
-                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer"
+                                    ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-neutral-400 dark:text-neutral-600 cursor-not-allowed "
+                                    : "bg-neutral-200 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-800   hover:bg-neutral-300 cursor-pointer text-neutral-700 dark:text-neutral-300"
                             } py-1 px-3 rounded-xl  transition-all ease-in-out  shadow-sm`}>
                             <ChevronRight size={20} strokeWidth={1.75} />
                         </button>
                     </div>
                 </div>
-                <Separator className="mb-2 sm:hidden dark:bg-neutral-800" />
-                <div className="grid grid-cols-4 grid-rows-3 gap-4 p-2 pb-4 sm:w-[33%] max-h-[600px] lg:w-40%">
+                <Separator className="mb-2 md:hidden bg-neutral-200  dark:bg-neutral-800" />
+                <div
+                    className="grid grid-cols-4 grid-rows-3 gap-4 px-2 pb-4 sm:p-0 lg:w-[33%] max-h-[600px]
+                 ">
+                    {/* lg:w-40% */}
                     <SkillGridFull unit="1200+" title="Hrs Coding" />
                     <SkillGrid unit="30+" title="Mini Projects" />
                     <SkillGrid unit="5+" title="Major Projects" />
@@ -196,7 +199,7 @@ export default Skills;
 
 const SkillGrid = ({ unit, title }) => {
     return (
-        <div className="col-span-2 row-span-1 bg-neutral-800 rounded-xl text-neutral-200">
+        <div className="col-span-2 row-span-1 bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-all rounded-xl text-neutral-800 dark:text-neutral-100">
             <div className="h-full flex items-center justify-center">
                 <div className="text-center p-4">
                     <div className="text-3xl">{unit}</div>
@@ -209,7 +212,7 @@ const SkillGrid = ({ unit, title }) => {
 
 const SkillGridFull = ({ unit, title }) => {
     return (
-        <div className="col-span-4 row-span-1 bg-neutral-800 rounded-xl text-neutral-200">
+        <div className="col-span-4 row-span-1 bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-all rounded-xl text-neutral-800 dark:text-neutral-100">
             <div className="h-full flex items-center justify-center">
                 <div className="text-center p-4">
                     <div className="text-3xl">{unit}</div>

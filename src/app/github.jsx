@@ -61,7 +61,7 @@ const Github = () => {
     return (
         <section
             id="github"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Github
                 <MoveRight
@@ -70,8 +70,8 @@ const Github = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="sm:mt-4 flex flex-col sm:flex-row items-start justify-between box-border px-2 sm:p-4">
-                <div className="border bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full sm:w-[33%] p-5 box-border">
+            <div className="sm:mt-4 flex flex-col md:flex-row items-start justify-between box-border px-2 md:p-4">
+                <div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full md:w-[33%] p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
@@ -249,7 +249,7 @@ const Github = () => {
                         </div>
                     </div>
                 </div>
-                <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 rounded-xl w-full sm:w-[65%] p-5 my-4 sm:my-0">
+                <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 rounded-xl w-full md:w-[65%] p-5 my-4 md:my-0">
                     <RepoCard slides={Repos} options={OPTIONS} />
                     <Separator className="my-5 dark:bg-neutral-700" />
                     <p className="mt-4 text-4xl font-extralight">
@@ -266,7 +266,7 @@ const Github = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-between mx-2 mb-2 sm:mb-0 sm:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 sm:h-64 gap-4 rounded-xl p-5">
+            <div className="flex flex-col md:flex-row items-center justify-between mx-2 mb-2 md:mb-0 md:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 md:h-64 gap-4 rounded-xl p-5">
                 <img
                     src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Stats"
