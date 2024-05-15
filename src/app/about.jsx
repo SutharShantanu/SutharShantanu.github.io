@@ -14,7 +14,7 @@ When I'm not glued to the screen, you might find me exploring new destinations, 
     return (
         <section
             id="about"
-            className="border min-h-[80vh] w-[90%] border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border h-fit border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <p className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 About
                 <MoveRight
@@ -23,11 +23,11 @@ When I'm not glued to the screen, you might find me exploring new destinations, 
                     strokeWidth={2.5}
                 />
             </p>
-            <div className="flex justify-between items-start flex-col md:flex-row">
-                <div className="w-full h-[200px] md:w-2/6 md:h-[55vh] ">
+            <div className="flex justify-between items-start flex-col 2xl:flex-row">
+                <div className="w-full h-[200px] 2xl:w-2/6 md:h-[30vh] lg:h-[40vh] xl:h-[50vh]">
                     <Splines />
                 </div>
-                <h2 className="p-4 sm:p-0 w-full md:w-4/6">
+                <h2 className="p-4 sm:p-0 w-full 2xl:w-4/6">
                     <TextGenerateEffect words={words} />
                 </h2>
             </div>
