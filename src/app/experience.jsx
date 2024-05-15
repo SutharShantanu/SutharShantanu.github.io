@@ -10,7 +10,7 @@ const Experience = () => {
     return (
         <section
             id="experience"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 sm:p-8 rounded-lg shadow-sm">
             <p className="group inline-block dark:text-neutral-50 text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
                 Experience
                 <MoveRight

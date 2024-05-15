@@ -108,7 +108,7 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-0 backdrop-blur-sm z-50 w-full">
-            <Card className="hidden border bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 lg:flex p-4 2xl:w-4/5 xl:w-5/6 w-full m-auto mt-2 justify-between ">
+            <Card className="hidden border bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 xl:flex p-4 xl:w-4/5 min-w-fit w-full m-auto mt-2 justify-between">
                 <div className="flex space-x-4 ">
                     {links.map((ele) => (
                         <NavItem
@@ -149,7 +149,7 @@ const Navbar = () => {
                     </Link>
                 </div>
             </Card>
-            <Card className="flex items-center p-4 w-full lg:hidden justify-between bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800">
+            <Card className="flex items-center p-4 w-full xl:hidden justify-between bg-neutral-50 dark:bg-neutral-900 dark:border-neutral-800">
                 <Sheet>
                     <SheetTrigger asChild>
                         <Button
