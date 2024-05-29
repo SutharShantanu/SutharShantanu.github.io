@@ -64,7 +64,7 @@ const RepoCard = (props) => {
                                         {ele.description}
                                     </p>
 
-                                    <div className="flex flex-wrap md:flex-nowrap w-fit gap-2 sm:gap-6 justify-between items-center my-4">
+                                    <div className="flex flex-wrap md:flex-nowrap lg:flex-wrap w-fit gap-2 sm:gap-6 justify-between items-center my-4">
                                         <p className=" flex items-center bg-neutral-100 dark:bg-neutral-800   w-fit rounded-xl  font-light text-xs sm:text-sm shadow-sm px-2 py-[.8px] border border-neutral-200  dark:border-neutral-700  transition-all duration-300">
                                             <Languages
                                                 size={18}
