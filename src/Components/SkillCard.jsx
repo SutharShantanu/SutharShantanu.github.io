@@ -11,7 +11,7 @@ const SkillCard = ({ card }) => {
                     variant="outline">
                     {card.category}
                 </Badge>
-                <Badge className="hidden sm:inline-block font-medium overflow-hidden whitespace-nowrap text-ellipsis ">
+                <Badge className="hidden sm:inline-block md:hidden font-medium overflow-hidden whitespace-nowrap text-ellipsis ">
                     {card.title}
                 </Badge>
             </div>
@@ -24,7 +24,7 @@ const SkillCard = ({ card }) => {
                     alt={card.title}
                 />
             </div>
-            <Badge className="sm:hidden block font-medium overflow-hidden whitespace-nowrap text-ellipsis text-center m-auto w-fit dark:bg-neutral-100 dark:text-neutral-900 bg-neutral-900 border-0 text-neutral-200">
+            <Badge className="sm:hidden block md:block font-medium overflow-hidden whitespace-nowrap text-ellipsis text-center mx-auto mt-2 w-fit dark:bg-neutral-100 dark:text-neutral-900 bg-neutral-900 border-0 text-neutral-200">
                 {card.title}
             </Badge>
         </div>

@@ -10,8 +10,8 @@ const Experience = () => {
     return (
         <section
             id="experience"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <p className="group inline-block dark:text-neutral-50 text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm">
+            <p className="group inline-block dark:text-neutral-50 text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8">
                 Experience
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4"
@@ -19,7 +19,7 @@ const Experience = () => {
                     strokeWidth={2.5}
                 />
             </p>
-            <div className="mt-8 md:m-8">
+            <div className="m-6">
                 <ol class="relative border-s border-neutral-200 dark:border-neutral-800">
                     <li class="mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full -start-4 dark:bg-yellow-900 ">
@@ -94,7 +94,7 @@ const Experience = () => {
                             </li>
                         </ul>
                     </li>
-                    <li class="md:mb-10 ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
+                    <li class="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
                         <span class="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
                             <svg
                                 class="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"

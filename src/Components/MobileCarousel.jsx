@@ -16,7 +16,7 @@ const MobileCarousel = ({ slides, options }) => {
     }, [emblaApi]);
 
     return (
-        <section className="mx-auto mt-6">
+        <section className="mx-auto mt-6 2xl:m-0">
             <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex">
                     {slides &&
