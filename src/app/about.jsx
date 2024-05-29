@@ -24,10 +24,10 @@ When I'm not glued to the screen, you might find me exploring new destinations, 
                 />
             </p>
             <div className="flex justify-between items-start flex-col 2xl:flex-row">
-                <div className="w-full h-[200px] 2xl:w-2/6 md:h-[30vh] lg:h-[40vh] xl:h-[50vh]">
+                <div className="w-full h-[200px] 2xl:w-2/5 md:h-[30vh] lg:h-[40vh] xl:h-[50vh]">
                     <Splines />
                 </div>
-                <h2 className="p-4 sm:p-0 w-full 2xl:w-4/6">
+                <h2 className="p-4 sm:p-0 w-full 2xl:w-3/5">
                     <TextGenerateEffect words={words} />
                 </h2>
             </div>

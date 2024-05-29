@@ -50,8 +50,8 @@ const Skills = () => {
     return (
         <section
             id="skills"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4  rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8">
                 Skills
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4 group-hover:line-through"
@@ -59,8 +59,8 @@ const Skills = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="flex flex-col md:flex-row items-stretch justify-between sm:mt-4 mx-2">
-                <div className="w-full md:w-[65%]">
+            <div className="flex flex-col lg:flex-row items-stretch justify-between m-6">
+                <div className="w-full lg:w-[65%]">
                     <div className="w-full h-fit" onChange={handleTabChange}>
                         <div className="w-full">
                             <div className="flex border border-neutral-200 dark:border-neutral-800 rounded-2xl mb-4 p-1 sm:p-2 bg-neutral-100 dark:bg-neutral-900 space-x-1">
@@ -116,7 +116,7 @@ const Skills = () => {
                                 <CardSkeleton />
                             ) : (
                                 // <CircularLoader />
-                                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 w-full">
                                     {visibleCards.map((card) => (
                                         <SkillCard
                                             key={card.index}
@@ -179,9 +179,9 @@ const Skills = () => {
                         </button>
                     </div>
                 </div>
-                <Separator className="mb-2 md:hidden bg-neutral-200  dark:bg-neutral-800" />
+                <Separator className="mb-5 md:hidden bg-neutral-200  dark:bg-neutral-800" />
                 <div
-                    className="grid grid-cols-4 grid-rows-3 gap-4 px-2 pb-4 sm:p-0 lg:w-[33%] max-h-[600px]
+                    className="grid grid-cols-4 grid-rows-3 gap-4 lg:w-[33%] max-h-[600px]
                  ">
                     {/* lg:w-40% */}
                     <SkillGridFull unit="1200+" title="Hrs Coding" />

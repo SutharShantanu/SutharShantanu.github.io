@@ -29,7 +29,7 @@ const Homepage = () => {
                         Shantanu!
                     </h1>
                 </div>
-                <div className="m-auto w-full md:max-w-[70%] lg:max-w-[60%]">
+                <div className="m-auto w-full md:max-w-[70%] lg:max-w-[60%] 2xl:max-w-[75%]">
                     <MobileCarousel slides={SLIDES} options={OPTIONS} />
                 </div>
             </div>

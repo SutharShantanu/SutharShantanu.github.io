@@ -61,8 +61,8 @@ const Github = () => {
     return (
         <section
             id="github"
-            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6  m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8">
                 Github
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4"
@@ -70,8 +70,8 @@ const Github = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="sm:mt-4 flex flex-col md:flex-row items-start justify-between box-border px-2 md:p-4">
-                <div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full md:w-[33%] p-5 box-border">
+            <div className="m-6 mb-0 flex flex-col lg:flex-row items-start justify-between box-border sm:p-0">
+                <div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full lg:w-[33%] p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
@@ -249,7 +249,7 @@ const Github = () => {
                         </div>
                     </div>
                 </div>
-                <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 rounded-xl w-full md:w-[65%] p-5 my-4 md:my-0">
+                <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 rounded-xl w-full lg:w-[65%] p-5 my-4 lg:my-0">
                     <RepoCard slides={Repos} options={OPTIONS} />
                     <Separator className="my-5 dark:bg-neutral-700" />
                     <p className="mt-4 text-4xl font-extralight">
@@ -266,23 +266,45 @@ const Github = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center justify-between mx-2 mb-2 md:mb-0 md:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 md:h-64 gap-4 rounded-xl p-5">
-                <img
+            <div className="flex flex-col md:flex-row items-center justify-between mx-6 mb-6 lg:mb-0 lg:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 lg:h-64 gap-4 rounded-xl p-5">
+                {/* <img
                     src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Stats"
                     className="filter dark:invert grayscale"
+                /> */}
+                <Image
+                    src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
+                    alt="Shantanu Stats"
+                    width="50"
+                    height="50"
+                    className="filter w-fit md:max-w-1/3  border border-red-500 dark:invert grayscale"
                 />
                 <Separator orientation="vertical" className="hidden sm:block" />
-                <img
+                {/* <img
                     src="https://github-readme-stats.vercel.app/api/top-langs/?username=SutharShantanu&hide_border=true&border_radius=12"
                     alt="Shantanu Language"
                     className="filter dark:invert grayscale"
+                /> */}
+                <Image
+                    src="https://github-readme-stats.vercel.app/api/top-langs/?username=SutharShantanu&hide_border=true&border_radius=12"
+                    alt="Shantanu Stats"
+                                        width="50"
+
+                    height="50"
+                    className="filter w-fit max-w-1/3 border border-red-500 dark:invert grayscale"
                 />
                 <Separator orientation="vertical" className="hidden sm:block" />
-                <img
+                {/* <img
                     src="https://github-readme-stats.vercel.app/api?username=SutharShantanu&count_private=true&show_icons=true&hide_border=true&border_radius=12&title_color=000000&text_color=808080&icon_color=9CA3AF"
                     alt="Shantanu Stats"
                     className="filter dark:invert grayscale"
+                /> */}
+                <Image
+                    src="https://github-readme-stats.vercel.app/api?username=SutharShantanu&count_private=true&show_icons=true&hide_border=true&border_radius=12&title_color=000000&text_color=808080&icon_color=9CA3AF"
+                    alt="Shantanu Stats"
+                    width="50"
+                    height="50"
+                    className="filter w-fit max-w-1/3 border border-red-500 dark:invert grayscale"
                 />
             </div>
         </section>
