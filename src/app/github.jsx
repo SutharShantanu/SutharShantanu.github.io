@@ -171,7 +171,7 @@ const Github = () => {
                                 strokeWidth={1.25}
                                 className={` ml-2 cursor-pointer ${
                                     copied
-                                        ? "text-green-300 flex"
+                                        ? "text-green-600 flex"
                                         : "text-neutral-400 hidden"
                                 }`}
                             />
@@ -266,7 +266,7 @@ const Github = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col md:flex-row items-center justify-between mx-6 mb-6 lg:mb-6 lg:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800  gap-4 rounded-xl p-5">
+            <div className="flex flex-col md:flex-row items-center justify-between mx-6 mb-6 lg:mb-6 lg:mt-4 shadow-sm border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800  gap-4 rounded-xl p-5">
                 <div className="flex-grow flex justify-center">
                     <Image
                         src="https://github-readme-streak-stats.herokuapp.com/?user=SutharShantanu&hide_border=true&border_radius=12"
