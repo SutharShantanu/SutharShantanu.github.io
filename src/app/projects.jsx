@@ -41,8 +41,8 @@ const Projects = () => {
     return (
         <section
             id="projects"
-            className="border border-neutral-200 bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8">
                 Projects
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4"
@@ -51,15 +51,15 @@ const Projects = () => {
                 />
             </div>
             <div
-                className="sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 items-start justify-between box-border px-2
+                className="m-6 sm:mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-start justify-between box-border
             ">
                 {Repos.Repos.slice(0, numProjects).map((ele) => (
                     <Card
-                        className="border bg-neutral-100 dark:bg-neutral-800 flex flex-col justify-between sm:h-[670px] sm:p-4 rounded-xl shadow-sm min-h-[350px] transition-all duration-300 group border-neutral-200 dark:border-neutral-800"
+                        className="border bg-neutral-200 dark:bg-neutral-800 flex flex-col justify-between md:h-[620px] xl:h-[650px] 2xl:h-[640px] rounded-xl shadow-sm transition-all duration-300 group border-neutral-200 dark:border-neutral-800"
                         key={ele.id}>
                         <CardHeader>
                             <CardTitle className="">{ele.name}</CardTitle>
-                            <CardDescription className="line-clamp-5 sm:line-clamp-none">
+                            <CardDescription className="line-clamp-4 xl:line-clamp-none">
                                 {ele.description}
                             </CardDescription>
                         </CardHeader>
@@ -76,11 +76,10 @@ const Projects = () => {
                                 <div className="absolute bottom-0 left-0 right-0 px-4 py-3  bg-gradient-to-t from-neutral-600 to-transparent rounded-xl backdrop-filter backdrop-blur-sm">
                                     <div className="flex items-center h-5 mb-2">
                                         <p
-                                            className={`border w-fit flex items-center mr-2 rounded-full text-xs sm:text-sm font-normal px-2 py-1 sm:py-[.7px] ${
-                                                ele.status === "ongoing"
-                                                    ? "bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300"
-                                                    : "bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300"
-                                            }`}>
+                                            className={`border w-fit flex items-center mr-2 rounded-full text-xs sm:text-sm font-normal px-2 py-1 sm:py-[.7px] ${ele.status === "ongoing"
+                                                ? "bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300"
+                                                : "bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300"
+                                                }`}>
                                             {ele.status === "completed" ? (
                                                 <BadgeCheck
                                                     size={16}
@@ -97,8 +96,8 @@ const Projects = () => {
                                             {`${ele.status
                                                 .charAt(0)
                                                 .toUpperCase()}${ele.status.slice(
-                                                1
-                                            )}`}
+                                                    1
+                                                )}`}
                                         </p>
 
                                         <p className="flex items-center my-2 w-fit bg-neutral-100 dark:bg-neutral-800  rounded-xl font-extralight text-xs sm:text-sm px-2 py-1 sm:py-[.8px] transition-all duration-300">
@@ -139,8 +138,8 @@ const Projects = () => {
                                             {`${ele.type
                                                 .charAt(0)
                                                 .toUpperCase()}${ele.type.slice(
-                                                1
-                                            )}`}
+                                                    1
+                                                )}`}
                                         </p>
                                         <Link
                                             target="_blank"
@@ -162,7 +161,7 @@ const Projects = () => {
             </div>
             {Repos.Repos.length > 4 && (
                 <Button
-                    className={`mt-4 mb-2 sm:mb-0 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800  dark:hover:bg-neutral-700 border flex items-center mx-auto border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700 px-3 py-1 rounded-full shadow-sm`}
+                    className={`my-4 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800  dark:hover:bg-neutral-700 border flex items-center mx-auto border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700 px-3 py-1 rounded-full shadow-sm`}
                     onClick={toggleProjectsVisibility}
                     disabled={isLoading}>
                     {isLoading ? (

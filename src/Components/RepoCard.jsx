@@ -57,10 +57,10 @@ const RepoCard = (props) => {
                             key={index}>
                             <div className="w-full transition-all duration-300 text-sm">
                                 <div>
-                                    <p className="font-semibold text-2xl text-neutral-200 truncate">
+                                    <p className="font-semibold text-2xl text-neutral-800 dark:text-neutral-200 truncate">
                                         {ele.name}
                                     </p>
-                                    <p className="font-extralight text-sm sm:text-lg text-neutral-200 line-clamp-5 sm:line-clamp-none">
+                                    <p className="font-extralight text-sm sm:text-lg text-neutral-800 dark:text-neutral-200 line-clamp-5 sm:line-clamp-none">
                                         {ele.description}
                                     </p>
 

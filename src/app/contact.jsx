@@ -2,6 +2,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import contactImage from "../../public/contact-background.jpeg";
 import {
     MoveRight,
     Type,
@@ -133,8 +134,8 @@ const Contact = () => {
     return (
         <section
             id="contact"
-            className="border min-h-[87vh] border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 w-[90%] 2xl:w-4/5 xl:w-5/6 m-auto my-4 sm:p-8 rounded-lg shadow-sm">
-            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4">
+            className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm">
+            <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8">
                 Contact
                 <MoveRight
                     className="hidden transition-all group-hover:inline-block group-hover:ml-4"
@@ -142,107 +143,107 @@ const Contact = () => {
                     strokeWidth={2.5}
                 />
             </div>
-            <div className="sm:mt-4 flex flex-col sm:flex-row gap-4 items-start justify-between box-border px-2">
-                <div className="w-full sm:w-[48%] rounded-xl sm:min-h-[430px] bg-[url('https://ui.mantine.dev/_next/static/media/bg.daf91204.svg')] bg-no-repeat bg-cover flex justify-center items-center p-6 sm:p-0 invert">
-                    <div className="w-80% items-center">
-                        <Separator className="mb-4 hidden sm:block dark:bg-neutral-800" />
-                        <div className="flex items-start mb-4 group">
+            <div className="sm:mt-4 flex flex-col md:flex-row gap-4 items-start justify-between box-border p-6">
+                <div className={`w-full md:w-[48%] rounded-xl sm:min-h-[430px] bg-[url('/contact-background-light.jpeg')] bg-no-repeat bg-cover flex justify-center items-center p-6 sm:p-0 `}>
+                    <div className="w-80% items-center backdrop-blur-sm p-4 rounded-xl">
+                        {/* <Separator className="mb-4 hidden sm:block dark:bg-neutral-800" /> */}
+                        <div className="flex items-end mb-4 group">
                             <Mailbox
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-neutral-100 mr-6 min-w-[26px]"
+                                className=" mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
-                                <p className="m-0 font-extralight text-[11px]">
+                                <p className="m-0 font-extralight text-[11px] text-neutral-900">
                                     Email
                                 </p>
                                 <Link
                                     href="mailto:shantanusut2000@gmail.com"
                                     prefetch={true}
-                                    className="group-hover:underline underline-offset-4"
+                                    className="group-hover:underline underline-offset-4 text-neutral-900"
                                     target="_black">
-                                    <p className="mt-0">
+                                    <p className="mt-0 text-neutral-900">
                                         shantanusut2000@gmail.com
                                     </p>
                                 </Link>
                             </div>
                         </div>
-                        <div className="flex items-start mb-4 group">
+                        <div className="flex items-end mb-4 group">
                             <Phone
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-neutral-100 mr-6 min-w-[26px]"
+                                className=" mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
-                                <p className="m-0 font-extralight text-[11px]">
+                                <p className="m-0 font-extralight text-[11px] text-neutral-900">
                                     Phone
                                 </p>
                                 <Link
                                     href="tel:+91 77329 62110"
-                                    className="group-hover:underline underline-offset-4"
+                                    className="group-hover:underline underline-offset-4 text-neutral-900"
                                     prefetch={true}>
-                                    <p className="mt-0">+91 77329 62110</p>
+                                    <p className="mt-0 text-neutral-900">+91 77329 62110</p>
                                 </Link>
                             </div>
                         </div>
-                        <div className="flex items-start mb-4 group">
+                        <div className="flex items-end mb-4 group">
                             <Map
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-neutral-100 mr-6 min-w-[26px]"
+                                className=" mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
-                                <p className="m-0 font-extralight text-[11px]">
+                                <p className="m-0 font-extralight text-[11px] text-neutral-900">
                                     Address
                                 </p>
                                 <Link
                                     href="https://maps.app.goo.gl/rGK8a5HPtnFKzri17"
-                                    className="group-hover:underline underline-offset-4"
+                                    className="group-hover:underline underline-offset-4 text-neutral-900"
                                     prefetch={true}
                                     target="_black">
-                                    <p className="mt-0">
+                                    <p className="mt-0 text-neutral-900">
                                         1575, East Pocket, Sector 23, Gurugram,
                                         Haryana 122001
                                     </p>
                                 </Link>
                             </div>
                         </div>
-                        <div className="flex items-start mb-4">
+                        <div className="flex items-end mb-4">
                             <Clock
                                 size={26}
                                 strokeWidth={1.25}
-                                className="text-neutral-100 mr-6 min-w-[26px]"
+                                className=" mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
-                                <p className="m-0 font-extralight text-[11px]">
+                                <p className="m-0 font-extralight text-[11px] text-neutral-900">
                                     Working Hours
                                 </p>
-                                <p className="mt-0">10:00 AM - 6:00 PM</p>
+                                <p className="mt-0 text-neutral-900">10:00 AM - 6:00 PM</p>
                             </div>
                         </div>
-                        <Separator className="mt-4 hidden sm:block" />
+                        {/* <Separator className="mt-4 hidden sm:block" /> */}
                     </div>
                 </div>
 
-                <div className="w-full sm:w-2/4 rounded-xl border sm:min-h-[430px] border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-800 p-4 mb-2 sm:pb-0">
+                <div className="w-full md:w-2/4 rounded-xl border sm:min-h-[430px] border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 p-4 mb-2 sm:pb-0">
                     <h2 className="text-2xl sm:text-4xl font-extralight">
                         Get in touch
                     </h2>
-                    <Separator className="my-5 dark:bg-neutral-700" />
+                    <Separator className="my-5 dark:bg-neutral-700 bg-neutral-300" />
                     <form id="contact-form" onSubmit={handleSubmit}>
                         <div className="flex items-center justify-start my-2 mx-auto w-full p-2 pl-0 h-14">
                             <label
                                 htmlFor="fullName"
-                                className="hidden sm:flex items-center text-neutral-300 sm:w-[7%] p-2 h-16">
+                                className="flex items-center text-neutral-300 sm:w-[7%] p-2 h-16 min-w-12">
                                 <Type
                                     size={24}
                                     strokeWidth={1.75}
-                                    className="text-neutral-600"
+                                    className="text-neutral-600 dark:text-neutral-300 min-w-6"
                                 />
                             </label>
                             <Separator
                                 orientation="vertical"
-                                className="hidden sm:block sm:mr-6"
+                                className="block mr-6 dark:bg-neutral-700 bg-neutral-300"
                             />
                             <div className="w-full sm:w-[87%] ">
                                 <input
@@ -266,16 +267,16 @@ const Contact = () => {
                         <div className="flex items-center justify-start my-2 mx-auto w-full p-2 pl-0 h-14">
                             <label
                                 htmlFor="email"
-                                className="hidden sm:flex items-center text-neutral-300 sm:w-[7%] p-2 h-16">
+                                className="flex items-center text-neutral-300 sm:w-[7%] p-2 h-16 min-w-12">
                                 <AtSign
                                     size={24}
                                     strokeWidth={1.75}
-                                    className="text-neutral-600"
+                                    className="text-neutral-600 dark:text-neutral-300 min-w-6"
                                 />
                             </label>
                             <Separator
                                 orientation="vertical"
-                                className="hidden sm:block sm:mr-6"
+                                className="block mr-6 dark:bg-neutral-700 bg-neutral-300"
                             />
                             <div className="w-full sm:w-[87%] ">
                                 <input
@@ -299,16 +300,16 @@ const Contact = () => {
                         <div className="flex items-start justify-start my-2 mx-auto w-full h-28 p-2 pl-0">
                             <label
                                 htmlFor="message"
-                                className="hidden sm:flex items-center text-neutral-300 sm:w-[7%] p-2 h-16">
+                                className="flex items-center text-neutral-300 sm:w-[7%] p-2 h-16 min-w-12">
                                 <MessageSquareText
                                     size={24}
                                     strokeWidth={1.75}
-                                    className="text-neutral-600 mr-1"
+                                    className="text-neutral-600 dark:text-neutral-300 mr-1 min-w-6"
                                 />
                             </label>
                             <Separator
                                 orientation="vertical"
-                                className="hidden sm:block sm:mr-6"
+                                className="block mr-6 dark:bg-neutral-700 bg-neutral-300"
                             />
                             <div className="w-full sm:w-[87%] ">
                                 <textarea
