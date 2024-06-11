@@ -46,13 +46,13 @@ const Footer = () => {
     return (
         <div
             id="footer"
-            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-50 w-full 2xl:w-4/5 xl:w-5/6 m-auto py-6 px-2 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-100 w-full 2xl:w-4/5 xl:w-5/6 m-auto py-6 px-2 sm:p-8 rounded-lg shadow-sm">
             <div className="flex gap-4 items-center justify-between box-border">
                 <span
                     onClick={() => {
                         setShowDate(!showDate); // Toggle showDate on click
                     }}
-                    className="flex justify-between items-center  rounded-2xl cursor-pointer border dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-50 px-2 py-[6px] transition-all duration-75 text-xs sm:text-sm text-nowrap">
+                    className="flex justify-between items-center rounded-2xl cursor-pointer border dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-50 px-2 py-[6px] transition-all duration-75 text-xs sm:text-sm text-nowrap">
                     <History size={20} strokeWidth={1.75} className="w-4" />
                     <span
                         className={`inline transition-opacity ease-in-out duration-500 text-neutral-500 ${
