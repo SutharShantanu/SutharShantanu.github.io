@@ -1,9 +1,1 @@
-<svg
-  width="1298"
-  height="1298"
-  viewBox="0 0 1298 1298"
-  fill="none"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <circle cx="150" cy="150" r="150" fill="black" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1298" height="1298" fill="none" viewBox="0 0 1298 1298"><circle cx="150" cy="150" r="150" fill="#000"/></svg>
