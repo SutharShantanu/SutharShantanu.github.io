@@ -71,7 +71,7 @@ const Github = () => {
                 />
             </div>
             <div className="m-6 mb-0 flex flex-col lg:flex-row gap-6 items-start justify-between box-border sm:p-0">
-                <div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full lg:w-1/3 min-w-fit p-5 box-border">
+                <div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full lg:w-1/3 p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
@@ -80,12 +80,12 @@ const Github = () => {
                             src="https://avatars.githubusercontent.com/u/110021464?v=4"
                             alt="Github Profile Picture"
                         />
-                        <div>
+                        <div className="overflow-auto">
                             <Link
                                 href="https://github.com/SutharShantanu"
                                 target="_black"
                                 prefetch={true}
-                                className="w-fit text-xl sm:text-4xl font-extralight group items-center text-center flex hover:underline  dark:text-neutral-200  underline-offset-8 decoration-1 duration-300 transition-all">
+                                className="text-xl sm:text-4xl font-extralight group items-center flex hover:underline dark:text-neutral-200 underline-offset-8 decoration-1 duration-300 transition-all">
                                 @{userData ? userData.login : <Loading />}
                                 <ExternalLink
                                     size={30}
@@ -109,9 +109,9 @@ const Github = () => {
                             </Badge>
                         </div>
                     </div>
-                    <Separator className="my-5 dark:bg-neutral-700 bg-neutral-300" />
+                    <Separator className="my-3 dark:bg-neutral-700 bg-neutral-300" />
                     <div>
-                        <p className="flex items-center text-sm sm:text-base dark:text-neutral-300 text-neutral-800 font-light">
+                        <p className="flex items-center text-sm sm:text-base dark:text-neutral-300 text-neutral-800 font-light truncate whitespace-normal">
                             <CircleUser
                                 size={20}
                                 strokeWidth={1.75}
@@ -119,11 +119,11 @@ const Github = () => {
                             />
                             {userData ? userData.bio : <Loading />}
                         </p>
-                        <p className="flex mt-2 text-sm sm:text-base items-center dark:text-neutral-300 text-neutral-800 font-light">
+                        <p className="flex mt-2 text-sm sm:text-base items-center dark:text-neutral-300 text-neutral-800 font-light truncate">
                             <Users
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-neutral-400 mr-2"
+                                className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             <b className="font-medium">
                                 {userData ? userData.followers : <Loading />}
@@ -134,7 +134,7 @@ const Github = () => {
                                 className="h-5 bg-neutral-300 dark:bg-neutral-700 mx-2"
                                 orientation="vertical"
                             />
-                            <b className="font-medium">
+                            <b className="font-medium ">
                                 {userData ? userData.following : <Loading />}
                             </b>
                             &nbsp;following
@@ -143,50 +143,48 @@ const Github = () => {
                             <MapPin
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-neutral-400 mr-2"
+                                className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             <b className="font-light">
                                 {userData ? userData.location : <Loading />},
                                 Rajasthan
                             </b>
                         </p>
-                        <p className="flex mt-2 text-sm sm:text-base items-center dark:text-neutral-300 text-neutral-800 font-light">
+                        <p className="flex mt-2 text-sm sm:text-base items-center dark:text-neutral-300 text-neutral-800 font-light truncate">
                             <Mail
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-neutral-400 mr-2"
+                                className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             {userData ? userData.email : <Loading />}
                             <Copy
                                 size={18}
                                 strokeWidth={1.25}
-                                className={` ml-2 cursor-pointer ${
-                                    copied ? "hidden" : "text-neutral-400"
-                                }`}
+                                className={` ml-2 cursor-pointer ${copied ? "hidden" : "text-neutral-400"
+                                    }`}
                                 onClick={handleCopy}
                                 title="Copy email address"
                             />
                             <CheckCheck
                                 size={18}
                                 strokeWidth={1.25}
-                                className={` ml-2 cursor-pointer ${
-                                    copied
+                                className={` ml-2 cursor-pointer ${copied
                                         ? "text-green-600 flex"
                                         : "text-neutral-400 hidden"
-                                }`}
+                                    }`}
                             />
                         </p>
                         <p className="flex mt-2 text-sm sm:text-base items-center dark:text-neutral-300 text-neutral-800 font-light">
                             <LinkIcon
                                 size={20}
                                 strokeWidth={1.75}
-                                className="text-neutral-400 mr-2"
+                                className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             <Link
                                 href="https://linktr.ee/shantanu_suthar"
                                 target="_blank"
                                 prefetch={true}
-                                className="hover:underline underline-offset-2 flex items-center transition-all duration-300">
+                                className="hover:underline underline-offset-2 flex items-center transition-all duration-300 truncate">
                                 https://linktr.ee/shantanu_suthar
                             </Link>
                         </p>
@@ -226,26 +224,22 @@ const Github = () => {
                     <Separator className="my-5 dark:bg-neutral-700 bg-neutral-300" />
                     <div>
                         <p className="pb-2">Organizations</p>
-                        <div className="flex items-center justify-between w-fit mt-2 gap-3">
-                            {/* <div className="relative  overflow-hidden"> */}
+                        <div className="flex items-center justify-between mt-2 gap-3">
                             <Image
                                 src="https://infyni-prod-upgrade.s3.amazonaws.com/static/assets/images/logos/logo.png"
                                 alt="infyni logo"
-                                width={90}
+                                width={10}
                                 height={40}
-                                className="border border-neutral-300 dark:border-neutral-700 shadow-sm m-2 px-2 py-1 rounded-xl"
+                                className="border min-w-[75px] sm:min-w-[90px] max-w-[90px] border-neutral-300 dark:border-neutral-700 shadow-sm m-2 px-2 py-1 rounded-xl"
                             />
 
-                            {/* </div> */}
-                            {/* <div className="relative overflow-hidden"> */}
                             <Image
                                 src="https://masai-website-images.s3.ap-south-1.amazonaws.com/logo.png"
                                 alt="masai logo"
-                                width={90}
+                                width={10}
                                 height={40}
-                                className="border border-neutral-300 dark:border-neutral-700 shadow-sm m-2 px-2 py-1 rounded-xl"
+                                className="border min-w-[75px] sm:min-w-[90px] max-w-[90px] border-neutral-300 dark:border-neutral-700 shadow-sm m-2 px-2 py-1 rounded-xl"
                             />
-                            {/* </div> */}
                         </div>
                     </div>
                 </div>
