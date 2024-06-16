@@ -98,6 +98,8 @@ const Contact = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        console.log(formData)
+
         try {
             setIsLoading(true);
             const response = await axios.post("/api/email", formData, {
@@ -144,14 +146,14 @@ const Contact = () => {
                 />
             </div>
             <div className="sm:mt-4 flex flex-col md:flex-row gap-4 items-start justify-between box-border p-6">
-                <div className={`w-full md:w-[48%] rounded-xl sm:min-h-[430px] bg-[url('/contact-background-light.jpeg')] bg-no-repeat bg-cover flex justify-center items-center p-6 sm:p-0 `}>
-                    <div className="w-80% items-center backdrop-blur-sm p-4 rounded-xl">
+                <div className={`w-full md:w-[48%] rounded-xl sm:min-h-[540px] bg-[url('/contact-background-light.jpeg')] bg-no-repeat bg-cover flex justify-center items-center sm:p-0 `}>
+                    <div className="w-full lg:w-[70%] items-center backdrop-blur-sm p-4 sm:p-6 rounded-xl">
                         {/* <Separator className="mb-4 hidden sm:block dark:bg-neutral-800" /> */}
                         <div className="flex items-end mb-4 group">
                             <Mailbox
                                 size={26}
                                 strokeWidth={1.25}
-                                className=" mr-6 min-w-[26px] text-neutral-900"
+                                className=" mr-2 sm:mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px] text-neutral-900">
@@ -162,7 +164,7 @@ const Contact = () => {
                                     prefetch={true}
                                     className="group-hover:underline underline-offset-4 text-neutral-900"
                                     target="_black">
-                                    <p className="mt-0 text-neutral-900">
+                                    <p className="mt-0 text-neutral-900 text-xs sm:text-sm">
                                         shantanusut2000@gmail.com
                                     </p>
                                 </Link>
@@ -172,7 +174,7 @@ const Contact = () => {
                             <Phone
                                 size={26}
                                 strokeWidth={1.25}
-                                className=" mr-6 min-w-[26px] text-neutral-900"
+                                className=" mr-2 sm:mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px] text-neutral-900">
@@ -182,7 +184,7 @@ const Contact = () => {
                                     href="tel:+91 77329 62110"
                                     className="group-hover:underline underline-offset-4 text-neutral-900"
                                     prefetch={true}>
-                                    <p className="mt-0 text-neutral-900">+91 77329 62110</p>
+                                    <p className="mt-0 text-neutral-900 text-xs sm:text-sm">+91 77329 62110</p>
                                 </Link>
                             </div>
                         </div>
@@ -190,7 +192,7 @@ const Contact = () => {
                             <Map
                                 size={26}
                                 strokeWidth={1.25}
-                                className=" mr-6 min-w-[26px] text-neutral-900"
+                                className=" mr-2 sm:mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px] text-neutral-900">
@@ -201,7 +203,7 @@ const Contact = () => {
                                     className="group-hover:underline underline-offset-4 text-neutral-900"
                                     prefetch={true}
                                     target="_black">
-                                    <p className="mt-0 text-neutral-900">
+                                    <p className="mt-0 text-neutral-900 text-xs sm:text-sm">
                                         1575, East Pocket, Sector 23, Gurugram,
                                         Haryana 122001
                                     </p>
@@ -212,20 +214,20 @@ const Contact = () => {
                             <Clock
                                 size={26}
                                 strokeWidth={1.25}
-                                className=" mr-6 min-w-[26px] text-neutral-900"
+                                className=" mr-2 sm:mr-6 min-w-[26px] text-neutral-900"
                             />
                             <div>
                                 <p className="m-0 font-extralight text-[11px] text-neutral-900">
                                     Working Hours
                                 </p>
-                                <p className="mt-0 text-neutral-900">10:00 AM - 6:00 PM</p>
+                                <p className="mt-0 text-neutral-900 text-xs sm:text-sm">10:00 AM - 6:00 PM</p>
                             </div>
                         </div>
                         {/* <Separator className="mt-4 hidden sm:block" /> */}
                     </div>
                 </div>
 
-                <div className="w-full md:w-2/4 rounded-xl border sm:min-h-[430px] border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 p-4 mb-2 sm:pb-0">
+                <div className="w-full md:w-2/4 rounded-xl sm:min-h-[540px] border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 p-4 mb-2 sm:pb-0">
                     <h2 className="text-2xl sm:text-4xl font-extralight">
                         Get in touch
                     </h2>
@@ -334,25 +336,25 @@ const Contact = () => {
                         <div className="flex justify-end mr-3 sm:mr-5 mt-6">
                             <Button
                                 type="submit"
-                                className="rounded-2xl shadow-lg group bg-neutral-900 dark:bg-neutral-300"
+                                className="rounded-2xl px-2 py-0 sm:p-2 h-8 sm:h-auto shadow-lg group bg-neutral-900 dark:bg-neutral-300"
                                 disabled={isLoading}
                                 onClick={handleSubmit}>
                                 {isLoading ? (
-                                    <div className="flex items-center text-sm">
-                                        <span>Loading</span>
+                                    <div className="flex items-center ">
+                                        <span className="text-xs sm:text-base">Loading</span>
                                         <Loader2
                                             size={20}
                                             strokeWidth={1.75}
-                                            className="ml-1 animate-spin h-5 w-5 text-neutral-300 dark:text-neutral-800"
+                                            className="ml-1 animate-spin h-5 w-5 sm:h-5 sm:w-5 text-neutral-300 dark:text-neutral-800"
                                         />
                                     </div>
                                 ) : (
-                                    <div className="flex items-center text-sm">
-                                        <span>Send message</span>
+                                    <div className="flex items-center ">
+                                            <span className="text-xs sm:text-base">Send message</span>
                                         <Send
                                             size={18}
                                             strokeWidth={1.75}
-                                            className="text-neutral-300 dark:text-neutral-800 ml-1 transition-transform transform-gpu group-hover:rotate-45"
+                                            className="text-neutral-300 h-3 w-3 sm:h-5 sm:w-5 dark:text-neutral-800 ml-1 transition-transform transform-gpu group-hover:rotate-45"
                                         />
                                     </div>
                                 )}
