@@ -20,7 +20,6 @@ const Footer = () => {
     const timeOptions = {
         hour: "numeric",
         minute: "numeric",
-        second: "numeric",
         hour12: true,
     };
 
@@ -33,14 +32,16 @@ const Footer = () => {
     const formattedTime = currentDate.toLocaleTimeString("en-US", timeOptions);
     const formattedDate = currentDate.toLocaleDateString("en-US", dateOptions);
 
-    const desiredFormat = `${formattedTime} |  ${formattedDate}`;
+    const desiredFormat = `
+    ${formattedTime}`;
+    // ${formattedDate}
 
     const updatedDate = specificRepoData
         ? new Date(specificRepoData.updated_at).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "2-digit",
-          })
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+        })
         : "";
 
     return (
@@ -49,25 +50,17 @@ const Footer = () => {
             className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-100 w-full 2xl:w-4/5 xl:w-5/6 m-auto py-6 px-2 sm:p-8 rounded-lg shadow-sm">
             <div className="flex gap-4 items-center justify-between box-border">
                 <span
-                    onClick={() => {
-                        setShowDate(!showDate); // Toggle showDate on click
-                    }}
+
                     className="flex justify-between items-center rounded-2xl cursor-pointer border dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-50 px-2 py-[6px] transition-all duration-75 text-xs sm:text-sm text-nowrap">
                     <History size={20} strokeWidth={1.75} className="w-4" />
                     <span
-                        className={`inline transition-opacity ease-in-out duration-500 text-neutral-500 ${
-                            !updatedDate ? "ml-0" : "ml-1"
-                        } ${
-                            showDate
-                                ? "inline opacity-100 "
-                                : "hidden opacity-0"
-                        }`}>
+                        className="inline transition-opacity ease-in-out duration-500 text-neutral-500 ml-1 opacity-100">
                         {updatedDate}
                     </span>
                 </span>
-                <span className="dark:text-neutral-50 text-xs sm:text-sm text-center">
+                {/* <span className="dark:text-neutral-50 text-xs sm:text-sm text-center">
                     {desiredFormat}
-                </span>
+                </span> */}
                 <div className="max-w-fit flex justify-between space-x-2 items-center">
                     <Link
                         prefetch={true}

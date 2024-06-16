@@ -61,7 +61,7 @@ const Navbar = () => {
     useEffect(() => {
         const handleScroll = () => {
             const sections = document.querySelectorAll("section");
-            const scrollPosition = window.scrollY + 10;
+            const scrollPosition = window.scrollY + 130;
 
             sections.forEach((section) => {
                 const sectionTop = section.offsetTop;
@@ -108,7 +108,7 @@ const Navbar = () => {
 
     return (
         <div className="fixed top-0 backdrop-blur-sm z-50 w-full">
-            <Card className="hidden border bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 xl:flex p-4 xl:w-4/5 min-w-fit w-full m-auto mt-2 justify-between">
+            <Card className="hidden border bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-800 xl:flex p-4 xl:w-4/5 min-w-fit w-full m-auto mt-2 justify-between space-x-4">
                 <div className="flex space-x-4 ">
                     {links.map((ele) => (
                         <NavItem
@@ -252,11 +252,10 @@ const NavItem = memo(function NavItem({ id, current, onClick, title, icon }) {
 
     return (
         <span
-            className={`flex items-center md:px-4 px-4 py-3 cursor-pointer rounded-md transition-all duration-75 animate-out ${
-                isActive
-                    ? "bg-neutral-800 dark:bg-neutral-200 shadow-lg dark:text-neutral-900 text-neutral-50"
-                    : "hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-200"
-            }`}
+            className={`flex items-center md:px-4 px-4 py-3 cursor-pointer rounded-md transition-all duration-75 animate-out ${isActive
+                ? "bg-neutral-800 dark:bg-neutral-200 shadow-lg dark:text-neutral-900 text-neutral-50"
+                : "hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:text-neutral-200"
+                }`}
             onClick={handleClick}>
             <span className="mr-2 hidden md:inline-block">{title}</span>
             {icon === "Home" ? (
