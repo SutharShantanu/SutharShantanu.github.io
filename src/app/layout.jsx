@@ -12,6 +12,7 @@ import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
 import Loading from "./Loading";
+import GithubFetch from "@/Components/apiComponents/GithubFetch";
 
 export default function RootLayout({ children }) {
     const [isLoading, setIsLoading] = useState(true);
