@@ -49,15 +49,19 @@ const Contact = () => {
 
     const onSubmit = async (values) => {
         console.log(values);
+
         try {
             setIsLoading(true);
-            const response = await sendContactFrom(values)
-            // const response = await axios.post("/api/email", values, {
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            // });
-            if (response && response.status === 200) {
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values),
+            });
+
+            if (response.ok) {
+                setIsLoading(false);
                 toast.success("Message sent successfully.", {
                     description: new Date().toLocaleString("en-US", {
                         weekday: "long",
@@ -69,19 +73,20 @@ const Contact = () => {
                         timeZone: "UTC",
                     }),
                 });
-            } else {
-                const error = response?.data?.message || "Unknown error";
-                toast.error("Failed to send message:", { description: error });
+            } else if (response.status === 406) {
+                const data = await response.json();
+                setIsLoading(false);
+                toast.error("Failed to send message:", { description: data.error });
             }
         } catch (error) {
-            toast.error("An error occurred:", {
-                description: `${error.message}`,
-                error,
-            });
-        } finally {
+            console.log(error);
             setIsLoading(false);
+            toast.error("An error occurred:", {
+                description: error.message,
+            });
         }
     };
+
 
     return (
         <section
