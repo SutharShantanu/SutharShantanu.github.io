@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { Separator } from "@/Components/ui/separator";
 import { toast } from "sonner";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -32,7 +31,6 @@ import {
 } from "@/Components/ui/form";
 import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
-import { sendContactFrom } from "@/lib/api";
 
 const FormSchema = z.object({
     fullName: z.string().min(2, "Full Name is required"),
@@ -74,19 +72,19 @@ const Contact = () => {
                     }),
                 });
             } else if (response.status === 406) {
-                const data = await response.json();
+                const resData = await response.json();
                 setIsLoading(false);
-                toast.error("Failed to send message:", { description: data.error });
+                console.log("error", resData);
+                toast.error("Failed to send message:", { description: resData.error });
             }
         } catch (error) {
-            console.log(error);
             setIsLoading(false);
+            console.log("error logging here", error);
             toast.error("An error occurred:", {
                 description: error.message,
             });
         }
     };
-
 
     return (
         <section
