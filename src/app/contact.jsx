@@ -58,7 +58,7 @@ const Contact = () => {
                 body: JSON.stringify(values),
             });
 
-            if (response.ok) {
+            if (response.status == 200) {
                 setIsLoading(false);
                 toast.success("Message sent successfully.", {
                     description: new Date().toLocaleString("en-US", {
@@ -71,9 +71,9 @@ const Contact = () => {
                         timeZone: "UTC",
                     }),
                 });
-            } else if (response.status === 406) {
-                const resData = await response.json();
+            } else {
                 setIsLoading(false);
+                const resData = await response.json();
                 console.log("error", resData);
                 toast.error("Failed to send message:", { description: resData.error });
             }
@@ -81,7 +81,8 @@ const Contact = () => {
             setIsLoading(false);
             console.log("error logging here", error);
             toast.error("An error occurred:", {
-                description: error.message,
+                description: `${error.message}`,
+                error,
             });
         }
     };
