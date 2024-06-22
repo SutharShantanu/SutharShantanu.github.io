@@ -20,12 +20,6 @@ export async function POST(req) {
             );
         }
 
-        const formData = {
-            fullName,
-            email,
-            message,
-        };
-
         const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
@@ -37,8 +31,8 @@ export async function POST(req) {
         const mailOptions = {
             from: email,
             to: gmail_user,
-            subject: `New message from your portfolio`,
-            text: `${fullName} has sent you a message.`,
+            subject: `Mail from Portfolio`,
+            text: "You have received a message.",
             html: `
                 <div
                     style="
@@ -149,12 +143,13 @@ export async function POST(req) {
 
         const info = await transporter.sendMail(mailOptions);
 
-        const replyMailOptions = {
-            from: gmail_user,
-            to: email,
-            subject: `Thank you for your message`,
-            text: `Hi ${fullName},\n\nThank you for reaching out.`,
-            html: `
+        if (info.messageId) {
+            const replyMailOptions = {
+                from: gmail_user,
+                to: email,
+                subject: `Thank you for your message`,
+                text: `Hi ${fullName},\n\nThank you for reaching out.`,
+                html: `
                 <div
                     style="
                         border: 1px solid #e5e5e5;
@@ -258,9 +253,9 @@ export async function POST(req) {
                     </footer>
                 </div>
                 `,
-        };
-
-        const replyInfo = await transporter.sendMail(replyMailOptions);
+            };
+            const replyInfo = await transporter.sendMail(replyMailOptions);
+        }
 
         return NextResponse.json(
             { message: "Emails sent successfully" },
