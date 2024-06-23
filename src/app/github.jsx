@@ -29,12 +29,11 @@ const Github = () => {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const { userData, repoData } = GithubFetch() ?? {
+    const { userData, repoData, error } = GithubFetch() ?? {
         userData: null,
         repoData: null,
     };
     const Repos = repoData;
-
     const OPTIONS = { dragFree: true, loop: true };
 
     const selectLast12Months = (contributions) => {

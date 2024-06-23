@@ -17,9 +17,11 @@ const GithubFetch = () => {
                     setRepoData(data.repoData);
                     setSpecificRepoData(data.specificRepoData);
                 } else {
+                    console.log(data.message);
                     setError(data.error);
                 }
             } catch (error) {
+                console.log(error.message);
                 setError(error.message);
             }
         };
