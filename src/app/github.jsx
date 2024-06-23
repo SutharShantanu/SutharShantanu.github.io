@@ -18,7 +18,7 @@ import {
 import { Separator } from "@/Components/ui/separator";
 import GithubFetch from "@/Components/apiComponents/GithubFetch";
 import RepoCard from "@/Components/RepoCard";
-import Loading from "./Loading";
+import { Loader } from "./Loading";
 
 const Github = () => {
     const [copied, setCopied] = useState(false);
@@ -71,7 +71,7 @@ const Github = () => {
                 />
             </div>
             <div className="m-6 mb-0 flex flex-col lg:flex-row gap-6 items-start justify-between box-border sm:p-0">
-                <div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full lg:w-1/3 p-5 box-border">
+                {userData ? (<div className="border bg-neutral-200 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 rounded-xl w-full lg:w-1/3 p-5 box-border">
                     <div className="flex items-start">
                         <Image
                             width={70}
@@ -86,7 +86,7 @@ const Github = () => {
                                 target="_black"
                                 prefetch={true}
                                 className="text-xl sm:text-4xl font-extralight group items-center flex hover:underline dark:text-neutral-200 underline-offset-8 decoration-1 duration-300 transition-all">
-                                @{userData ? userData.login : <Loading />}
+                                @{userData ? userData.login : <Loader />}
                                 <ExternalLink
                                     size={30}
                                     strokeWidth={0.75}
@@ -117,7 +117,7 @@ const Github = () => {
                                 strokeWidth={1.75}
                                 className="min-w-[20px] text-neutral-400 mr-2"
                             />
-                            {userData ? userData.bio : <Loading />}
+                            {userData ? userData.bio : <Loader />}
                         </p>
                         <p className="flex mt-2 text-sm sm:text-base items-center dark:text-neutral-300 text-neutral-800 font-light truncate">
                             <Users
@@ -126,7 +126,7 @@ const Github = () => {
                                 className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             <b className="font-medium">
-                                {userData ? userData.followers : <Loading />}
+                                {userData ? userData.followers : <Loader />}
                                 &nbsp;
                             </b>
                             followers
@@ -135,7 +135,7 @@ const Github = () => {
                                 orientation="vertical"
                             />
                             <b className="font-medium ">
-                                {userData ? userData.following : <Loading />}
+                                {userData ? userData.following : <Loader />}
                             </b>
                             &nbsp;following
                         </p>
@@ -146,7 +146,7 @@ const Github = () => {
                                 className="min-w-[20px] text-neutral-400 mr-2"
                             />
                             <b className="font-light">
-                                {userData ? userData.location : <Loading />},
+                                {userData ? userData.location : <Loader />},
                                 Rajasthan
                             </b>
                         </p>
@@ -156,7 +156,7 @@ const Github = () => {
                                 strokeWidth={1.75}
                                 className="min-w-[20px] text-neutral-400 mr-2"
                             />
-                            {userData ? userData.email : <Loading />}
+                            {userData ? userData.email : <Loader />}
                             <Copy
                                 size={18}
                                 strokeWidth={1.25}
@@ -169,8 +169,8 @@ const Github = () => {
                                 size={18}
                                 strokeWidth={1.25}
                                 className={` ml-2 cursor-pointer ${copied
-                                        ? "text-green-600 flex"
-                                        : "text-neutral-400 hidden"
+                                    ? "text-green-600 flex"
+                                    : "text-neutral-400 hidden"
                                     }`}
                             />
                         </p>
@@ -242,7 +242,7 @@ const Github = () => {
                             />
                         </div>
                     </div>
-                </div>
+                </div>) : <Loader />}
                 <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 rounded-xl w-full lg:w-[65%] min-w-[50%] text-wrap p-5 mb-6">
                     <RepoCard slides={Repos} options={OPTIONS} />
                     <Separator className="my-5 dark:bg-neutral-700" />
