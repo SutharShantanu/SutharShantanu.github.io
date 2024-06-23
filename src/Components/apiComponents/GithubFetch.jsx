@@ -17,7 +17,7 @@ const GithubFetch = () => {
                 setUserData(data.userData);
                 setRepoData(data.repoData);
                 setSpecificRepoData(data.specificRepoData);
-                clearInterval(retryIntervalId.current); // Data fetched successfully, stop retrying
+                clearInterval(retryIntervalId.current);
             } else {
                 setError(data.error);
                 throw new Error(data.error || "An error occurred.");
@@ -29,16 +29,14 @@ const GithubFetch = () => {
     };
 
     useEffect(() => {
-        // Retry fetch every 3 seconds
         retryIntervalId.current = setInterval(() => {
             if (!userData || !repoData || (repoData && specificRepoData === null)) {
                 fetchData();
             } else {
-                clearInterval(retryIntervalId.current); // Stop retrying if data is fetched
+                clearInterval(retryIntervalId.current);
             }
         }, 3000);
 
-        // Cleanup function to clear the interval when the component unmounts
         return () => {
             clearInterval(retryIntervalId.current);
         };
