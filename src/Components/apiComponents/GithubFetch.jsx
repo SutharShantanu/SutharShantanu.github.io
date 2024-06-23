@@ -5,10 +5,12 @@ const GithubFetch = () => {
     const [repoData, setRepoData] = useState(null);
     const [specificRepoData, setSpecificRepoData] = useState(null);
     const [error, setError] = useState(null);
+    const [retryIntervalId, setRetryIntervalId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             setError(null);
+
             try {
                 const response = await fetch("/api/github");
                 const data = await response.json();
@@ -16,18 +18,26 @@ const GithubFetch = () => {
                     setUserData(data.userData);
                     setRepoData(data.repoData);
                     setSpecificRepoData(data.specificRepoData);
+                    clearInterval(retryIntervalId); // Data fetched successfully, stop retrying
                 } else {
-                    console.log(data.message);
-                    setError(data.error);
+                    throw new Error(data.error || "An error occurred.");
                 }
             } catch (error) {
-                console.log(error.message);
+                console.log(`Error: ${error.message}`);
                 setError(error.message);
             }
         };
 
-        fetchData();
-    }, []);
+        const intervalId = setInterval(() => {
+            fetchData();
+        }, 3000);
+
+        setRetryIntervalId(intervalId);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [retryIntervalId]);
 
     return { userData, repoData, specificRepoData, error };
 };
