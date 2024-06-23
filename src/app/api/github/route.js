@@ -68,7 +68,7 @@ export async function GET(req) {
 
             specificRepoData = await specificRepoResponse.json();
         }
-
+        console.log(`This console is from route.js`);
         return NextResponse.json(
             { userData, repoData, specificRepoData },
             { status: 200 }
