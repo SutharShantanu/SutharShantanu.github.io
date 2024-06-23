@@ -7,6 +7,7 @@ export async function GET(req) {
     const username = process.env.NEXT_PUBLIC_Username;
     const token = process.env.NEXT_PUBLIC_Token;
     const repoName = process.env.NEXT_PUBLIC_REPONAME;
+    console.log("backend API called !");
 
     if (!username || !token) {
         return NextResponse.json(
