@@ -37,7 +37,7 @@ const GithubFetch = () => {
         return () => {
             clearInterval(intervalId);
         };
-    }, [retryIntervalId]);
+    }, []);
 
     return { userData, repoData, specificRepoData, error };
 };
