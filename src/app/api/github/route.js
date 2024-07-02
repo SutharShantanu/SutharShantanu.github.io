@@ -10,13 +10,12 @@ export async function GET(req) {
 
     if (!username || !token) {
         return NextResponse.json(
-            { error: "Username and token are required" },
+            JSON.stringify({ error: "Username and token are required" }), 
             { status: 400 }
         );
     }
 
     try {
-    console.log("backend API called !");
         const userResponse = await fetch(
             `https://api.github.com/users/${username}`,
             {
@@ -68,12 +67,14 @@ export async function GET(req) {
 
             specificRepoData = await specificRepoResponse.json();
         }
-        console.log(`This console is from route.js`);
         return NextResponse.json(
-            { userData, repoData, specificRepoData },
+            JSON.stringify({ userData, repoData, specificRepoData }), 
             { status: 200 }
         );
     } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json(
+            JSON.stringify({ error: error.message }), 
+            { status: 500 }
+        );
     }
 }
