@@ -2,8 +2,9 @@
 
 import React from "react";
 import { TextGenerateEffect } from "@/Components/ui/text-generate-effect";
-import Splines from "@/Components/Splines";
+// import Splines from "@/Components/Splines";
 import { MoveRight } from "lucide-react";
+import Image from "next/image";
 
 const About = () => {
     const words = `My journey to web development wasn't exactly linear. While prepping for government exams, I found myself captivated by the world my friends were building with lines of code. Witnessing their creations come alive on the screen sparked a curiosity within me. I craved that same magic – the thrill of crafting something tangible from scratch. So, I took a leap of faith and enrolled in Masai School's grueling 30-week bootcamp. Let's just say those weeks were a whirlwind of challenges and triumphs. But with every hurdle cleared and every line of code mastered, my passion for web development only intensified.
@@ -25,7 +26,8 @@ When I'm not glued to the screen, you might find me exploring new destinations, 
             </p>
             <div className="flex justify-between items-start flex-col 2xl:flex-row">
                 <div className="w-full h-[200px] 2xl:w-2/5 md:h-[30vh] lg:h-[40vh] xl:h-[50vh]">
-                    <Splines />
+                    {/* <Splines /> */}
+                    <Image src="../../public/AboutIllustration.svg" width={50} height={50} alt="about picture" className="sm:max-w-[400px]" />
                 </div>
                 <h2 className="p-4 sm:p-0 w-full 2xl:w-3/5">
                     <TextGenerateEffect words={words} />
