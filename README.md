@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welcome to my portfolio!
 
-## Getting Started
 
-First, run the development server:
+I'm a Full-Stack Developer who thrives at the intersection of frontend, backend, and database design. This portfolio is my playground, showcasing projects like Boozeblues, a to-do list application, and a weather app powered by OpenWeather. Dive in to explore my well-rounded skillset and experience!
+
+## Deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://shantanusuthar.vercel.app)
+
+
+## Tech Stack
+
+| Dependencies    | Type     | Version                         |
+| :------------ | :------- | :---------------------------------- |
+| `Next Js` | `Framework` | **14.2.5**.|
+| `React Js` | `Framework` | **18.3.1**.|
+| `Chakra UI` | `Library` | **2.8.2**.|
+| `Radix UI` | `Library` | **-**|
+| `Spline` | `3D Library` | **2.2.6**.|
+| `Axios` | `API` | **1.6.8**.|
+| `Dotenv` | `ENV` | **16.4.5**.|
+| `Embla ` | `Carousel` | **8.0.0**.|
+| `lucide` | `Icons` | **0.3.0**.|
+| `Nodemailer` | `Email` | **6.9.13**.|
+| `Github Calender` | `Calendar` | **4.1.6**.|
+| `Sonner` | `Toast` | **1.4.41**.|
+| `Tailwind` | `CSS` | **3.3.0**.|
+| `Zod` | `Form Validation` | **3.23.8**.|
+
+## Color Reference
+
+| Color     | Hex                                                              |
+| --------- | ---------------------------------------------------------------- |
+| Primary   | ![#171717](https://via.placeholder.com/10/171717?text=+) #171717 |
+| Secondary | ![#f5f5f5](https://via.placeholder.com/10/f5f5f5?text=+) #f5f5f5 |
+
+## Badges
+
+[![](https://img.shields.io/github/last-commit/SutharShantanu/SutharShantanu.github.io?logo=GadgetGalaxt&style=for-the-badge)]()
+[![](https://img.shields.io/github/contributors-anon/SutharShantanu/SutharShantanu.github.io?style=for-the-badge)]()
+[![](https://img.shields.io/github/languages/count/SutharShantanu/SutharShantanu.github.io?style=for-the-badge)]()
+
+
+## Run Locally
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  git clone https://github.com/SutharShantanu/SutharShantanu.github.io.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Go to the project directory
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+  cd SutharShantanu.github.io
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Start the server
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+  npm run dev
+```

@@ -8,7 +8,6 @@ const GithubFetch = () => {
     const retryIntervalId = useRef(null);
 
     const fetchData = async () => {
-        console.log("GithubFetch called !");
         setError(null);
         try {
             const response = await fetch("/api/github");

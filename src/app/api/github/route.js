@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import dotenv from "dotenv";
+import { NextResponse } from "next/server";
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ export async function GET(req) {
 
     if (!username || !token) {
         return NextResponse.json(
-            JSON.stringify({ error: "Username and token are required" }), 
+            JSON.stringify({ error: "Username and token are required" }),
             { status: 400 }
         );
     }
@@ -68,12 +68,12 @@ export async function GET(req) {
             specificRepoData = await specificRepoResponse.json();
         }
         return NextResponse.json(
-            JSON.stringify({ userData, repoData, specificRepoData }), 
+            JSON.stringify({ userData, repoData, specificRepoData }),
             { status: 200 }
         );
     } catch (error) {
         return NextResponse.json(
-            JSON.stringify({ error: error.message }), 
+            JSON.stringify({ error: error.message }),
             { status: 500 }
         );
     }
