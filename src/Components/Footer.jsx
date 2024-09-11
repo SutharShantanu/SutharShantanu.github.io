@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Github, Linkedin, History } from "lucide-react";
-import GithubFetch from "./apiComponents/GithubFetch";
 import Link from "next/link";
 
-const Footer = () => {
-    const { specificRepoData } = GithubFetch() ?? {};
+const Footer = ({ specificRepoData }) => {
     const [showDate, setShowDate] = useState(false);
 
     const [currentDate, setCurrentDate] = useState(new Date());

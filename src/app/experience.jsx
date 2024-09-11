@@ -20,33 +20,33 @@ const Experience = () => {
                 />
             </p>
             <div className="m-6">
-                <ol class="relative border-s border-neutral-200 dark:border-neutral-800 space-y-6">
-                    <li class="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
-                        <span class="absolute flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full -start-4 dark:bg-yellow-900 ">
+                <ol className="relative border-s border-neutral-200 dark:border-neutral-800 space-y-6">
+                    <li className="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-yellow-100 rounded-full -start-4 dark:bg-yellow-900 ">
                             <svg
-                                class="w-5 h-5 text-yellow-600 dark:text-yellow-300 lucide lucide-circle-dot"
+                                className="w-5 h-5 text-yellow-600 dark:text-yellow-300 lucide lucide-circle-dot"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="20"
                                 height="20"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.75"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
+                                strokeWidth="1.75"
+                                strokeLinecap="round"
+                                strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
                                 <circle cx="12" cy="12" r="1" />
                             </svg>
                         </span>
-                        <h3 class="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                        <h3 className="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                             Associate Frontend Developer
                             <Badge
                                 variant="outline"
-                                class="bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-lg w-fit text-xs sm:text-sm font-medium  px-2.5 py-0.5 border my-2 md:m-0">
+                                className="bg-yellow-100 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-lg w-fit text-xs sm:text-sm font-medium  px-2.5 py-0.5 border my-2 md:m-0">
                                 June 2024 - Present
                             </Badge>
                         </h3>
-                        <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
+                        <div className="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
                             <p className="flex">
                                 IT Team
                                 <span className="sm:flex hidden sm:mr-1">
@@ -77,32 +77,32 @@ const Experience = () => {
                             </li>
                         </ul>
                     </li>
-                    <li class="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
-                        <span class="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
+                    <li className="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
                             <svg
-                                class="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"
+                                className="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="20"
                                 height="20"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.75"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
+                                strokeWidth="1.75"
+                                strokeLinecap="round"
+                                strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="m9 12 2 2 4-4" />
                             </svg>
                         </span>
-                        <h3 class="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                        <h3 className="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                             Technology Operations Associates
                             <Badge
                                 variant="outline"
-                                class="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border my-2 md:m-0">
+                                className="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border my-2 md:m-0">
                                 Oct 2023 - May 2024
                             </Badge>
                         </h3>
-                        <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
+                        <div className="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
                             <p className="flex">
                                 Operations & IT Team
                                 <span className="sm:flex hidden sm:mr-1">
@@ -150,32 +150,32 @@ const Experience = () => {
                             </li>
                         </ul>
                     </li>
-                    <li class="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
-                        <span class="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
+                    <li className="ms-8 border border-neutral-200 dark:border-neutral-800 bg-neutral-200 hover:border-neutral-300 dark:bg-neutral-800 dark:hover:border-neutral-700 transition-all p-4 rounded-lg">
+                        <span className="absolute flex items-center justify-center w-8 h-8 bg-green-100 rounded-full -start-4 dark:bg-green-900 ">
                             <svg
-                                class="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"
+                                className="w-5 h-5 text-green-600 dark:text-green-300 lucide lucide-circle-check"
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="20"
                                 height="20"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="currentColor"
-                                stroke-width="1.75"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
+                                strokeWidth="1.75"
+                                strokeLinecap="round"
+                                strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
                                 <path d="m9 12 2 2 4-4" />
                             </svg>
                         </span>
-                        <h3 class="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
+                        <h3 className="flex flex-col md:flex-row md:justify-between items-start md:w-full mb-1 sm:text-lg md:text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                             Front-End Web Developer
                             <Badge
                                 variant="outline"
-                                class="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border my-2 md:m-0">
+                                className="bg-green-100 border-green-200 dark:border-green-800 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-lg w-fit text-xs sm:text-sm font-medium px-2.5 py-0.5 border my-2 md:m-0">
                                 Aug 2023 - Oct 2023
                             </Badge>
                         </h3>
-                        <div class="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
+                        <div className="sm:flex items-start sm:items-center mb-2 text-sm font-normal leading-none text-neutral-400 dark:text-neutral-500 hover:cursor-pointer">
                             <p className="flex">
                                 Web Team
                                 <span className="sm:flex hidden sm:mr-1">

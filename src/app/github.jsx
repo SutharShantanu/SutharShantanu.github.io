@@ -1,6 +1,74 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+export async function getServerSideProps () {
+    const username = process.env.GITHUB_USERNAME;
+    const token = process.env.GITHUB_TOKEN;
+    const repoName = process.env.GITHUB_REPONAME;
+
+    if (!username || !token) {
+        return {
+            props: {
+                error: 'GitHub API credentials are not defined in environment variables',
+            },
+        };
+    }
+
+    try {
+        const headers = {
+            Authorization: `token ${token}`,
+            'User-Agent': username,
+        };
+
+        const [userResponse, repoResponse] = await Promise.all([
+            fetch(`https://api.github.com/users/${username}`, { headers }),
+            fetch(`https://api.github.com/users/${username}/repos`, { headers }),
+        ]);
+
+        if (!userResponse.ok || !repoResponse.ok) {
+            return {
+                props: {
+                    error: 'Failed to fetch data from GitHub',
+                },
+            };
+        }
+
+        const [userData, repoData] = await Promise.all([
+            userResponse.json(),
+            repoResponse.json(),
+        ]);
+
+        let specificRepoData = null;
+        if (repoName) {
+            const specificRepoResponse = await fetch(
+                `https://api.github.com/repos/${username}/${repoName}`,
+                { headers }
+            );
+            if (specificRepoResponse.ok) {
+                specificRepoData = await specificRepoResponse.json();
+            }
+        }
+
+        console.log(userData,
+            repoData,);
+
+        return {
+            props: {
+                userData,
+                repoData,
+                specificRepoData,
+            },
+        };
+    } catch (error) {
+        return {
+            props: {
+                error: error.message || 'An unexpected error occurred.',
+            },
+        };
+    }
+}
+
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,24 +84,22 @@ import {
     ExternalLink,
 } from "lucide-react";
 import { Separator } from "@/Components/ui/separator";
-import GithubFetch from "@/Components/apiComponents/GithubFetch";
 import RepoCard from "@/Components/RepoCard";
 import { Loader } from "./Loading";
 
-const Github = () => {
+const Github = ({ userData,
+    repoData,
+    error }) => {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(userData.email);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (userData?.email) {
+            navigator.clipboard.writeText(userData.email);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
     };
 
-    const { userData, repoData, error } = GithubFetch() ?? {
-        userData: null,
-        repoData: null,
-    };
-    const Repos = repoData;
     const OPTIONS = { dragFree: true, loop: true };
 
     const selectLast12Months = (contributions) => {
@@ -49,7 +115,6 @@ const Github = () => {
 
         return contributions.filter((day) => {
             const contributionTimestamp = new Date(day.date).getTime();
-
             return (
                 contributionTimestamp >= startTimestamp &&
                 contributionTimestamp <= endTimestamp
@@ -243,7 +308,7 @@ const Github = () => {
                     </div>
                 </div>) : <Loader />}
                 <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-200 dark:bg-neutral-800 rounded-xl w-full lg:w-[65%] min-w-[50%] text-wrap p-5 mb-6">
-                    <RepoCard slides={Repos} options={OPTIONS} />
+                    <RepoCard slides={repoData} options={OPTIONS} />
                     <Separator className="my-5 dark:bg-neutral-700" />
                     <p className="mt-4 text-4xl font-extralight">
                         Github Calender

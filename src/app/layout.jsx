@@ -2,7 +2,7 @@
 
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "sonner";
@@ -12,35 +12,8 @@ import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
 import Loading from "./Loading";
-import GithubFetch from "@/Components/apiComponents/GithubFetch";
 
-export default function RootLayout({ children }) {
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const { userData, repoData } = await GithubFetch();
-            if (userData && repoData) {
-                setIsLoading(false);
-            }
-        };
-
-        const handleLoad = () => {
-            setIsLoading(true);
-            fetchData();
-        };
-
-        window.addEventListener("load", handleLoad);
-
-        const clearLoadingState = setTimeout(() => {
-            setIsLoading(false);
-        }, 3000);
-
-        return () => {
-            window.removeEventListener("load", handleLoad);
-            clearTimeout(clearLoadingState);
-        };
-    }, []);
+export default function RootLayout ({ children }) {
 
     return (
         <>
@@ -65,9 +38,7 @@ export default function RootLayout({ children }) {
             </Head>
             <html lang="en" suppressHydrationWarning>
                 <body className={`${inter.className}   dark:bg-neutral-950 bg-neutral-50`}>
-                    {isLoading ? (
-                        <Loading />
-                    ) : (
+                    <Suspense fallback={<Loading />}>
                         <Provider>
                             <Navbar />
                             {children}
@@ -80,7 +51,7 @@ export default function RootLayout({ children }) {
                                 closeButton
                             />
                         </Provider>
-                    )}
+                    </Suspense>
                 </body>
             </html>
         </>
