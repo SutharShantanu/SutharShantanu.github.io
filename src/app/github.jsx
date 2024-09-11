@@ -1,6 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Copy, Link as LinkIcon, CheckCheck } from "lucide-react";
+import { Badge } from "@/Components/ui/badge";
+import GitHubCalendar from "react-github-calendar";
+import {
+    MoveRight,
+    CircleUser,
+    Users,
+    MapPin,
+    Mail,
+    ExternalLink,
+} from "lucide-react";
+import { Separator } from "@/Components/ui/separator";
+import RepoCard from "@/Components/RepoCard";
+import { Loader } from "./Loading";
+
 export async function getServerSideProps () {
     const username = process.env.GITHUB_USERNAME;
     const token = process.env.GITHUB_TOKEN;
@@ -68,24 +86,6 @@ export async function getServerSideProps () {
     }
 }
 
-
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Copy, Link as LinkIcon, CheckCheck } from "lucide-react";
-import { Badge } from "@/Components/ui/badge";
-import GitHubCalendar from "react-github-calendar";
-import {
-    MoveRight,
-    CircleUser,
-    Users,
-    MapPin,
-    Mail,
-    ExternalLink,
-} from "lucide-react";
-import { Separator } from "@/Components/ui/separator";
-import RepoCard from "@/Components/RepoCard";
-import { Loader } from "./Loading";
 
 const Github = ({ userData,
     repoData,
