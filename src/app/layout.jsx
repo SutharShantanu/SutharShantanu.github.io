@@ -37,7 +37,7 @@ export default function RootLayout ({ children }) {
                 <meta name="theme-color" content="#F42727" />
             </Head>
             <html lang="en" suppressHydrationWarning>
-                <body className={`${inter.className}   dark:bg-neutral-950 bg-neutral-50`}>
+                <body className={`${inter.className} dark:bg-neutral-950 bg-neutral-50`}>
                     <Suspense fallback={<Loading />}>
                         <Provider>
                             <Navbar />
