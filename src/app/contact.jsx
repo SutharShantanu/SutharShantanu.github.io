@@ -46,8 +46,6 @@ const Contact = () => {
     });
 
     const onSubmit = async (values) => {
-        console.log(values);
-    
         try {
             setIsLoading(true);
             const response = await fetch("/api/contact", {
@@ -55,9 +53,8 @@ const Contact = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(values), 
+                body: JSON.stringify(values),
             });
-    
             if (response.status == 200) {
                 setIsLoading(false);
                 toast.success("Message sent successfully.", {
@@ -86,7 +83,6 @@ const Contact = () => {
             });
         }
     };
-    
 
     return (
         <section
