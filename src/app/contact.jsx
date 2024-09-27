@@ -48,14 +48,15 @@ const Contact = () => {
     const onSubmit = async (values) => {
         try {
             setIsLoading(true);
-            const response = await fetch("/api/contact", {
+            fetch("/api/contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(values),
-            });
-            if (response.status == 200) {
+            })
+            .then((response) =>  {
+            if (response.status == 200 || response.ok) {
                 setIsLoading(false);
                 toast.success("Message sent successfully.", {
                     description: new Date().toLocaleString("en-US", {
@@ -68,12 +69,15 @@ const Contact = () => {
                         timeZone: "UTC",
                     }),
                 });
+                return response.json();
             } else {
                 setIsLoading(false);
-                const resData = await response.json();
-                console.log("error", resData);
-                toast.error("Failed to send message:", { description: resData.error });
+                console.log("error", response.error.message);
+                return response.json().then((error)=>{
+                toast.error("Failed to send message:", { description: error.message });
+                });
             }
+        });
         } catch (error) {
             setIsLoading(false);
             console.log("error logging here", error);
