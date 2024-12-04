@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { motion } from "framer-motion";
 import Image from "next/image";
 
 const MobileCarousel = ({ slides, options }) => {
@@ -21,15 +22,27 @@ const MobileCarousel = ({ slides, options }) => {
                 <div className="flex">
                     {slides &&
                         slides.map((ele, index) => (
-                            <div
+                            <motion.div
                                 className="flex shrink-0 w-full mx-4"
-                                key={index}>
+                                key={index}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{
+                                    duration: 0.8,
+                                    ease: "easeInOut",
+                                    delay: index * 0.3,
+                                }}
+                            >
                                 <Image
-                                    className="w-full object-cover object-top rounded-md border border-neutral-200 dark:border-neutral-800"
+                                    className="w-full object-cover object-center rounded-lg shadow-md border border-neutral-200 dark:border-neutral-800"
                                     src={ele.image}
-                                    alt=""
+                                    alt={`Slide ${index}`}
+                                    width={600}
+                                    height={400}
+                                    quality={90} // Enhanced quality
+                                    priority // For preloading the images
                                 />
-                            </div>
+                            </motion.div>
                         ))}
                 </div>
             </div>

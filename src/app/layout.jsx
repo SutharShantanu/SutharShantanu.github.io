@@ -12,6 +12,7 @@ import Navbar from "@/Components/Navbar";
 import "./globals.css";
 import Footer from "@/Components/Footer";
 import Loading from "./Loading";
+import ScrollToTop from "@/Components/ScrollToTop";
 
 export default function RootLayout ({ children }) {
 
@@ -50,6 +51,7 @@ export default function RootLayout ({ children }) {
                                 richColors
                                 closeButton
                             />
+                            <ScrollToTop />
                         </Provider>
                     </Suspense>
                 </body>
