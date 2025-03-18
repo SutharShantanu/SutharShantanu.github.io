@@ -1,9 +1,9 @@
-import CircularLoader, { MainLoader } from "@/Components/Spinners";
+import { Spinner } from "@/Components/ui/spinners";
 
 export default function Loading () {
-    return <MainLoader />;
+    return <Spinner />;
 }
 
 export function Loader () {
-    return <CircularLoader />
+    return <Spinner />
 }
