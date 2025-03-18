@@ -45,7 +45,7 @@ const Footer = ({ specificRepoData }) => {
     return (
         <div
             id="footer"
-            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-100 w-full 2xl:w-4/5 xl:w-5/6 m-auto py-6 px-2 sm:p-8 rounded-lg shadow-sm">
+            className="border border-neutral-200 dark:border-neutral-800 dark:bg-neutral-900 bg-neutral-100 w-full 2xl:w-4/5 xl:w-5/6 m-auto py-6 px-2 sm:p-8 rounded-lg shadow-xs">
             <div className="flex gap-4 items-center justify-between box-border">
                 <span
 
@@ -64,14 +64,14 @@ const Footer = ({ specificRepoData }) => {
                         prefetch={true}
                         href="https://github.com/SutharShantanu"
                         target="_blank"
-                        className="border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200 shadow-sm rounded-full px-2 py-[6px] transition-all duration-75 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-50">
+                        className="border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200 shadow-xs rounded-full px-2 py-[6px] transition-all duration-75 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-50">
                         <Github size={20} strokeWidth={1.75} className="w-4" />
                     </Link>
                     <Link
                         href="https://www.linkedin.com/in/shantanu-suthar/"
                         prefetch={true}
                         target="_blank"
-                        className="border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200 shadow-sm rounded-full px-2 py-[6px] transition-all duration-75 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-50">
+                        className="border hover:border-neutral-200 bg-neutral-100 hover:bg-neutral-200 shadow-xs rounded-full px-2 py-[6px] transition-all duration-75 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-neutral-50">
                         <Linkedin
                             size={20}
                             strokeWidth={1.75}

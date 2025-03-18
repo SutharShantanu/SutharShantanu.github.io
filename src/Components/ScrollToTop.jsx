@@ -45,7 +45,7 @@ const ScrollToTop = () => {
                         scale: isVisible ? 1 : 0.8,
                     }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute inset-0 -z-10 h-20 w-20 rounded-full bg-transparent backdrop-blur-sm filter blur-sm"
+                    className="absolute inset-0 -z-10 h-20 w-20 rounded-full bg-transparent backdrop-blur-xs filter blur-xs"
                 />
                 {/* Button */}
                 <motion.button

@@ -118,7 +118,7 @@ const Navbar = () => {
 
   return (
     <motion.div
-      className="fixed top-0 backdrop-blur-sm z-50 w-full"
+      className="fixed top-0 backdrop-blur-xs z-50 w-full"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
@@ -173,7 +173,7 @@ const Navbar = () => {
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full group shadow-sm hover:shadow-none border hover:border-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-700 dark:bg-neutral-800"
+                className="rounded-full group shadow-xs hover:shadow-none border hover:border-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-700 dark:bg-neutral-800"
               >
                 <Menu
                   size={20}
@@ -205,11 +205,11 @@ const Navbar = () => {
                     src={banner2}
                     width={500}
                     alt=""
-                    className="w-[100%]  object-cover aspect-video max-h-36 border rounded-md dark:border-neutral-700 shadow-sm"
+                    className="w-[100%]  object-cover aspect-video max-h-36 border rounded-md dark:border-neutral-700 shadow-xs"
                   />
                 </motion.div>
               </SheetTitle>
-              <SheetDescription className="space-y-4 border border-neutral-200 dark:border-neutral-700 shadow-sm my-2 rounded-lg p-2 dark:bg-neutral-800">
+              <SheetDescription className="space-y-4 border border-neutral-200 dark:border-neutral-700 shadow-xs my-2 rounded-lg p-2 dark:bg-neutral-800">
                 {links.map((ele) => (
                   <NavItem
                     key={ele.id}

@@ -74,7 +74,7 @@ const RepoSection = ({ repoData }) => (
     <RepoCard slides={repoData} />
     <Separator className="my-5 dark:bg-neutral-700" />
     <p className="text-4xl font-extralight">GitHub Calendar</p>
-    <div className="shadow-sm rounded-xl p-4 mt-4">
+    <div className="shadow-xs rounded-xl p-4 mt-4">
       <GitHubCalendar username="SutharShantanu" />
     </div>
   </motion.section>
@@ -100,7 +100,7 @@ const Github = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm"
+      className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-xs"
     >
       <div className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8">
         Github

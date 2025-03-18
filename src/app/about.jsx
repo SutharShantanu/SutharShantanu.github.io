@@ -50,7 +50,7 @@ When I'm not glued to the screen, you might find me exploring new destinations, 
             variants={containerVariant}
             initial="hidden"
             animate="visible"
-            className="border h-fit border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 sm:p-8 rounded-lg shadow-sm"
+            className="border h-fit border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 sm:p-8 rounded-lg shadow-xs"
         >
             <motion.p
                 variants={containerVariant}

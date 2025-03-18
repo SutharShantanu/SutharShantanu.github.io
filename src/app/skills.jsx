@@ -48,7 +48,7 @@ const Skills = () => {
   );
 
   return (
-    <section className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm">
+    <section className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-xs">
       <motion.div
         className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8"
         initial={{ opacity: 0 }}
@@ -165,7 +165,7 @@ const TabButton = ({ value, selectedTab, onClick, children }) => {
         className={`${
           selectedTab === value
             ? "bg-neutral-300 dark:bg-neutral-700 shadow-md"
-            : "hover:dark:bg-neutral-800 hover:bg-neutral-200"
+            : "dark:hover:bg-neutral-800 hover:bg-neutral-200"
         } w-1/4 p-2 text-center rounded-xl hover:cursor-pointer transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden text-ellipsis`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

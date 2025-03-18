@@ -58,7 +58,7 @@ const ProjectCard = ({ ele, index }) => (
     transition={{ delay: index * 0.1 }}
     whileHover="hover"
   >
-    <Card className="border bg-neutral-200 dark:bg-neutral-800 flex flex-col justify-between md:h-[620px] xl:h-[650px] 2xl:h-[640px] rounded-xl shadow-sm transition-all duration-300 group border-neutral-200 dark:border-neutral-800">
+    <Card className="border bg-neutral-200 dark:bg-neutral-800 flex flex-col justify-between md:h-[620px] xl:h-[650px] 2xl:h-[640px] rounded-xl shadow-xs transition-all duration-300 group border-neutral-200 dark:border-neutral-800">
       <CardHeader>
         <CardTitle className="text-xl font-semibold">{ele.name}</CardTitle>
         <p className="line-clamp-4 xl:line-clamp-none">{ele.description}</p>
@@ -94,7 +94,7 @@ const ProjectCard = ({ ele, index }) => (
 
 const Overlay = ({ ele }) => (
   <motion.div
-    className="absolute bottom-0 left-0 right-0 px-4 py-3 bg-gradient-to-t from-neutral-600 to-transparent rounded-xl backdrop-filter backdrop-blur-sm"
+    className="absolute bottom-0 left-0 right-0 px-4 py-3 bg-linear-to-t from-neutral-600 to-transparent rounded-xl backdrop-filter backdrop-blur-xs"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ type: "spring", stiffness: 200, damping: 30 }}
@@ -135,7 +135,7 @@ const Overlay = ({ ele }) => (
       <Link
         target="_blank"
         href={ele.deployments_url}
-        className="flex items-center group gap-2 text-sm shadow-sm px-2 py-1 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-xl transition-all duration-300 transform hover:-translate-y-[2px]"
+        className="flex items-center group gap-2 text-sm shadow-xs px-2 py-1 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-xl transition-all duration-300 transform hover:-translate-y-[2px]"
       >
         Preview
         <Telescope
@@ -237,7 +237,7 @@ const Projects = () => {
   return (
     <motion.section
       id="projects"
-      className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm"
+      className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-xs"
       variants={variants.section}
       initial="hidden"
       animate="visible"
@@ -277,7 +277,7 @@ const ToggleButton = ({
 }) => (
   <motion.div variants={variants.button} whileHover="hover" whileTap="tap">
     <Button
-      className={`my-4 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 border flex items-center justify-center mx-auto border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700 px-3 py-2 rounded-full shadow-sm min-w-[150px]`}
+      className={`my-4 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 border flex items-center justify-center mx-auto border-neutral-200 hover:border-neutral-300 dark:hover:border-neutral-700 dark:border-neutral-700 px-3 py-2 rounded-full shadow-xs min-w-[150px]`}
       onClick={toggleProjectsVisibility}
       disabled={isLoading}
     >

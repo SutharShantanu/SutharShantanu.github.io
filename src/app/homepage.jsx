@@ -56,7 +56,7 @@ const Homepage = () => {
     return (
         <section
             id="homepage"
-            className="border border-neutral-200 dark:border-neutral-800 min-h-[80vh] sm:min-h-[87vh] dark:bg-neutral-900 bg-neutral-100 w-[90%] xl:max-w-[80%] m-auto mt-24 sm:p-8 rounded-lg shadow-sm"
+            className="border border-neutral-200 dark:border-neutral-800 min-h-[80vh] sm:min-h-[87vh] dark:bg-neutral-900 bg-neutral-100 w-[90%] xl:max-w-[80%] m-auto mt-24 sm:p-8 rounded-lg shadow-xs"
         >
             {/* Scroll Animation Section */}
             <div className="min-h-[80vh] grid grid-cols-1 2xl:grid-cols-2 justify-around items-center p-6 lg:p-0">

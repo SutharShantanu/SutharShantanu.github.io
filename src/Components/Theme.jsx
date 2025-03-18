@@ -42,7 +42,7 @@ const ThemeSwitcher = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme("light")}
-                className="rounded-full shadow-sm hover:shadow-none border dark:hover:border-neutral-700 dark:border-neutral-800 dark:hover:bg-neutral-800 dark:bg-neutral-900"
+                className="rounded-full shadow-xs hover:shadow-none border dark:hover:border-neutral-700 dark:border-neutral-800 dark:hover:bg-neutral-800 dark:bg-neutral-900"
             >
                 <motion.div variants={iconVariants}>
                     <SunDim
@@ -65,7 +65,7 @@ const ThemeSwitcher = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setTheme("dark")}
-                className="rounded-full shadow-sm hover:shadow-none border border-neutral-200 hover:border-neutral-300 bg-neutral-100 hover:bg-neutral-200"
+                className="rounded-full shadow-xs hover:shadow-none border border-neutral-200 hover:border-neutral-300 bg-neutral-100 hover:bg-neutral-200"
             >
                 <motion.div variants={iconVariants}>
                     <Moon

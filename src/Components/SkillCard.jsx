@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const SkillCard = ({ card }) => {
   return (
     <motion.div
-      className="p-4 rounded-xl cursor-pointer shadow-sm bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-all"
+      className="p-4 rounded-xl cursor-pointer shadow-xs bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-all"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.05 }}

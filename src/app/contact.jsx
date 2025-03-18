@@ -43,7 +43,7 @@ const ContactInfo = () => (
     transition={{ duration: 0.6 }}
     className="w-full md:w-[48%] rounded-xl sm:min-h-[540px] bg-[url('/contact-background-light.jpeg')] bg-no-repeat bg-cover flex justify-center items-center sm:p-0"
   >
-    <div className="w-full lg:w-[70%] items-center backdrop-blur-sm p-4 sm:p-6 rounded-xl">
+    <div className="w-full lg:w-[70%] items-center backdrop-blur-xs p-4 sm:p-6 rounded-xl">
       <ContactItem
         icon={Mailbox}
         title="Email"
@@ -273,7 +273,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-sm">
+    <div className="border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 w-[90%] xl:max-w-[80%] m-auto my-4 rounded-lg shadow-xs">
       <motion.div
         className="group inline-block text-left text-3xl sm:text-5xl w-fit hover:font-bold hover transition-all p-4 sm:pt-8 sm:pl-8"
         initial={{ opacity: 0, x: -20 }}
