@@ -34,22 +34,24 @@ export async function GET() {
     return response.json();
   };
 
-  try {
-    let data = await fetchInstagramData(INSTAGRAM_USERNAME);
+try {
+  let data = await fetchInstagramData(INSTAGRAM_USERNAME);
 
-    if (!data.items || data.items.length === 0) {
-      console.warn("No posts found for username. Trying with user ID...");
-      const userId = data.user?.id;
-      if (userId) {
-        data = await fetchInstagramData(userId);
-      } else {
-        throw new Error("User ID not found. Cannot fetch posts.");
-      }
-    }
+  // if (!data.items || data.items.length === 0) {
+  //   console.warn("No posts found for username. Trying with user ID...");
+  //   const userId = data.user?.pk; // Using pk as the user ID
+  //   if (userId) {
+  //     data = await fetchInstagramData(userId);
+  //   } else {
+  //     throw new Error("User ID not found. Cannot fetch posts.");
+  //   }
+  // }
 
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    console.error("Instagram API error:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+  return NextResponse.json(data, { status: 200 });
+} catch (error) {
+  console.error("Instagram API error:", error.message);
+  return NextResponse.json({ error: error.message }, { status: 500 });
+}
+
+
 }
