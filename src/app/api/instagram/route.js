@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { NextResponse } from "next/server";
 
 dotenv.config();
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const { RAPIDAPI_KEY, RAPIDAPI_HOST, INSTAGRAM_USERNAME } = process.env;
@@ -13,6 +14,8 @@ export async function GET() {
       { status: 500 }
     );
   }
+
+  console.log(`api called`)
 
   const fetchInstagramData = async (usernameOrId) => {
     const url = `https://${RAPIDAPI_HOST}/v1/user_posts?username_or_id=${usernameOrId}&count=12`;

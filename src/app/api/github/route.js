@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import { NextResponse } from "next/server";
 
 dotenv.config();
+export const dynamic = "force-dynamic";
 
 export async function GET(req) {
   const username = process.env.NEXT_PUBLIC_Username;

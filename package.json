@@ -34,6 +34,7 @@
     "embla-carousel-autoplay": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
     "embla-carousel-wheel-gestures": "^8.0.1",
+    "encoding": "^0.1.13",
     "face-api.js": "^0.22.2",
     "framer-motion": "^12.5.0",
     "lucide-react": "^0.483.0",
