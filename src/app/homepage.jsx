@@ -11,22 +11,24 @@ const Homepage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const loadModels = async () => {
-            const MODEL_URL = "https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js";
-            await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-            await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-            await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-        };
-
         const fetchInstagramMedia = async () => {
             try {
+                const MODEL_URL = "/models";
+                await Promise.all([
+                    faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                    faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                    faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+                ]);
+
                 const response = await fetch("/api/instagram");
+
+                console.log(response)
                 if (!response.ok) {
                     throw new Error("Failed to fetch Instagram media");
                 }
+
                 const data = await response.json();
                 const items = data.items;
-
                 const filteredImages = [];
 
                 for (const item of items) {
@@ -34,9 +36,12 @@ const Homepage = () => {
                         for (const media of item.carousel_media) {
                             const imageUrl = media.image_versions2.candidates[0].url;
                             const img = await faceapi.fetchImage(imageUrl);
-                            const detections = await faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
+                            const detections = await faceapi
+                                .detectAllFaces(img, new faceapi.TinyFaceDetectorOptions())
+                                .withFaceLandmarks()
+                                .withFaceDescriptors();
 
-                            if (detections.length === 1) {  // Adjust as needed if multiple faces are allowed
+                            if (detections.length === 1) {
                                 filteredImages.push({ id: media.id, image: imageUrl });
                             }
                         }
@@ -50,7 +55,7 @@ const Homepage = () => {
             }
         };
 
-        loadModels().then(fetchInstagramMedia);
+        fetchInstagramMedia();
     }, []);
 
     return (
