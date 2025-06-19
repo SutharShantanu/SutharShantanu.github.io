@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Hero() {
     return (
-        <section className="min-h-screen flex flex-col justify-center items-center text-center px-6 md:px-0">
+        <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-6 md:px-0">
             <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

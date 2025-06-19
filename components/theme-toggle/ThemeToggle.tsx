@@ -38,7 +38,7 @@ const ThemeToggle = ({ className }: ThemeToggleProps) => {
     return (
         <div
             className={cn(
-                "relative flex rounded-full bg-background ring-1 ring-border",
+                "relative flex rounded-full p-1 w-fit ring-1 ring-border",
                 className
             )}
         >
@@ -63,9 +63,13 @@ const ThemeToggle = ({ className }: ThemeToggleProps) => {
                         <Icon
                             className={cn(
                                 "relative m-auto h-4 w-4",
-                                isActive ? "text-foreground" : "text-muted-foreground"
+                                key === "system" && isActive
+                                    ? "text-neutral-800 dark:text-neutral-50"
+                                    : isActive
+                                        ? "text-yellow-500 dark:text-neutral-50 fill-yellow-500 dark:fill-neutral-50"
+                                        : "text-neutral-400 dark:text-neutral-600"
                             )}
-                            strokeWidth={1.5}
+                            strokeWidth={1}
                         />
                     </button>
                 );

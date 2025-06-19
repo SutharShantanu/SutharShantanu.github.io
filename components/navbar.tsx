@@ -9,7 +9,7 @@ import {
     Puzzle,
     FolderCode,
 } from "lucide-react";
-import { DropdownNavigation } from "./ui/navigation-menu";
+import { DropdownNavigation } from "./ui/navigation-menu/navigation-menu";
 <FolderCode />
 const Navbar = () => {
     const NAV_ITEMS = [
