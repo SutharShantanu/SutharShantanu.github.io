@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Project } from "./types/projects.types";
+import Link from "next/link";
 
 const projects: Project[] = [
     {
@@ -50,13 +51,13 @@ export function Projects() {
                             <h3 className="font-semibold text-xl mb-2">{title}</h3>
                             <p className="text-muted-foreground mb-4">{description}</p>
                             <div className="flex gap-4">
-                                <a href={repositoryUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
+                                <Link href={repositoryUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
                                     GitHub
-                                </a>
-                                {demo && (
-                                    <a href={livePreviewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+                                </Link>
+                                {livePreviewUrl && (
+                                    <Link href={livePreviewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
                                         Live Demo
-                                    </a>
+                                    </Link>
                                 )}
                             </div>
                         </div>
