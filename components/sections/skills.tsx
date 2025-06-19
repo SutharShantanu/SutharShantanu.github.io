@@ -172,7 +172,7 @@ const categories = [
 
 const PAGE_SIZE = 8;
 
-export function Skills() {
+const Skills = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [page, setPage] = useState(1);
 
@@ -259,3 +259,5 @@ export function Skills() {
         </section>
     );
 }
+
+export default Skills;
