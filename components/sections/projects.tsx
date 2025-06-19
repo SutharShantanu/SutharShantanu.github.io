@@ -43,18 +43,18 @@ export function Projects() {
                 ))}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                {filtered.map(({ title, description, github, demo, image }) => (
+                {filtered.map(({ title, description, repositoryUrl, livePreviewUrl, image }) => (
                     <div key={title} className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-300">
                         <Image src={image} alt={`${title} screenshot`} className="w-full h-48 object-cover" />
                         <div className="p-4">
                             <h3 className="font-semibold text-xl mb-2">{title}</h3>
                             <p className="text-muted-foreground mb-4">{description}</p>
                             <div className="flex gap-4">
-                                <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
+                                <a href={repositoryUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
                                     GitHub
                                 </a>
                                 {demo && (
-                                    <a href={demo} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+                                    <a href={livePreviewUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
                                         Live Demo
                                     </a>
                                 )}
