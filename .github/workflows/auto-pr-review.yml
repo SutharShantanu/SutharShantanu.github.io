@@ -1,0 +1,14 @@
+name: Auto PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  auto-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto PR Reviewer
+        uses: omio-labs/pr-reviewer-bot@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
