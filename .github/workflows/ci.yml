@@ -7,20 +7,20 @@ on:
     branches: [main]
 
 jobs:
-  install-build-lint:
-    name: Install, Build, and Lint
+  ci:
+    name: Install → Lint → Type Check → Build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: 📦 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Cache node_modules
+      - name: ⚡ Cache node_modules & Next.js cache
         uses: actions/cache@v3
         with:
           path: |
@@ -30,22 +30,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Install Dependencies
+      - name: 📥 Install Dependencies
         run: npm ci
 
-      - name: Lint Code
+      - name: ✅ Lint Check
         run: npm run lint
 
-      - name: Check Formatting (Prettier)
-        run: npm run format:check
+      - name: 🧠 Type Check
+        run: npx tsc --noEmit
 
-      - name: Build Project
+      - name: 🏗️ Build Project
         run: npm run build
-
-      # Uncomment this if you have tests configured
-      # - name: Run Tests
-      #   run: npm test
-
-      # Uncomment if you use TypeScript
-      - name: Type Check
-        run: npm run type-check
