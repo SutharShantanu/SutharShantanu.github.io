@@ -6,7 +6,7 @@ import { SectionHeaderProps } from "./types/section-header.types"
 
 const SectionHeader = ({ title, description, center = true, icon }: SectionHeaderProps) => {
     return (
-        <div className={cn("mb-12", center ? "text-center" : "text-left")}>
+        <div className={cn("", center ? "text-center" : "text-left")}>
             <motion.h1
                 className="text-3xl md:text-4xl font-bold mb-2 flex items-baseline justify-center gap-2"
                 initial={{ opacity: 0, y: -20 }}
@@ -19,7 +19,7 @@ const SectionHeader = ({ title, description, center = true, icon }: SectionHeade
 
             {description && (
                 <motion.p
-                    className="text-muted-foreground text-base"
+                    className="text-muted-foreground text-base text-center"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
