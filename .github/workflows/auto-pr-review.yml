@@ -3,7 +3,7 @@ name: Auto PR Review
 on:
   pull_request:
     types: [opened, synchronize]
-  workflow_dispatch: # ✅ Enables manual trigger
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,5 +15,5 @@ jobs:
     steps:
       - name: Auto PR Reviewer
         uses: omio-labs/pr-reviewer-bot@v1
-        with:
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
