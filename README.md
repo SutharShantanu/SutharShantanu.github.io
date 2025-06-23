@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💼 Shantanu Suthar – Developer Portfolio
 
-## Getting Started
+<!-- CI Badge -->
+![CI](https://github.com/SutharShantanu/SutharShantanu.github.io/actions/workflows/ci.yml/badge.svg?branch=main)
 
-First, run the development server:
+<!-- Deploy Badge -->
+[![Deploy on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)](https://SutharShantanu.vercel.app)
+
+<!-- Last Commit -->
+![Last Commit](https://img.shields.io/github/last-commit/SutharShantanu/SutharShantanu.github.io?)
+
+<!-- Stars -->
+![GitHub stars](https://img.shields.io/github/stars/SutharShantanu/SutharShantanu.github.io)
+
+<!-- Tech stack (Optional aesthetic badges) -->
+![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38bdf8?logo=tailwindcss&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer%20Motion-black?logo=framer&logoColor=white)
+
+Welcome to my portfolio website — a digital reflection of my journey as a **Full Stack Web Developer**. This project showcases my featured work, skill set, and passion for building web applications that are fast, beautiful, and responsive.
+
+---
+
+## 🔗 Live URL
+
+🌐 [SutharShantanu.vercel.app](https://SutharShantanu.vercel.app)
+
+---
+
+## ⚙️ Tech Stack
+
+| Category       | Tools & Libraries                                |
+|----------------|--------------------------------------------------|
+| **Framework**   | [Next.js 15](https://nextjs.org/)                |
+| **Styling**     | [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), [Radix UI](https://www.radix-ui.com/) |
+| **Animations**  | [Framer Motion](https://www.framer.com/motion/) |
+| **State**       | Redux Toolkit *(coming soon)*                    |
+| **Icons**       | [Lucide Icons](https://lucide.dev/)              |
+| **Auth**        | JWT-based *(planned)*                            |
+| **Email**       | EmailJS / Nodemailer                             |
+| **Hosting**     | [Vercel](https://vercel.com/)                    |
+| **CI/CD**       | GitHub Actions                                   |
+| **Languages**   | TypeScript, JavaScript                          |
+
+---
+
+## ✨ Key Features
+
+- ✅ Fully responsive across all devices
+- 🌙 Dark/light theme toggle with persistence
+- 🎯 Skills and project filtering
+- 📤 Contact form with secure email sending
+- 🔥 Animated UI components with smooth transitions
+- 📊 Dynamic GitHub projects via GitHub API
+- 🚀 Optimized for performance and accessibility
+
+---
+
+## 🛠️ Getting Started
+
+To run this project locally:
 
 ```bash
+# Clone the repo
+git clone https://github.com/SutharShantanu/SutharShantanu.github.io.git
+
+# Navigate into project directory
+cd SutharShantanu.github.io
+
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+````
+
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🧪 Project Structure
+
+```bash
+📁 src/
+├── app/              # App Router (Next.js 14+)
+├── components/       # UI and shared components
+├── sections/         # Major page sections (Hero, About, Contact, etc.)
+├── lib/              # Helpers, constants, utilities
+├── assets/           # Static images and media
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔄 Continuous Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses **GitHub Actions** for CI:
 
-## Learn More
+* ✅ Runs on every push & PR to `main`
+* ✅ Linting, TypeScript checking, and build test
+* ✅ CI badge shows real-time build status
 
-To learn more about Next.js, take a look at the following resources:
+CI config: `.github/workflows/ci.yml`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📘 Documentation
 
-## Deploy on Vercel
+Looking to understand how things work internally?
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+📖 Check out the [Wiki](https://github.com/SutharShantanu/SutharShantanu.github.io/wiki) for:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Project architecture
+* Deployment
+* Troubleshooting
+* Roadmap
+
+---
+
+## 🤝 Contributions
+
+This is a personal project, but I'm always open to ideas, feedback, and collaboration. Feel free to:
+
+* ⭐ Star the repo
+* 🐛 File issues
+* 🍴 Fork and submit PRs
+
+---
+
+## 🧭 Roadmap
+
+* [ ] Integrate CMS for blog or projects (e.g., Notion, Sanity)
+* [ ] Add Redux-based global state
+* [ ] Lighthouse automated audits via GitHub Actions
+* [ ] Accessibility improvements (a11y)
+* [ ] MDX support for blog posts
+
+---
+
+## 📬 Contact
+
+📨 You can reach out via the contact form on the portfolio or:
+
+* [LinkedIn](https://www.linkedin.com/in/SutharShantanu)
+* [GitHub](https://github.com/SutharShantanu)
+
+---
+
+## 📄 License
+
+This project is open-source.
+
+---
+
+> Built with 💻 and ☕ by [Shantanu Suthar](https://SutharShantanu.vercel.app)
