@@ -1,4 +1,3 @@
-// app/page.tsx  — server component by default, remove "use client"
 import Hero from "@/components/sections/hero";
 import Skills from "@/components/sections/skills";
 import ExperienceTimeline from "@/components/sections/experience-timeline";
@@ -7,15 +6,12 @@ import Projects from "@/components/sections/projects";
 import { GitHubRepo, ProjectType } from "@/components/sections/types/projects.types";
 
 export default async function Home() {
-  // fetch projects here
   const res = await fetch("https://api.github.com/users/SutharShantanu/repos", {
     next: { revalidate: 3600 },
     headers: { Accept: "application/vnd.github.mercy-preview+json" },
   });
   if (!res.ok) throw new Error("Failed to fetch repos");
   const data = await res.json();
-
-  console.log("data", data)
 
   const projects = data.map((repo: GitHubRepo) => ({
     id: repo.id,
@@ -43,7 +39,6 @@ export default async function Home() {
         <Summary />
         <ExperienceTimeline />
         <Skills />
-        {/* Pass projects as props */}
         <Projects projects={projects} />
       </div>
     </div>

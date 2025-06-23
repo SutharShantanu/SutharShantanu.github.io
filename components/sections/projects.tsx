@@ -1,16 +1,14 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-    ClearFiltersButtonProps,
     ProjectsProps,
     ProjectType,
     SortSelectProps,
 } from "./types/projects.types";
 import SectionHeader from "../ui/section-header/section-header";
-import { Briefcase, Clock, SortAscIcon, Star, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Briefcase, Clock, SortAscIcon, Star } from "lucide-react";
 import ProjectsSkeleton from "./skeletons/project-card";
 import ProjectCard from "../cards/project-card";
 import {
@@ -19,11 +17,20 @@ import {
     SelectGroup,
     SelectItem,
     SelectLabel,
+    SelectSeparator,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
 import { MultiSelect } from "../ui/multi-select";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"; // shadcn pagination
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const Projects = ({ projects }: ProjectsProps) => {
     type SortKey = "updatedAt" | "title" | "stars";
@@ -39,13 +46,11 @@ const Projects = ({ projects }: ProjectsProps) => {
         return () => clearTimeout(timeout);
     }, []);
 
-    // Generate options for MultiSelect with label, value and icon
     const techOptions = useMemo(() => {
         const techSet = new Set<string>();
         projects.forEach((p) => {
             if (p.language) techSet.add(p.language);
         });
-
         return Array.from(techSet)
             .sort()
             .map((tech) => ({
@@ -55,7 +60,6 @@ const Projects = ({ projects }: ProjectsProps) => {
             }));
     }, [projects]);
 
-    // Filter and sort projects
     const filteredSortedProjects = useMemo(() => {
         const filtered = projects.filter((p) => {
             if (!p.description) return false;
@@ -85,7 +89,6 @@ const Projects = ({ projects }: ProjectsProps) => {
         return filtered;
     }, [projects, sortKey, selectedTechs]);
 
-    // Pagination logic: calculate projects for current page
     const totalProjects = filteredSortedProjects.length;
     const totalPages = Math.ceil(totalProjects / projectsPerPage);
 
@@ -94,15 +97,9 @@ const Projects = ({ projects }: ProjectsProps) => {
         return filteredSortedProjects.slice(startIdx, startIdx + projectsPerPage);
     }, [filteredSortedProjects, currentPage, projectsPerPage]);
 
-    // When filter or sort or perPage changes, reset to first page
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedTechs, sortKey, projectsPerPage]);
-
-    function clearFilters() {
-        setSortKey("updatedAt");
-        setSelectedTechs([]);
-    }
 
     const FilterSelect = () => (
         <MultiSelect
@@ -110,10 +107,8 @@ const Projects = ({ projects }: ProjectsProps) => {
             onValueChange={setSelectedTechs}
             defaultValue={selectedTechs}
             placeholder="Filter by Tech"
-            variant="inverted"
-            animation={2}
             maxCount={3}
-            className="w-fit justify-end bg-neutral-50 dark:bg-neutral-800"
+            className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800"
         />
     );
 
@@ -123,12 +118,13 @@ const Projects = ({ projects }: ProjectsProps) => {
             onValueChange={(v) => onChange(v as SortKey)}
             aria-label="Sort projects"
         >
-            <SelectTrigger className="w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
+            <SelectTrigger className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
                 <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
                     <SelectLabel>Sort by</SelectLabel>
+                    <SelectSeparator />
                     <SelectItem value="updatedAt" className="flex items-center gap-2">
                         <Clock className="h-4 w-4" /> Updated Recently
                     </SelectItem>
@@ -143,109 +139,191 @@ const Projects = ({ projects }: ProjectsProps) => {
         </Select>
     );
 
-    const ClearFiltersButton = ({ onClear }: ClearFiltersButtonProps) => (
-        <Button
-            variant="outline"
-            onClick={onClear}
-            aria-label="Clear filters"
-            className="flex items-center gap-2"
-        >
-            Clear Filters
-            <X className="h-4 w-4" />
-        </Button>
-    );
+    const renderPageButtons = (showEllipsis: boolean) => {
+        return [...Array(totalPages)].map((_, i) => {
+            const page = i + 1;
+            if (!showEllipsis) {
+                return (
+                    <PaginationItem key={page}>
+                        <PaginationLink
+                            isActive={currentPage === page}
+                            onClick={() => setCurrentPage(page)}
+                        >
+                            {page}
+                        </PaginationLink>
+                    </PaginationItem>
+                );
+            }
 
-    // Per page selector options
+            const isFirst = page === 1;
+            const isLast = page === totalPages;
+            const isNearCurrent = Math.abs(currentPage - page) <= 1;
+
+            if (isFirst || isLast || isNearCurrent) {
+                return (
+                    <PaginationItem key={page}>
+                        <PaginationLink
+                            isActive={currentPage === page}
+                            onClick={() => setCurrentPage(page)}
+                        >
+                            {page}
+                        </PaginationLink>
+                    </PaginationItem>
+                );
+            }
+
+            if (page === currentPage - 2 && page > 2) {
+                return (
+                    <PaginationItem key="left-ellipsis">
+                        <PaginationEllipsis />
+                    </PaginationItem>
+                );
+            }
+
+            if (page === currentPage + 2 && page < totalPages - 1) {
+                return (
+                    <PaginationItem key="right-ellipsis">
+                        <PaginationEllipsis />
+                    </PaginationItem>
+                );
+            }
+
+            return null;
+        });
+    };
+
     const perPageOptions = [3, 4, 5, 6];
 
     return (
-        <section id="projects" className="max-w-6xl flex flex-col gap-2 mx-auto px-6 my-20">
+        <section id="projects" className="max-w-6xl mx-auto px-6 my-20 flex flex-col gap-6">
             <SectionHeader
                 title="Projects"
                 description="Browse my repositories"
                 icon={<Briefcase />}
                 center={false}
             />
-            <motion.div className="flex items-center gap-3 flex-wrap w-fit ml-auto">
+
+            <motion.div layout className="flex flex-col sm:flex-row justify-end gap-1 w-full">
                 <SortSelect value={sortKey} onChange={setSortKey} />
                 <FilterSelect />
-                <ClearFiltersButton onClear={clearFilters} />
             </motion.div>
+
             {loading ? (
                 <ProjectsSkeleton />
             ) : (
-                <motion.div className="flex flex-col gap-1">
-                    <AnimatePresence mode="popLayout">
-                        <motion.div
-                            className="border border-border overflow-hidden"
-                            layout
-                        >
-                            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-x divide-y divide-border">
-                                {currentProjects.length === 0 && (
-                                    <p className="text-center text-muted-foreground col-span-full">
-                                        No projects match your criteria.
-                                    </p>
-                                )}
-
-                                {currentProjects.map((project) => (
-                                    <div key={project.id}>
+                <motion.div layout className="flex flex-col gap-4">
+                    <motion.div
+                        key={`${sortKey}-${selectedTechs.join(",")}-${currentPage}-${projectsPerPage}`}
+                        layout
+                        variants={{
+                            hidden: {},
+                            visible: {
+                                transition: {
+                                    staggerChildren: 0.15,
+                                    delayChildren: 0.1,
+                                },
+                            },
+                        }}
+                        initial="hidden"
+                        animate="visible"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                    >
+                        <AnimatePresence mode="popLayout">
+                            {currentProjects.length === 0 ? (
+                                <motion.p
+                                    layout
+                                    key="no-results"
+                                    variants={{
+                                        hidden: { opacity: 0 },
+                                        visible: { opacity: 1 },
+                                    }}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                    className="text-center text-muted-foreground col-span-full py-8"
+                                >
+                                    No projects match your criteria.
+                                </motion.p>
+                            ) : (
+                                currentProjects.map((project) => (
+                                    <motion.div
+                                        key={project.id}
+                                        layout
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0.95 },
+                                            visible: { opacity: 1, scale: 1 },
+                                            exit: { opacity: 0, scale: 0.95 },
+                                        }}
+                                        initial="hidden"
+                                        animate="visible"
+                                        exit="exit"
+                                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                                    >
                                         <ProjectCard {...project} />
-                                    </div>
-                                ))}
-                            </motion.div>
-                        </motion.div>
-                    </AnimatePresence>
-                    <motion.div className="flex items-center gap-1 w-fit mx-auto">
+                                    </motion.div>
+                                ))
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
+
+                    <motion.div
+                        className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full mt-4"
+                    >
                         {totalPages > 1 && (
-                            <Pagination>
+                            <Pagination className="mx-auto sm:mx-0">
                                 <PaginationContent>
                                     <PaginationItem>
                                         <PaginationPrevious
-                                            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                                            onClick={() =>
+                                                setCurrentPage((prev) => Math.max(prev - 1, 1))
+                                            }
                                             className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
                                         />
                                     </PaginationItem>
 
-                                    {Array.from({ length: totalPages }, (_, i) => (
-                                        <PaginationItem key={i}>
-                                            <PaginationLink
-                                                isActive={currentPage === i + 1}
-                                                onClick={() => setCurrentPage(i + 1)}
-                                            >
-                                                {i + 1}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    ))}
+                                    {/* Ellipsis pagination for small screens */}
+                                    <div className=" gap-1 block sm:hidden">
+                                        {renderPageButtons(true)}
+                                    </div>
+
+                                    {/* Full pagination for sm+ screens */}
+                                    <div className=" gap-1 hidden sm:flex">
+                                        {renderPageButtons(false)}
+                                    </div>
 
                                     <PaginationItem>
                                         <PaginationNext
-                                            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                                            onClick={() =>
+                                                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                                            }
                                             className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
                                         />
                                     </PaginationItem>
                                 </PaginationContent>
                             </Pagination>
                         )}
-                        <Select
-                            value={projectsPerPage.toString()}
-                            onValueChange={(v) => setProjectsPerPage(Number(v))}
-                            aria-label="Projects per page"
-
-                        >
-                            <SelectTrigger className="w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
-                                <SelectValue>{projectsPerPage} per page</SelectValue>
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Projects per page</SelectLabel>
-                                    {perPageOptions.map((num) => (
-                                        <SelectItem key={num} value={num.toString()}>
-                                            {num}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                        <motion.div className="w-fit">
+                            <Select
+                                value={projectsPerPage.toString()}
+                                onValueChange={(v) => setProjectsPerPage(Number(v))}
+                                aria-label="Projects per page"
+                            >
+                                <SelectTrigger className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
+                                    <SelectValue>{projectsPerPage} per page</SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Projects per page</SelectLabel>
+                                        <SelectSeparator />
+                                        {perPageOptions.map((num) => (
+                                            <SelectItem key={num} value={num.toString()}>
+                                                {num}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </motion.div>
                     </motion.div>
                 </motion.div>
             )}

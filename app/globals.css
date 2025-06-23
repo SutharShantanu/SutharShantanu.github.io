@@ -119,6 +119,11 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: var(--color-stone-900);
 }
+/* global.css */
+html body[data-scroll-locked] {
+  overflow: visible !important;
+  margin-right: 0 !important;
+}
 
 @layer base {
   * {

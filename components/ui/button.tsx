@@ -1,8 +1,9 @@
-import * as React from "react"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import React, { forwardRef } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -33,27 +34,74 @@ const buttonVariants = cva(
       size: "default",
     },
   }
-)
+);
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
-  const Comp = asChild ? Slot : "button"
+import type { HTMLMotionProps } from "framer-motion";
+
+type ButtonProps = VariantProps<typeof buttonVariants> & {
+  asLink?: boolean;
+  href?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+} & Omit<HTMLMotionProps<"button">, "href" | "type" | "disabled" | "ref">;
+
+export const Button = forwardRef<
+  HTMLButtonElement | HTMLAnchorElement,
+  ButtonProps
+>((props, ref) => {
+  const {
+    className,
+    variant,
+    size,
+    asLink = false,
+    href,
+    disabled = false,
+    type = "button",
+    ...rest
+  } = props;
+
+  const classes = cn(buttonVariants({ variant, size, className }));
+
+  if (asLink) {
+    if (!href) {
+      console.warn("Button with asLink=true requires href prop");
+      return null;
+    }
+
+    return (
+      <motion.div
+        whileHover={{ scale: 1.05, opacity: 0.9 }}
+        whileTap={{ scale: 0.95 }}
+        style={{ display: "inline-block" }}
+      >
+        <Link href={href} legacyBehavior>
+          <a
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            className={classes}
+            aria-disabled={disabled}
+            tabIndex={disabled ? -1 : undefined}
+            onClick={disabled ? (e) => e.preventDefault() : undefined}
+            {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          />
+        </Link>
+      </motion.div>
+    );
+  }
 
   return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+    <motion.button
+      ref={ref as React.Ref<HTMLButtonElement>}
+      type={type}
+      disabled={disabled}
+      className={classes}
+      whileHover={{ scale: 1.05, opacity: 0.9 }}
+      whileTap={{ scale: 0.95 }}
+      {...rest}
     />
-  )
-}
+  );
+});
 
-export { Button, buttonVariants }
+Button.displayName = "Button";
+
+export { buttonVariants };

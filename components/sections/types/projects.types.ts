@@ -38,9 +38,6 @@ export interface ProjectsProps {
     projects: ProjectType[];
 }
 
-export interface ClearFiltersButtonProps {
-    onClear: () => void;
-}
 
 export interface SortSelectProps {
     value: SortKey;

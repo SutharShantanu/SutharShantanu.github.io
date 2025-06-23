@@ -14,7 +14,7 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
-      className={cn("flex w-fit justify-center", className)}
+      className={cn("flex w-fit justify-center ring ring-border rounded-full backdrop-blur-sm bg-transparent overflow-hidden", className)}
       {...props}
     />
   )
@@ -58,7 +58,9 @@ function PaginationLink({
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        "select-none",
+        "select-none rounded-full",
+        isActive &&
+        "bg-muted text-primary shadow-none dark:bg-neutral-800 dark:text-neutral-50",
         className
       )}
       {...props}
