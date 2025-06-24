@@ -35,11 +35,13 @@ export default async function Home() {
     <div
       className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
     >
-      <div className="max-w-[90vw] lg:max-w-5xl mx-auto border border-red-500">
+      <div className="max-w-[90vw] lg:max-w-5xl mx-auto">
         <RevealOnScroll>
           <Hero />
         </RevealOnScroll>
-        <Summary />
+        <RevealOnScroll>
+          <Summary />
+        </RevealOnScroll>
         <ExperienceTimeline />
         <Skills />
         <Projects projects={projects} />

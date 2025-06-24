@@ -195,7 +195,7 @@ const Projects = ({ projects }: ProjectsProps) => {
     const perPageOptions = [3, 4, 5, 6];
 
     return (
-        <section id="projects" className="max-w-6xl mx-auto px-6 my-20 flex flex-col gap-6">
+        <section id="projects" className="min-h-[calc(100svh-10vh)] flex flex-col items-center justify-center gap-10">
             <SectionHeader
                 title="Projects"
                 description="Browse my repositories"

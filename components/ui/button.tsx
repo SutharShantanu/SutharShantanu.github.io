@@ -98,8 +98,6 @@ export const Button = forwardRef<
       type={type}
       disabled={disabled}
       className={classes}
-      whileHover={{ scale: 1.05, opacity: 0.9 }}
-      whileTap={{ scale: 0.95 }}
       {...rest}
     />
   );

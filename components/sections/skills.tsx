@@ -7,7 +7,6 @@ import { CardTypes } from "./types/skills.types";
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContents } from "../animate-ui/radix/tabs";
 import SectionHeader from "../ui/section-header/section-header";
 import { motion } from "motion/react";
-import { MotionHighlight } from "../animate-ui/effects/motion-highlight";
 
 const cards: CardTypes[] = [
 
@@ -195,7 +194,7 @@ const Skills = () => {
     };
 
     return (
-        <section className="max-w-6xl mx-auto flex flex-col items-center gap-4">
+        <section className="min-h-[calc(100svh-10vh)] flex flex-col items-center justify-center gap-10">
             <SectionHeader
                 title="Skills & Technologies"
                 description="Explore the tools and technologies I use across frontend, backend, deployment, and more."
@@ -214,16 +213,16 @@ const Skills = () => {
                     ))}
                 </TabsList>
                 <TabsContents className="w-full">
-                    <TabsContent value={selectedCategory} forceMount>
+                    <TabsContent value={selectedCategory}>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 overflow-hidden">
                             {paginatedCards.map(({ index, title, imageUrl, category }) => (
-                                    <SkillCard
-                                        key={index}
-                                        title={title}
-                                        category={category}
-                                        imageUrl={imageUrl}
-                                        index={index}
-                                    />
+                                <SkillCard
+                                    key={index}
+                                    title={title}
+                                    category={category}
+                                    imageUrl={imageUrl}
+                                    index={index}
+                                />
                             ))}
                         </div>
                     </TabsContent>

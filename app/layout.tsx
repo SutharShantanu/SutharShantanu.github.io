@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/themeProvider";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -29,6 +30,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem>
+          <Toaster position="top-center" expand={false} richColors />
           <Navbar />
           {children}
         </ThemeProvider>
