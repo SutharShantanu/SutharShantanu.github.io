@@ -75,8 +75,11 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
         });
 
     return (
-        <>
-            {/* Desktop Navigation */}
+        <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
             <motion.nav
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
@@ -97,7 +100,7 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
                     </Avatar>
                 </motion.div>
 
-                <ul className="flex items-center gap-3 relative">{renderNavItems()}</ul>
+                <ul className="flex items-center relative">{renderNavItems()}</ul>
                 <ThemeToggle />
             </motion.nav>
 
@@ -115,6 +118,6 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
                 activeSection={activeSection}
                 setDrawerOpen={setDrawerOpen}
             />
-        </>
+        </motion.div>
     );
 }

@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { CardTypes } from "./types/skills.types";
+import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContents } from "../animate-ui/radix/tabs";
+import SectionHeader from "../ui/section-header/section-header";
+import { motion } from "motion/react";
+import { MotionHighlight } from "../animate-ui/effects/motion-highlight";
 
 const cards: CardTypes[] = [
 
@@ -166,11 +169,7 @@ const cards: CardTypes[] = [
         imageUrl: "https://cdn-icons-png.flaticon.com/512/733/733553.png",
     },
 ];
-
-const categories = [
-    "All",
-    ...Array.from(new Set(cards.map((c) => c.category))),
-];
+const categories = ["All", ...Array.from(new Set(cards.map((c) => c.category)))];
 
 const PAGE_SIZE = 8;
 
@@ -196,41 +195,42 @@ const Skills = () => {
     };
 
     return (
-        <section className="max-w-5xl mx-auto px-6 my-20">
-            <h2 className="text-3xl font-semibold mb-8 text-center">
-                Skills & Technologies
-            </h2>
-            <Tabs value={selectedCategory} onValueChange={handleTabChange} className="mb-8 flex justify-center">
-                <TabsList className="flex flex-wrap gap-2">
+        <section className="max-w-6xl mx-auto flex flex-col items-center gap-4">
+            <SectionHeader
+                title="Skills & Technologies"
+                description="Explore the tools and technologies I use across frontend, backend, deployment, and more."
+            />
+
+            <Tabs
+                value={selectedCategory}
+                onValueChange={handleTabChange}
+                className="flex flex-col items-center w-full"
+            >
+                <TabsList className="flex w-full justify-center gap-2 mb-6">
                     {categories.map((cat) => (
                         <TabsTrigger key={cat} value={cat}>
                             {cat}
                         </TabsTrigger>
                     ))}
                 </TabsList>
+                <TabsContents className="w-full">
+                    <TabsContent value={selectedCategory} forceMount>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 overflow-hidden">
+                            {paginatedCards.map(({ index, title, imageUrl, category }) => (
+                                    <SkillCard
+                                        key={index}
+                                        title={title}
+                                        category={category}
+                                        imageUrl={imageUrl}
+                                        index={index}
+                                    />
+                            ))}
+                        </div>
+                    </TabsContent>
+                </TabsContents>
             </Tabs>
-            <div className="flex flex-wrap justify-center gap-10 min-h-[320px]">
-                {paginatedCards.map(({ index, title, imageUrl, category }) => (
-                    <div
-                        key={index}
-                        className="flex flex-col items-center space-y-2 w-28"
-                        title={`${title} (${category})`}
-                    >
-                        <Image
-                            src={imageUrl}
-                            alt={title}
-                            className="w-16 h-16 object-contain"
-                            loading="lazy"
-                            width={150}
-                            height={150}
-                            draggable={false}
-                        />
-                        <span className="font-medium text-center">{title}</span>
-                        <small className="text-muted-foreground">{category}</small>
-                    </div>
-                ))}
-            </div>
-            <Pagination className="flex justify-center mt-8">
+
+            <Pagination className="mx-auto w-fit flex justify-center">
                 <PaginationContent>
                     <PaginationItem>
                         <PaginationPrevious
@@ -260,6 +260,29 @@ const Skills = () => {
             </Pagination>
         </section>
     );
-}
+};
 
 export default Skills;
+
+
+const SkillCard = ({ title, category, imageUrl }: CardTypes) => {
+    return (
+        <motion.div
+            tabIndex={0}
+            aria-label={`${title} skill, category ${category}`}
+            className="flex flex-col items-center space-y-2 text-center rounded-lg p-4 bg-neutral-50 dark:bg-neutral-800 ring-border shadow-none"
+        >
+            <Image
+                src={imageUrl}
+                alt={title}
+                className="w-16 h-16 object-contain"
+                loading="lazy"
+                width={64}
+                height={64}
+                draggable={false}
+            />
+            <span className="font-medium">{title}</span>
+            <small className="text-muted-foreground">{category}</small>
+        </motion.div>
+    );
+};

@@ -281,12 +281,10 @@ const Projects = ({ projects }: ProjectsProps) => {
                                         />
                                     </PaginationItem>
 
-                                    {/* Ellipsis pagination for small screens */}
-                                    <div className=" gap-1 block sm:hidden">
+                                    <div className="flex flex-row gap-1 sm:hidden">
                                         {renderPageButtons(true)}
                                     </div>
 
-                                    {/* Full pagination for sm+ screens */}
                                     <div className=" gap-1 hidden sm:flex">
                                         {renderPageButtons(false)}
                                     </div>

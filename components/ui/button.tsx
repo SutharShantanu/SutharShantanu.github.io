@@ -15,7 +15,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-background dark:border-input dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:
@@ -70,22 +70,25 @@ export const Button = forwardRef<
     }
 
     return (
-      <motion.div
-        whileHover={{ scale: 1.05, opacity: 0.9 }}
-        whileTap={{ scale: 0.95 }}
-        style={{ display: "inline-block" }}
+      <Link
+        href={href}
+        tabIndex={disabled ? -1 : undefined}
+        aria-disabled={disabled}
+        className={classes}
+        onClick={disabled ? (e) => e.preventDefault() : undefined}
+        {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        passHref
       >
-        <Link href={href} legacyBehavior>
-          <a
-            ref={ref as React.Ref<HTMLAnchorElement>}
-            className={classes}
-            aria-disabled={disabled}
-            tabIndex={disabled ? -1 : undefined}
-            onClick={disabled ? (e) => e.preventDefault() : undefined}
-            {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-          />
-        </Link>
-      </motion.div>
+
+        {React.Children.map(props.children as React.ReactNode, (child) =>
+          typeof child === "object" &&
+          (child as React.ReactElement)?.constructor?.name?.includes("MotionValue")
+            ? null
+            : child
+        )}
+
+      </Link>
     );
   }
 

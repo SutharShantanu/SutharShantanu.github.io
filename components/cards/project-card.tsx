@@ -23,6 +23,7 @@ import {
 import DefaultProject from "@/public/DefaultProject.png";
 import { ProjectType } from "../sections/types/projects.types";
 import { Separator } from "../ui/separator";
+import formatDateWithSuffix from "@/functions/formatDateWithSuffix";
 
 const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
@@ -50,6 +51,7 @@ interface LinkButtonProps {
     children: React.ReactNode;
     variant?: "outline" | "default";
     tooltip: string;
+    className?: string;
 }
 
 function LinkButton({
@@ -57,6 +59,7 @@ function LinkButton({
     children,
     variant = "outline",
     tooltip,
+    className
 }: LinkButtonProps) {
     return (
         <Tooltip>
@@ -66,7 +69,7 @@ function LinkButton({
                     asLink
                     href={href}
                     size="sm"
-                    className="flex-1"
+                    className={`flex-1 ${className}`}
                     tabIndex={0}
                     rel="noopener noreferrer"
                 >
@@ -97,7 +100,23 @@ export default function ProjectCard({
     topics,
     image,
 }: ProjectType) {
-    console.log("id", id, " title", title, "image", image, "repositoryUrl", repositoryUrl, "livePreviewUrl", livePreviewUrl, "language", language, "stars", stars, "forks", forks, "openIssues", openIssues, "updatedAt", updatedAt, "sizeKB", sizeKB, "license", license, "topics", topics);
+    console.log(
+        "id", id, typeof id,
+        "title", title, typeof title,
+        "image", image, typeof image,
+        "repositoryUrl", repositoryUrl, typeof repositoryUrl,
+        "livePreviewUrl", livePreviewUrl, typeof livePreviewUrl,
+        "language", language, typeof language,
+        "stars", stars, typeof stars,
+        "forks", forks, typeof forks,
+        "openIssues", openIssues, typeof openIssues,
+        "updatedAt", updatedAt, typeof updatedAt,
+        "sizeKB", sizeKB, typeof sizeKB,
+        "license", license, typeof license,
+        "topics", topics, typeof topics
+    );
+
+    const formattedDate = updatedAt && formatDateWithSuffix(updatedAt);
     return (
         <motion.div
             key={id}
@@ -120,8 +139,14 @@ export default function ProjectCard({
                 </CardHeader>
 
                 <CardContent className="flex flex-col flex-grow justify-between p-4 gap-2">
-                    <h3 className="font-semibold text-xl">{title}</h3>
-                    <p className="text-muted-foreground line-clamp-3">{description}</p>
+                    <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <h3 className="font-semibold text-xl">{title}</h3>
+                        <p className="text-muted-foreground line-clamp-3 text-sm">{description}</p>
+                    </motion.div>
 
                     <div className="text-sm space-y-2 text-muted-foreground">
                         <div className="flex flex-wrap items-center gap-x-2">
@@ -129,12 +154,14 @@ export default function ProjectCard({
                             <Separator orientation="vertical" className="mx-1 h-4" />
                             {stars && <IconLabel icon={Star}>{stars}</IconLabel>}
                             <Separator orientation="vertical" className="mx-1 h-4" />
-                            {forks && <IconLabel icon={GitBranch}>{forks}</IconLabel>}
+                            {forks && forks > 0 && <IconLabel icon={GitBranch}>{forks}</IconLabel>}
                             <Separator orientation="vertical" className="mx-1 h-4" />
-                            {openIssues && <IconLabel icon={AlertCircle}>{openIssues} open</IconLabel>}
+                            {openIssues && openIssues > 0 && <IconLabel icon={AlertCircle}>{openIssues} open</IconLabel>}
                         </div>
                         <div className="flex flex-wrap items-center gap-3">
-                            <IconLabel icon={Calendar}>Updated: {updatedAt}</IconLabel>
+                            {updatedAt && (
+                                <IconLabel icon={Calendar}>Updated: {formattedDate}</IconLabel>
+                            )}
                             <Separator orientation="vertical" className="mx-1 h-4" />
                             <IconLabel icon={File}>Size: {sizeKB} KB</IconLabel>
 
@@ -169,14 +196,16 @@ export default function ProjectCard({
                 </CardContent>
 
                 <CardFooter className="flex gap-4 px-4 pb-4 pt-0">
-                    <LinkButton href={repositoryUrl} tooltip="View source code on GitHub">
+                    <LinkButton href={repositoryUrl} tooltip="View source code on GitHub" className="w-1/2">
                         GitHub
                     </LinkButton>
+                    {livePreviewUrl && <Separator orientation="vertical" className="h-6" />}
                     {livePreviewUrl && (
                         <LinkButton
                             href={livePreviewUrl}
                             variant="default"
                             tooltip="Live project demo"
+                            className="w-1/2"
                         >
                             Live Demo
                         </LinkButton>

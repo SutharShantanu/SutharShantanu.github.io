@@ -4,6 +4,7 @@ import ExperienceTimeline from "@/components/sections/experience-timeline";
 import { Summary } from "@/components/sections/summary";
 import Projects from "@/components/sections/projects";
 import { GitHubRepo, ProjectType } from "@/components/sections/types/projects.types";
+import RevealOnScroll from "@/components/ui/reveal-on-scroll";
 
 export default async function Home() {
   const res = await fetch("https://api.github.com/users/SutharShantanu/repos", {
@@ -35,7 +36,9 @@ export default async function Home() {
       className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
     >
       <div className="max-w-[90vw] lg:max-w-5xl mx-auto border border-red-500">
-        <Hero />
+        <RevealOnScroll>
+          <Hero />
+        </RevealOnScroll>
         <Summary />
         <ExperienceTimeline />
         <Skills />

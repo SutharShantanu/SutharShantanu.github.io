@@ -19,7 +19,7 @@ export interface GitHubRepo {
 export interface ProjectType {
     id: number;
     title: string;
-    description: string;
+    description?: string;
     category?: string;
     repositoryUrl: string;
     livePreviewUrl?: string | null;
