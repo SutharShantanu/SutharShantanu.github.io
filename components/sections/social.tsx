@@ -3,7 +3,7 @@
 import React, { JSX } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { ArrowRight, ArrowUpRight, BadgeCheck, BookOpen, Github, Globe, Linkedin, MapPinned, MessageSquare } from "lucide-react";
+import { ArrowRight, BadgeCheck, BookOpen, Github, Globe, MapPinned, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { GitHubUser, LinkedInProfile } from "./types/social.types";
@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { formatJobDuration, formatJoinDate } from "@/functions/period-calcutate";
 import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 
 
 const Social = ({ github, linkedin }: { github: GitHubUser; linkedin: LinkedInProfile }) => {
@@ -81,7 +82,6 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
         languages,
         linkedin_url,
         location,
-        profile_image_url,
         profile_status,
         school,
         recommendations_received,
@@ -98,24 +98,21 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
     const currentUsername = linkedin.full_name?.split(" ")[0]?.toLowerCase();
 
     return (
-        <Card className="p-2">
-            <CardHeader className="flex items-center gap-4">
-                {profile_image_url && (
-                    <Image
-                        src={profile_image_url}
-                        alt={`LinkedIn Avatar of ${full_name}`}
-                        width={500}
-                        height={50}
-                        className="rounded-full w-20 h-20 object-cover"
-                    />
-                )}
+        <Card className="overflow-hidden">
+            <CardHeader className="flex items-center gap-4 p-4 group border-b border-border hover:bg-neutral-50 transition-all ease-in-out">
                 <div className="flex flex-col gap-2">
-                    <motion.div className="flex items-center gap-1">
+                    <motion.div className="flex items-center gap-2">
                         <h2 className="text-xl">{full_name}</h2>
                         {is_verified && (
                             <Tooltip>
                                 <TooltipTrigger>
-                                    <BadgeCheck strokeWidth={1} className="text-neutral-50 fill-[#0a66c2]" />
+                                    <Badge
+                                        variant="secondary"
+                                        className="bg-[#0a66c2] text-white dark:bg-blue-600 text-xs rounded-full"
+                                    >
+                                        LinkedIn
+                                        <BadgeCheck strokeWidth={1} className="text-[#0a66c2] fill-neutral-50 w-5 h-5" />
+                                    </Badge>
                                 </TooltipTrigger>
                                 <TooltipContent className="w-fit min-w-fit ">
                                     <p className="text-xs">Verified</p>
@@ -128,21 +125,22 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                         <MapPinned className="w-4 h-4" strokeWidth={1} />
                         <p className="text-xs text-muted-foreground">{location}</p>
                     </motion.div>)}
-                    <Button
-                        href={linkedin_url}
-                        asLink
-                        rel="noopener noreferrer"
-                        className="text-xs group w-fit relative "
-                    >
-                        <Linkedin className="h-4 w-4 fill-neutral-50 text-transparent" />
-                        <ArrowRight strokeWidth={1} className="w-0 translate-x-[100%] pl-0 opacity-0 transition-all duration-300 group-hover:w-5 group-hover:-rotate-45 group-hover:translate-x-0 group-hover:opacity-100" />
-                    </Button>
+
                 </div>
+                <Button
+                    href={linkedin_url}
+                    asLink
+                    variant="outline"
+                    size="icon"
+                    rel="noopener noreferrer"
+                    className="text-xs rounded-full w-8 h-8 cursor-pointer"
+                >
+                    <ArrowRight strokeWidth={1} className="transition-all ease-in-out group-hover:-rotate-45 group-hover:translate-x-0" />
+                </Button>
             </CardHeader>
 
             <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                    {/* Basic Job & Company Info */}
                     {job_title && (
                         <div>
                             <b>Job Title:</b> {job_title}

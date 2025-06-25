@@ -7,7 +7,6 @@ import ThemeToggle from "@/components/theme-toggle/ThemeToggle";
 import { NavigationMenuProps } from "./types/navigation-menu.types";
 import MobileDrawer from "./mobile-drawer";
 import Hamburger from "../hamburger/hamburger";
-import { BorderBeam } from "@/components/magicui/border-beam";
 
 export function DropdownNavigation({ navItems }: NavigationMenuProps) {
     const [openMenu, setOpenMenu] = useState<string | null>(null);

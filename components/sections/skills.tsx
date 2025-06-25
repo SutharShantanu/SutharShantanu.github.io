@@ -7,7 +7,6 @@ import { CardTypes } from "./types/skills.types";
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContents } from "../animate-ui/radix/tabs";
 import SectionHeader from "../ui/section-header/section-header";
 import { motion } from "motion/react";
-import { MagicCard } from "../magicui/magic-card";
 import { Card, CardContent, CardHeader } from "../ui/card";
 
 const cards: CardTypes[] = [
