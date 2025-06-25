@@ -23,3 +23,22 @@ export function PeriodCalculate(from: string, to: string): string {
 
     return result.join(" ");
 }
+
+export function formatJoinDate(month: number, year: number): string {
+    const date = new Date(year, month - 1);
+    return date.toLocaleString("en-US", { month: "short", year: "numeric" }).replace(" ", ", ");
+}
+
+export function formatJobDuration(duration: string): string {
+    const yearMatch = duration.match(/(\d+)\s*yr/);
+    const monthMatch = duration.match(/(\d+)\s*mo/);
+
+    const years = yearMatch ? parseInt(yearMatch[1], 10) : 0;
+    const months = monthMatch ? parseInt(monthMatch[1], 10) : 0;
+
+    const parts = [];
+    if (years > 0) parts.push(`${years} Year${years > 1 ? "s" : ""}`);
+    if (months > 0) parts.push(`${months} Month${months > 1 ? "s" : ""}`);
+
+    return parts.join(", ") || "Less than a month";
+}

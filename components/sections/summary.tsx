@@ -6,7 +6,7 @@ export function Summary() {
     return (
         <section
             id="about"
-            className="min-h-[calc(100svh-10vh)] flex flex-col-reverse md:flex-row items-center justify-center gap-10"
+            className=" flex flex-col-reverse md:flex-row items-center justify-center p-6 gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl"
         >
             <motion.div
                 initial={{ opacity: 0, y: 30 }}

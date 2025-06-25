@@ -195,7 +195,7 @@ const Projects = ({ projects }: ProjectsProps) => {
     const perPageOptions = [3, 4, 5, 6];
 
     return (
-        <section id="projects" className="min-h-[calc(100svh-10vh)] flex flex-col items-center justify-center gap-10">
+        <section id="projects" className="flex flex-col items-center justify-center p-6 gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
             <SectionHeader
                 title="Projects"
                 description="Browse my repositories"
@@ -226,7 +226,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                         }}
                         initial="hidden"
                         animate="visible"
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"
                     >
                         <AnimatePresence mode="popLayout">
                             {currentProjects.length === 0 ? (

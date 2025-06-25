@@ -7,6 +7,8 @@ import { CardTypes } from "./types/skills.types";
 import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContents } from "../animate-ui/radix/tabs";
 import SectionHeader from "../ui/section-header/section-header";
 import { motion } from "motion/react";
+import { MagicCard } from "../magicui/magic-card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 const cards: CardTypes[] = [
 
@@ -194,7 +196,7 @@ const Skills = () => {
     };
 
     return (
-        <section className="min-h-[calc(100svh-10vh)] flex flex-col items-center justify-center gap-10">
+        <section className="flex flex-col items-center justify-center gap-10 p-6 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
             <SectionHeader
                 title="Skills & Technologies"
                 description="Explore the tools and technologies I use across frontend, backend, deployment, and more."
@@ -263,25 +265,33 @@ const Skills = () => {
 
 export default Skills;
 
-
 const SkillCard = ({ title, category, imageUrl }: CardTypes) => {
     return (
         <motion.div
+            transition={{ type: "spring", stiffness: 300 }}
+            whileTap={{ scale: 0.98 }}
             tabIndex={0}
             aria-label={`${title} skill, category ${category}`}
-            className="flex flex-col items-center space-y-2 text-center rounded-lg p-4 bg-neutral-50 dark:bg-neutral-800 ring-border shadow-none"
         >
-            <Image
-                src={imageUrl}
-                alt={title}
-                className="w-16 h-16 object-contain"
-                loading="lazy"
-                width={64}
-                height={64}
-                draggable={false}
-            />
-            <span className="font-medium">{title}</span>
-            <small className="text-muted-foreground">{category}</small>
+            <Card className="border-border rounded-lg shadow-none hover:shadow-md transition-shadow">
+                <CardHeader className="flex items-center justify-center p-4 pb-0">
+                    <Image
+                        src={imageUrl}
+                        alt={title}
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 object-contain"
+                        loading="lazy"
+                        draggable={false}
+                    />
+                </CardHeader>
+
+                <CardContent className="flex flex-col items-center text-center space-y-1 p-4">
+                    <span className="font-medium text-base">{title}</span>
+                    <small className="text-muted-foreground text-sm">{category}</small>
+                </CardContent>
+            </Card>
         </motion.div>
     );
 };
+

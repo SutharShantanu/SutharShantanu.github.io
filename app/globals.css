@@ -37,10 +37,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: 0;
+  /* --radius-sm: 0;
   --radius-md: 0;
   --radius-lg: 0;
-  --radius-xl: 0;
+  --radius-xl: 0; */
   --color-stone-50: oklch(0.985 0.002 106.423);
   --color-stone-300: oklch(0.831 0.013 106.423);
   --color-stone-400: oklch(0.705 0.015 106.423);
@@ -49,6 +49,20 @@
   --color-stone-700: oklch(0.398 0.012 106.423);
   --color-stone-800: oklch(0.274 0.008 106.423);
   --color-stone-900: oklch(0.21 0.006 106.423);
+  --animate-meteor: meteor 5s linear infinite;
+  @keyframes meteor {
+  0% {
+    transform: rotate(var(--angle)) translateX(0);
+    opacity: 1;
+    }
+  70% {
+    opacity: 1;
+    }
+  100% {
+    transform: rotate(var(--angle)) translateX(-500px);
+    opacity: 0;
+    }
+  }
 }
 
 :root {

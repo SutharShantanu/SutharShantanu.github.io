@@ -100,21 +100,6 @@ export default function ProjectCard({
     topics,
     image,
 }: ProjectType) {
-    console.log(
-        "id", id, typeof id,
-        "title", title, typeof title,
-        "image", image, typeof image,
-        "repositoryUrl", repositoryUrl, typeof repositoryUrl,
-        "livePreviewUrl", livePreviewUrl, typeof livePreviewUrl,
-        "language", language, typeof language,
-        "stars", stars, typeof stars,
-        "forks", forks, typeof forks,
-        "openIssues", openIssues, typeof openIssues,
-        "updatedAt", updatedAt, typeof updatedAt,
-        "sizeKB", sizeKB, typeof sizeKB,
-        "license", license, typeof license,
-        "topics", topics, typeof topics
-    );
 
     const formattedDate = updatedAt && formatDateWithSuffix(updatedAt);
     return (

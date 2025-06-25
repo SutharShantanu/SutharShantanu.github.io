@@ -35,7 +35,6 @@ const formatDateWithSuffix = (date: Date | string): string => {
         const month = format(parsedDate, "MMM");
         const year = format(parsedDate, "yyyy");
 
-        console.log(`Formatted date: ${day} ${month}, ${year}`);
         return `${day} ${month}, ${year}`;
     } catch {
         console.error("Error formatting date:", date);
