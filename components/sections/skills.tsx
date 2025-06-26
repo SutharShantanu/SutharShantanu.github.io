@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContents } from "../anima
 import SectionHeader from "../ui/section-header/section-header";
 import { motion } from "motion/react";
 import { Card, CardContent, CardHeader } from "../ui/card";
+import { FloatingPathsBackground } from "../ui/floatting-path";
 
 const cards: CardTypes[] = [
 
@@ -271,25 +272,28 @@ const SkillCard = ({ title, category, imageUrl }: CardTypes) => {
             whileTap={{ scale: 0.98 }}
             tabIndex={0}
             aria-label={`${title} skill, category ${category}`}
+            className="overflow-hidden rounded-lg"
         >
-            <Card className="border-border rounded-lg shadow-none hover:shadow-md transition-shadow">
-                <CardHeader className="flex items-center justify-center p-4 pb-0">
-                    <Image
-                        src={imageUrl}
-                        alt={title}
-                        width={64}
-                        height={64}
-                        className="w-16 h-16 object-contain"
-                        loading="lazy"
-                        draggable={false}
-                    />
-                </CardHeader>
+            <FloatingPathsBackground position={-1}>
+                <Card className="border-border rounded-lg shadow-none min-h-fit hover:shadow-md transition-shadow p-4">
+                    <CardHeader className="flex items-center justify-center">
+                        <Image
+                            src={imageUrl}
+                            alt={title}
+                            width={64}
+                            height={64}
+                            className="w-16 h-16 object-contain"
+                            loading="lazy"
+                            draggable={false}
+                        />
+                    </CardHeader>
 
-                <CardContent className="flex flex-col items-center text-center space-y-1 p-4">
-                    <span className="font-medium text-base">{title}</span>
-                    <small className="text-muted-foreground text-sm">{category}</small>
-                </CardContent>
-            </Card>
+                    <CardContent className="flex flex-col items-center text-center gap-1">
+                        <span className="font-medium text-base text-nowrap">{title}</span>
+                        <small className="text-muted-foreground text-sm">{category}</small>
+                    </CardContent>
+                </Card>
+            </FloatingPathsBackground>
         </motion.div>
     );
 };

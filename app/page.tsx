@@ -1,3 +1,5 @@
+import Footer from "@/components/footer";
+import Certifications from "@/components/sections/certificates";
 import { GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
 import ExperienceTimeline from "@/components/sections/experience-timeline";
 import Hero from "@/components/sections/hero";
@@ -60,6 +62,7 @@ export default async function Home() {
   if (!linkedinRes.ok) throw new Error("Failed to fetch LinkedIn profile");
 
   const linkedinProfile = await linkedinRes.json();
+  const certificates = linkedinProfile.data.certifications || [];
 
   const recommendationRes = await fetch(
     `https://fresh-linkedin-profile-data.p.rapidapi.com/get-recommendations-received?linkedin_url=${encodedUrl}`,
@@ -82,8 +85,6 @@ export default async function Home() {
     recommendations_received: recommendations?.data ?? [],
   };
 
-  console.log("LinkedIn Profile:", linkedin);
-
   return (
     <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
       <div className="max-w-[90vw] lg:max-w-5xl mx-auto flex flex-col gap-4">
@@ -91,8 +92,10 @@ export default async function Home() {
         <Summary />
         <ExperienceTimeline />
         <Skills />
+        {certificates && <Certifications certifications={certificates} />}
         <Projects projects={projects} />
         <Social github={github} linkedin={linkedin} />
+        <Footer />
       </div>
     </div>
   );

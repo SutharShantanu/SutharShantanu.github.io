@@ -194,19 +194,6 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                     </div>
                 )}
 
-                {certifications?.length > 0 && (
-                    <div>
-                        <h3 className="font-medium">Certifications</h3>
-                        <ul className="list-disc ml-5 text-xs">
-                            {certifications.map((cert, i) => (
-                                <li key={i}>
-                                    <b>{cert.name}</b> by {cert.authority} ({cert.issued})
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
                 {/* Recommendations */}
                 {recommendations_received?.length > 0 && (
                     <motion.div>
