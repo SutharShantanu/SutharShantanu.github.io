@@ -69,7 +69,6 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
 
 const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
     const {
-        certifications,
         connection_count,
         current_company_join_month,
         current_company_join_year,
@@ -99,7 +98,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
 
     return (
         <Card className="overflow-hidden">
-            <CardHeader className="flex items-center gap-4 p-4 group border-b border-border hover:bg-neutral-50 transition-all ease-in-out">
+            <CardHeader className="flex items-center gap-4 p-4 group border-b border-border hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all ease-in-out">
                 <div className="flex flex-col gap-2">
                     <motion.div className="flex items-center gap-2">
                         <h2 className="text-xl">{full_name}</h2>
@@ -139,7 +138,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                 </Button>
             </CardHeader>
 
-            <CardContent className="space-y-4">
+            <CardContent className="flex flex-col p-4">
                 <div className="grid grid-cols-2 gap-2 text-xs">
                     {job_title && (
                         <div>
