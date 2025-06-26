@@ -1,3 +1,4 @@
+import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import Certifications from "@/components/sections/certificates";
 import { GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
@@ -95,6 +96,7 @@ export default async function Home() {
         {certificates && <Certifications certifications={certificates} />}
         <Projects projects={projects} />
         <Social github={github} linkedin={linkedin} />
+        <Contact />
         <Footer />
       </div>
     </div>

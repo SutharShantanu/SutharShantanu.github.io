@@ -12,6 +12,8 @@ import Image from "next/image";
 import VercelDefault from "@/public/VercelDefault.png";
 import { VercelBadgeProps } from "./interface/footer.types";
 import { motion } from "framer-motion";
+import { HoverLinkPreview } from "./ui/hover-link-preview";
+import VercelPreview from "@/public/VercelPreview.png";
 
 
 const Footer = () => {
@@ -29,31 +31,33 @@ const Footer = () => {
         const statusInfo = statusConfig[status]
 
         return (
-            <Link
+            <HoverLinkPreview
                 href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-fit flex h-fit max-h-fit items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors hover:opacity-80 bg-neutral-50 text-neutral-800 dark:bg-neutral-800 border border-border dark:text-neutral-50 "
+                previewImage={VercelPreview}
+                imageAlt="Vercel Platform Preview"
             >
-                {showStatus && (
-                    <motion.div>
-                        <div className="inline-flex items-center gap-1.5">
-                            <span
-                                className={`w-2 h-2 rounded-full animate-pulse ${statusInfo.dotColor} ${status === "building" || status === "checking" ? "animate-pulse" : ""}`}
-                            />
-                            <span className="text-xs">{statusInfo.label}</span>
-                        </div>
-                    </motion.div>
-                )}
-                <Separator className="h-4" orientation="vertical" />
-                <Image src={VercelDefault} alt="Vercel Logo" className="size-3 invert dark:invert-0" />
-                <span className="text-nowrap line-clamp-1">Powered by Vercel</span>
-            </Link>
+                <div className="w-fit flex h-fit max-h-fit items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors hover:opacity-80 bg-neutral-50 text-neutral-800 dark:bg-neutral-800 border border-border dark:text-neutral-50">
+                    {showStatus && (
+                        <motion.div>
+                            <div className="inline-flex items-center gap-1.5">
+                                <span
+                                    className={`w-2 h-2 rounded-full ${statusInfo.dotColor} ${["building", "checking"].includes(status) ? "animate-pulse" : ""
+                                        }`}
+                                />
+                                <span className="text-xs">{statusInfo.label}</span>
+                            </div>
+                        </motion.div>
+                    )}
+                    <Separator className="h-4" orientation="vertical" />
+                    <Image src={VercelDefault} alt="Vercel Logo" className="size-3 invert dark:invert-0" />
+                    <span className="text-nowrap line-clamp-1">Powered by Vercel</span>
+                </div>
+            </HoverLinkPreview>
         )
     }
 
     return (
-        <footer className="flex flex-col justify-between overflow-hidden backdrop-blur-sm ring-border border border-b-0 rounded-t-2xl max-w-5xl mx-auto w-full">
+        <footer className="flex flex-col justify-between backdrop-blur-sm ring-border border border-b-0 rounded-t-2xl max-w-5xl mx-auto w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-sm text-muted-foreground p-6">
                 {/* Quick Links */}
                 <div>
@@ -109,7 +113,9 @@ const Footer = () => {
                         </li>
                     </ul>
                 </div>
-                <VercelBadge status="success" showStatus={true} />
+                <div className="relative">
+                    <VercelBadge status="success" showStatus={true} />
+                </div>
 
             </div>
             <Separator className="" />
