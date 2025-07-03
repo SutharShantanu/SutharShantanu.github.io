@@ -21,6 +21,7 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { JSX, useMemo, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, } from "../ui/card";
+import { format } from "date-fns";
 
 const Social = ({ github, linkedin }: SocialProps) => {
     return (
@@ -211,13 +212,14 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
 
     const totalCommitCount = Object.values(totalCommits).reduce((acc, val) => acc + val, 0);
 
+    console.log(created_at)
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
         >
-            <Card className="h-full overflow-hidden border border-border bg-card">
+            <Card className="h-full overflow-hidden border border-border bg-card gap-0">
                 <Link
                     href={html_url}
                     target="_blank"
@@ -230,21 +232,19 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
                                 <h2 className="text-xl font-semibold text-foreground w-fit">
                                     {name}
                                 </h2>
-                                {/* {is_verified && (
-                                    <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <Badge className="text-xs bg-[#0a66c2]">
-                                                    <BadgeCheck className=" text-[#0a66c2] fill-neutral-50" />
-                                                    Linkedin
-                                                </Badge>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Verified</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider>
-                                )} */}
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Badge className="text-xs bg-[#1f2328]">
+                                                <BadgeCheck className=" text-[#1f2328] fill-neutral-50" />
+                                                Github
+                                            </Badge>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Verified</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </div>
                             <ArrowRight strokeWidth={1} className="w-5 h-5 group-hover:-rotate-45 transition-all ease-in-out" />
                         </div>
@@ -280,7 +280,7 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
                                         className="flex items-center gap-1 text-xs font-light rounded-full"
                                     >
                                         <Calendar className="size-3" strokeWidth={1} />
-                                        <span>Joined {created_at}</span>
+                                        <span>Joined {format(new Date(created_at), 'MMMM yyyy')}</span>
                                     </Badge>
                                 )}
                             </div>
@@ -288,7 +288,7 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
                     </CardHeader>
                 </Link>
 
-                <CardContent className="p-6 space-y-6">
+                <CardContent className="p-4 space-y-4">
                     <div className="grid grid-cols-4 gap-4">
                         <div className="text-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
                             <div className="text-lg font-semibold text-foreground">{public_repos}</div>
