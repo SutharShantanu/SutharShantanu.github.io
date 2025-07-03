@@ -68,11 +68,11 @@ type ParentModeMotionHighlightProps = {
 
 type ControlledParentModeMotionHighlightProps<T extends string> =
   BaseMotionHighlightProps<T> &
-    ParentModeMotionHighlightProps & {
-      mode: 'parent';
-      controlledItems: true;
-      children: React.ReactNode;
-    };
+  ParentModeMotionHighlightProps & {
+    mode: 'parent';
+    controlledItems: true;
+    children: React.ReactNode;
+  };
 
 type ControlledChildrenModeMotionHighlightProps<T extends string> =
   BaseMotionHighlightProps<T> & {
@@ -83,12 +83,12 @@ type ControlledChildrenModeMotionHighlightProps<T extends string> =
 
 type UncontrolledParentModeMotionHighlightProps<T extends string> =
   BaseMotionHighlightProps<T> &
-    ParentModeMotionHighlightProps & {
-      mode: 'parent';
-      controlledItems?: false;
-      itemsClassName?: string;
-      children: React.ReactElement | React.ReactElement[];
-    };
+  ParentModeMotionHighlightProps & {
+    mode: 'parent';
+    controlledItems?: false;
+    itemsClassName?: string;
+    children: React.ReactElement | React.ReactElement[];
+  };
 
 type UncontrolledChildrenModeMotionHighlightProps<T extends string> =
   BaseMotionHighlightProps<T> & {
@@ -296,15 +296,15 @@ function MotionHighlight<T extends string>({
         ? controlledItems
           ? render(children)
           : render(
-              React.Children.map(children, (child, index) => (
-                <MotionHighlightItem
-                  key={index}
-                  className={props?.itemsClassName}
-                >
-                  {child}
-                </MotionHighlightItem>
-              )),
-            )
+            React.Children.map(children, (child, index) => (
+              <MotionHighlightItem
+                key={index}
+                className={props?.itemsClassName}
+              >
+                {child}
+              </MotionHighlightItem>
+            )),
+          )
         : children}
     </MotionHighlightContext.Provider>
   );
@@ -451,21 +451,21 @@ function MotionHighlightItem({
 
   const commonHandlers = hover
     ? {
-        onMouseEnter: (e: React.MouseEvent<HTMLDivElement>) => {
-          setActiveValue(childValue);
-          element.props.onMouseEnter?.(e);
-        },
-        onMouseLeave: (e: React.MouseEvent<HTMLDivElement>) => {
-          setActiveValue(null);
-          element.props.onMouseLeave?.(e);
-        },
-      }
+      onMouseEnter: (e: React.MouseEvent<HTMLDivElement>) => {
+        setActiveValue(childValue);
+        element.props.onMouseEnter?.(e);
+      },
+      onMouseLeave: (e: React.MouseEvent<HTMLDivElement>) => {
+        setActiveValue(null);
+        element.props.onMouseLeave?.(e);
+      },
+    }
     : {
-        onClick: (e: React.MouseEvent<HTMLDivElement>) => {
-          setActiveValue(childValue);
-          element.props.onClick?.(e);
-        },
-      };
+      onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+        setActiveValue(childValue);
+        element.props.onClick?.(e);
+      },
+    };
 
   if (asChild) {
     if (mode === 'children') {

@@ -10,7 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import VercelDefault from "@/public/VercelDefault.png";
-import { VercelBadgeProps } from "./interface/footer.types";
+import { VercelBadgeProps } from "./types/footer.types";
 import { motion } from "framer-motion";
 import { HoverLinkPreview } from "./ui/hover-link-preview";
 import VercelPreview from "@/public/VercelPreview.png";

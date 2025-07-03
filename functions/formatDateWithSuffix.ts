@@ -37,7 +37,7 @@ const formatDateWithSuffix = (date: Date | string): string => {
 
         return `${day} ${month}, ${year}`;
     } catch {
-        console.error("Error formatting date:", date);
+        console.log("Error formatting date:", date);
         return "";
     }
 };

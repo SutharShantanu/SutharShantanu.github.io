@@ -83,7 +83,7 @@ export const Button = forwardRef<
 
         {React.Children.map(props.children as React.ReactNode, (child) =>
           typeof child === "object" &&
-          (child as React.ReactElement)?.constructor?.name?.includes("MotionValue")
+            (child as React.ReactElement)?.constructor?.name?.includes("MotionValue")
             ? null
             : child
         )}

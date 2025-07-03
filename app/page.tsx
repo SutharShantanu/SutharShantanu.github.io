@@ -9,17 +9,23 @@ import Skills from "@/components/sections/skills";
 import Social from "@/components/sections/social";
 import { Summary } from "@/components/sections/summary";
 import { GitHubRepo, ProjectType } from "@/components/sections/types/projects.types";
+import { GitHubUserExtended, Recommendation } from "@/components/sections/types/social.types";
 import { Octokit } from "octokit";
 
 export default async function Home() {
-  const githubReposRes = await fetch("https://api.github.com/users/SutharShantanu/repos", {
+  const username = process.env.GITHUB_USERNAME ?? GITHUB_USERNAME;
+  const linkedinUsername = process.env.LINKEDIN_USERNAME ?? LINKEDIN_USERNAME;
+
+  const githubReposRes = await fetch(`https://api.github.com/users/${username}/repos`, {
     next: { revalidate: 3600 },
     headers: {
       Accept: "application/vnd.github.mercy-preview+json",
     },
   });
 
-  if (!githubReposRes.ok) throw new Error("Failed to fetch GitHub repos");
+  if (!githubReposRes.ok) {
+    console.log("Failed to fetch GitHub repos");
+  }
   const repos = await githubReposRes.json();
 
   const projects = repos.map((repo: GitHubRepo) => ({
@@ -39,15 +45,23 @@ export default async function Home() {
     image: "",
   })) as ProjectType[];
 
-  // GitHub Profile
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });
+
   const { data: github } = await octokit.rest.users.getByUsername({
-    username: process.env.GITHUB_USERNAME ?? GITHUB_USERNAME,
+    username,
   });
 
-  const encodedUrl = encodeURIComponent(`https://www.linkedin.com/in/${process.env.LINKEDIN_USERNAME ?? LINKEDIN_USERNAME}/`);
+  const calendarRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`);
+  const calendarData = calendarRes.ok ? await calendarRes.json() : { contributions: {}, total: 0 };
+
+  const rawContributions = calendarData.contributions ?? {};
+
+  const activityRes = await fetch(`https://api.github.com/users/${username}/events/public`);
+  const activityData = activityRes.ok ? await activityRes.json() : [];
+
+  const encodedUrl = encodeURIComponent(`https://www.linkedin.com/in/${linkedinUsername}/`);
   const linkedinRes = await fetch(
     `https://${process.env.RAPIDAPI_HOST}/get-linkedin-profile?linkedin_url=${encodedUrl}&include_skills=false&include_certifications=true&include_publications=false&include_honors=false&include_volunteers=false&include_projects=false&include_patents=false&include_courses=false&include_organizations=true&include_profile_status=true&include_company_public_url=true`,
     {
@@ -60,10 +74,12 @@ export default async function Home() {
     }
   );
 
-  if (!linkedinRes.ok) throw new Error("Failed to fetch LinkedIn profile");
+  if (!linkedinRes.ok) {
+    console.log("Failed to fetch LinkedIn profile");
+  }
 
   const linkedinProfile = await linkedinRes.json();
-  const certificates = linkedinProfile.data.certifications || [];
+  const certificates = linkedinProfile?.data?.certifications || [];
 
   const recommendationRes = await fetch(
     `https://fresh-linkedin-profile-data.p.rapidapi.com/get-recommendations-received?linkedin_url=${encodedUrl}`,
@@ -77,14 +93,38 @@ export default async function Home() {
     }
   );
 
-  if (!recommendationRes.ok) throw new Error("Failed to fetch LinkedIn recommendations");
+  if (!recommendationRes.ok) {
+    console.log("Failed to fetch LinkedIn recommendations");
+  }
 
-  const recommendations = await recommendationRes.json();
+  const recommendationsRaw = await recommendationRes.json();
+
+  const rawData = recommendationsRaw?.data ?? []
+
+  const recommendations = rawData.map((rec: Recommendation) => ({
+    ...rec,
+    username: rec.profile_url?.split("/in/")[1]?.replace(/\/$/, "") ?? "unknown-user",
+  }));
 
   const linkedin = {
     ...linkedinProfile.data,
-    recommendations_received: recommendations?.data ?? [],
+    recommendations_received: recommendations,
   };
+
+  const topLanguages = repos.reduce((acc: { [lang: string]: number }, repo: GitHubRepo) => {
+    if (repo.language) {
+      acc[repo.language] = (acc[repo.language] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const githubWithExtras: GitHubUserExtended = {
+    ...github,
+    contributions: rawContributions,
+    totalCommits: calendarData.total,
+    recentActivities: activityData,
+    topLanguages: topLanguages || {},
+  }
 
   return (
     <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
@@ -95,7 +135,7 @@ export default async function Home() {
         <Skills />
         {certificates && <Certifications certifications={certificates} />}
         <Projects projects={projects} />
-        <Social github={github} linkedin={linkedin} />
+        {githubWithExtras && linkedin && <Social github={githubWithExtras} linkedin={linkedin} />}
         <Contact />
         <Footer />
       </div>

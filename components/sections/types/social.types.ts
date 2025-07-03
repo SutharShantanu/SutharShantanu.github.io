@@ -1,3 +1,8 @@
+
+export interface SocialProps {
+    github: GitHubUser
+    linkedin: LinkedInProfile
+}
 export interface GitHubUser {
     login: string;
     id: number;
@@ -25,21 +30,99 @@ export interface GitHubUser {
     email: string | null;
     hireable: boolean | null;
     bio: string | null;
-    twitter_username?: string | null | undefined;
+    twitter_username?: string | null;
     public_repos: number;
     public_gists: number;
     followers: number;
     following: number;
-    created_at: string; // ISO Date string
-    updated_at: string; // ISO Date string
+    created_at: string;
+    updated_at: string;
     plan?: {
         name: string;
         space: number;
         collaborators: number;
         private_repos: number;
     };
+    contributions?: GitHubActivityDay[];
+    totalCommits?: GitHubActivityTotals;
+    recentActivities?: GitHubActivityEvent[];
+    topLanguages?: GithubLanguages;
+}
+export interface GithubLanguages {
+    [lang: string]: number;
+}
+export interface GitHubActivityDay {
+    date: string;
+    count: number;
+    level: number;
+}
+
+export interface GitHubCalendarProps {
+    data: GitHubActivityDay[];
 };
 
+
+export interface GitHubActivityTotals {
+    [year: string]: number;
+}
+
+export interface GitHubCommitAuthor {
+    email: string;
+    name: string;
+}
+
+export interface GitHubCommit {
+    sha: string;
+    author: GitHubCommitAuthor;
+    message: string;
+    distinct: boolean;
+    url: string;
+}
+
+export interface GitHubActivityPayload {
+    repository_id: number;
+    push_id: number;
+    size: number;
+    distinct_size: number;
+    ref: string;
+    head: string;
+    before: string;
+    commits: GitHubCommit[];
+}
+
+export interface GitHubRepo {
+    id: number;
+    name: string;
+    url: string;
+}
+
+export interface GitHubActor {
+    id: number;
+    login: string;
+    display_login: string;
+    gravatar_id: string;
+    url: string;
+    avatar_url: string;
+}
+
+export interface GitHubActivityEvent {
+    id: string;
+    type: string;
+    actor: GitHubActor;
+    repo: GitHubRepo;
+    payload: GitHubActivityPayload;
+    public: boolean;
+    created_at: string;
+}
+
+
+export interface GitHubUserExtended extends GitHubUser {
+    contributions: GitHubActivityDay[];
+    totalCommits: GitHubActivityTotals;
+    recentActivities: GitHubActivityEvent[];
+    topLanguages?: GithubLanguages;
+
+}
 
 export interface LinkedInProfile {
     about: string;
@@ -93,6 +176,7 @@ export interface LinkedInProfile {
 export interface Recommendation {
     profile_url: string;
     text: string;
+    username?: string;
 }
 
 export interface Certification {

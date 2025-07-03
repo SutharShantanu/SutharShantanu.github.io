@@ -103,7 +103,7 @@ export function useContactForm() {
 
             form.reset()
         } catch (error) {
-            console.error("Form submission error:", error)
+            console.log("Form submission error:", error)
 
             toast.error(
                 error instanceof Error

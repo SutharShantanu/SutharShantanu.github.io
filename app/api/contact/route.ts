@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
         const clientIP = getClientIP(request)
         const fingerprint = createFingerprint(request)
 
-        console.log(`Contact form attempt from IP: ${clientIP}`)
 
         // Rate limiting check
         const rateLimitResult = rateLimiter.isAllowed(fingerprint)
@@ -70,11 +69,6 @@ export async function POST(request: NextRequest) {
 
         // Honeypot validation
         if (validatedData.website || validatedData.phone) {
-            console.log(`Honeypot triggered from IP: ${clientIP}`, {
-                website: validatedData.website,
-                phone: validatedData.phone,
-            })
-
             // Return success to not reveal the honeypot
             return NextResponse.json(
                 {
@@ -91,7 +85,6 @@ export async function POST(request: NextRequest) {
 
             // If form was submitted in less than 3 seconds, it's likely a bot
             if (timeTaken < 3000) {
-                console.log(`Fast submission detected from IP: ${clientIP}, time: ${timeTaken}ms`)
 
                 // Return success to not reveal the detection
                 return NextResponse.json(
@@ -112,12 +105,6 @@ export async function POST(request: NextRequest) {
         })
 
         if (spamCheck.isSpam) {
-            console.log(`Spam detected from IP: ${clientIP}`, {
-                score: spamCheck.score,
-                reasons: spamCheck.reasons,
-                data: validatedData,
-            })
-
             // Return a generic success message to not reveal spam detection
             return NextResponse.json(
                 {
@@ -127,17 +114,8 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Log legitimate submission
-        console.log(`Legitimate contact form submission from IP: ${clientIP}`, {
-            name: validatedData.name,
-            email: validatedData.email,
-            subject: validatedData.subject,
-            spamScore: spamCheck.score,
-        })
-
         // Check if Resend API key is available
         if (!process.env.RESEND_API_KEY) {
-            console.log("RESEND_API_KEY not found, simulating email send...")
 
             // Simulate email sending for development
             await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -225,7 +203,7 @@ export async function POST(request: NextRequest) {
             })
 
             if (error) {
-                console.error("Resend error:", error)
+                console.log("Resend error:", error)
                 return NextResponse.json(
                     {
                         error: "Failed to send email",
@@ -235,7 +213,6 @@ export async function POST(request: NextRequest) {
                 )
             }
 
-            console.log("Email sent successfully:", data)
 
             return NextResponse.json(
                 {
@@ -245,7 +222,7 @@ export async function POST(request: NextRequest) {
                 { status: 200 },
             )
         } catch (resendError) {
-            console.error("Resend integration error:", resendError)
+            console.log("Resend integration error:", resendError)
             return NextResponse.json(
                 {
                     error: "Email service temporarily unavailable",
@@ -255,7 +232,7 @@ export async function POST(request: NextRequest) {
             )
         }
     } catch (error) {
-        console.error("Unexpected error in contact API:", error)
+        console.log("Unexpected error in contact API:", error)
         return NextResponse.json(
             {
                 error: "Internal server error",

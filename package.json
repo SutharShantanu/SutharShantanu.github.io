@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@number-flow/react": "^0.5.10",
+    "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.7",
@@ -24,7 +25,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.7",
-    "@types/date-fns": "^2.5.3",
+    "@types/date-fns": "^2.6.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -38,8 +39,10 @@
     "octokit": "^5.0.3",
     "radix-ui": "^1.4.2",
     "react": "^19.0.0",
+    "react-calendar-heatmap": "^1.10.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.58.1",
+    "react-hook-form": "^7.59.0",
+    "recharts": "^3.0.2",
     "resend": "^4.6.0",
     "scroll-into-view": "^1.16.2",
     "sonner": "^2.0.5",
@@ -52,11 +55,15 @@
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
+    "@types/react-calendar-heatmap": "^1.9.0",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "react-is": "^19.0.0-rc-69d4b800-20241021"
   }
 }

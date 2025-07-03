@@ -43,6 +43,7 @@ export function Globe({
     const phiRef = useRef(0)
     const widthRef = useRef(0)
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    const globeRef = useRef<ReturnType<typeof createGlobe> | null>(null)
     const pointerInteracting = useRef<number | null>(null)
     const pointerInteractionMovement = useRef(0)
     const [r, setR] = useState(0)
@@ -79,25 +80,55 @@ export function Globe({
     }, [])
 
     useEffect(() => {
+        if (!canvasRef.current) return
+
+        const canvas = canvasRef.current
+
+        // Check if canvas context is available
+        const context = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+        if (!context) {
+            console.warn("WebGL not supported")
+            return
+        }
+
         window.addEventListener("resize", onResize)
         onResize()
 
-        const globe = createGlobe(canvasRef.current!, {
-            ...config,
-            width: widthRef.current * 2,
-            height: widthRef.current * 2,
-            onRender,
-        })
+        // Ensure width is set before creating globe
+        if (widthRef.current === 0) {
+            widthRef.current = canvas.offsetWidth || 400
+        }
 
-        setTimeout(() => (canvasRef.current!.style.opacity = "1"))
-        return () => {
-            window.removeEventListener("resize", onResize)
-            globe.destroy()
+        try {
+            globeRef.current = createGlobe(canvas, {
+                ...config,
+                width: widthRef.current * 2,
+                height: widthRef.current * 2,
+                onRender,
+            })
+
+            // Set opacity after a short delay to ensure globe is initialized
+            const timeoutId = setTimeout(() => {
+                if (canvas) {
+                    canvas.style.opacity = "1"
+                }
+            }, 100)
+
+            return () => {
+                clearTimeout(timeoutId)
+                window.removeEventListener("resize", onResize)
+                if (globeRef.current) {
+                    globeRef.current.destroy()
+                    globeRef.current = null
+                }
+            }
+        } catch (error) {
+            console.log("Error initializing globe:", error)
         }
     }, [config, onRender, onResize])
 
     return (
-        <div className={cn("absolute inset-0 mx-auto aspect-[1/1] w-full max-w-[600px]", className)}>
+        <div className={cn("mx-auto aspect-[1/1] w-full max-w-[600px]", className)}>
             <canvas
                 className={cn("size-full opacity-0 transition-opacity duration-500 [contain:layout_paint_size]")}
                 ref={canvasRef}
