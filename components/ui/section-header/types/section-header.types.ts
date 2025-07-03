@@ -5,4 +5,5 @@ export interface SectionHeaderProps {
     description?: string
     center?: boolean
     icon?: ReactNode
+    controls?: React.ReactNode;
 }

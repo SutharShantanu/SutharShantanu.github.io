@@ -43,7 +43,7 @@ const ExperienceTimeline = () => {
     };
 
     return (
-        <div id="#experience" className="mx-auto px-4 py-12 max-w-5xl">
+        <div id="#experience" className="mx-auto p-6 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
             <SectionHeader
                 title="Experience"
                 description="Explore the key events, achievements, and milestones that shaped our professional journey over the years."
