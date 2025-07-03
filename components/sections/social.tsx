@@ -212,7 +212,6 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
 
     const totalCommitCount = Object.values(totalCommits).reduce((acc, val) => acc + val, 0);
 
-    console.log(created_at)
     return (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
