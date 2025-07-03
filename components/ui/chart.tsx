@@ -1,3 +1,5 @@
+// @ts-expect - error
+
 "use client"
 
 import * as React from "react"
