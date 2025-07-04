@@ -22,40 +22,35 @@ import { JSX, useMemo, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, } from "../ui/card";
 import { format } from "date-fns";
+import SectionHeader from "../ui/section-header/section-header";
 
 const Social = ({ github, linkedin }: SocialProps) => {
     return (
-        <section className="flex flex-col items-center justify-between gap-10 overflow-hidden max-w-5xl">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-center space-y-4"
-            >
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-                    Connect With Me
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Explore my professional journey across different platforms
-                </p>
-            </motion.div>
+        <div
+            className="flex flex-col items-center justify-between gap-10 overflow-hidden max-w-5xl py-6"
+            role="region"
+            aria-labelledby="social-connect-title"
+        >
+            <SectionHeader
+                title="Let’s Connect & Collaborate"
+                description="Explore my professional journey across different platforms and discover where I share my work and insights."
+            />
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid gap-8 lg:grid-cols-2 w-full">
                 <GitHubCard github={github} />
                 <LinkedInCard linkedin={linkedin} />
             </div>
-        </section>
+        </div>
     );
 };
+
 
 export default Social;
 
 const GitHubActivityCalendar = ({
     activityData = [],
-    totalCommits = 0,
 }: {
     activityData: GitHubActivityDay[]
-    totalCommits: number
 }) => {
     const [selectedYear, setSelectedYear] = useState<string>("all")
 
@@ -74,6 +69,10 @@ const GitHubActivityCalendar = ({
         )
     }, [activityData, selectedYear])
 
+    const totalCommits = useMemo(() => {
+        return filtered.reduce((acc, curr) => acc + curr.count, 0)
+    }, [filtered])
+
     const areaChartData = useMemo(() => {
         const monthlyCounts: { [month: string]: number } = {}
         filtered.forEach((day) => {
@@ -83,9 +82,10 @@ const GitHubActivityCalendar = ({
         })
         return Object.entries(monthlyCounts)
             .map(([month, count]) => ({ month, count }))
-            .sort((a, b) =>
-                new Date(`${a.month} 1, 2000`).getMonth() -
-                new Date(`${b.month} 1, 2000`).getMonth()
+            .sort(
+                (a, b) =>
+                    new Date(`${a.month} 1, 2000`).getMonth() -
+                    new Date(`${b.month} 1, 2000`).getMonth()
             )
     }, [filtered])
 
@@ -99,56 +99,40 @@ const GitHubActivityCalendar = ({
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-sm text-foreground">
-                    Activity Overview
-                </h3>
+                <h3 className="font-semibold text-sm text-foreground">Activity Overview</h3>
                 <Badge variant="outline" className="flex items-center gap-1">
                     <GitCommitVertical strokeWidth={1} className="size-5 fill-primary" />
                     <span className="text-xs text-muted-foreground">
-                        {totalCommits} commits
+                        {totalCommits} commit{totalCommits === 1 ? "" : "s"}
                     </span>
                 </Badge>
             </div>
 
-            <div className="flex items-start gap-1 w-full">
+            <div className="flex flex-col md:flex-row md:items-start gap-4 w-full">
                 <Tabs
                     orientation="vertical"
                     value={selectedYear}
                     onValueChange={setSelectedYear}
-                    className="w-fit"
+                    className="md:w-fit"
                 >
-                    <TabsList className="flex flex-col gap-1">
+                    <TabsList className="flex md:flex-col gap-1 md:gap-1">
                         {years.map((year) => (
-                            <TabsTrigger
-                                key={year}
-                                value={year}
-                                className="text-xs capitalize"
-                            >
+                            <TabsTrigger key={year} value={year} className="text-xs capitalize">
                                 {year === "all" ? "All" : year}
                             </TabsTrigger>
                         ))}
                     </TabsList>
                 </Tabs>
+
                 <div className="p-0 w-full rounded-md border border-border overflow-hidden">
                     <ChartContainer
                         config={chartConfig}
-                        className="mx-auto aspect-square w-full max-h-[200px] bg-neutral-50 dark:bg-neutral-800"
+                        className="mx-auto w-full aspect-[4/3] md:aspect-square max-h-[200px] bg-neutral-50 dark:bg-neutral-800"
                     >
-                        <AreaChart
-                            accessibilityLayer
-                            data={areaChartData}
-                        >
+                        <AreaChart data={areaChartData}>
                             <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey="month"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                            />
-                            <ChartTooltip
-                                cursor={true}
-                                content={<ChartTooltipContent indicator="dashed" />}
-                            />
+                            <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+                            <ChartTooltip cursor content={<ChartTooltipContent indicator="dashed" />} />
                             <Area
                                 dataKey="count"
                                 type="natural"
@@ -164,30 +148,26 @@ const GitHubActivityCalendar = ({
     )
 }
 
+
 const RecentActivity = ({ recentActivities }: { recentActivities: GitHubActivityEvent[] }) => {
     const top3 = recentActivities.slice(0, 3);
 
     return (
-        <div className="space-y-3">
-            <h3 className="font-semibold text-sm text-foreground">Recent Activity</h3>
-            <div className="space-y-2">
-                {top3.map((activity, index) => (
-                    <div
-                        key={index}
-                        className="flex items-start gap-3 p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg"
-                    >
-                        <div className="mt-0.5">
-                            <GitPullRequestArrow className="w-4 h-4 text-muted-foreground" />
-                        </div>
-                        <div className="flex items-start gap-1 justify-between w-full">
-                            <p className="text-sm text-foreground font-medium">{activity.type}</p>
-                            <span className="text-xs text-muted-foreground">
-                                {new Date(activity.created_at).toLocaleString()}
-                            </span>
-                        </div>
+        <div className="space-y-2">
+            {top3.map((activity, index) => (
+                <div
+                    key={index}
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg"
+                >
+                    <div className="flex items-start gap-2">
+                        <GitPullRequestArrow className="w-4 h-4 text-muted-foreground mt-1" />
+                        <p className="text-sm text-foreground font-medium">{activity.type}</p>
                     </div>
-                ))}
-            </div>
+                    <span className="text-xs text-muted-foreground sm:text-right">
+                        {format(new Date(activity.created_at), "do MMM, yyyy")}
+                    </span>
+                </div>
+            ))}
         </div>
     );
 };
@@ -205,12 +185,8 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
         followers,
         following,
         contributions = [],
-        totalCommits = {},
         recentActivities = [],
     } = github;
-
-
-    const totalCommitCount = Object.values(totalCommits).reduce((acc, val) => acc + val, 0);
 
     return (
         <motion.div
@@ -225,7 +201,7 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
                     rel="noopener noreferrer"
                     className="block"
                 >
-                    <CardHeader className="hover:bg-neutral-50 p-4 dark:hover:bg-neutral-800 transition-colors cursor-pointer group border-b">
+                    <CardHeader className="hover:bg-neutral-50 p-4 dark:hover:bg-neutral-800 transition-all ease-in-out cursor-pointer group border-b">
                         <div className="flex items-center gap-2 w-full justify-between">
                             <div className="flex items-center gap-2">
                                 <h2 className="text-xl font-semibold text-foreground w-fit">
@@ -288,7 +264,7 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
                 </Link>
 
                 <CardContent className="p-4 space-y-4">
-                    <div className="grid grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <div className="text-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
                             <div className="text-lg font-semibold text-foreground">{public_repos}</div>
                             <div className="text-xs text-muted-foreground">Repos</div>
@@ -306,11 +282,9 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
                             <div className="text-xs text-muted-foreground">Gists</div>
                         </div>
                     </div>
-
                     {contributions.length > 0 && (
                         <GitHubActivityCalendar
                             activityData={contributions}
-                            totalCommits={totalCommitCount}
                         />
                     )}
 
@@ -354,17 +328,17 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
         >
-            <Card className="h-full overflow-hidden border border-border bg-card gap-0">
+            <Card className="h-full overflow-hidden border border-border bg-card gap-0 w-full">
                 <Link
                     href={linkedin_url ? linkedin_url : "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block"
                 >
-                    <CardHeader className="hover:bg-neutral-50 p-4 dark:hover:bg-neutral-800 transition-colors cursor-pointer group border-b border-">
-                        <div className="flex items-center gap-2 w-full justify-between">
-                            <div className="flex items-center gap-2">
-                                <h2 className="text-xl font-semibold text-foreground w-fit">
+                    <CardHeader className="hover:bg-neutral-50 p-4 dark:hover:bg-neutral-800 transition-all ease-in-out cursor-pointer group border-b border-border">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                            <div className="flex flex-wrap items-center gap-2 min-w-0">
+                                <h2 className="text-lg sm:text-xl font-semibold text-foreground truncate">
                                     {full_name}
                                 </h2>
                                 {is_verified && (
@@ -372,7 +346,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                                         <Tooltip>
                                             <TooltipTrigger>
                                                 <Badge className="text-xs bg-[#0a66c2]">
-                                                    <BadgeCheck className=" text-[#0a66c2] fill-neutral-50" />
+                                                    <BadgeCheck className="text-[#0a66c2] fill-neutral-50" />
                                                     Linkedin
                                                 </Badge>
                                             </TooltipTrigger>
@@ -383,31 +357,27 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                                     </TooltipProvider>
                                 )}
                             </div>
-                            <ArrowRight strokeWidth={1} className="w-5 h-5 group-hover:-rotate-45 transition-all ease-in-out" />
+                            <ArrowRight
+                                strokeWidth={1}
+                                className="w-5 h-5 group-hover:-rotate-45 transition-all ease-in-out"
+                            />
                         </div>
-                        <div className="flex flex-col items-start justify-between gap-2">
+                        <div className="flex flex-col gap-2 mt-2">
                             {headline && (
-                                <p className="text-muted-foreground text-xs leading-relaxed">
+                                <p className="text-muted-foreground text-xs leading-relaxed text-wrap">
                                     {headline}
                                 </p>
                             )}
-
                             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                                 {location && (
-                                    <Badge
-                                        variant="secondary"
-                                        className="flex items-center gap-1 text-xs font-light rounded-full"
-                                    >
+                                    <Badge variant="secondary" className="flex items-center gap-1 text-xs font-light rounded-full">
                                         <MapPin className="size-3" strokeWidth={1} />
                                         <span>{location}</span>
                                     </Badge>
                                 )}
                                 <Separator orientation="vertical" className="h-5" />
                                 {profile_status?.joined_date && (
-                                    <Badge
-                                        variant="secondary"
-                                        className="flex items-center gap-1 text-xs font-light rounded-full"
-                                    >
+                                    <Badge variant="secondary" className="flex items-center gap-1 text-xs font-light rounded-full">
                                         <Calendar className="size-3" strokeWidth={1} />
                                         <span>Joined {profile_status.joined_date}</span>
                                     </Badge>
@@ -419,7 +389,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
 
                 <CardContent className="p-4 space-y-4">
                     {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {follower_count !== undefined && (
                             <div className="text-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
                                 <div className="text-lg font-semibold text-foreground">
@@ -486,6 +456,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                         </div>
                     )}
 
+                    {/* Recommendations */}
                     {recommendations_received && recommendations_received.length > 0 && (
                         <div className="space-y-2">
                             <div className="flex items-center gap-2 text-sm font-semibold">
@@ -500,45 +471,25 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                                             ?.replace(/\/$/, "")
                                             ?.replace(/[0-9]+/g, "") ?? "LinkedIn User";
 
-                                    const highlightedText = rec.text;
-
                                     return (
-                                        <AccordionItem
-                                            key={index}
-                                            value={`rec-${index}`}
-                                            className="border rounded-md"
-                                        >
+                                        <AccordionItem key={index} value={`rec-${index}`} className="border rounded-md">
                                             <AccordionTrigger className="text-left font-light px-4 py-2 hover:no-underline overflow-hidden">
-                                                <p
-                                                    className="text-xs text-muted-foreground leading-relaxed line-clamp-1 italic truncate"
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: `"${highlightedText}"`,
-                                                    }}
-                                                />
-                                                <span className="text-nowrap text-xs ">@{linkedInUsername}</span>
+                                                <p className="text-xs text-muted-foreground leading-relaxed line-clamp-1 italic truncate">
+                                                    {`"${rec.text}"`}
+                                                </p>
+                                                <span className="text-nowrap text-xs">@{linkedInUsername}</span>
                                             </AccordionTrigger>
                                             <AccordionContent className="px-4 pb-4 pt-1">
-                                                <ScrollArea className="max-h-48 pr-2 overflow-y-scroll">
+                                                <ScrollArea className="max-h-48 pr-2 overflow-y-auto">
                                                     <blockquote className="bg-neutral-50 dark:bg-neutral-800 rounded-lg border-l-2 border-border p-3">
-                                                        <p
-                                                            className="text-xs text-muted-foreground italic mb-2 leading-relaxed"
-                                                            dangerouslySetInnerHTML={{
-                                                                __html: `"${highlightedText}"`,
-                                                            }}
-                                                        />
+                                                        <p className="text-xs text-muted-foreground italic mb-2 leading-relaxed">
+                                                            {`"${rec.text}"`}
+                                                        </p>
                                                         <cite className="text-xs justify-end text-muted-foreground not-italic font-medium flex items-center gap-1">
                                                             —{" "}
-                                                            <Link
-                                                                href={rec.profile_url}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                <Badge
-                                                                    variant="outline"
-                                                                    className="gap-1 inline-flex items-center rounded-full border-ring"
-                                                                >
-                                                                    <Users className="!size-3" />@
-                                                                    {linkedInUsername}
+                                                            <Link href={rec.profile_url} target="_blank" rel="noopener noreferrer">
+                                                                <Badge variant="outline" className="gap-1 inline-flex items-center rounded-full border-ring">
+                                                                    <Users className="!size-3" />@{linkedInUsername}
                                                                 </Badge>
                                                             </Link>
                                                         </cite>

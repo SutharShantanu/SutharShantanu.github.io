@@ -2,7 +2,7 @@ import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import Certifications from "@/components/sections/certificates";
 import { GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
-import ExperienceTimeline from "@/components/sections/experience-timeline";
+import ExperienceTimeline from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
 import Skills from "@/components/sections/skills";
@@ -126,8 +126,6 @@ export default async function Home() {
     topLanguages: topLanguages || {},
   }
 
-  console.log("linkedin", linkedin)
-
   return (
     <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
       <div className="max-w-[90vw] lg:max-w-5xl mx-auto flex flex-col gap-4">
@@ -137,7 +135,7 @@ export default async function Home() {
         <Skills />
         {certificates && <Certifications certifications={certificates} />}
         <Projects projects={projects} />
-        {githubWithExtras && linkedin && <Social github={githubWithExtras} linkedin={linkedin} />}
+        {githubReposRes.ok && (linkedinRes.ok && recommendationRes.ok) && <Social github={githubWithExtras} linkedin={linkedin} />}
         <Contact />
         <Footer />
       </div>

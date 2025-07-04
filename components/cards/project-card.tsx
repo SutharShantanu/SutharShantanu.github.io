@@ -1,29 +1,20 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import {
-    Star,
-    GitBranch,
-    AlertCircle,
-    Calendar,
-    File,
-    Code,
+    Star, GitBranch, AlertCircle, Calendar, File, Code
 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    Tooltip,
-    TooltipTrigger,
-    TooltipContent,
+    Tooltip, TooltipTrigger, TooltipContent
 } from "@/components/ui/tooltip";
-
 import DefaultProject from "@/public/DefaultProject.png";
 import { ProjectType } from "../sections/types/projects.types";
 import { Separator } from "../ui/separator";
-import formatDateWithSuffix from "@/functions/formatDateWithSuffix";
+import formatDateWithSuffix from "@/functions/format-date-with-suffix";
+import { formatFileSize } from "@/functions/file-size-calculate";
 
 const cardVariants: Variants = {
     hidden: { opacity: 0, y: 20, scale: 0.95 },
@@ -46,21 +37,19 @@ function IconLabel({
     );
 }
 
-interface LinkButtonProps {
-    href: string;
-    children: React.ReactNode;
-    variant?: "outline" | "default";
-    tooltip: string;
-    className?: string;
-}
-
 function LinkButton({
     href,
     children,
     variant = "outline",
     tooltip,
-    className
-}: LinkButtonProps) {
+    className,
+}: {
+    href: string;
+    children: React.ReactNode;
+    variant?: "outline" | "default";
+    tooltip: string;
+    className?: string;
+}) {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
@@ -72,6 +61,7 @@ function LinkButton({
                     className={`flex-1 ${className}`}
                     tabIndex={0}
                     rel="noopener noreferrer"
+                    aria-label={tooltip}
                 >
                     {children}
                 </Button>
@@ -82,7 +72,6 @@ function LinkButton({
         </Tooltip>
     );
 }
-
 
 export default function ProjectCard({
     id,
@@ -99,9 +88,38 @@ export default function ProjectCard({
     license,
     topics,
     image,
-}: ProjectType) {
+}: ProjectType & { metrics?: string }) {
 
     const formattedDate = updatedAt && formatDateWithSuffix(updatedAt);
+
+    const metaFields = [
+        {
+            key: "language",
+            icon: Code,
+            value: language,
+            show: !!language,
+        },
+        {
+            key: "stars",
+            icon: Star,
+            value: stars,
+            show: typeof stars === "number" && stars > 0,
+        },
+        {
+            key: "forks",
+            icon: GitBranch,
+            value: forks,
+            show: typeof forks === "number" && forks > 0,
+        },
+        {
+            key: "openIssues",
+            icon: AlertCircle,
+            value: typeof openIssues === "number" && openIssues > 0 ? `${openIssues} open` : undefined,
+            show: typeof openIssues === "number" && openIssues > 0,
+        },
+    ];
+    const visibleMetaFields = metaFields.filter(field => field.show);
+
     return (
         <motion.div
             key={id}
@@ -111,7 +129,7 @@ export default function ProjectCard({
             tabIndex={-1}
             className="flex flex-col h-full"
         >
-            <Card className="hover:shadow-lg transition-all gap-0 shadow-none flex flex-col h-full border border-border">
+            <Card className="gap-1 shadow-none flex flex-col h-full border border-border">
                 <CardHeader className="p-0">
                     <Image
                         src={image ? image : DefaultProject}
@@ -122,7 +140,6 @@ export default function ProjectCard({
                         priority={false}
                     />
                 </CardHeader>
-
                 <CardContent className="flex flex-col flex-grow justify-between p-4 gap-2">
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
@@ -130,26 +147,27 @@ export default function ProjectCard({
                         transition={{ duration: 0.5 }}
                     >
                         <h3 className="font-semibold text-xl">{title}</h3>
-                        <p className="text-muted-foreground line-clamp-3 text-sm">{description}</p>
+                        <p className="text-muted-foreground text-xs line-clamp-3">
+                            {description}
+                        </p>
                     </motion.div>
-
                     <div className="text-sm space-y-2 text-muted-foreground">
-                        <div className="flex flex-wrap items-center gap-x-2">
-                            {language && language.length > 0 && <IconLabel icon={Code}>{language}</IconLabel>}
-                            <Separator orientation="vertical" className="mx-1 h-4" />
-                            {stars && <IconLabel icon={Star}>{stars}</IconLabel>}
-                            <Separator orientation="vertical" className="mx-1 h-4" />
-                            {forks && forks > 0 && <IconLabel icon={GitBranch}>{forks}</IconLabel>}
-                            <Separator orientation="vertical" className="mx-1 h-4" />
-                            {openIssues && openIssues > 0 && <IconLabel icon={AlertCircle}>{openIssues} open</IconLabel>}
+                        <div className="flex flex-wrap items-center gap-2">
+                            {visibleMetaFields.map((field) => (
+                                <React.Fragment key={field.key}>
+                                    <IconLabel icon={field.icon}>{field.value}</IconLabel>
+                                    <Separator orientation="vertical" className="mx-1 h-4" />
+                                </React.Fragment>
+                            ))}
                         </div>
                         <div className="flex flex-wrap items-center gap-3">
                             {updatedAt && (
                                 <IconLabel icon={Calendar}>Updated: {formattedDate}</IconLabel>
                             )}
                             <Separator orientation="vertical" className="mx-1 h-4" />
-                            <IconLabel icon={File}>Size: {sizeKB} KB</IconLabel>
-
+                            {sizeKB && sizeKB > 0 && (
+                                <IconLabel icon={File}>Size: {formatFileSize(sizeKB)}</IconLabel>
+                            )}
                             {license && (
                                 <motion.div
                                     initial={{ opacity: 0, height: 0 }}
@@ -158,16 +176,23 @@ export default function ProjectCard({
                                     className="flex items-center gap-1"
                                 >
                                     <Separator orientation="vertical" className="mx-1 h-4" />
-                                    <IconLabel icon={File}>License: {license}</IconLabel>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <span>
+                                                <IconLabel icon={File}>License: {license}</IconLabel>
+                                            </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>{license}</p>
+                                        </TooltipContent>
+                                    </Tooltip>
                                 </motion.div>
                             )}
                         </div>
-
                     </div>
-
                     {topics && topics.length > 0 && (
                         <div className="flex flex-wrap gap-2">
-                            {topics.map((topic) => (
+                            {topics.slice(0, 5).map((topic) => (
                                 <Badge
                                     variant="secondary"
                                     key={topic}
@@ -176,10 +201,14 @@ export default function ProjectCard({
                                     {topic}
                                 </Badge>
                             ))}
+                            {topics.length > 5 && (
+                                <Badge variant="outline" className="text-xs cursor-default">
+                                    +{topics.length - 5} more
+                                </Badge>
+                            )}
                         </div>
                     )}
                 </CardContent>
-
                 <CardFooter className="flex gap-4 px-4 pb-4 pt-0">
                     <LinkButton href={repositoryUrl} tooltip="View source code on GitHub" className="w-1/2">
                         GitHub
@@ -197,6 +226,6 @@ export default function ProjectCard({
                     )}
                 </CardFooter>
             </Card>
-        </motion.div >
+        </motion.div>
     );
 }
