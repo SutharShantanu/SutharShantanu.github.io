@@ -95,7 +95,7 @@ const ContactForm = () => {
                                 <FormItem>
                                     <FormLabel>Full Name*</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="John Doe" {...field} required autoFocus />
+                                        <Input placeholder="John Doe" {...field} required />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -192,13 +192,6 @@ const ContactForm = () => {
                             )}
                         </Button>
 
-                        {/* Success/Error Placeholder */}
-                        {/* You can conditionally render this in your useContactForm hook */}
-                        {/* Example:
-            {formState.isSubmitSuccessful && (
-              <p className="text-green-600 text-sm">Message sent successfully!</p>
-            )}
-            */}
                     </form>
                 </Form>
             </CardContent>
