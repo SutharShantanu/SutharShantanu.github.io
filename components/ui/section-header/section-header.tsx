@@ -19,7 +19,7 @@ const SectionHeader = ({ title, description, center = true, icon }: SectionHeade
 
             {description && (
                 <motion.p
-                    className="text-muted-foreground text-base text-center"
+                    className="text-muted-foreground text-base text-justify"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
