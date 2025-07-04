@@ -79,139 +79,82 @@ export const events: Events[] = [
 export const experiences: Experience[] = [
     {
         year: 2023,
-        period: {
-            from: "Oct 2023",
-            to: "Present"
-        },
+        period: { from: "Oct 2023", to: "Present" },
         company: "Infyni",
         position: "Associate Frontend Developer",
         location: "Gurugram",
         isCurrentRole: true,
         events: [
             {
-                title: "Built internal HR portal from scratch",
+                title: "Built internal HR portal",
                 description:
-                    "Developed and maintained reusable UI components, custom table filters, dynamic form validation, and modal interactions using React, TypeScript, Tailwind CSS, and Zod.",
+                    "Developed reusable UI components, filters, and modals using React and TypeScript.",
                 isCompleted: true,
             },
             {
-                title: "Authentication and session integration",
+                title: "Authentication Integration",
                 description:
-                    "Implemented secure login with NextAuth using email-password credentials and session-based access control. Integrated forgot-password flows with modal-based UX.",
+                    "Implemented secure login with NextAuth and session-based access control.",
                 isCompleted: true,
             },
             {
-                title: "Modular app architecture",
+                title: "Cross-functional Collaboration",
                 description:
-                    "Refactored Next.js layout and component structure to support conditional rendering of headers, footers, and sidebars based on page route.",
-                isCompleted: true,
-            },
-            {
-                title: "Multi-role contribution beyond development",
-                description:
-                    "Managed client support operations, onboarding, and training for NHIT and Support Champion roles while assisting in SEO and product deployment tasks.",
-                isCompleted: true,
-            },
-            {
-                title: "Consistent involvement in all IT projects",
-                description:
-                    "Actively contributed to every internal IT project since joining—participating in UI/UX planning, testing, and feedback cycles.",
-                isCompleted: true,
-            },
-            {
-                title: "Recognized for cross-functional reliability",
-                description:
-                    "Received client appreciation and internal recognition for quick resolution times, quality work, and consistent ownership across tech and support functions.",
+                    "Managed client support and contributed to SEO and product deployment.",
                 isCompleted: true,
             },
         ],
     },
     {
         year: 2023,
-        period: {
-            from: "Aug 2023",
-            to: "Oct 2023"
-        },
+        period: { from: "Aug 2023", to: "Oct 2023" },
         company: "Branding Pioneers",
         position: "Frontend Developer",
         location: "Gurugram",
         isCurrentRole: false,
         events: [
             {
-                title: "Developed responsive UI components",
+                title: "Developed Responsive UIs",
                 description:
-                    "Implemented pixel-perfect landing pages and reusable UI blocks with React and Tailwind CSS based on Figma designs.",
+                    "Built landing pages and reusable components with React and Tailwind CSS.",
                 isCompleted: true,
             },
             {
-                title: "Integrated third-party tools",
+                title: "SEO & Analytics Integration",
                 description:
-                    "Connected analytics, form handlers, and marketing integrations such as Google Analytics and HubSpot.",
-                isCompleted: true,
-            },
-            {
-                title: "SEO-friendly page builds",
-                description:
-                    "Optimized meta tags, heading structures, and performance for enhanced search visibility and user experience.",
-                isCompleted: true,
-            },
-            {
-                title: "Collaborated with cross-functional teams",
-                description:
-                    "Worked with design, development, and marketing teams to ensure timely delivery of client web projects.",
+                    "Integrated SEO features and third-party tools like Google Analytics.",
                 isCompleted: true,
             },
         ],
     },
     {
         year: 2023,
-        period: {
-            from: "July 2022",
-            to: "May 2023"
-        },
+        period: { from: "July 2022", to: "May 2023" },
         company: "Masai School",
         position: "Full Stack Web Development",
         location: "Remote",
         isCurrentRole: false,
         events: [
             {
-                title: "Completed 1000+ hours of coding",
+                title: "Completed Coding Curriculum",
                 description:
-                    "Practiced hands-on coding through structured daily assignments, hackathons, and live classes covering HTML, CSS, JavaScript, React, Node.js, Express, and MongoDB.",
+                    "Practiced 1000+ hours of coding across full-stack technologies.",
                 isCompleted: true,
             },
             {
-                title: "Group Project: E-commerce Platform Clone",
+                title: "Built E-commerce Project",
                 description:
-                    "Collaborated with a team to build a functional clone of an Indian online store specializing in designer mobile cases and laptop sleeves. Implemented key features like product listings, filtering, cart, wishlist, authentication (JWT), and responsive design.",
+                    "Developed a functional e-commerce clone with product listing and authentication.",
                 isCompleted: true,
             },
             {
-                title: "Frontend and Backend Integration",
+                title: "Mastered DSA & Agile",
                 description:
-                    "Integrated RESTful APIs with frontend components using React and Redux. Handled user authentication, product CRUD operations, and data flow between client and server.",
-                isCompleted: true,
-            },
-            {
-                title: "Mastered Data Structures and Algorithms",
-                description:
-                    "Solved 300+ problems on arrays, strings, recursion, linked lists, stacks, and sorting to strengthen logical and algorithmic thinking.",
-                isCompleted: true,
-            },
-            {
-                title: "Agile Development & Git Collaboration",
-                description:
-                    "Worked in sprints using Trello for task tracking. Practiced code versioning and collaboration through Git and GitHub, conducting daily standups and peer code reviews.",
-                isCompleted: true,
-            },
-            {
-                title: "Soft Skills and Mock Interviews",
-                description:
-                    "Participated in weekly soft skill sessions, mock interviews, and resume-building workshops to improve communication and interview readiness.",
+                    "Solved coding problems and collaborated on projects using Git and Agile.",
                 isCompleted: true,
             },
         ],
-    }
+    },
+]
 
-];
 

@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion";
-
+import { motion, AnimatePresence } from "framer-motion"
 
 import {
     ChevronDown,
@@ -11,14 +10,12 @@ import {
     Calendar,
     CheckCircle,
     Clock,
-    Code,
-    Laptop,
 } from "lucide-react"
-import { Badge } from "../ui/badge";
-import { Card, CardContent } from "../ui/card";
-import SectionHeader from "../ui/section-header/section-header";
-import { experiences } from "./constants/experience.constant";
-import { PeriodCalculate } from "@/functions/period-calcutate";
+import { Badge } from "../ui/badge"
+import { Card, CardContent } from "../ui/card"
+import SectionHeader from "../ui/section-header/section-header"
+import { experiences } from "./constants/experience.constant"
+import { PeriodCalculate } from "@/functions/period-calcutate"
 
 const ExperienceTimeline = () => {
     const [expandedIndex, setExpandedIndex] = useState<number | null>(0)
@@ -35,61 +32,58 @@ const ExperienceTimeline = () => {
         }
     }
 
-    const getRoleIcon = (position: string) => {
-        const lower = position.toLowerCase();
-        if (lower.includes("full stack")) return Code;
-        if (lower.includes("frontend")) return Laptop;
-        return Briefcase;
-    };
-
     return (
-        <div id="#experience" className="mx-auto p-6 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
+        <div
+            id="experience"
+            className="mx-auto p-6 max-w-5xl overflow-hidden backdrop-blur-sm rounded-2xl ring-border border"
+        >
             <SectionHeader
                 title="Experience"
                 description="Explore the key events, achievements, and milestones that shaped our professional journey over the years."
-                icon={<Briefcase size={28} />}
             />
 
-            <div className="relative">
-                <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-0.5 z-10 bg-gradient-to-b from-primary/20 to-transparent" />
+            <div className="relative mt-8">
+                {/* Timeline vertical line */}
+                <div
+                    className="pointer-events-none absolute -left-1 md:left-1/2 md:-translate-x-1/2 h-full w-[2px] z-10 bg-gradient-to-b from-primary/20 to-transparent"
+                    aria-hidden="true"
+                />
 
                 {experiences.map((experience, index) => {
-                    const IconComponent = getRoleIcon(experience.position);
+                    const isEven = index % 2 === 0
                     return (
                         <motion.div
                             key={index}
-                            className={`mb-12 relative z-10 flex flex-col ${index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}
+                            className={`mb-8 relative z-10 flex flex-col flex-wrap md:flex-nowrap md:flex-row ${isEven ? "" : "md:flex-row-reverse"
+                                }`}
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.2 }}
                         >
+                            {/* Dot */}
                             <motion.div
-                                className={`absolute left-0 md:left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full z-10 flex items-center justify-center shadow-lg ${experience.isCurrentRole
-                                    ? "bg-green-300"
-                                    : "bg-neutral-800 dark:bg-neutral-50"
+                                className={`absolute top-0 -left-6 md:left-1/2 md:-translate-x-1/2 w-10 h-10 rounded-full z-10 flex items-center justify-center shadow-lg ${experience.isCurrentRole ? "bg-green-300" : "bg-neutral-50 dark:bg-neutral-800"
                                     }`}
                                 whileHover={{ scale: 1.1 }}
                                 transition={{ duration: 0.2 }}
                             >
                                 {experience.isCurrentRole && (
-                                    <div className="absolute inset-0 rounded-full bg-green-200 animate-ping opacity-50"></div>
+                                    <div className="absolute inset-0 rounded-full bg-green-200 animate-ping opacity-50" />
                                 )}
-
-                                <motion.div
-                                    initial={{ opacity: 0, y: 50 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                >
-                                    <IconComponent
-                                        className={`w-4 h-4 ${experience.isCurrentRole ? "text-neutral-50" : "text-primary-foreground"}`}
-                                    />
+                                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}>
+                                    <div className={`w-3 h-3 rounded-full ${experience.isCurrentRole ? "bg-green-600" : "bg-primary"}`} />
                                 </motion.div>
                             </motion.div>
 
-                            <div className={`md:w-1/2 flex ${index % 2 === 0 ? "md:justify-end md:pr-8" : "md:justify-start md:pl-8"}`}>
+                            {/* Period badge */}
+                            <div className={`md:w-1/2 flex flex-wrap ${isEven ? "justify-end md:justify-end md:pr-8" : "justify-end md:justify-start md:pl-8"}`}>
                                 <motion.div className="mb-4 md:mb-0">
-                                    <Badge variant="outline" className="text-sm py-1 px-3 bg-neutral-50 dark:bg-neutral-800 ring-border">
+                                    <Badge
+                                        variant="outline"
+                                        className="text-sm bg-neutral-50 dark:bg-neutral-800 ring-border w-fit"
+                                    >
                                         <Calendar className="w-4 h-4 mr-1" />
-                                        <p className="flex items-center gap-1 text-sm">
+                                        <p className="flex items-center gap-1 text-sm flex-wrap">
                                             {experience.period.from} - {experience.period.to}
                                             <span className="text-xs text-muted-foreground">
                                                 ({PeriodCalculate(experience.period.from, experience.period.to)})
@@ -99,7 +93,7 @@ const ExperienceTimeline = () => {
                                 </motion.div>
                             </div>
 
-                            <div className={`md:w-1/2 ${index % 2 === 0 ? "md:pl-8" : "md:pr-8"}`}>
+                            <div className={`md:w-1/2 ${isEven ? "md:pl-8" : "md:pr-8"} w-full`}>
                                 <motion.div
                                     layout
                                     className="w-full"
@@ -107,16 +101,18 @@ const ExperienceTimeline = () => {
                                     animate={{ scale: 1 }}
                                     transition={{ duration: 0.3 }}
                                 >
-                                    <Card className="overflow-hidden ring-border shadow-none transition-all">
+                                    <Card className="overflow-hidden ring-border shadow-none transition-all bg-neutral-50 dark:bg-neutral-800">
                                         <CardContent className="p-0">
                                             <div className="p-4 cursor-pointer" onClick={() => toggleExpand(index)}>
                                                 <div className="flex justify-between items-start">
                                                     <div className="flex-1">
-                                                        <h3 className="text-xl font-bold text-primary">{experience.position}</h3>
-                                                        <div className="flex items-center gap-1">
+                                                        <h3 className="text-xl font-bold text-primary dark:text-primary-foreground">
+                                                            {experience.position}
+                                                        </h3>
+                                                        <div className="flex items-center gap-1 flex-wrap">
                                                             <div className="flex items-center text-sm text-muted-foreground mb-2">
                                                                 <MapPin className="w-4 h-4 mr-1" />
-                                                                {experience.location},
+                                                                {experience.location}
                                                             </div>
                                                             <p className="text-md text-muted-foreground mb-2">{experience.company}</p>
                                                         </div>
@@ -132,10 +128,7 @@ const ExperienceTimeline = () => {
                                                             </motion.div>
                                                         )}
                                                     </div>
-                                                    <motion.div
-                                                        animate={{ rotate: expandedIndex === index ? 180 : 0 }}
-                                                        transition={{ duration: 0.3 }}
-                                                    >
+                                                    <motion.div animate={{ rotate: expandedIndex === index ? 180 : 0 }} transition={{ duration: 0.3 }}>
                                                         <ChevronDown className="w-5 h-5 text-muted-foreground" />
                                                     </motion.div>
                                                 </div>
@@ -150,14 +143,14 @@ const ExperienceTimeline = () => {
                                                         transition={{ duration: 0.3 }}
                                                         className="overflow-hidden"
                                                     >
-                                                        <div className="px-6 pb-6 pt-2 border-t border-border/50">
+                                                        <div className="px-6 pb-6 pt-2 border-t border-border/50 dark:border-border/30">
                                                             <div className="mb-4">
-                                                                <h4 className="text-sm font-semibold flex items-center mb-3">
+                                                                <h4 className="text-sm font-semibold flex items-center mb-3 text-primary dark:text-primary-foreground">
                                                                     <motion.div
                                                                         animate={{ rotate: [0, 10, -10, 0] }}
                                                                         transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                                                                     >
-                                                                        <Briefcase className="w-4 h-4 mr-2 text-primary" />
+                                                                        <Briefcase className="w-4 h-4 mr-2" />
                                                                     </motion.div>
                                                                     Key Achievements & Responsibilities
                                                                 </h4>
@@ -175,14 +168,18 @@ const ExperienceTimeline = () => {
                                                                         >
                                                                             <motion.div whileHover={{ scale: 1.2 }} transition={{ duration: 0.2 }}>
                                                                                 <CheckCircle
-                                                                                    className={`w-4 h-4 mr-3 ${event.isCompleted ? "text-green-500" : "text-yellow-500"
-                                                                                        } mt-0.5 shrink-0`}
+                                                                                    className={`w-4 h-4 mr-3 mt-0.5 shrink-0 ${event.isCompleted ? "text-green-500" : "text-yellow-500"
+                                                                                        }`}
                                                                                 />
                                                                             </motion.div>
                                                                             <div>
-                                                                                <span className="text-sm font-medium">{event.title}</span>
+                                                                                <span className="text-sm font-medium text-muted-foreground dark:text-neutral-200">
+                                                                                    {event.title}
+                                                                                </span>
                                                                                 {event.description && (
-                                                                                    <p className="text-xs text-muted-foreground mt-1">{event.description}</p>
+                                                                                    <p className="text-xs text-muted-foreground dark:text-neutral-400 mt-1">
+                                                                                        {event.description}
+                                                                                    </p>
                                                                                 )}
                                                                             </div>
                                                                         </motion.li>
@@ -205,4 +202,4 @@ const ExperienceTimeline = () => {
     )
 }
 
-export default ExperienceTimeline;
+export default ExperienceTimeline

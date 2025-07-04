@@ -8,9 +8,8 @@ import {
     SortSelectProps,
 } from "./types/projects.types";
 import SectionHeader from "../ui/section-header/section-header";
-import { Briefcase, Clock, SortAscIcon, Star } from "lucide-react";
+import { Clock, SortAscIcon, Star } from "lucide-react";
 import ProjectsSkeleton from "./skeletons/project-card";
-import ProjectCard from "../cards/project-card";
 import {
     Select,
     SelectContent,
@@ -31,6 +30,9 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
+import ProjectCard from "../cards/project-card";
+
+const perPageOptions = [3, 4, 5, 6];
 
 const Projects = ({ projects }: ProjectsProps) => {
     type SortKey = "updatedAt" | "title" | "stars";
@@ -65,7 +67,6 @@ const Projects = ({ projects }: ProjectsProps) => {
             if (!p.description) return false;
             const wordCount = p.description.trim().split(/\s+/).length;
             if (wordCount < 10) return false;
-
             if (selectedTechs.length === 0) return true;
             return p.language ? selectedTechs.includes(p.language) : false;
         });
@@ -107,8 +108,9 @@ const Projects = ({ projects }: ProjectsProps) => {
             onValueChange={setSelectedTechs}
             defaultValue={selectedTechs}
             placeholder="Filter by Tech"
-            maxCount={3}
-            className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800"
+            maxCount={5}
+            className="w-fit sm:m-0 mx-auto justify-end bg-neutral-50 dark:bg-neutral-800"
+            aria-label="Filter projects by technology"
         />
     );
 
@@ -118,7 +120,7 @@ const Projects = ({ projects }: ProjectsProps) => {
             onValueChange={(v) => onChange(v as SortKey)}
             aria-label="Sort projects"
         >
-            <SelectTrigger className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
+            <SelectTrigger className="mx-auto sm:m-0 w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
                 <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -148,6 +150,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                         <PaginationLink
                             isActive={currentPage === page}
                             onClick={() => setCurrentPage(page)}
+                            tabIndex={0}
+                            aria-label={`Go to page ${page}`}
                         >
                             {page}
                         </PaginationLink>
@@ -165,6 +169,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                         <PaginationLink
                             isActive={currentPage === page}
                             onClick={() => setCurrentPage(page)}
+                            tabIndex={0}
+                            aria-label={`Go to page ${page}`}
                         >
                             {page}
                         </PaginationLink>
@@ -192,18 +198,17 @@ const Projects = ({ projects }: ProjectsProps) => {
         });
     };
 
-    const perPageOptions = [3, 4, 5, 6];
-
     return (
-        <section id="projects" className="flex flex-col items-center justify-center p-6 gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
+        <div
+            id="projects"
+            className="flex flex-col items-center justify-center p-6 gap-6 sm:gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl"
+        >
             <SectionHeader
                 title="Projects"
-                description="Browse my repositories"
-                icon={<Briefcase />}
+                description="Dive into my recent projects and discover how I build scalable, efficient, and user-focused solutions."
                 center={false}
             />
-
-            <motion.div layout className="flex flex-col sm:flex-row justify-end gap-1 w-full">
+            <motion.div className="flex flex-col sm:flex-row justify-end gap-1 w-full">
                 <SortSelect value={sortKey} onChange={setSortKey} />
                 <FilterSelect />
             </motion.div>
@@ -211,22 +216,14 @@ const Projects = ({ projects }: ProjectsProps) => {
             {loading ? (
                 <ProjectsSkeleton />
             ) : (
-                <motion.div layout className="flex flex-col gap-4">
+                <motion.div className="flex flex-col gap-4">
                     <motion.div
                         key={`${sortKey}-${selectedTechs.join(",")}-${currentPage}-${projectsPerPage}`}
-                        layout
-                        variants={{
-                            hidden: {},
-                            visible: {
-                                transition: {
-                                    staggerChildren: 0.15,
-                                    delayChildren: 0.1,
-                                },
-                            },
-                        }}
                         initial="hidden"
                         animate="visible"
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                        role="list"
+                        aria-label="Project list"
                     >
                         <AnimatePresence mode="popLayout">
                             {currentProjects.length === 0 ? (
@@ -243,22 +240,19 @@ const Projects = ({ projects }: ProjectsProps) => {
                                     className="text-center text-muted-foreground col-span-full py-8"
                                 >
                                     No projects match your criteria.
+                                    <button
+                                        className="ml-2 underline text-primary"
+                                        onClick={() => {
+                                            setSelectedTechs([]);
+                                            setSortKey("updatedAt");
+                                        }}
+                                    >
+                                        Reset filters
+                                    </button>
                                 </motion.p>
                             ) : (
                                 currentProjects.map((project) => (
-                                    <motion.div
-                                        key={project.id}
-                                        layout
-                                        variants={{
-                                            hidden: { opacity: 0, scale: 0.95 },
-                                            visible: { opacity: 1, scale: 1 },
-                                            exit: { opacity: 0, scale: 0.95 },
-                                        }}
-                                        initial="hidden"
-                                        animate="visible"
-                                        exit="exit"
-                                        transition={{ duration: 0.4, ease: "easeInOut" }}
-                                    >
+                                    <motion.div key={project.id} layout>
                                         <ProjectCard {...project} />
                                     </motion.div>
                                 ))
@@ -266,9 +260,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                         </AnimatePresence>
                     </motion.div>
 
-                    <motion.div
-                        className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full mt-4"
-                    >
+                    <motion.div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full mt-4">
                         {totalPages > 1 && (
                             <Pagination className="mx-auto sm:mx-0">
                                 <PaginationContent>
@@ -277,7 +269,10 @@ const Projects = ({ projects }: ProjectsProps) => {
                                             onClick={() =>
                                                 setCurrentPage((prev) => Math.max(prev - 1, 1))
                                             }
-                                            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                                            className={
+                                                currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                                            }
+                                            aria-label="Previous page"
                                         />
                                     </PaginationItem>
 
@@ -294,7 +289,12 @@ const Projects = ({ projects }: ProjectsProps) => {
                                             onClick={() =>
                                                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                                             }
-                                            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                                            className={
+                                                currentPage === totalPages
+                                                    ? "pointer-events-none opacity-50"
+                                                    : ""
+                                            }
+                                            aria-label="Next page"
                                         />
                                     </PaginationItem>
                                 </PaginationContent>
@@ -325,7 +325,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                     </motion.div>
                 </motion.div>
             )}
-        </section>
+        </div>
     );
 };
 

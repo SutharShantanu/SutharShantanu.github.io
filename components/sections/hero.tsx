@@ -64,7 +64,7 @@ export default function Hero() {
                     <Button
                         onClick={handleResumeDownload}
                         variant="default"
-                        className="w-full sm:w-auto"
+                        className="w-fit"
                         disabled={downloading}
                         aria-label="Download resume"
                     >
@@ -83,10 +83,10 @@ export default function Hero() {
                         asLink
                         href="https://github.com/shantanusuthar"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto"
+                        className="w-fit"
                         aria-label="GitHub profile"
                     >
-                        <Github className="mr-2 h-4 w-4" />
+                        <Github className="mr-1 h-4 w-4" />
                         GitHub
                     </Button>
 
@@ -94,10 +94,10 @@ export default function Hero() {
                         asLink
                         href="https://linkedin.com/in/shantanusuthar"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto"
+                        className="w-fit"
                         aria-label="LinkedIn profile"
                     >
-                        <Linkedin className="mr-2 h-4 w-4" />
+                        <Linkedin className="mr-1 h-4 w-4" />
                         LinkedIn
                     </Button>
                 </div>

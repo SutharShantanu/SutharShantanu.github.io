@@ -7,21 +7,29 @@ import { Marquee } from "@/components/magicui/marquee";
 import Image from "next/image";
 import DefaultCertificates from "@/public/DefaultCertificates.png";
 import { CertificationType } from "./types/certificates.types";
+import SectionHeader from "../ui/section-header/section-header";
 
 export default function Certifications({ certifications }: { certifications: CertificationType[] }) {
     if (!certifications || certifications.length === 0) return null;
 
     return (
-        <div className="relative w-full overflow-hidden">
-            <Marquee pauseOnHover className="[--duration:30s]">
-                {certifications.map((cert, i) => (
-                    <TiltCard key={i} cert={cert} />
-                ))}
-            </Marquee>
+        <div className="flex flex-col items-center justify-between py-6 gap-10 overflow-hidden max-w-5xl">
+            <SectionHeader
+                title="Certifications"
+                description="Explore my certifications that reflect my commitment to continuous learning, technical excellence, and professional growth."
+                center={false}
+            />
+            <div className="relative w-full overflow-hidden">
+                <Marquee pauseOnHover className="[--duration:30s]">
+                    {certifications.map((cert, i) => (
+                        <TiltCard key={i} cert={cert} />
+                    ))}
+                </Marquee>
 
-            {/* Gradient overlays */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-1/12 bg-gradient-to-r from-background" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-1/12 bg-gradient-to-l from-background" />
+                {/* Gradient overlays */}
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-1/12 bg-gradient-to-r from-background" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-1/12 bg-gradient-to-l from-background" />
+            </div>
         </div>
     );
 }
