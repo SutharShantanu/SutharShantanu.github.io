@@ -1,4 +1,5 @@
-# Workflow for building and deploying a Next.js site to GitHub Pages
+# .github/workflows/deploy.yml
+
 name: Deploy Next.js site to Pages
 
 on:
@@ -67,8 +68,8 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          NEXT_GITHUB_TOKEN: ${{ secrets.NEXT_GITHUB_TOKEN }}
+          NEXT_GITHUB_USERNAME: ${{ secrets.NEXT_GITHUB_USERNAME }}
           LINKEDIN_USERNAME: ${{ secrets.LINKEDIN_USERNAME }}
           RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
           RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
