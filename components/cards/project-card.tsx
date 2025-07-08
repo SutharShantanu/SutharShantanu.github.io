@@ -2,7 +2,10 @@ import React from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import {
-    Star, GitBranch, AlertCircle, Calendar, File, Code
+    Star, GitBranch, AlertCircle, File, Code,
+    Github,
+    SquareArrowOutUpRight,
+    CalendarDays
 } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -162,7 +165,7 @@ export default function ProjectCard({
                         </div>
                         <div className="flex flex-wrap items-center gap-3">
                             {updatedAt && (
-                                <IconLabel icon={Calendar}>Updated: {formattedDate}</IconLabel>
+                                <IconLabel icon={CalendarDays}>Updated: {formattedDate}</IconLabel>
                             )}
                             <Separator orientation="vertical" className="mx-1 h-4" />
                             {sizeKB && sizeKB > 0 && (
@@ -190,27 +193,47 @@ export default function ProjectCard({
                             )}
                         </div>
                     </div>
+
                     {topics && topics.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                             {topics.slice(0, 5).map((topic) => (
                                 <Badge
                                     variant="secondary"
                                     key={topic}
-                                    className="text-xs cursor-default"
+                                    className="text-xs font-normal cursor-default"
                                 >
                                     {topic}
                                 </Badge>
                             ))}
                             {topics.length > 5 && (
-                                <Badge variant="outline" className="text-xs cursor-default">
-                                    +{topics.length - 5} more
-                                </Badge>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Badge
+                                            variant="outline"
+                                            className="text-xs font-normal cursor-pointer"
+                                        >
+                                            +{topics.length - 5} more
+                                        </Badge>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="w-fit space-x-1 p-2">
+                                        {topics.slice(5).map((topic) => (
+                                            <Badge
+                                                variant="secondary"
+                                                key={topic}
+                                                className="text-xs font-normal cursor-default"
+                                            >
+                                                {topic}
+                                            </Badge>
+                                        ))}
+                                    </TooltipContent>
+                                </Tooltip>
                             )}
                         </div>
                     )}
                 </CardContent>
                 <CardFooter className="flex gap-4 px-4 pb-4 pt-0">
                     <LinkButton href={repositoryUrl} tooltip="View source code on GitHub" className="w-1/2">
+                        <Github strokeWidth={1} />
                         GitHub
                     </LinkButton>
                     {livePreviewUrl && <Separator orientation="vertical" className="h-6" />}
@@ -221,6 +244,7 @@ export default function ProjectCard({
                             tooltip="Live project demo"
                             className="w-1/2"
                         >
+                            <SquareArrowOutUpRight strokeWidth={1.5} />
                             Live Demo
                         </LinkButton>
                     )}

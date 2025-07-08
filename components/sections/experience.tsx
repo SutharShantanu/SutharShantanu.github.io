@@ -45,7 +45,7 @@ const ExperienceTimeline = () => {
             <div className="relative mt-8">
                 {/* Timeline vertical line */}
                 <div
-                    className="pointer-events-none absolute -left-1 md:left-1/2 md:-translate-x-1/2 h-full w-[2px] z-10 bg-gradient-to-b from-primary/20 to-transparent"
+                    className="pointer-events-none absolute -left-3 md:left-1/2 md:-translate-x-1/2 h-full w-[2px] z-10 bg-gradient-to-b from-primary/20 to-transparent"
                     aria-hidden="true"
                 />
 
@@ -62,16 +62,13 @@ const ExperienceTimeline = () => {
                         >
                             {/* Dot */}
                             <motion.div
-                                className={`absolute top-0 -left-6 md:left-1/2 md:-translate-x-1/2 w-10 h-10 rounded-full z-10 flex items-center justify-center shadow-lg ${experience.isCurrentRole ? "bg-green-300" : "bg-neutral-50 dark:bg-neutral-800"
+                                className={`absolute top-0 -left-4 md:left-1/2 md:-translate-x-1/2 rounded-full z-10 flex items-center justify-center shadow-lg ${experience.isCurrentRole ? "bg-green-300" : "bg-neutral-50 dark:bg-neutral-800"
                                     }`}
                                 whileHover={{ scale: 1.1 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                {experience.isCurrentRole && (
-                                    <div className="absolute inset-0 rounded-full bg-green-200 animate-ping opacity-50" />
-                                )}
                                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}>
-                                    <div className={`w-3 h-3 rounded-full ${experience.isCurrentRole ? "bg-green-600" : "bg-primary"}`} />
+                                    <div className={`w-3 h-3 rounded-full ${experience.isCurrentRole ? "bg-green-500" : "bg-primary"}`} />
                                 </motion.div>
                             </motion.div>
 
