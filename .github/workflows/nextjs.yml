@@ -1,4 +1,4 @@
-# Sample workflow for building and deploying a Next.js site to GitHub Pages
+# Workflow for building and deploying a Next.js site to GitHub Pages
 name: Deploy Next.js site to Pages
 
 on:
@@ -18,7 +18,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: github-pages  # This allows using environment secrets
+    environment: github-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,7 +67,11 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
         env:
-          API_URL: ${{ secrets.API_URL }}  # Injecting secret into build step
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+          LINKEDIN_USERNAME: ${{ secrets.LINKEDIN_USERNAME }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
