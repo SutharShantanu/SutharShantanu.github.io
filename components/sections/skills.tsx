@@ -208,7 +208,7 @@ const Skills = () => {
                 orientation="horizontal"
                 className="flex flex-col items-center w-full overflow-hidden"
             >
-                <TabsList className="flex w-full gap-2 mb-6 overflow-x-scroll whitespace-nowrap px-2">
+                <TabsList className="flex w-full gap-2 mb-6 overflow-x-scroll sm:overflow-auto whitespace-nowrap px-2">
                     {categories.map((cat) => (
                         <TabsTrigger className="min-w-5" key={cat} value={cat}>
                             {cat}
