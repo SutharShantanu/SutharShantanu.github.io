@@ -109,7 +109,7 @@ const Projects = ({ projects }: ProjectsProps) => {
             defaultValue={selectedTechs}
             placeholder="Filter by Tech"
             maxCount={5}
-            className="w-fit sm:m-0 mx-auto justify-end bg-neutral-50 dark:bg-neutral-800"
+            className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800"
             aria-label="Filter projects by technology"
         />
     );
@@ -120,7 +120,7 @@ const Projects = ({ projects }: ProjectsProps) => {
             onValueChange={(v) => onChange(v as SortKey)}
             aria-label="Sort projects"
         >
-            <SelectTrigger className="mx-auto sm:m-0 w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
+            <SelectTrigger className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800">
                 <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>

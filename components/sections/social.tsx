@@ -21,7 +21,7 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { JSX, useMemo, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, } from "../ui/card";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import SectionHeader from "../ui/section-header/section-header";
 
 const Social = ({ github, linkedin }: SocialProps) => {
@@ -164,7 +164,7 @@ const RecentActivity = ({ recentActivities }: { recentActivities: GitHubActivity
                         <p className="text-sm text-foreground font-medium">{activity.type}</p>
                     </div>
                     <span className="text-xs text-muted-foreground sm:text-right">
-                        {format(new Date(activity.created_at), "do MMM, yyyy")}
+                        {formatDistanceToNow(new Date(activity.created_at), { addSuffix: true })}
                     </span>
                 </div>
             ))}

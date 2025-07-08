@@ -121,13 +121,13 @@ export const MultiSelect = React.forwardRef<
                     {...props}
                     onClick={handleTogglePopover}
                     className={cn(
-                        "flex w-fit p-1 gap-2 rounded-md border min-h-9 px-2 h-auto items-center justify-between select-none bg-transparent hover: [&_svg]:pointer-events-auto",
+                        "flex w-fit px-3 py-2 gap-2 rounded-md border min-h-9 max-h-12 h-auto items-center justify-between select-none bg-transparent hover: [&_svg]:pointer-events-auto",
                         className
                     )}>
                     <Filter className="size-4 text-muted-foreground" />
                     {selectedValues.length > 0 ? (
-                        <div className="flex justify-between items-center w-full gap-2">
-                            <div className="flex flex-wrap items-center gap-1">
+                        <div className="flex justify-between items-center w-full gap-2 overflow-hidden">
+                            <div className="flex items-center gap-1 w-full max-w-40 overflow-x-auto">
                                 <AnimatePresence initial={false}>
                                     {selectedValues.slice(0, maxCount).map((value) => {
                                         const option = options.find((o) => o.value === value);
@@ -202,7 +202,7 @@ export const MultiSelect = React.forwardRef<
                         </div>
                     ) : (
                         <div className="flex items-center justify-between w-full mx-auto">
-                            <span className="text-sm text-muted-foreground mx-3">{placeholder}</span>
+                            <span className="text-xs sm:text-sm text-muted-foreground">{placeholder}</span>
                             <ChevronDown className="h-4 cursor-pointer text-muted-foreground" />
                         </div>
                     )}

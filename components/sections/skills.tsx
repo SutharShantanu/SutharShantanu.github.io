@@ -206,11 +206,11 @@ const Skills = () => {
                 value={selectedCategory}
                 onValueChange={handleTabChange}
                 orientation="horizontal"
-                className="flex flex-col items-center w-full"
+                className="flex flex-col items-center w-full overflow-hidden"
             >
-                <TabsList className="flex w-full justify-center gap-2 mb-6">
+                <TabsList className="flex w-full gap-2 mb-6 overflow-x-scroll whitespace-nowrap px-2">
                     {categories.map((cat) => (
-                        <TabsTrigger key={cat} value={cat} className="w-">
+                        <TabsTrigger className="min-w-5" key={cat} value={cat}>
                             {cat}
                         </TabsTrigger>
                     ))}
