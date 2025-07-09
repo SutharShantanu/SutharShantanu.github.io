@@ -81,7 +81,7 @@ export default function Hero() {
 
                     <Button
                         asLink
-                        href="https://github.com/shantanusuthar"
+                        href="https://github.com/SutharShantanu"
                         rel="noopener noreferrer"
                         className="w-fit"
                         aria-label="GitHub profile"
@@ -92,7 +92,7 @@ export default function Hero() {
 
                     <Button
                         asLink
-                        href="https://linkedin.com/in/shantanusuthar"
+                        href="https://linkedin.com/in/shantanu-suthar"
                         rel="noopener noreferrer"
                         className="w-fit"
                         aria-label="LinkedIn profile"
