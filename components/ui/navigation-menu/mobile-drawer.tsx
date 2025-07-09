@@ -10,7 +10,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 import ThemeToggle from "@/components/theme-toggle/ThemeToggle";
 import { MobileDrawerProps } from "./types/navigation-menu.types";
-import scrollIntoView from "scroll-into-view";
 import Hamburger from "../hamburger/hamburger";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
@@ -26,21 +25,18 @@ export default function MobileDrawer({
         const targetId = link.replace("#", "");
         const section = document.getElementById(targetId);
         if (section) {
-            scrollIntoView(section, {
-                time: 500,
-                align: { top: 0.1 },
-                ease: (t) => 1 - Math.pow(1 - t, 3),
-            });
+            const yOffset = -20;
+            const y =
+                section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+            window.scrollTo({ top: y, behavior: "smooth" });
         }
     };
 
+
     return (
         <Drawer open={isOpen} onOpenChange={(open: boolean) => !open && onClose()}>
-            <DrawerContent
-                className="w-full h-[calc(100svh-20vh)]"
-                role="dialog"
-                aria-label="Mobile navigation drawer"
-            >
+            <DrawerContent className="w-full h-svh" role="dialog" aria-label="Mobile navigation drawer">
                 <DrawerHeader className="flex items-center flex-row dark:bg-neutral-900 justify-between m-2">
                     <DialogTitle className="flex items-center gap-2">
                         <Avatar>
@@ -53,22 +49,21 @@ export default function MobileDrawer({
                         <span className="font-semibold text-lg">Shantanu</span>
                     </DialogTitle>
                     <DrawerClose asChild>
-                        <Hamburger
-                            open={isOpen}
-                            onClick={() => setDrawerOpen(false)}
-                            aria-label="Close navigation menu"
-                        />
+                        <button aria-label="Close navigation menu">
+                            <Hamburger open={isOpen} onClick={() => setDrawerOpen(false)} />
+                        </button>
                     </DrawerClose>
                 </DrawerHeader>
 
                 <nav aria-label="Mobile site navigation">
                     <ul className="flex flex-col gap-3 px-3 py-3">
                         {navItems.map((item) => {
-                            const isActive = activeSection === String(item.id);
+                            const targetId = item.link.replace("#", "");
+                            const isActive = activeSection === targetId;
                             return (
                                 <li key={item.label}>
                                     <button
-                                        className={`w-full text-left px-3 py-1.5 rounded-md text-4xl transition-all font-thin flex items-center gap-2 gap-x-6 ${isActive
+                                        className={`w-full text-left px-3 py-1.5 rounded-md text-4xl transition-all flex items-center gap-2 gap-x-6 ${isActive
                                                 ? "bg-primary/10 text-foreground font-semibold"
                                                 : "hover:bg-accent/20 text-muted-foreground"
                                             }`}

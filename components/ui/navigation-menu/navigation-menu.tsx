@@ -27,21 +27,36 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
         );
 
         navItems.forEach((item) => {
-            const section = document.getElementById(String(item.id));
+            const id = item.link.replace("#", "");
+            const section = document.getElementById(id);
             if (section) observer.observe(section);
         });
 
         return () => {
             navItems.forEach((item) => {
-                const section = document.getElementById(String(item.id));
+                const id = item.link.replace("#", "");
+                const section = document.getElementById(id);
                 if (section) observer.unobserve(section);
             });
         };
     }, [navItems]);
 
+    const handleScroll = (link: string) => {
+        const id = link.replace("#", "");
+        const section = document.getElementById(id);
+        if (section) {
+            const yOffset = -80;
+            const y =
+                section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+            window.scrollTo({ top: y, behavior: "smooth" });
+        }
+    };
+
     const renderNavItems = () =>
         navItems.map((navItem) => {
-            const isActive = activeSection === String(navItem.id);
+            const id = navItem.link.replace("#", "");
+            const isActive = activeSection === id;
             return (
                 <li
                     key={navItem.label}
@@ -52,23 +67,19 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
                     <button
                         onMouseEnter={() => setIsHover(navItem.id)}
                         onMouseLeave={() => setIsHover(null)}
-                        className={`text-sm py-1.5 px-5 flex items-center gap-2 relative z-10 rounded-full transition-all duration-300 ${isActive
-                            ? "text-foreground font-semibold bg-primary/10 shadow-sm"
-                            : "text-muted-foreground hover:bg-accent/20"
-                            }`}
+                        onClick={() => handleScroll(navItem.link)}
+                        className={`text-sm py-1.5 px-5 flex items-center gap-2 relative z-10 rounded-full transition-all duration-300 text-muted-foreground hover:bg-accent/20`}
                     >
                         <navItem.icon className="w-4 h-4" />
                         <span>{navItem.label}</span>
 
-                        {(isHover === navItem.id ||
-                            openMenu === navItem.label ||
-                            isActive) && (
-                                <motion.div
-                                    layoutId="hover-bg"
-                                    className="absolute inset-0 z-0 bg-primary/10 rounded-full"
-                                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                />
-                            )}
+                        {(isHover === navItem.id || openMenu === navItem.label || isActive) && (
+                            <motion.div
+                                layoutId="hover-bg"
+                                className="absolute inset-0 z-0 bg-primary/10 rounded-full"
+                                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                            />
+                        )}
                     </button>
                 </li>
             );
@@ -80,17 +91,14 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
+            {/* Desktop Navbar */}
             <motion.nav
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
                 className="hidden lg:flex fixed top-4 left-1/2 transform -translate-x-1/2 z-50 backdrop-blur-md p-2 border ring-border rounded-full items-center justify-between w-fit gap-4"
             >
-                <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex-shrink-0"
-                >
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Avatar>
                         <AvatarImage
                             src="https://avatars.githubusercontent.com/u/110021464?v=4"
@@ -102,14 +110,11 @@ export function DropdownNavigation({ navItems }: NavigationMenuProps) {
 
                 <ul className="flex items-center relative">{renderNavItems()}</ul>
                 <ThemeToggle />
-
             </motion.nav>
 
+            {/* Mobile Navbar */}
             <div className="fixed top-4 left-4 z-50 lg:hidden">
-                <Hamburger
-                    open={isDrawerOpen}
-                    onClick={() => setDrawerOpen(true)}
-                />
+                <Hamburger open={isDrawerOpen} onClick={() => setDrawerOpen(true)} />
             </div>
 
             <MobileDrawer
