@@ -60,7 +60,7 @@ export default function Hero() {
                     crafting seamless user experiences.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-wrap gap-4 w-full">
                     <Button
                         onClick={handleResumeDownload}
                         variant="default"

@@ -1,7 +1,7 @@
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import Certifications from "@/components/sections/certificates";
-import { GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
+import { NEXT_GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
 import ExperienceTimeline from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
@@ -13,7 +13,7 @@ import { GitHubUserExtended, Recommendation } from "@/components/sections/types/
 import { Octokit } from "octokit";
 
 export default async function Home() {
-  const username = process.env.GITHUB_USERNAME ?? GITHUB_USERNAME;
+  const username = process.env.NEXT_GITHUB_USERNAME ?? NEXT_GITHUB_USERNAME;
   const linkedinUsername = process.env.LINKEDIN_USERNAME ?? LINKEDIN_USERNAME;
 
   const githubReposRes = await fetch(`https://api.github.com/users/${username}/repos`, {
@@ -46,7 +46,7 @@ export default async function Home() {
   })) as ProjectType[];
 
   const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
+    auth: process.env.NEXT_GITHUB_TOKEN,
   });
 
   const { data: github } = await octokit.rest.users.getByUsername({

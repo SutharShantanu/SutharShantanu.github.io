@@ -89,7 +89,7 @@ const Footer = () => {
                     <ul className="space-y-1">
                         <li>
                             <Link
-                                href="mailto:shantanu@example.com"
+                                href="mailto:shantanusut2000@gmail.com"
                                 className="hover:text-foreground transition-colors flex items-center gap-2"
                             >
                                 <Mail className="w-4 h-4" />
@@ -104,18 +104,18 @@ const Footer = () => {
                                 className="hover:text-foreground transition-colors flex items-center gap-2"
                             >
                                 <Github className="w-4 h-4" />
-                                Shantanu Suthar’s GitHub
+                                GitHub
                             </Link>
                         </li>
                         <li>
                             <Link
-                                href="https://linkedin.com/in/shantanusuthar"
+                                href="https://linkedin.com/in/shantanu-suthar"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="hover:text-foreground transition-colors flex items-center gap-2"
                             >
                                 <Linkedin className="w-4 h-4" />
-                                Shantanu Suthar’s LinkedIn
+                                LinkedIn
                             </Link>
                         </li>
                     </ul>

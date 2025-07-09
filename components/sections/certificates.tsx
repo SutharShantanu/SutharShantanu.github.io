@@ -13,7 +13,7 @@ export default function Certifications({ certifications }: { certifications: Cer
     if (!certifications || certifications.length === 0) return null;
 
     return (
-        <div className="flex flex-col items-center justify-between py-6 gap-10 overflow-hidden max-w-5xl">
+        <div id="certificates" className="flex flex-col items-center justify-between py-6 gap-10 overflow-hidden max-w-5xl">
             <SectionHeader
                 title="Certifications"
                 description="Explore my certifications that reflect my commitment to continuous learning, technical excellence, and professional growth."
