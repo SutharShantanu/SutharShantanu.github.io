@@ -45,7 +45,7 @@ export default function Hero() {
     };
 
     return (
-        <section
+        <div
             id="home"
             className="relative flex flex-col-reverse md:flex-row items-center justify-between p-6 gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl mt-20 max-w-5xl"
             aria-label="Hero introduction section"
@@ -115,6 +115,6 @@ export default function Hero() {
                 />
             </div>
 
-        </section>
+        </div>
     );
 }
