@@ -27,6 +27,7 @@ import SectionHeader from "../ui/section-header/section-header";
 const Social = ({ github, linkedin }: SocialProps) => {
     return (
         <div
+            id="social"
             className="flex flex-col items-center justify-between gap-10 overflow-hidden max-w-5xl py-6"
             role="region"
             aria-labelledby="social-connect-title"
@@ -36,7 +37,7 @@ const Social = ({ github, linkedin }: SocialProps) => {
                 description="Explore my professional journey across different platforms and discover where I share my work and insights."
             />
 
-            <div className="grid gap-8 lg:grid-cols-2 w-full">
+            <div className="flex flex-col lg:flex-row gap-4 w-full">
                 <GitHubCard github={github} />
                 <LinkedInCard linkedin={linkedin} />
             </div>
@@ -193,6 +194,7 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            className=" w-full lg:w-1/2"
         >
             <Card className="h-full overflow-hidden border border-border bg-card gap-0">
                 <Link
@@ -326,7 +328,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
         <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            className=" w-full lg:w-1/2"
         >
             <Card className="h-full overflow-hidden border border-border bg-card gap-0 w-full">
                 <Link

@@ -196,7 +196,7 @@ const Skills = () => {
     };
 
     return (
-        <section className="flex flex-col items-center justify-center gap-10 p-6 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
+        <div id="skills" className="flex flex-col items-center justify-center gap-10 p-6 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl">
             <SectionHeader
                 title="Skills & Technologies"
                 description="Explore the tools and technologies I use across frontend, backend, deployment, and more."
@@ -260,7 +260,7 @@ const Skills = () => {
                     </PaginationItem>
                 </PaginationContent>
             </Pagination>
-        </section>
+        </div>
     );
 };
 

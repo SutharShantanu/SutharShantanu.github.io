@@ -39,7 +39,7 @@ function GlobeLoader() {
 
 const Contact = () => {
     return (
-        <div className="flex flex-col items-center justify-between py-6 gap-10 overflow-hidden max-w-5xl">
+        <div id="contact" className="flex flex-col items-center justify-between py-6 gap-10 overflow-hidden max-w-5xl">
             <SectionHeader
                 title="Let's Connect"
                 description="Have a question, project idea, or just want to say hello? Fill out the form and I’ll get back to you shortly."
