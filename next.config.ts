@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
 
   images: {
     domains: [
+      "raw.githubusercontent.com",
       "cdn-icons-png.flaticon.com",
       "seeklogo.com",
       "img.icons8.com",

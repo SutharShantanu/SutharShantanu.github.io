@@ -8,7 +8,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent, TabsContents } from "../anima
 import SectionHeader from "../ui/section-header/section-header";
 import { motion } from "motion/react";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { FloatingPathsBackground } from "../ui/floatting-path";
+import NextJsLogo from "@/public/nextjs-icon.svg";
+import VercelLogo from "@/public/vercel-icon-light.svg"
 
 const cards: CardTypes[] = [
 
@@ -35,7 +36,7 @@ const cards: CardTypes[] = [
         title: "Tailwind CSS",
         category: "Frontend",
         imageUrl:
-            "https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg",
+            "https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg",
     },
     {
         index: 5,
@@ -59,15 +60,14 @@ const cards: CardTypes[] = [
         index: 8,
         title: "Next JS",
         category: "Frontend",
-        imageUrl:
-            "https://seeklogo.com/images/N/next-js-icon-logo-EE302D5DBD-seeklogo.com.png",
+        imageUrl: NextJsLogo,
     },
     {
         index: 9,
         title: "Redux",
         category: "Frontend",
         imageUrl:
-            "https://seeklogo.com/images/R/redux-logo-9CA6836C12-seeklogo.com.png",
+            "https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png",
     },
     {
         index: 10,
@@ -79,28 +79,28 @@ const cards: CardTypes[] = [
         index: 11,
         title: "Chakra UI",
         category: "Frontend",
-        imageUrl: "https://img.icons8.com/?size=256&id=r9QJ0VFFrn7T&format=png",
+        imageUrl: "https://img.icons8.com/?size=100&id=r9QJ0VFFrn7T&format=png&color=000000",
     },
     {
         index: 12,
         title: "Material UI",
         category: "Frontend",
         imageUrl:
-            "https://seeklogo.com/images/M/material-ui-logo-5BDCB9BA8F-seeklogo.com.png",
+            "https://img.icons8.com/?size=100&id=gFw7X5Tbl3ss&format=png&color=000000",
     },
     {
         index: 13,
         title: "Mantine UI",
         category: "Frontend",
         imageUrl:
-            "https://seeklogo.com/images/M/mantine-logo-235E19C978-seeklogo.com.png",
+            "https://mantine.dev/_next/static/media/mantine-logo.075997af.svg",
     },
     {
         index: 14,
         title: "Node JS",
         category: "Backend",
         imageUrl:
-            "https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png",
+            "https://img.icons8.com/?size=100&id=54087&format=png&color=000000",
     },
     {
         index: 15,
@@ -114,7 +114,7 @@ const cards: CardTypes[] = [
         title: "MongoDB",
         category: "Backend",
         imageUrl:
-            "https://seeklogo.com/images/M/mongodb-logo-D13D67C930-seeklogo.com.png",
+            "https://img.icons8.com/?size=100&id=8rKdRqZFLurS&format=png&color=000000",
     },
     {
         index: 17,
@@ -126,8 +126,7 @@ const cards: CardTypes[] = [
         index: 18,
         title: "Vercel",
         category: "Deployment",
-        imageUrl:
-            "https://seeklogo.com/images/V/vercel-logo-F748E39008-seeklogo.com.png",
+        imageUrl: VercelLogo,
     },
     {
         index: 19,
@@ -273,28 +272,35 @@ const SkillCard = ({ title, category, imageUrl }: CardTypes) => {
             whileTap={{ scale: 0.98 }}
             tabIndex={0}
             aria-label={`${title} skill, category ${category}`}
-            className="overflow-hidden rounded-lg"
+            className="overflow-hidden rounded-lg "
         >
-            <FloatingPathsBackground position={-1}>
-                <Card className="border-border rounded-lg shadow-none min-h-fit hover:shadow-md transition-shadow p-4">
-                    <CardHeader className="flex items-center justify-center">
-                        <Image
-                            src={imageUrl}
-                            alt={title}
-                            width={64}
-                            height={64}
-                            className="w-16 h-16 object-contain"
-                            loading="lazy"
-                            draggable={false}
-                        />
-                    </CardHeader>
+            <Card
+                className="border-border rounded-lg shadow-none min-h-fit hover:shadow-md transition-shadow p-4 "
+                style={{
+                    backgroundImage: `
+                    radial-gradient(circle at 50% 100%, rgba(253, 224, 71, 0.15) 0%, transparent 60%),
+                    radial-gradient(circle at 50% 100%, rgba(251, 191, 36, 0.15) 0%, transparent 70%),
+                    radial-gradient(circle at 50% 100%, rgba(244, 114, 182, 0.2) 0%, transparent 80%)
+                `,
+                }}>
 
-                    <CardContent className="flex flex-col items-center text-center gap-1">
-                        <span className="font-medium text-base text-nowrap">{title}</span>
-                        <small className="text-muted-foreground text-sm">{category}</small>
-                    </CardContent>
-                </Card>
-            </FloatingPathsBackground>
+                <CardHeader className="flex items-center justify-center">
+                    <Image
+                        src={imageUrl}
+                        alt={title}
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 object-contain"
+                        loading="lazy"
+                        draggable={false}
+                    />
+                </CardHeader>
+
+                <CardContent className="flex flex-col items-center text-center gap-1">
+                    <span className="font-medium text-base text-nowrap">{title}</span>
+                    <small className="text-muted-foreground text-sm">{category}</small>
+                </CardContent>
+            </Card>
         </motion.div>
     );
 };

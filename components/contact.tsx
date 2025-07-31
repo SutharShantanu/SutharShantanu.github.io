@@ -1,8 +1,7 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React from "react";
 import SectionHeader from "./ui/section-header/section-header";
-import { Globe } from "./ui/globe";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -28,14 +27,7 @@ import { Input } from "./ui/input";
 import { ControllerRenderProps } from "react-hook-form";
 import { motion } from "framer-motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-function GlobeLoader() {
-    return (
-        <div className="flex items-center justify-center w-full h-full">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-        </div>
-    );
-}
+// import { ScrollArea } from "./ui/scroll-area";
 
 const Contact = () => {
     return (
@@ -45,18 +37,27 @@ const Contact = () => {
                 description="Have a question, project idea, or just want to say hello? Fill out the form and I’ll get back to you shortly."
             />
             <div className="flex flex-col lg:flex-row items-stretch gap-4 flex-1 w-full">
-                <Card className="w-full lg:w-1/2 flex">
-                    <CardContent className="relative flex items-center justify-center w-full p-6">
-                        <Suspense fallback={<GlobeLoader />}>
-                            <Globe />
-                        </Suspense>
+                <Card className="w-full lg:w-1/2 flex items-center justify-center relative">
+                    <CardContent className="flex items-center justify-center w-full p-6">
+                        <p className="text-7xl text-pretty text-left text-primary/20 dark:text-primary-foreground/20">
+                            Master of Googling answers and pretending I knew it all along
+                        </p>
                     </CardContent>
+
                 </Card>
                 <ContactForm />
             </div>
         </div>
     );
 };
+
+// <div className="min-h-screen w-full bg-[#0f0f0f] relative text-white">
+//     {/* Gradient Diagonal Lines Pattern */}
+//     <div
+//         className="
+//     />
+//     {/* Your Content/Components */}
+// </div>
 
 export default Contact;
 
