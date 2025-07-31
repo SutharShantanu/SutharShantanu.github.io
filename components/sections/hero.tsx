@@ -10,7 +10,6 @@ import AvatarImage from "@/public/AvatarImage.png";
 
 
 function LoadingDots({ active }: { active: boolean }) {
-    // Animate dots from 1 to 3 and repeat
     const [count, setCount] = useState(1);
     useEffect(() => {
         if (!active) return;
@@ -103,7 +102,6 @@ export default function Hero() {
                 </div>
             </div>
 
-            {/* Avatar */}
             <div className="w-64 h-64 md:w-80 md:h-80 z-10">
                 <Image
                     src={AvatarImage}
