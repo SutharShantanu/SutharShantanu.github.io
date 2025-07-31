@@ -59,11 +59,12 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json(
                     {
                         error: "Invalid form data",
-                        details: validationError.errors,
+                        details: validationError.issues,
                     },
                     { status: 400 },
                 )
             }
+
             return NextResponse.json({ error: "Validation failed" }, { status: 400 })
         }
 
