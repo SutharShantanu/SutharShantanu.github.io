@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+
+@plugin "@midudev/tailwind-animations";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -50,7 +51,7 @@
   --color-stone-800: oklch(0.274 0.008 106.423);
   --color-stone-900: oklch(0.21 0.006 106.423);
   --animate-meteor: meteor 5s linear infinite;
-   --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
 
   @keyframes marquee {

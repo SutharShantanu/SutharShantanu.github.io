@@ -126,6 +126,10 @@ export default async function Home() {
     topLanguages: topLanguages || {},
   }
 
+  console.log("certificates", certificates);
+  console.log("githubWithExtras", githubWithExtras);
+  console.log("linkedin", linkedin);
+
   return (
     <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
       <div className="max-w-[90vw] lg:max-w-5xl mx-auto flex flex-col gap-4">
@@ -133,9 +137,9 @@ export default async function Home() {
         <Summary />
         <ExperienceTimeline />
         <Skills />
-        {certificates && <Certifications certifications={certificates} />}
+        <Certifications certifications={certificates} />
         <Projects projects={projects} />
-        {githubReposRes.ok && (linkedinRes.ok && recommendationRes.ok) && <Social github={githubWithExtras} linkedin={linkedin} />}
+        <Social github={githubWithExtras} linkedin={linkedin} />
         <Contact />
         <Footer />
       </div>
