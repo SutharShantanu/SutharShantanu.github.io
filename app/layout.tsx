@@ -34,9 +34,8 @@ export const metadata: Metadata = {
     ],
     locale: "en_US",
     type: "website",
-  }
+  },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,11 +65,10 @@ export default function RootLayout({
                 sameAs: [
                   "https://github.com/SutharShantanu",
                   "https://linkedin.com/in/shantanu-suthar",
-                ]
+                ],
               }),
             }}
           />
-
         </ThemeProvider>
       </body>
     </html>
