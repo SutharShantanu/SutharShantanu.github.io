@@ -1,6 +1,7 @@
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import Certifications from "@/components/sections/certificates";
+import { CertificationType } from "@/components/sections/types/certificates.types";
 import { NEXT_GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
 import ExperienceTimeline from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
@@ -9,7 +10,7 @@ import Skills from "@/components/sections/skills";
 import Social from "@/components/sections/social";
 import { Summary } from "@/components/sections/summary";
 import { GitHubRepo, ProjectType } from "@/components/sections/types/projects.types";
-import { GitHubUserExtended, Recommendation } from "@/components/sections/types/social.types";
+import { GitHubUserExtended, LinkedInProfile, Recommendation } from "@/components/sections/types/social.types";
 import { Octokit } from "octokit";
 import React, { Suspense } from "react";
 import { DotLoader } from "@/components/ui/dot-loader";
@@ -98,14 +99,14 @@ export default async function Home() {
   );
 
   let linkedinProfile: Record<string, unknown> = { data: {} };
-  let certificates: unknown[] = [];
+  let certificates: CertificationType[] = [];
 
   if (!linkedinRes.ok) {
     const errorText = await linkedinRes.text();
     console.log("Failed to fetch LinkedIn profile:", errorText);
   } else {
     linkedinProfile = await linkedinRes.json();
-    certificates = linkedinProfile?.data?.certifications || [];
+    certificates = (linkedinProfile?.data as Record<string, unknown>)?.certifications as CertificationType[] || [];
   }
 
   const recommendationRes = await fetch(
@@ -137,7 +138,7 @@ export default async function Home() {
   const linkedin = {
     ...linkedinData,
     recommendations_received: recommendations,
-  };
+  } as LinkedInProfile;
 
   const topLanguages = repos.reduce((acc: { [lang: string]: number }, repo: GitHubRepo) => {
     if (repo.language) {
@@ -153,10 +154,6 @@ export default async function Home() {
     recentActivities: activityData,
     topLanguages: topLanguages || {},
   }
-
-  console.log("certificates", certificates);
-  console.log("githubWithExtras", githubWithExtras);
-  console.log("linkedin", linkedin);
 
   return (
     <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
