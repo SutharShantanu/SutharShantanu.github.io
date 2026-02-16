@@ -128,7 +128,7 @@ const GitHubActivityCalendar = ({
                 <div className="p-0 w-full rounded-md border border-border overflow-hidden">
                     <ChartContainer
                         config={chartConfig}
-                        className="mx-auto w-full aspect-[4/3] md:aspect-square max-h-[200px] bg-neutral-50 dark:bg-neutral-800"
+                        className="mx-auto w-full aspect-4/3 md:aspect-square max-h-[200px] bg-neutral-50 dark:bg-neutral-800"
                     >
                         <AreaChart data={areaChartData}>
                             <CartesianGrid vertical={false} />
@@ -491,7 +491,7 @@ const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
                                                             —{" "}
                                                             <Link href={rec.profile_url} target="_blank" rel="noopener noreferrer">
                                                                 <Badge variant="outline" className="gap-1 inline-flex items-center rounded-full border-ring">
-                                                                    <Users className="!size-3" />@{linkedInUsername}
+                                                                    <Users className="size-3!" />@{linkedInUsername}
                                                                 </Badge>
                                                             </Link>
                                                         </cite>

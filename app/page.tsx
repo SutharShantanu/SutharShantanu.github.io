@@ -79,7 +79,10 @@ export default async function Home() {
 
   let calendarData: any = { contributions: {}, total: 0 };
   try {
-    const calendarRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`);
+    const calendarRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`, {
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(5000),
+    });
     calendarData = calendarRes.ok ? await calendarRes.json() : { contributions: {}, total: 0 };
   } catch (e) {
     console.log("Failed to fetch GitHub contributions calendar:", e);
@@ -161,7 +164,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+    <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]">
       <div className="max-w-[90vw] lg:max-w-5xl mx-auto flex flex-col gap-4">
         <Hero />
         <Summary />

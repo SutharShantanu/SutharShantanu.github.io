@@ -50,7 +50,7 @@ export default function Hero() {
             aria-label="Hero introduction section"
         >
             <div className="text-center md:text-left z-10">
-                <h1 className="text-4xl md:text-6xl font-bold mb-3 bg-gradient-to-r from-yellow-500 via-red-500 to-pink-500 text-transparent bg-clip-text">Shantanu Suthar</h1>
+                <h1 className="text-4xl md:text-6xl font-bold mb-3 bg-linear-to-r from-yellow-500 via-red-500 to-pink-500 text-transparent bg-clip-text">Shantanu Suthar</h1>
                 <p className="text-lg md:text-xl text-muted-foreground mb-4">
                     Building scalable web apps with React & Node.js
                 </p>

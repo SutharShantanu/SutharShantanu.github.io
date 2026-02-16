@@ -143,7 +143,7 @@ export default function ProjectCard({
                         priority={false}
                     />
                 </CardHeader>
-                <CardContent className="flex flex-col flex-grow justify-between p-4 gap-2">
+                <CardContent className="flex flex-col grow justify-between p-4 gap-2">
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}

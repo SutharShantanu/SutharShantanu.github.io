@@ -27,8 +27,8 @@ export default function Certifications({ certifications }: { certifications: Cer
                 </Marquee>
 
                 {/* Gradient overlays */}
-                <div className="pointer-events-none absolute inset-y-0 left-0 w-1/12 bg-gradient-to-r from-background" />
-                <div className="pointer-events-none absolute inset-y-0 right-0 w-1/12 bg-gradient-to-l from-background" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-1/12 bg-linear-to-r from-background" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-1/12 bg-linear-to-l from-background" />
             </div>
         </div>
     );

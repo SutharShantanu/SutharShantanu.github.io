@@ -45,7 +45,7 @@ const ExperienceTimeline = () => {
             <div className="relative mt-8">
                 {/* Timeline vertical line */}
                 <div
-                    className="pointer-events-none absolute -left-3 md:left-1/2 md:-translate-x-1/2 h-full w-[2px] z-10 bg-gradient-to-b from-primary/20 to-transparent"
+                    className="pointer-events-none absolute -left-3 md:left-1/2 md:-translate-x-1/2 h-full w-[2px] z-10 bg-linear-to-b from-primary/20 to-transparent"
                     aria-hidden="true"
                 />
 
