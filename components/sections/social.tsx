@@ -301,21 +301,21 @@ const GitHubCard = ({ github }: { github: GitHubUser }) => {
 
 const LinkedInCard = ({ linkedin }: { linkedin: LinkedInProfile }) => {
     const {
-        connection_count,
+        connection_count = 0,
         current_company_join_month,
         current_company_join_year,
         current_job_duration,
-        follower_count,
-        full_name,
-        headline,
-        is_verified,
-        job_title,
-        languages,
-        linkedin_url,
-        location,
+        follower_count = 0,
+        full_name = "",
+        headline = "",
+        is_verified = false,
+        job_title = "",
+        languages = [],
+        linkedin_url = "",
+        location = "",
         profile_status,
-        recommendations_received,
-    } = linkedin;
+        recommendations_received = [],
+    } = linkedin ?? {};
 
     const languageIcons: Record<string, JSX.Element> = {
         English: <Globe className="size-3" strokeWidth={1} />,

@@ -86,7 +86,7 @@ export default async function Home() {
 
   const encodedUrl = encodeURIComponent(`https://www.linkedin.com/in/${linkedinUsername}/`);
   const linkedinRes = await fetch(
-    `https://${process.env.RAPIDAPI_HOST}/get-linkedin-profile?linkedin_url=${encodedUrl}&include_skills=false&include_certifications=true&include_publications=false&include_honors=false&include_volunteers=false&include_projects=false&include_patents=false&include_courses=false&include_organizations=true&include_profile_status=true&include_company_public_url=true`,
+    `https://${process.env.RAPIDAPI_HOST}/enrich-lead?linkedin_url=${encodedUrl}&include_skills=false&include_certifications=true&include_publications=false&include_honors=false&include_volunteers=false&include_projects=false&include_patents=false&include_courses=false&include_organizations=true&include_profile_status=true&include_company_public_url=true`,
     {
       method: "GET",
       headers: {
@@ -97,14 +97,16 @@ export default async function Home() {
     }
   );
 
+  let linkedinProfile: Record<string, unknown> = { data: {} };
+  let certificates: unknown[] = [];
+
   if (!linkedinRes.ok) {
     const errorText = await linkedinRes.text();
     console.log("Failed to fetch LinkedIn profile:", errorText);
-    return;
+  } else {
+    linkedinProfile = await linkedinRes.json();
+    certificates = linkedinProfile?.data?.certifications || [];
   }
-
-  const linkedinProfile = await linkedinRes.json();
-  const certificates = linkedinProfile?.data?.certifications || [];
 
   const recommendationRes = await fetch(
     `https://fresh-linkedin-profile-data.p.rapidapi.com/get-recommendations-received?linkedin_url=${encodedUrl}`,
@@ -118,21 +120,22 @@ export default async function Home() {
     }
   );
 
+  let recommendations: Recommendation[] = [];
+
   if (!recommendationRes.ok) {
     console.log("Failed to fetch LinkedIn recommendations");
+  } else {
+    const recommendationsRaw = await recommendationRes.json();
+    const rawData = recommendationsRaw?.data ?? [];
+    recommendations = rawData.map((rec: Recommendation) => ({
+      ...rec,
+      username: rec.profile_url?.split("/in/")[1]?.replace(/\/$/, "") ?? "unknown-user",
+    }));
   }
 
-  const recommendationsRaw = await recommendationRes.json();
-
-  const rawData = recommendationsRaw?.data ?? []
-
-  const recommendations = rawData.map((rec: Recommendation) => ({
-    ...rec,
-    username: rec.profile_url?.split("/in/")[1]?.replace(/\/$/, "") ?? "unknown-user",
-  }));
-
+  const linkedinData = (linkedinProfile as { data?: Record<string, unknown> })?.data ?? {};
   const linkedin = {
-    ...linkedinProfile.data,
+    ...linkedinData,
     recommendations_received: recommendations,
   };
 
