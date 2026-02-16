@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@midudev/tailwind-animations": "^1.0.1",
+    "@midudev/tailwind-animations": "^0.2.0",
     "@number-flow/react": "^0.5.12",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.11",

@@ -77,8 +77,13 @@ export default async function Home() {
     username,
   });
 
-  const calendarRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`);
-  const calendarData = calendarRes.ok ? await calendarRes.json() : { contributions: {}, total: 0 };
+  let calendarData: any = { contributions: {}, total: 0 };
+  try {
+    const calendarRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`);
+    calendarData = calendarRes.ok ? await calendarRes.json() : { contributions: {}, total: 0 };
+  } catch (e) {
+    console.log("Failed to fetch GitHub contributions calendar:", e);
+  }
 
   const rawContributions = calendarData.contributions ?? {};
 
