@@ -14,10 +14,73 @@ import {
 import { Badge } from "../ui/badge"
 import { Card, CardContent } from "../ui/card"
 import SectionHeader from "../ui/section-header/section-header"
-import { experiences } from "./constants/experience.constant"
+import { experiences as staticExperiences } from "./constants/experience.constant"
+import { Experience as LinkedInExperience } from "./types/social.types"
+import { Experience } from "./types/experiience.types"
 import { PeriodCalculate } from "@/functions/period-calcutate"
 
-const ExperienceTimeline = () => {
+const MONTH_NAMES = [
+    "", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+]
+
+/**
+ * Transforms LinkedIn API experience data into the component's display format.
+ * Splits the description into individual event items.
+ */
+function transformLinkedInExperiences(
+    linkedinExperiences: LinkedInExperience[]
+): Experience[] {
+    return linkedinExperiences.map((exp) => {
+        const fromMonth = MONTH_NAMES[exp.start_month] || ""
+        const fromStr = `${fromMonth} ${exp.start_year}`.trim()
+
+        const isCurrentRole = exp.is_current
+        let toStr = "Present"
+        if (!isCurrentRole && exp.end_month && exp.end_year) {
+            const endMonth =
+                typeof exp.end_month === "number"
+                    ? MONTH_NAMES[exp.end_month] || ""
+                    : exp.end_month
+            toStr = `${endMonth} ${exp.end_year}`.trim()
+        }
+
+        // Split description into events by newlines, bullet points, or "•"
+        const events = exp.description
+            ? exp.description
+                  .split(/[\n•●▪▸\-]+/)
+                  .map((line) => line.trim())
+                  .filter((line) => line.length > 0)
+                  .map((line) => ({
+                      title: line,
+                      description: undefined as string | undefined,
+                      isCompleted: true,
+                  }))
+            : []
+
+        return {
+            year: exp.start_year,
+            period: { from: fromStr, to: toStr },
+            company: exp.company,
+            position: exp.title,
+            location: exp.location || "",
+            isCurrentRole,
+            events,
+        }
+    })
+}
+
+interface ExperienceTimelineProps {
+    linkedinExperiences?: LinkedInExperience[]
+}
+
+const ExperienceTimeline = ({ linkedinExperiences }: ExperienceTimelineProps) => {
+    // Use LinkedIn data if available, otherwise fall back to static data
+    const experiences =
+        linkedinExperiences && linkedinExperiences.length > 0
+            ? transformLinkedInExperiences(linkedinExperiences)
+            : staticExperiences
+
     const [expandedIndex, setExpandedIndex] = useState<number | null>(0)
 
     const toggleExpand = (index: number) => {

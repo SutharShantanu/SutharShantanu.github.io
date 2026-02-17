@@ -1,0 +1,36 @@
+name: Revalidate Cache
+
+on:
+  workflow_dispatch:
+    inputs:
+      cache_tag:
+        description: "Which cache to revalidate"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - linkedin
+          - github
+          - all
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bust cache
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            "${{ secrets.SITE_URL }}/api/revalidate?secret=${{ secrets.REVALIDATION_SECRET }}&tag=${{ inputs.cache_tag }}")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "Response: $BODY"
+          echo "HTTP Status: $HTTP_CODE"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Revalidation failed with status $HTTP_CODE"
+            exit 1
+          fi
+
+          echo "✅ Cache revalidated for: ${{ inputs.cache_tag }}"

@@ -10,10 +10,18 @@ import Skills from "@/components/sections/skills";
 import Social from "@/components/sections/social";
 import { Summary } from "@/components/sections/summary";
 import { GitHubRepo, ProjectType } from "@/components/sections/types/projects.types";
-import { GitHubUserExtended, LinkedInProfile, Recommendation } from "@/components/sections/types/social.types";
-import { Octokit } from "octokit";
+import { GitHubUserExtended, LinkedInProfile, Recommendation, Experience as LinkedInExperience } from "@/components/sections/types/social.types";
 import React, { Suspense } from "react";
 import { DotLoader } from "@/components/ui/dot-loader";
+import { safeFetch } from "@/lib/api-cache";
+import {
+  getGithubRepos,
+  getGithubUser,
+  getGithubContributions,
+  getGithubActivity,
+  getLinkedInProfile,
+  getLinkedInRecommendations,
+} from "@/lib/cached-fetchers";
 
 const game = [
   [14, 7, 0, 8, 6, 13, 20],
@@ -40,17 +48,15 @@ export default async function Home() {
   const username = process.env.NEXT_GITHUB_USERNAME ?? NEXT_GITHUB_USERNAME;
   const linkedinUsername = process.env.LINKEDIN_USERNAME ?? LINKEDIN_USERNAME;
 
-  const githubReposRes = await fetch(`https://api.github.com/users/${username}/repos`, {
-    next: { revalidate: 3600 },
-    headers: {
-      Accept: "application/vnd.github.mercy-preview+json",
-    },
-  });
+  // ─── Fetch all data through the global cache ───────────────
+  // All fetchers use unstable_cache with tags for on-demand revalidation.
+  // safeFetch wraps each call with a fallback so UI never breaks.
 
-  if (!githubReposRes.ok) {
-    console.log("Failed to fetch GitHub repos");
-  }
-  const repos = await githubReposRes.json();
+  const repos = await safeFetch(
+    () => getGithubRepos(username),
+    [] as GitHubRepo[],
+    "GitHub repos"
+  );
 
   const projects = repos.map((repo: GitHubRepo) => ({
     id: repo.id,
@@ -69,80 +75,48 @@ export default async function Home() {
     image: "",
   })) as ProjectType[];
 
-  const octokit = new Octokit({
-    auth: process.env.NEXT_GITHUB_TOKEN,
-  });
+  const github = await safeFetch(
+    () => getGithubUser(username),
+    null,
+    "GitHub user"
+  );
 
-  const { data: github } = await octokit.rest.users.getByUsername({
-    username,
-  });
-
-  let calendarData: any = { contributions: {}, total: 0 };
-  try {
-    const calendarRes = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}`, {
-      next: { revalidate: 3600 },
-      signal: AbortSignal.timeout(5000),
-    });
-    calendarData = calendarRes.ok ? await calendarRes.json() : { contributions: {}, total: 0 };
-  } catch (e) {
-    console.log("Failed to fetch GitHub contributions calendar:", e);
-  }
+  const calendarData = await safeFetch(
+    () => getGithubContributions(username),
+    { contributions: {}, total: 0 },
+    "GitHub contributions"
+  );
 
   const rawContributions = calendarData.contributions ?? {};
 
-  const activityRes = await fetch(`https://api.github.com/users/${username}/events/public`);
-  const activityData = activityRes.ok ? await activityRes.json() : [];
-
-  const encodedUrl = encodeURIComponent(`https://www.linkedin.com/in/${linkedinUsername}/`);
-  const linkedinRes = await fetch(
-    `https://${process.env.RAPIDAPI_HOST}/enrich-lead?linkedin_url=${encodedUrl}&include_skills=false&include_certifications=true&include_publications=false&include_honors=false&include_volunteers=false&include_projects=false&include_patents=false&include_courses=false&include_organizations=true&include_profile_status=true&include_company_public_url=true`,
-    {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": process.env.RAPIDAPI_KEY!,
-        "x-rapidapi-host": process.env.RAPIDAPI_HOST!,
-      },
-      next: { revalidate: 86400 },
-    }
+  const activityData = await safeFetch(
+    () => getGithubActivity(username),
+    [],
+    "GitHub activity"
   );
 
-  let linkedinProfile: Record<string, unknown> = { data: {} };
-  let certificates: CertificationType[] = [];
-
-  if (!linkedinRes.ok) {
-    const errorText = await linkedinRes.text();
-    console.log("Failed to fetch LinkedIn profile:", errorText);
-  } else {
-    linkedinProfile = await linkedinRes.json();
-    certificates = (linkedinProfile?.data as Record<string, unknown>)?.certifications as CertificationType[] || [];
-  }
-
-  const recommendationRes = await fetch(
-    `https://fresh-linkedin-profile-data.p.rapidapi.com/get-recommendations-received?linkedin_url=${encodedUrl}`,
-    {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": process.env.RAPIDAPI_KEY!,
-        "x-rapidapi-host": "fresh-linkedin-profile-data.p.rapidapi.com",
-      },
-      next: { revalidate: 86400 },
-    }
+  const linkedinProfileRaw = await safeFetch(
+    () => getLinkedInProfile(linkedinUsername),
+    { data: {} } as Record<string, unknown>,
+    "LinkedIn profile"
   );
 
-  let recommendations: Recommendation[] = [];
+  const linkedinData = (linkedinProfileRaw as { data?: Record<string, unknown> })?.data ?? {};
+  const certificates = (linkedinData?.certifications as CertificationType[]) || [];
+  const linkedinExperiences = (linkedinData?.experiences as LinkedInExperience[]) || [];
 
-  if (!recommendationRes.ok) {
-    console.log("Failed to fetch LinkedIn recommendations");
-  } else {
-    const recommendationsRaw = await recommendationRes.json();
-    const rawData = recommendationsRaw?.data ?? [];
-    recommendations = rawData.map((rec: Recommendation) => ({
-      ...rec,
-      username: rec.profile_url?.split("/in/")[1]?.replace(/\/$/, "") ?? "unknown-user",
-    }));
-  }
+  const recommendationsRaw = await safeFetch(
+    () => getLinkedInRecommendations(linkedinUsername),
+    { data: [] },
+    "LinkedIn recommendations"
+  );
 
-  const linkedinData = (linkedinProfile as { data?: Record<string, unknown> })?.data ?? {};
+  const rawData = (recommendationsRaw as { data?: Recommendation[] })?.data ?? [];
+  const recommendations: Recommendation[] = rawData.map((rec: Recommendation) => ({
+    ...rec,
+    username: rec.profile_url?.split("/in/")[1]?.replace(/\/$/, "") ?? "unknown-user",
+  }));
+
   const linkedin = {
     ...linkedinData,
     recommendations_received: recommendations,
@@ -156,19 +130,19 @@ export default async function Home() {
   }, {});
 
   const githubWithExtras: GitHubUserExtended = {
-    ...github,
+    ...(github ?? {}),
     contributions: rawContributions,
     totalCommits: calendarData.total,
     recentActivities: activityData,
     topLanguages: topLanguages || {},
-  }
+  } as GitHubUserExtended;
 
   return (
     <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]">
       <div className="max-w-[90vw] lg:max-w-5xl mx-auto flex flex-col gap-4">
         <Hero />
         <Summary />
-        <ExperienceTimeline />
+        <ExperienceTimeline linkedinExperiences={linkedinExperiences} />
         <Skills />
         <Suspense fallback={<DotLoader
           frames={game}
