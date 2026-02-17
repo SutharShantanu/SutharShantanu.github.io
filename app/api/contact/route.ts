@@ -115,8 +115,8 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Check if Resend API key is available
-        if (!process.env.RESEND_API_KEY) {
+        // Check if SMTP credentials are available
+        if (!process.env.SMTP_HOST || !process.env.SMTP_USER) {
 
             // Simulate email sending for development
             await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -130,20 +130,19 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        // Send email with Resend
+        // Send email with Nodemailer
         try {
-            const { Resend } = await import("resend")
-            const resend = new Resend(process.env.RESEND_API_KEY)
+            const { sendMail } = await import("@/lib/nodemailer")
 
             // Get email configuration from environment variables
-            const fromEmail = process.env.CONTACT_FROM_EMAIL || "Contact Form <onboarding@resend.dev>"
+            const fromEmail = process.env.SMTP_USER || "shantanusut2000@gmail.com"
             const toEmail = process.env.CONTACT_TO_EMAIL || "shantanusut2000@gmail.com"
             const siteName = process.env.SITE_NAME || "Portfolio Website"
 
             // Send email to you
-            const { data, error } = await resend.emails.send({
-                from: fromEmail,
-                to: [toEmail],
+            const result = await sendMail({
+                from: `${siteName} <${fromEmail}>`,
+                to: toEmail,
                 subject: `${siteName} Contact: ${validatedData.subject}`,
                 html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
@@ -203,27 +202,15 @@ export async function POST(request: NextRequest) {
                 replyTo: validatedData.email,
             })
 
-            if (error) {
-                console.log("Resend error:", error)
-                return NextResponse.json(
-                    {
-                        error: "Failed to send email",
-                        details: error.message,
-                    },
-                    { status: 500 },
-                )
-            }
-
-
             return NextResponse.json(
                 {
                     message: "Message sent successfully! I'll get back to you soon.",
-                    id: data?.id,
+                    id: result.id,
                 },
                 { status: 200 },
             )
-        } catch (resendError) {
-            console.log("Resend integration error:", resendError)
+        } catch (emailError) {
+            console.log("Nodemailer integration error:", emailError)
             return NextResponse.json(
                 {
                     error: "Email service temporarily unavailable",
