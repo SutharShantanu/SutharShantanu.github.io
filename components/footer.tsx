@@ -16,21 +16,39 @@ import { motion } from "framer-motion";
 // import VercelPreview from "@/public/VercelPreview.png";
 
 
+const statusConfig = {
+    success: { label: "Live", dotColor: "bg-green-500" },
+    building: { label: "Building", dotColor: "bg-yellow-500" },
+    failed: { label: "Failed", dotColor: "bg-red-500" },
+    error: { label: "Error", dotColor: "bg-red-500" },
+    checking: { label: "Checking", dotColor: "bg-blue-500" },
+    unknown: { label: "Unknown", dotColor: "bg-gray-500" },
+};
+
+const VercelBadge = ({ status = "success", url = "https://vercel.com", showStatus = true }: VercelBadgeProps) => {
+    const statusInfo = statusConfig[status];
+
+    return (
+        <Link href={url} target="_blank" rel="noopener noreferrer" className="w-fit ml-auto">
+            <div className="w-fit flex h-fit max-h-fit items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors hover:opacity-80 bg-neutral-50 text-neutral-800 dark:bg-neutral-800 border border-border dark:text-neutral-50">
+                {showStatus && (
+                    <motion.div>
+                        <div className="inline-flex items-center gap-1.5">
+                            <span className={`w-2 h-2 rounded-full ${statusInfo.dotColor} ${["building", "checking"].includes(status) ? "animate-pulse" : ""}`} />
+                            <span className="text-xs">{statusInfo.label}</span>
+                        </div>
+                    </motion.div>
+                )}
+                <Separator className="h-4" orientation="vertical" />
+                <Image src={VercelDefault} alt="Vercel Logo" className="size-3 invert dark:invert-0" />
+                <span className="text-nowrap line-clamp-1">Powered by Vercel</span>
+            </div>
+        </Link>
+    );
+};
+
 const Footer = () => {
-
-    const statusConfig = {
-        success: { label: "Live", dotColor: "bg-green-500" },
-        building: { label: "Building", dotColor: "bg-yellow-500" },
-        failed: { label: "Failed", dotColor: "bg-red-500" },
-        error: { label: "Error", dotColor: "bg-red-500" },
-        checking: { label: "Checking", dotColor: "bg-blue-500" },
-        unknown: { label: "Unknown", dotColor: "bg-gray-500" },
-    }
-
-    const VercelBadge = ({ status = "success", url = "https://vercel.com", showStatus = true }: VercelBadgeProps) => {
-        const statusInfo = statusConfig[status]
-
-        return (
+    return (
             // <HoverLinkPreview
             //     href={url}
             //     previewImage={VercelPreview}
