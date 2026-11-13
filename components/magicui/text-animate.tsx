@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/static-components -- the public `as` prop requires a motion wrapper for the caller-selected element type. */
+
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, Variants } from "motion/react";
 import { ElementType, memo } from "react";
@@ -379,7 +381,6 @@ const TextAnimateBase = ({
 
   return (
     <AnimatePresence mode="popLayout">
-      {/* eslint-disable-next-line react-hooks/static-components -- MotionComponent wraps the caller-provided `as` element type. */}
       <MotionComponent
         variants={finalVariants.container as Variants}
         initial="hidden"
