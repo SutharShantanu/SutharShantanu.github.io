@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "postbuild": "next-sitemap"
   },
@@ -51,7 +51,9 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.1",
     "vaul": "^1.1.2",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "@heroui/react": "^3.2.7",
+    "@heroui/styles": "^3.2.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

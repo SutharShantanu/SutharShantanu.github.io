@@ -138,8 +138,8 @@ export default async function Home() {
   } as GitHubUserExtended;
 
   return (
-    <div className="min-h-screen w-full -z-10 dark:bg-[radial-gradient(#262626_1px,transparent_1px)] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px]">
-      <div className="max-w-[90vw] lg:max-w-5xl mx-auto flex flex-col gap-4">
+    <div className="min-h-screen w-full bg-background">
+      <div className="flex w-full flex-col gap-0">
         <Hero />
         <Summary />
         <ExperienceTimeline linkedinExperiences={linkedinExperiences} />

@@ -1,45 +1,49 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Chip } from "@heroui/react";
+
+const PRINCIPLES = ["Clarity over clutter", "Accessible by default", "Performance matters"];
 
 export function Summary() {
-    return (
-        <section
-            id="about"
-            className=" flex flex-col-reverse md:flex-row items-center justify-center p-6 gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl"
-        >
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7 }}
-                className="text-center"
-            >
-                <h2 className="text-4xl font-bold mb-4">
-                    Professional Summary
-                </h2>
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-6">
-                    I&#39;m a passionate <span className="font-semibold text-primary">fullstack developer</span> with expertise in building modern, scalable web applications using <span className="font-semibold text-blue-600 dark:text-blue-400">Next.js</span> and <span className="font-semibold text-blue-600 dark:text-blue-400">TypeScript</span>.
-                    <br /><br />
-                    My focus is on crafting performant, accessible, and visually appealing digital experiences. I thrive on solving complex problems, collaborating with teams, and delivering clean, maintainable code that delights users.
-                </p>
-                <div className="flex flex-wrap justify-center gap-3 mt-4">
-                    <span className="px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 text-sm font-medium shadow">
-                        Next.js
-                    </span>
-                    <span className="px-4 py-1 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 text-sm font-medium shadow">
-                        TypeScript
-                    </span>
-                    <span className="px-4 py-1 rounded-full bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-200 text-sm font-medium shadow">
-                        UI/UX
-                    </span>
-                    <span className="px-4 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 text-sm font-medium shadow">
-                        Accessibility
-                    </span>
-                    <span className="px-4 py-1 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200 text-sm font-medium shadow">
-                        Performance
-                    </span>
-                </div>
-            </motion.div>
-        </section>
-    );
+  return (
+    <section id="about" className="editorial-shell editorial-section grid gap-10 md:grid-cols-[0.75fr_1.25fr] md:gap-20">
+      <div>
+        <p className="editorial-kicker">01 / A little about me</p>
+        <h2 className="mt-5 text-4xl font-medium leading-[1.05] tracking-[-0.055em] md:text-5xl">
+          Good work starts with <span className="font-serif italic text-primary">good questions.</span>
+        </h2>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.25 }}
+        transition={{ duration: 0.55 }}
+        className="flex flex-col justify-between gap-8"
+      >
+        <div className="space-y-5 text-base leading-8 text-muted-foreground md:text-lg">
+          <p>
+            I’m a frontend-focused developer who enjoys turning complex ideas into
+            clear, useful interfaces. My day-to-day work revolves around React,
+            Next.js and TypeScript, with a strong interest in thoughtful design
+            systems and maintainable architecture.
+          </p>
+          <p>
+            From building product dashboards to refining everyday interactions,
+            I aim to make software feel fast, accessible and considered — not just
+            visually polished.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {PRINCIPLES.map((principle) => (
+            <Chip key={principle} size="sm" variant="secondary" className="rounded-none border-border px-2">
+              {principle}
+            </Chip>
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
 }
