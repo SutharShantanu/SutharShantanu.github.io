@@ -42,6 +42,17 @@ export default function Navbar() {
           </a>
         </div>
       </div>
+      <nav aria-label="Mobile navigation" className="editorial-shell flex gap-5 overflow-x-auto border-t border-border/70 py-3 md:hidden">
+        {NAV_ITEMS.map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="shrink-0 text-[0.68rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
     </header>
   );
 }
