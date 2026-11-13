@@ -313,7 +313,6 @@ const TextAnimateBase = ({
 }: TextAnimateProps) => {
   // The component type is a public, caller-configurable `as` prop.
   // Creating the matching motion wrapper here preserves support for custom element types.
-  // eslint-disable-next-line react-hooks/static-components
   const MotionComponent = motion.create(Component);
 
   let segments: string[] = [];
@@ -380,6 +379,7 @@ const TextAnimateBase = ({
 
   return (
     <AnimatePresence mode="popLayout">
+      {/* eslint-disable-next-line react-hooks/static-components -- MotionComponent wraps the caller-provided `as` element type. */}
       <MotionComponent
         variants={finalVariants.container as Variants}
         initial="hidden"
