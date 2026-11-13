@@ -311,6 +311,9 @@ const TextAnimateBase = ({
   animation = "fadeIn",
   ...props
 }: TextAnimateProps) => {
+  // The component type is a public, caller-configurable `as` prop.
+  // Creating the matching motion wrapper here preserves support for custom element types.
+  // eslint-disable-next-line react-hooks/static-components
   const MotionComponent = motion.create(Component);
 
   let segments: string[] = [];
