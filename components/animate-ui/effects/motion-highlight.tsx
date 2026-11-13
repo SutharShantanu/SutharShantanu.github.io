@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/preserve-manual-memoization, react-hooks/refs */
+// This component intentionally composes arbitrary child elements and forwards refs;
+// the React Compiler diagnostics below are not safely auto-transformable here.
 'use client';
 
 import * as React from 'react';
