@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
     ProjectsProps,
     ProjectType,
-    SortSelectProps,
 } from "./types/projects.types";
 import SectionHeader from "../ui/section-header/section-header";
 import { Clock, SortAscIcon, Star } from "lucide-react";
@@ -34,9 +33,65 @@ import ProjectCard from "../cards/project-card";
 
 const perPageOptions = [3, 4, 5, 6];
 
-const Projects = ({ projects }: ProjectsProps) => {
-    type SortKey = "updatedAt" | "title" | "stars";
 
+type SortKey = "updatedAt" | "title" | "stars";
+type TechOption = { label: string; value: string; icon?: React.ComponentType<{ className?: string }> };
+
+const FilterSelect = ({
+    options,
+    value,
+    onChange,
+}: {
+    options: TechOption[];
+    value: string[];
+    onChange: (value: string[]) => void;
+}) => (
+    <MultiSelect
+        key={value.join(",")}
+        options={options}
+        onValueChange={onChange}
+        defaultValue={value}
+        placeholder="Filter by Tech"
+        maxCount={5}
+        className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800"
+        aria-label="Filter projects by technology"
+    />
+);
+
+const SortSelect = ({
+    value,
+    onChange,
+}: {
+    value: SortKey;
+    onChange: (value: SortKey) => void;
+}) => (
+    <Select
+        value={value}
+        onValueChange={(nextValue) => onChange(nextValue as SortKey)}
+        aria-label="Sort projects"
+    >
+        <SelectTrigger className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800">
+            <SelectValue placeholder="Sort by" />
+        </SelectTrigger>
+        <SelectContent>
+            <SelectGroup>
+                <SelectLabel>Sort by</SelectLabel>
+                <SelectSeparator />
+                <SelectItem value="updatedAt" className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" /> Updated Recently
+                </SelectItem>
+                <SelectItem value="title" className="flex items-center gap-2">
+                    <SortAscIcon className="h-4 w-4" /> Name (A-Z)
+                </SelectItem>
+                <SelectItem value="stars" className="flex items-center gap-2">
+                    <Star className="h-4 w-4" /> Stars 4+
+                </SelectItem>
+            </SelectGroup>
+        </SelectContent>
+    </Select>
+);
+
+const Projects = ({ projects }: ProjectsProps) => {
     const [sortKey, setSortKey] = useState<SortKey>("updatedAt");
     const [loading, setLoading] = useState(true);
     const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
@@ -97,49 +152,6 @@ const Projects = ({ projects }: ProjectsProps) => {
         const startIdx = (currentPage - 1) * projectsPerPage;
         return filteredSortedProjects.slice(startIdx, startIdx + projectsPerPage);
     }, [filteredSortedProjects, currentPage, projectsPerPage]);
-
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [selectedTechs, sortKey, projectsPerPage]);
-
-    const FilterSelect = () => (
-        <MultiSelect
-            options={techOptions}
-            onValueChange={setSelectedTechs}
-            defaultValue={selectedTechs}
-            placeholder="Filter by Tech"
-            maxCount={5}
-            className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800"
-            aria-label="Filter projects by technology"
-        />
-    );
-
-    const SortSelect = ({ value, onChange }: SortSelectProps) => (
-        <Select
-            value={value}
-            onValueChange={(v) => onChange(v as SortKey)}
-            aria-label="Sort projects"
-        >
-            <SelectTrigger className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800">
-                <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    <SelectLabel>Sort by</SelectLabel>
-                    <SelectSeparator />
-                    <SelectItem value="updatedAt" className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" /> Updated Recently
-                    </SelectItem>
-                    <SelectItem value="title" className="flex items-center gap-2">
-                        <SortAscIcon className="h-4 w-4" /> Name (A-Z)
-                    </SelectItem>
-                    <SelectItem value="stars" className="flex items-center gap-2">
-                        <Star className="h-4 w-4" /> Stars 4+
-                    </SelectItem>
-                </SelectGroup>
-            </SelectContent>
-        </Select>
-    );
 
     const renderPageButtons = (showEllipsis: boolean) => {
         return [...Array(totalPages)].map((_, i) => {
@@ -209,8 +221,8 @@ const Projects = ({ projects }: ProjectsProps) => {
                 center={false}
             />
             <motion.div className="flex flex-col sm:flex-row justify-end gap-1 w-full">
-                <SortSelect value={sortKey} onChange={setSortKey} />
-                <FilterSelect />
+                <SortSelect value={sortKey} onChange={(value) => { setSortKey(value); setCurrentPage(1); }} />
+                <FilterSelect options={techOptions} value={selectedTechs} onChange={(value) => { setSelectedTechs(value); setCurrentPage(1); }} />
             </motion.div>
 
             {loading ? (
@@ -245,6 +257,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                                         onClick={() => {
                                             setSelectedTechs([]);
                                             setSortKey("updatedAt");
+                                            setCurrentPage(1);
                                         }}
                                     >
                                         Reset filters
@@ -303,7 +316,7 @@ const Projects = ({ projects }: ProjectsProps) => {
                         <motion.div className="w-fit">
                             <Select
                                 value={projectsPerPage.toString()}
-                                onValueChange={(v) => setProjectsPerPage(Number(v))}
+                                onValueChange={(v) => { setProjectsPerPage(Number(v)); setCurrentPage(1); }}
                                 aria-label="Projects per page"
                             >
                                 <SelectTrigger className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800">

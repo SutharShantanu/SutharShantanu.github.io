@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable react-hooks/static-components -- the public `as` prop requires a motion wrapper for the caller-selected element type. */
+
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion, MotionProps, Variants } from "motion/react";
 import { ElementType, memo } from "react";
@@ -311,6 +313,8 @@ const TextAnimateBase = ({
   animation = "fadeIn",
   ...props
 }: TextAnimateProps) => {
+  // The component type is a public, caller-configurable `as` prop.
+  // Creating the matching motion wrapper here preserves support for custom element types.
   const MotionComponent = motion.create(Component);
 
   let segments: string[] = [];

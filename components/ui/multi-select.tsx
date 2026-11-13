@@ -64,7 +64,7 @@ export const MultiSelect = React.forwardRef<
         const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
         const [bounceKey, setBounceKey] = React.useState<number>(0);
 
-        const triggerBounce = () => setBounceKey(Date.now());
+        const triggerBounce = () => setBounceKey((previous) => previous + 1);
 
         const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key === "Enter") {
