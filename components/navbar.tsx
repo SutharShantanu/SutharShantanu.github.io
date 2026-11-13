@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Button } from "@heroui/react";
 import ThemeToggle from "@/components/theme-toggle/ThemeToggle";
 
 const NAV_ITEMS = [
@@ -38,14 +37,9 @@ export default function Navbar() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Button
-            as="a"
-            href="#contact"
-            variant="primary"
-            className="h-9 rounded-none px-4 text-xs font-medium"
-          >
+          <a href="#contact" className="button button--primary button--md inline-flex h-9 items-center gap-2 rounded-none px-4 text-xs font-medium">
             Let’s talk <ArrowUpRight size={14} />
-          </Button>
+          </a>
         </div>
       </div>
     </header>

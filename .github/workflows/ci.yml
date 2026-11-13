@@ -18,7 +18,7 @@ jobs:
       - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 18
 
       - name: ⚡ Cache node_modules & Next.js cache
         uses: actions/cache@v3
@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: 📥 Install Dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci
 
       - name: ✅ Lint Check
         run: npm run lint

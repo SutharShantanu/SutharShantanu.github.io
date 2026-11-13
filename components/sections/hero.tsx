@@ -65,15 +65,9 @@ export default function Hero() {
           <Button onPress={scrollToProjects} variant="primary" className="h-12 rounded-none px-6 font-medium">
             Explore selected work <ArrowDownRight size={17} />
           </Button>
-          <Button
-            as="a"
-            href={RESUME_URL}
-            target="_self"
-            variant="outline"
-            className="h-12 rounded-none px-6 font-medium"
-          >
+          <a href={RESUME_URL} className="button button--outline button--lg inline-flex h-12 items-center gap-2 rounded-none px-6 font-medium">
             <Download size={16} /> Download résumé
-          </Button>
+          </a>
         </motion.div>
 
         <div className="mt-12 flex items-center gap-5 border-t border-border pt-6">
