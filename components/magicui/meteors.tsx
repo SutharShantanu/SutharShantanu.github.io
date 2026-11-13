@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import type { CSSProperties } from "react";
 
 interface MeteorsProps {
   number?: number;
@@ -36,7 +37,7 @@ export const Meteors = ({
         left: `${seededValue(index, 3) * 100}%`,
         animationDelay: `${delay}s`,
         animationDuration: `${duration}s`,
-      } as React.CSSProperties;
+      } as CSSProperties;
 
       return (
         <span
