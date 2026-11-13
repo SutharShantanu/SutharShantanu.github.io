@@ -1,57 +1,40 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun, Monitor } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ThemeToggleProps } from "./types/theme-toggle.types";
 
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 const themes = [
-    {
-        key: "system",
-        icon: Monitor,
-        label: "System theme",
-    },
-    {
-        key: "light",
-        icon: Sun,
-        label: "Light theme",
-    },
-    {
-        key: "dark",
-        icon: Moon,
-        label: "Dark theme",
-    },
-];
+    { key: "system", icon: Monitor, label: "System theme" },
+    { key: "light", icon: Sun, label: "Light theme" },
+    { key: "dark", icon: Moon, label: "Dark theme" },
+] as const;
 
 const ThemeToggle = ({ className }: ThemeToggleProps) => {
     const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
     if (!mounted) return null;
 
     return (
-        <div
-            className={cn(
-                "relative flex rounded-full p-1 w-fit ring-1 ring-border",
-                className
-            )}
-        >
+        <div className={cn("relative flex rounded-full p-1 w-fit ring-1 ring-border", className)}>
             {themes.map(({ key, icon: Icon, label }) => {
                 const isActive = theme === key;
-
                 return (
                     <button
                         type="button"
                         key={key}
                         className="relative h-6 w-6 rounded-full"
-                        onClick={() => setTheme(key as "light" | "dark" | "system")}
+                        onClick={() => setTheme(key)}
                         aria-label={label}
+                        aria-pressed={isActive}
                     >
                         {isActive && (
                             <motion.div
