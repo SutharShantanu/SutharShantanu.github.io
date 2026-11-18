@@ -1,47 +1,26 @@
-
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/themeProvider";
 import "./globals.css";
-import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { FloatingControls } from "@/components/floating-controls";
+import { ScrollProgress } from "@/components/scroll-progress";
 
 export const metadata: Metadata = {
-  title: "Shantanu Suthar | Portfolio",
+  title: "Shantanu Suthar — Frontend Developer",
   description:
-    "Creative Frontend Developer crafting interactive and user-friendly web experiences.",
-  metadataBase: new URL("https://shantanusuthar.vercel.app"),
-  alternates: {
-    canonical: "https://sutharshantanu.github.io",
-  },
+    "Frontend Developer crafting high-performance, thoughtful web experiences and design systems. Based in Gurugram, India.",
+  metadataBase: new URL("https://sutharshantanu.github.io"),
   openGraph: {
-    title: "Shantanu Suthar | Portfolio",
+    title: "Shantanu Suthar — Frontend Developer",
     description:
-      "Creative Frontend Developer crafting interactive and user-friendly web experiences.",
-    url: "https://shantanusuthar.vercel.app",
+      "Frontend Developer crafting high-performance, thoughtful web experiences and design systems. Based in Gurugram, India.",
+    url: "https://sutharshantanu.github.io",
     siteName: "Shantanu Suthar",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Shantanu Suthar Portfolio",
-      },
-    ],
     locale: "en_US",
     type: "website",
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -49,32 +28,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className="min-h-full flex flex-col bg-background text-foreground antialiased selection:bg-black/10 dark:selection:bg-white/15"
+      >
         <ThemeProvider
           disableTransitionOnChange
           attribute="class"
           defaultTheme="system"
           enableSystem
         >
+          <ScrollProgress />
           <Toaster position="top-center" expand={false} richColors />
-          <Navbar />
+          <FloatingControls />
           {children}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "Person",
-                name: "Shantanu Suthar",
-                url: "https://shantanusuthar.vercel.app",
-                jobTitle: "Creative Frontend Developer",
-                sameAs: [
-                  "https://github.com/SutharShantanu",
-                  "https://linkedin.com/in/shantanu-suthar",
-                ],
-              }),
-            }}
-          />
         </ThemeProvider>
       </body>
     </html>

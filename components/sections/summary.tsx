@@ -1,47 +1,43 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Chip } from "@heroui/react";
-
-const PRINCIPLES = ["Clarity over clutter", "Accessible by default", "Performance matters"];
+import React from "react";
+import { Link } from "@heroui/react";
+import { FluidReveal } from "../ui/fluid-reveal";
 
 export function Summary() {
-  return (
-    <section id="about" className="editorial-shell editorial-section grid gap-10 md:grid-cols-[0.75fr_1.25fr] md:gap-20">
-      <div>
-        <p className="editorial-kicker">01 / A little about me</p>
-        <h2 className="mt-5 text-4xl font-medium leading-[1.05] tracking-[-0.055em] md:text-5xl">
-          Good work starts with <span className="font-serif italic text-primary">good questions.</span>
-        </h2>
-      </div>
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.25 }}
-        transition={{ duration: 0.55 }}
-        className="flex flex-col justify-between gap-8"
-      >
-        <div className="space-y-5 text-base leading-8 text-muted-foreground md:text-lg">
-          <p>
-            I’m a frontend-focused developer who enjoys turning complex ideas into
-            clear, useful interfaces. My day-to-day work revolves around React,
-            Next.js and TypeScript, with a strong interest in thoughtful design
-            systems and maintainable architecture.
-          </p>
-          <p>
-            From building product dashboards to refining everyday interactions,
-            I aim to make software feel fast, accessible and considered — not just
-            visually polished.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {PRINCIPLES.map((principle) => (
-            <Chip key={principle} size="sm" variant="secondary" className="rounded-none border-border px-2">
-              {principle}
-            </Chip>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
+    return (
+        <FluidReveal id="about" aria-labelledby="about-heading" className="scroll-mt-12">
+            <h2
+                id="about-heading"
+                className="relative text-foreground text-[15px] font-medium leading-6 mb-3.5"
+            >
+                <span
+                    aria-hidden="true"
+                    className="sm:absolute sm:top-0 sm:right-[calc(100%+12px)] text-muted font-normal tabular-nums mr-2 sm:mr-0 inline-block"
+                >
+                    1
+                </span>
+                About
+            </h2>
+
+            <div className="grid gap-5 text-muted text-[15px] leading-relaxed">
+                <p>
+                    I’m a Frontend Developer based in Gurugram, India, crafting high-performance web applications, responsive digital publications, and fluid design systems.
+                </p>
+                <p>
+                    At{" "}
+                    <Link
+                        href="https://infyni.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-foreground inline-flex items-center gap-0.5"
+                    >
+                        Infyni
+                        <Link.Icon className="size-3" />
+                    </Link>
+                    , I architect enterprise portal interfaces, component systems, and authentication flows using Next.js, React, and TypeScript. I care deeply about the small details — smooth motion, accessible navigation, and sub-second load times.
+                </p>
+            </div>
+        </FluidReveal>
+    );
 }

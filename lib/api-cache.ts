@@ -57,9 +57,13 @@ export async function safeFetch<T>(
     label: string
 ): Promise<T> {
     try {
-        return await fetchFn();
+        const result = await fetchFn();
+        return result ?? fallback;
     } catch (error) {
-        console.error(`[API Cache] Failed to fetch ${label}:`, error);
+        console.warn(
+            `[API Cache] Handled fallback for ${label}:`,
+            error instanceof Error ? error.message : error
+        );
         return fallback;
     }
 }

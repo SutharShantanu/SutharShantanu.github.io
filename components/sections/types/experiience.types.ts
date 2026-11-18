@@ -25,4 +25,5 @@ export interface Experience {
     location: string
     isCurrentRole: boolean
     events: ExperienceEvent[]
+    technologies?: string[]
 }

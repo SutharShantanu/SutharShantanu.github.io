@@ -1,345 +1,264 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-    ProjectsProps,
-    ProjectType,
-} from "./types/projects.types";
-import SectionHeader from "../ui/section-header/section-header";
-import { Clock, SortAscIcon, Star } from "lucide-react";
-import ProjectsSkeleton from "./skeletons/project-card";
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectSeparator,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { MultiSelect } from "../ui/multi-select";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-import ProjectCard from "../cards/project-card";
+import React from "react";
+import { Github, ExternalLink, Sparkles, Activity } from "lucide-react";
+import { motion } from "framer-motion";
+import { Card, Chip, Link, Button, Tooltip } from "@heroui/react";
+import { FluidReveal, FluidItem } from "../ui/fluid-reveal";
+import { ProjectType } from "./types/projects.types";
 
-const perPageOptions = [3, 4, 5, 6];
+interface ProjectPreviewCard {
+    title: string;
+    caption: string;
+    badge?: string;
+    type: "interface" | "architecture";
+    metrics?: string[];
+}
 
+interface ProjectItem {
+    id: string;
+    title: string;
+    subtitle: string;
+    description: string;
+    liveUrl?: string;
+    githubUrl: string;
+    tech: string[];
+    previews: ProjectPreviewCard[];
+}
 
-type SortKey = "updatedAt" | "title" | "stars";
-type TechOption = { label: string; value: string; icon?: React.ComponentType<{ className?: string }> };
+const PROJECTS: ProjectItem[] = [
+    {
+        id: "boozeblues",
+        title: "Boozeblues E-Commerce",
+        subtitle: "Storefront & checkout engine",
+        description:
+            "High-performance modern beverage storefront with React Server Components (RSC), real-time cart mutations, streaming SSR, and sub-second Largest Contentful Paint (LCP 0.9s).",
+        liveUrl: "https://boozeblues.vercel.app",
+        githubUrl: "https://github.com/SutharShantanu/boozeblues",
+        tech: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "TanStack Query"],
+        previews: [
+            {
+                title: "Curated Storefront UI",
+                caption: "Fluid product catalog with sub-second LCP and edge-cached catalog assets",
+                badge: "LCP 0.9s",
+                type: "interface",
+                metrics: ["RSC Streaming", "Instant Cart", "Zero-CLS"],
+            },
+            {
+                title: "Checkout & Inventory Engine",
+                caption: "Optimistic UI mutations, atomic stock validation, and Stripe integration",
+                badge: "99.9% Uptime",
+                type: "architecture",
+                metrics: ["TanStack Query", "Zod Validation", "Edge Middleware"],
+            },
+        ],
+    },
+    {
+        id: "geekycart",
+        title: "Geekycart Tech Store",
+        subtitle: "Full-stack MERN application",
+        description:
+            "Electronics marketplace featuring multi-tiered category filtering, Redux Toolkit cart synchronization, JWT session authorization, and compound-indexed MongoDB queries.",
+        liveUrl: "https://geekycart.vercel.app",
+        githubUrl: "https://github.com/SutharShantanu/geekycart",
+        tech: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB"],
+        previews: [
+            {
+                title: "Interactive Catalog Grid",
+                caption: "Multi-parameter facet search, price sliders, and real-time stock levels",
+                badge: "MERN Stack",
+                type: "interface",
+                metrics: ["Redux Toolkit", "Compound Indexes", "JWT Auth"],
+            },
+            {
+                title: "Scalable API & Cache Pipeline",
+                caption: "RESTful architecture with token refreshes and optimized aggregation pipelines",
+                badge: "40ms API",
+                type: "architecture",
+                metrics: ["Express Routing", "Mongo Aggregations", "Bcrypt Hashing"],
+            },
+        ],
+    },
+    {
+        id: "portfolio",
+        title: "Glass Editorial Portfolio",
+        subtitle: "Fluid whitespace personal site",
+        description:
+            "Minimalist personal website featuring 3D physical folders, fluid handwritten signature, and frosted glass depth. Built with Next.js 16, React 19, and Tailwind CSS.",
+        liveUrl: "https://sutharshantanu.github.io",
+        githubUrl: "https://github.com/SutharShantanu/SutharShantanu.github.io",
+        tech: ["Next.js 16", "React 19", "HeroUI v3", "Framer Motion", "Tailwind CSS v4"],
+        previews: [
+            {
+                title: "Single-Column Editorial",
+                caption: "468px reading column with liquid glass sphere optics and 3D folder physics",
+                badge: "HeroUI v3",
+                type: "interface",
+                metrics: ["SVG Ink Engine", "3D Folders", "Zero-Clutter"],
+            },
+            {
+                title: "Micro-Animation System",
+                caption: "Spring-damped physics, scroll-triggered reveals, and tactile micro-states",
+                badge: "60 FPS",
+                type: "architecture",
+                metrics: ["Framer Motion 12", "HeroUI Tokens", "Accessible ARIA"],
+            },
+        ],
+    },
+];
 
-const FilterSelect = ({
-    options,
-    value,
-    onChange,
-}: {
-    options: TechOption[];
-    value: string[];
-    onChange: (value: string[]) => void;
-}) => (
-    <MultiSelect
-        key={value.join(",")}
-        options={options}
-        onValueChange={onChange}
-        defaultValue={value}
-        placeholder="Filter by Tech"
-        maxCount={5}
-        className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800"
-        aria-label="Filter projects by technology"
-    />
-);
+interface ProjectsProps {
+    projects?: ProjectType[];
+}
 
-const SortSelect = ({
-    value,
-    onChange,
-}: {
-    value: SortKey;
-    onChange: (value: SortKey) => void;
-}) => (
-    <Select
-        value={value}
-        onValueChange={(nextValue) => onChange(nextValue as SortKey)}
-        aria-label="Sort projects"
-    >
-        <SelectTrigger className="w-fit ml-0 justify-end bg-neutral-50 dark:bg-neutral-800">
-            <SelectValue placeholder="Sort by" />
-        </SelectTrigger>
-        <SelectContent>
-            <SelectGroup>
-                <SelectLabel>Sort by</SelectLabel>
-                <SelectSeparator />
-                <SelectItem value="updatedAt" className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" /> Updated Recently
-                </SelectItem>
-                <SelectItem value="title" className="flex items-center gap-2">
-                    <SortAscIcon className="h-4 w-4" /> Name (A-Z)
-                </SelectItem>
-                <SelectItem value="stars" className="flex items-center gap-2">
-                    <Star className="h-4 w-4" /> Stars 4+
-                </SelectItem>
-            </SelectGroup>
-        </SelectContent>
-    </Select>
-);
-
-const Projects = ({ projects }: ProjectsProps) => {
-    const [sortKey, setSortKey] = useState<SortKey>("updatedAt");
-    const [loading, setLoading] = useState(true);
-    const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [projectsPerPage, setProjectsPerPage] = useState(3);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => setLoading(false), 1000);
-        return () => clearTimeout(timeout);
-    }, []);
-
-    const techOptions = useMemo(() => {
-        const techSet = new Set<string>();
-        projects.forEach((p) => {
-            if (p.language) techSet.add(p.language);
-        });
-        return Array.from(techSet)
-            .sort()
-            .map((tech) => ({
-                label: tech,
-                value: tech,
-                icon: undefined,
-            }));
-    }, [projects]);
-
-    const filteredSortedProjects = useMemo(() => {
-        const filtered = projects.filter((p) => {
-            if (!p.description) return false;
-            const wordCount = p.description.trim().split(/\s+/).length;
-            if (wordCount < 10) return false;
-            if (selectedTechs.length === 0) return true;
-            return p.language ? selectedTechs.includes(p.language) : false;
-        });
-
-        filtered.sort((a: ProjectType, b: ProjectType) => {
-            if (sortKey === "updatedAt") {
-                return (
-                    new Date(b.updatedAt || "").getTime() -
-                    new Date(a.updatedAt || "").getTime()
-                );
-            }
-            if (sortKey === "title") {
-                return a.title.localeCompare(b.title);
-            }
-            if (sortKey === "stars") {
-                return (b.stars || 0) - (a.stars || 0);
-            }
-            return 0;
-        });
-
-        return filtered;
-    }, [projects, sortKey, selectedTechs]);
-
-    const totalProjects = filteredSortedProjects.length;
-    const totalPages = Math.ceil(totalProjects / projectsPerPage);
-
-    const currentProjects = useMemo(() => {
-        const startIdx = (currentPage - 1) * projectsPerPage;
-        return filteredSortedProjects.slice(startIdx, startIdx + projectsPerPage);
-    }, [filteredSortedProjects, currentPage, projectsPerPage]);
-
-    const renderPageButtons = (showEllipsis: boolean) => {
-        return [...Array(totalPages)].map((_, i) => {
-            const page = i + 1;
-            if (!showEllipsis) {
-                return (
-                    <PaginationItem key={page}>
-                        <PaginationLink
-                            isActive={currentPage === page}
-                            onClick={() => setCurrentPage(page)}
-                            tabIndex={0}
-                            aria-label={`Go to page ${page}`}
-                        >
-                            {page}
-                        </PaginationLink>
-                    </PaginationItem>
-                );
-            }
-
-            const isFirst = page === 1;
-            const isLast = page === totalPages;
-            const isNearCurrent = Math.abs(currentPage - page) <= 1;
-
-            if (isFirst || isLast || isNearCurrent) {
-                return (
-                    <PaginationItem key={page}>
-                        <PaginationLink
-                            isActive={currentPage === page}
-                            onClick={() => setCurrentPage(page)}
-                            tabIndex={0}
-                            aria-label={`Go to page ${page}`}
-                        >
-                            {page}
-                        </PaginationLink>
-                    </PaginationItem>
-                );
-            }
-
-            if (page === currentPage - 2 && page > 2) {
-                return (
-                    <PaginationItem key="left-ellipsis">
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                );
-            }
-
-            if (page === currentPage + 2 && page < totalPages - 1) {
-                return (
-                    <PaginationItem key="right-ellipsis">
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                );
-            }
-
-            return null;
-        });
-    };
-
+export default function Projects({ projects }: ProjectsProps) {
+    void projects;
     return (
-        <div
-            id="projects"
-            className="flex flex-col items-center justify-center p-6 gap-6 sm:gap-10 overflow-hidden backdrop-blur-sm ring-border border rounded-2xl max-w-5xl"
-        >
-            <SectionHeader
-                title="Projects"
-                description="Dive into my recent projects and discover how I build scalable, efficient, and user-focused solutions."
-                center={false}
-            />
-            <motion.div className="flex flex-col sm:flex-row justify-end gap-1 w-full">
-                <SortSelect value={sortKey} onChange={(value) => { setSortKey(value); setCurrentPage(1); }} />
-                <FilterSelect options={techOptions} value={selectedTechs} onChange={(value) => { setSelectedTechs(value); setCurrentPage(1); }} />
-            </motion.div>
+        <FluidReveal id="work" aria-labelledby="work-heading" className="scroll-mt-12">
+            <h2
+                id="work-heading"
+                className="relative text-foreground text-[15px] font-medium leading-6 mb-8"
+            >
+                <span
+                    aria-hidden="true"
+                    className="sm:absolute sm:top-0 sm:right-[calc(100%+12px)] text-muted font-normal tabular-nums mr-2 sm:mr-0 inline-block"
+                >
+                    2
+                </span>
+                Selected work
+            </h2>
 
-            {loading ? (
-                <ProjectsSkeleton />
-            ) : (
-                <motion.div className="flex flex-col gap-4">
-                    <motion.div
-                        key={`${sortKey}-${selectedTechs.join(",")}-${currentPage}-${projectsPerPage}`}
-                        initial="hidden"
-                        animate="visible"
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                        role="list"
-                        aria-label="Project list"
-                    >
-                        <AnimatePresence mode="popLayout">
-                            {currentProjects.length === 0 ? (
-                                <motion.p
-                                    layout
-                                    key="no-results"
-                                    variants={{
-                                        hidden: { opacity: 0 },
-                                        visible: { opacity: 1 },
-                                    }}
-                                    initial="hidden"
-                                    animate="visible"
-                                    exit="hidden"
-                                    className="text-center text-muted-foreground col-span-full py-8"
-                                >
-                                    No projects match your criteria.
-                                    <button
-                                        className="ml-2 underline text-primary"
-                                        onClick={() => {
-                                            setSelectedTechs([]);
-                                            setSortKey("updatedAt");
-                                            setCurrentPage(1);
-                                        }}
-                                    >
-                                        Reset filters
-                                    </button>
-                                </motion.p>
-                            ) : (
-                                currentProjects.map((project) => (
-                                    <motion.div key={project.id} layout>
-                                        <ProjectCard {...project} />
-                                    </motion.div>
-                                ))
-                            )}
-                        </AnimatePresence>
-                    </motion.div>
-
-                    <motion.div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full mt-4">
-                        {totalPages > 1 && (
-                            <Pagination className="mx-auto sm:mx-0">
-                                <PaginationContent>
-                                    <PaginationItem>
-                                        <PaginationPrevious
-                                            onClick={() =>
-                                                setCurrentPage((prev) => Math.max(prev - 1, 1))
-                                            }
-                                            className={
-                                                currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                                            }
-                                            aria-label="Previous page"
-                                        />
-                                    </PaginationItem>
-
-                                    <div className="flex flex-row gap-1 sm:hidden">
-                                        {renderPageButtons(true)}
-                                    </div>
-
-                                    <div className=" gap-1 hidden sm:flex">
-                                        {renderPageButtons(false)}
-                                    </div>
-
-                                    <PaginationItem>
-                                        <PaginationNext
-                                            onClick={() =>
-                                                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                                            }
-                                            className={
-                                                currentPage === totalPages
-                                                    ? "pointer-events-none opacity-50"
-                                                    : ""
-                                            }
-                                            aria-label="Next page"
-                                        />
-                                    </PaginationItem>
-                                </PaginationContent>
-                            </Pagination>
-                        )}
-                        <motion.div className="w-fit">
-                            <Select
-                                value={projectsPerPage.toString()}
-                                onValueChange={(v) => { setProjectsPerPage(Number(v)); setCurrentPage(1); }}
-                                aria-label="Projects per page"
+            <div className="grid gap-16 sm:gap-20">
+                {PROJECTS.map((project, idx) => (
+                    <FluidItem key={project.id} delay={idx * 0.1} className="flex flex-col gap-4">
+                        {/* Project Heading & Repo Link with HeroUI v3 Components */}
+                        <div className="flex items-center justify-between gap-4">
+                            <Link
+                                href={project.liveUrl || project.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group inline-flex items-baseline gap-1.5 font-medium text-foreground hover:underline underline-offset-4"
                             >
-                                <SelectTrigger className="w-full sm:w-fit justify-end bg-neutral-50 dark:bg-neutral-800">
-                                    <SelectValue>{projectsPerPage} per page</SelectValue>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Projects per page</SelectLabel>
-                                        <SelectSeparator />
-                                        {perPageOptions.map((num) => (
-                                            <SelectItem key={num} value={num.toString()}>
-                                                {num}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </motion.div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </div>
-    );
-};
+                                <span className="text-[16px]">{project.title}</span>
+                                <Link.Icon className="size-3.5 text-muted opacity-70 group-hover:opacity-100" />
+                            </Link>
 
-export default Projects;
+                            <div className="flex items-center gap-2">
+                                {project.liveUrl && (
+                                    <Tooltip delay={150}>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="size-8 p-0 rounded-full text-muted hover:text-foreground"
+                                            onPress={() => window.open(project.liveUrl, "_blank", "noopener,noreferrer")}
+                                            aria-label={`${project.title} live demo`}
+                                        >
+                                            <ExternalLink className="size-3.5" />
+                                        </Button>
+                                        <Tooltip.Content>Open live demo</Tooltip.Content>
+                                    </Tooltip>
+                                )}
+                                <Tooltip delay={150}>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="size-8 p-0 rounded-full text-muted hover:text-foreground"
+                                        onPress={() => window.open(project.githubUrl, "_blank", "noopener,noreferrer")}
+                                        aria-label={`${project.title} source code`}
+                                    >
+                                        <Github className="size-4" />
+                                    </Button>
+                                    <Tooltip.Content>View source repository</Tooltip.Content>
+                                </Tooltip>
+                            </div>
+                        </div>
+
+                        {/* Subtitle */}
+                        <span className="text-muted text-[13px] -mt-2 block font-normal">
+                            {project.subtitle}
+                        </span>
+
+                        {/* Narrative Description */}
+                        <p className="text-muted text-[15px] leading-relaxed">
+                            {project.description}
+                        </p>
+
+                        {/* Interactive Horizontal Snapshot Gallery built with uncustomized HeroUI v3 Cards */}
+                        <div className="relative mt-2 -mx-2 sm:-mx-3">
+                            <div className="no-scrollbar scroll-fade-x flex gap-3.5 overflow-x-auto px-2 sm:px-3 py-2 snap-x snap-mandatory">
+                                {project.previews.map((preview, pIdx) => (
+                                    <motion.div
+                                        key={pIdx}
+                                        whileHover={{ y: -3, scale: 1.015 }}
+                                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                                        className="flex-shrink-0 snap-start"
+                                    >
+                                        <Card
+                                            variant="default"
+                                            className="w-[240px] sm:w-[260px] shadow-surface h-full flex flex-col justify-between"
+                                        >
+                                            <Card.Header>
+                                                <div className="flex items-center justify-between w-full mb-2">
+                                                    <div className="flex items-center gap-1.5 opacity-60">
+                                                        <div className="size-2 rounded-full bg-red-500/80" />
+                                                        <div className="size-2 rounded-full bg-yellow-500/80" />
+                                                        <div className="size-2 rounded-full bg-emerald-500/80" />
+                                                    </div>
+                                                    {preview.badge && (
+                                                        <Chip
+                                                            size="sm"
+                                                            variant="soft"
+                                                            color={preview.type === "interface" ? "accent" : "default"}
+                                                            className="text-[11px]"
+                                                        >
+                                                            {preview.type === "interface" ? (
+                                                                <Sparkles className="size-2.5 mr-1" />
+                                                            ) : (
+                                                                <Activity className="size-2.5 mr-1" />
+                                                            )}
+                                                            {preview.badge}
+                                                        </Chip>
+                                                    )}
+                                                </div>
+                                                <Card.Title className="text-[13px] font-medium text-foreground">
+                                                    {preview.title}
+                                                </Card.Title>
+                                                <Card.Description className="text-[12px] text-muted line-clamp-2 mt-1">
+                                                    {preview.caption}
+                                                </Card.Description>
+                                            </Card.Header>
+
+                                            {preview.metrics && (
+                                                <Card.Footer className="flex flex-wrap gap-1.5 pt-2 border-t border-border/40">
+                                                    {preview.metrics.map((metric) => (
+                                                        <Chip
+                                                            key={metric}
+                                                            size="sm"
+                                                            variant="tertiary"
+                                                            className="text-[10px] font-mono"
+                                                        >
+                                                            {metric}
+                                                        </Chip>
+                                                    ))}
+                                                </Card.Footer>
+                                            )}
+                                        </Card>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Tech Stack Chips using HeroUI v3 Chip with semantic variants */}
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                            {project.tech.map((t) => (
+                                <Chip key={t} size="sm" variant="secondary" className="font-mono text-xs">
+                                    {t}
+                                </Chip>
+                            ))}
+                        </div>
+                    </FluidItem>
+                ))}
+            </div>
+        </FluidReveal>
+    );
+}

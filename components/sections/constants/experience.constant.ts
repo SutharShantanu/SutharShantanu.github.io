@@ -82,25 +82,26 @@ export const experiences: Experience[] = [
         period: { from: "Oct 2023", to: "Present" },
         company: "Infyni",
         position: "Associate Frontend Developer",
-        location: "Gurugram",
+        location: "Gurugram, India",
         isCurrentRole: true,
+        technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS", "NextAuth.js", "REST APIs"],
         events: [
             {
                 title: "Built internal HR portal",
                 description:
-                    "Developed reusable UI components, filters, and modals using React and TypeScript.",
+                    "Architected and developed modular UI components, advanced filter tables, and modal workflows using React and TypeScript.",
                 isCompleted: true,
             },
             {
-                title: "Authentication Integration",
+                title: "Authentication & Role Guards",
                 description:
-                    "Implemented secure login with NextAuth and session-based access control.",
+                    "Integrated secure authentication with NextAuth, handling session-based access control and protected route authorization.",
                 isCompleted: true,
             },
             {
-                title: "Cross-functional Collaboration",
+                title: "Production Optimization & Deployment",
                 description:
-                    "Managed client support and contributed to SEO and product deployment.",
+                    "Streamlined build pipelines, resolved critical client-facing production issues, and optimized SEO benchmarks.",
                 isCompleted: true,
             },
         ],
@@ -110,47 +111,43 @@ export const experiences: Experience[] = [
         period: { from: "Aug 2023", to: "Oct 2023" },
         company: "Branding Pioneers",
         position: "Frontend Developer",
-        location: "Gurugram",
+        location: "Gurugram, India",
         isCurrentRole: false,
+        technologies: ["React", "JavaScript", "Tailwind CSS", "Google Analytics", "Responsive UI"],
         events: [
             {
-                title: "Developed Responsive UIs",
+                title: "Responsive Web Interfaces",
                 description:
-                    "Built landing pages and reusable components with React and Tailwind CSS.",
+                    "Engineered cross-browser responsive landing pages and high-conversion marketing surfaces with Tailwind CSS.",
                 isCompleted: true,
             },
             {
-                title: "SEO & Analytics Integration",
+                title: "SEO & Event Tracking",
                 description:
-                    "Integrated SEO features and third-party tools like Google Analytics.",
+                    "Implemented structured metadata, OpenGraph tags, and Google Analytics custom event funnels.",
                 isCompleted: true,
             },
         ],
     },
     {
         year: 2023,
-        period: { from: "July 2022", to: "May 2023" },
+        period: { from: "Jul 2022", to: "May 2023" },
         company: "Masai School",
-        position: "Full Stack Web Development",
-        location: "Remote",
+        position: "Full Stack Web Development Fellow",
+        location: "Remote, India",
         isCurrentRole: false,
+        technologies: ["MERN Stack", "JavaScript", "React", "Node.js", "Express", "MongoDB", "Data Structures"],
         events: [
             {
-                title: "Completed Coding Curriculum",
+                title: "1000+ Hours Intensive Engineering",
                 description:
-                    "Practiced 1000+ hours of coding across full-stack technologies.",
+                    "Completed rigorous hands-on full-stack engineering curriculum emphasizing DSA, system design fundamentals, and clean code.",
                 isCompleted: true,
             },
             {
-                title: "Built E-commerce Project",
+                title: "Collaborative Capstone Projects",
                 description:
-                    "Developed a functional e-commerce clone with product listing and authentication.",
-                isCompleted: true,
-            },
-            {
-                title: "Mastered DSA & Agile",
-                description:
-                    "Solved coding problems and collaborated on projects using Git and Agile.",
+                    "Led sprint planning and Git feature-branch workflows to build end-to-end full-stack applications with authentication and database persistence.",
                 isCompleted: true,
             },
         ],

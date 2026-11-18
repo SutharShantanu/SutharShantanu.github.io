@@ -1,165 +1,73 @@
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
-import Certifications from "@/components/sections/certificates";
-import { CertificationType } from "@/components/sections/types/certificates.types";
 import { NEXT_GITHUB_USERNAME, LINKEDIN_USERNAME } from "@/components/sections/constants/social.constant";
 import ExperienceTimeline from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
 import Skills from "@/components/sections/skills";
-import Social from "@/components/sections/social";
 import { Summary } from "@/components/sections/summary";
+import { GlassFolders } from "@/components/sections/glass-folders";
 import { GitHubRepo, ProjectType } from "@/components/sections/types/projects.types";
-import { GitHubUserExtended, LinkedInProfile, Recommendation, Experience as LinkedInExperience } from "@/components/sections/types/social.types";
-import React, { Suspense } from "react";
-import { DotLoader } from "@/components/ui/dot-loader";
+import { Experience as LinkedInExperience } from "@/components/sections/types/social.types";
+import React from "react";
 import { safeFetch } from "@/lib/api-cache";
 import {
   getGithubRepos,
-  getGithubUser,
-  getGithubContributions,
-  getGithubActivity,
   getLinkedInProfile,
-  getLinkedInRecommendations,
+  DEFAULT_LINKEDIN_PROFILE,
+  DEFAULT_GITHUB_REPOS,
 } from "@/lib/cached-fetchers";
-
-const game = [
-  [14, 7, 0, 8, 6, 13, 20],
-  [14, 7, 13, 20, 16, 27, 21],
-  [14, 20, 27, 21, 34, 24, 28],
-  [27, 21, 34, 28, 41, 32, 35],
-  [34, 28, 41, 35, 48, 40, 42],
-  [34, 28, 41, 35, 48, 42, 46],
-  [34, 28, 41, 35, 48, 42, 38],
-  [34, 28, 41, 35, 48, 30, 21],
-  [34, 28, 41, 48, 21, 22, 14],
-  [34, 28, 41, 21, 14, 16, 27],
-  [34, 28, 21, 14, 10, 20, 27],
-  [28, 21, 14, 4, 13, 20, 27],
-  [28, 21, 14, 12, 6, 13, 20],
-  [28, 21, 14, 6, 13, 20, 11],
-  [28, 21, 14, 6, 13, 20, 10],
-  [14, 6, 13, 20, 9, 7, 21],
-];
-
-
 
 export default async function Home() {
   const username = process.env.NEXT_GITHUB_USERNAME ?? NEXT_GITHUB_USERNAME;
   const linkedinUsername = process.env.LINKEDIN_USERNAME ?? LINKEDIN_USERNAME;
 
-  // ─── Fetch all data through the global cache ───────────────
-  // All fetchers use unstable_cache with tags for on-demand revalidation.
-  // safeFetch wraps each call with a fallback so UI never breaks.
-
   const repos = await safeFetch(
     () => getGithubRepos(username),
-    [] as GitHubRepo[],
+    DEFAULT_GITHUB_REPOS,
     "GitHub repos"
   );
 
-  const projects = repos.map((repo: GitHubRepo) => ({
+  const reposToUse = repos && repos.length > 0 ? repos : DEFAULT_GITHUB_REPOS;
+
+  const projects = reposToUse.map((repo: GitHubRepo) => ({
     id: repo.id,
     title: repo.name,
     description: repo.description,
-    repositoryUrl: repo.html_url,
-    livePreviewUrl: repo.homepage,
+    repositoryUrl: repo.html_url || `https://github.com/${username}/${repo.name}`,
+    livePreviewUrl: repo.homepage || undefined,
     language: repo.language,
-    stars: repo.stargazers_count,
-    forks: repo.forks_count,
-    openIssues: repo.open_issues_count,
-    updatedAt: new Date(repo.updated_at).toLocaleDateString(),
-    sizeKB: repo.size,
+    stars: repo.stargazers_count || 0,
+    forks: repo.forks_count || 0,
+    openIssues: repo.open_issues_count || 0,
+    updatedAt: repo.updated_at ? new Date(repo.updated_at).toLocaleDateString() : "",
+    sizeKB: repo.size || 0,
     license: repo.license?.name,
     topics: repo.topics || [],
     image: "",
   })) as ProjectType[];
 
-  const github = await safeFetch(
-    () => getGithubUser(username),
-    null,
-    "GitHub user"
-  );
-
-  const calendarData = await safeFetch(
-    () => getGithubContributions(username),
-    { contributions: {}, total: 0 },
-    "GitHub contributions"
-  );
-
-  const rawContributions = calendarData.contributions ?? {};
-
-  const activityData = await safeFetch(
-    () => getGithubActivity(username),
-    [],
-    "GitHub activity"
-  );
-
   const linkedinProfileRaw = await safeFetch(
     () => getLinkedInProfile(linkedinUsername),
-    { data: {} } as Record<string, unknown>,
+    { data: DEFAULT_LINKEDIN_PROFILE } as Record<string, unknown>,
     "LinkedIn profile"
   );
 
-  const linkedinData = (linkedinProfileRaw as { data?: Record<string, unknown> })?.data ?? {};
-  const certificates = (linkedinData?.certifications as CertificationType[]) || [];
+  const linkedinData = ((linkedinProfileRaw as { data?: Record<string, unknown> })?.data ?? DEFAULT_LINKEDIN_PROFILE) as Record<string, unknown>;
   const linkedinExperiences = (linkedinData?.experiences as LinkedInExperience[]) || [];
 
-  const recommendationsRaw = await safeFetch(
-    () => getLinkedInRecommendations(linkedinUsername),
-    { data: [] },
-    "LinkedIn recommendations"
-  );
-
-  const rawData = (recommendationsRaw as { data?: Recommendation[] })?.data ?? [];
-  const recommendations: Recommendation[] = rawData.map((rec: Recommendation) => ({
-    ...rec,
-    username: rec.profile_url?.split("/in/")[1]?.replace(/\/$/, "") ?? "unknown-user",
-  }));
-
-  const linkedin = {
-    ...linkedinData,
-    recommendations_received: recommendations,
-  } as LinkedInProfile;
-
-  const topLanguages = repos.reduce((acc: { [lang: string]: number }, repo: GitHubRepo) => {
-    if (repo.language) {
-      acc[repo.language] = (acc[repo.language] || 0) + 1;
-    }
-    return acc;
-  }, {});
-
-  const githubWithExtras: GitHubUserExtended = {
-    ...(github ?? {}),
-    contributions: rawContributions,
-    totalCommits: calendarData.total,
-    recentActivities: activityData,
-    topLanguages: topLanguages || {},
-  } as GitHubUserExtended;
-
   return (
-    <div className="min-h-screen w-full bg-background">
-      <div className="flex w-full flex-col gap-0">
-        <Hero />
+    <main className="relative min-h-screen bg-background text-foreground">
+      <Hero />
+      <div className="mx-auto flex w-[min(480px,calc(100%-48px))] flex-col gap-24 sm:gap-28 pt-4 pb-20">
         <Summary />
-        <ExperienceTimeline linkedinExperiences={linkedinExperiences} />
-        <Skills />
-        <Suspense fallback={<DotLoader
-          frames={game}
-          className="gap-0.5"
-          dotClassName="bg-white/15 [&.active]:bg-white size-1.5"></DotLoader>}>
-          <Certifications certifications={certificates} />
-        </Suspense>
         <Projects projects={projects} />
-        <Suspense fallback={<DotLoader
-          frames={game}
-          className="gap-0.5"
-          dotClassName="bg-white/15 [&.active]:bg-white size-1.5"></DotLoader>}>
-          <Social github={githubWithExtras} linkedin={linkedin} />
-        </Suspense>
+        <ExperienceTimeline linkedinExperiences={linkedinExperiences} />
+        <GlassFolders />
+        <Skills />
         <Contact />
         <Footer />
       </div>
-    </div>
+    </main>
   );
 }

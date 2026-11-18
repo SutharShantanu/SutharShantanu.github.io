@@ -232,7 +232,7 @@ export default function ProjectCard({
                     )}
                 </CardContent>
                 <CardFooter className="flex gap-4 px-4 pb-4 pt-0">
-                    <LinkButton href={repositoryUrl} tooltip="View source code on GitHub" className="w-1/2">
+                    <LinkButton href={repositoryUrl || "#"} tooltip="View source code on GitHub" className="w-1/2">
                         <Github strokeWidth={1} />
                         GitHub
                     </LinkButton>

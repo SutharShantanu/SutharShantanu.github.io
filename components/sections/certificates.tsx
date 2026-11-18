@@ -2,23 +2,25 @@
 
 import { useRef } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
 import { Marquee } from "@/components/magicui/marquee";
 import Image from "next/image";
 import DefaultCertificates from "@/public/DefaultCertificates.png";
 import { CertificationType } from "./types/certificates.types";
-import SectionHeader from "../ui/section-header/section-header";
 
 export default function Certifications({ certifications }: { certifications: CertificationType[] }) {
     if (!certifications || certifications.length === 0) return null;
 
     return (
-        <div id="certificates" className="flex flex-col items-center justify-between py-6 gap-10 overflow-hidden max-w-5xl">
-            <SectionHeader
-                title="Certifications"
-                description="Explore my certifications that reflect my commitment to continuous learning, technical excellence, and professional growth."
-                center={false}
-            />
+        <div id="certificates" className="w-full py-12 space-y-6 border-b border-border">
+            <div className="space-y-2">
+                <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                    <span className="size-2 rounded-xs bg-foreground" />
+                    <span>ACCREDITATIONS &amp; CERTIFICATIONS</span>
+                </div>
+                <h3 className="text-2xl font-bold tracking-tight text-foreground font-sans">
+                    Technical credentials.
+                </h3>
+            </div>
             <div className="relative w-full overflow-hidden">
                 <Marquee pauseOnHover className="[--duration:30s]">
                     {certifications.map((cert, i) => (
@@ -81,22 +83,20 @@ const TiltCard = ({ cert }: { cert: CertificationType }) => {
             }}
             className="min-w-[200px] max-w-[200px] mx-2"
         >
-            <Card className="border-border bg-card transition-shadow">
-                <CardContent className="p-4 space-y-2">
-                    <Image
-                        src={image ? image : DefaultCertificates}
-                        alt={`${name} - ${authority}`}
-                        width={200}
-                        height={120}
-                        className="rounded-md object-cover w-full h-[150px]"
-                    />
-                    <div className="text-xs">
-                        <p className="font-semibold line-clamp-1">{name}</p>
-                        <p className="text-muted-foreground line-clamp-1">{authority}</p>
-                        <p className="text-[10px] text-muted-foreground line-clamp-1">Issued: {issued}</p>
-                    </div>
-                </CardContent>
-            </Card>
+            <div className="glass-panel rounded-2xl overflow-hidden p-3.5 space-y-2.5 transition-all hover:scale-[1.02]">
+                <Image
+                    src={image ? image : DefaultCertificates}
+                    alt={`${name} - ${authority}`}
+                    width={200}
+                    height={120}
+                    className="rounded-xl object-cover w-full h-[140px] bg-muted/40"
+                />
+                <div className="text-xs space-y-0.5">
+                    <p className="font-semibold text-foreground line-clamp-1">{name}</p>
+                    <p className="text-muted-foreground line-clamp-1 text-[11px]">{authority}</p>
+                    <p className="text-[10px] font-mono text-muted-foreground/80 line-clamp-1">Issued: {issued}</p>
+                </div>
+            </div>
         </motion.div>
     );
 };
