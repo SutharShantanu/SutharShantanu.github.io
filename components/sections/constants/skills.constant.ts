@@ -1,0 +1,32 @@
+// Skills shown on the Skills tab (migrated from the previous portfolio).
+export type SkillCategory = "Frontend" | "Backend" | "Deployment" | "Tools";
+
+export const SKILLS: { title: string; category: SkillCategory; icon: string }[] = [
+    { title: "HTML", category: "Frontend", icon: "https://cdn-icons-png.flaticon.com/512/174/174854.png" },
+    { title: "CSS", category: "Frontend", icon: "https://cdn-icons-png.flaticon.com/512/732/732190.png" },
+    { title: "Bootstrap", category: "Frontend", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968672.png" },
+    { title: "Tailwind CSS", category: "Frontend", icon: "https://tailwindcss.com/_next/static/media/tailwindcss-mark.d52e9897.svg" },
+    { title: "JavaScript", category: "Frontend", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968292.png" },
+    { title: "JSON", category: "Frontend", icon: "https://cdn-icons-png.flaticon.com/512/9423/9423278.png" },
+    { title: "React JS", category: "Frontend", icon: "https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" },
+    { title: "Next JS", category: "Frontend", icon: "/nextjs-icon.svg" },
+    { title: "Redux", category: "Frontend", icon: "https://raw.githubusercontent.com/reactjs/redux/master/logo/logo.png" },
+    { title: "Typescript", category: "Frontend", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968381.png" },
+    { title: "Chakra UI", category: "Frontend", icon: "https://img.icons8.com/?size=100&id=r9QJ0VFFrn7T&format=png&color=000000" },
+    { title: "Material UI", category: "Frontend", icon: "https://img.icons8.com/?size=100&id=gFw7X5Tbl3ss&format=png&color=000000" },
+    { title: "Mantine UI", category: "Frontend", icon: "https://mantine.dev/_next/static/media/mantine-logo.075997af.svg" },
+    { title: "Node JS", category: "Backend", icon: "https://img.icons8.com/?size=100&id=54087&format=png&color=000000" },
+    { title: "Express JS", category: "Backend", icon: "https://www.vectorlogo.zone/logos/expressjs/expressjs-icon.svg" },
+    { title: "MongoDB", category: "Backend", icon: "https://img.icons8.com/?size=100&id=8rKdRqZFLurS&format=png&color=000000" },
+    { title: "Netlify", category: "Deployment", icon: "https://www.vectorlogo.zone/logos/netlify/netlify-icon.svg" },
+    { title: "Vercel", category: "Deployment", icon: "/vercel-icon-light.svg" },
+    { title: "Cyclic", category: "Deployment", icon: "https://cdn-1.webcatalog.io/catalog/cyclic-sh/cyclic-sh-icon-filled-256.webp?v=1669863995747" },
+    { title: "Render", category: "Deployment", icon: "https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_477db83f729d63210139ec7cd29c1351/render-render.png" },
+    { title: "VS Code Insider", category: "Tools", icon: "https://img.icons8.com/?size=256&id=hgQsZt1CslPF&format=png" },
+    { title: "Postman", category: "Tools", icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" },
+    { title: "GitHub", category: "Tools", icon: "https://cdn-icons-png.flaticon.com/512/733/733553.png" },
+    { title: "HeroUI", category: "Frontend", icon: "" },
+    { title: "TanStack Query", category: "Frontend", icon: "" },
+    { title: "Framer Motion", category: "Frontend", icon: "" },
+    { title: "Zod", category: "Frontend", icon: "" },
+];

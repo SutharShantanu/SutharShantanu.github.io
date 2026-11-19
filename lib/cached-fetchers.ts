@@ -17,39 +17,88 @@ import { GitHubActivityDay, GitHubUser } from "@/components/sections/types/socia
 
 // ─── Default Fallback Data ───────────────────────────────────
 
+// Fallback mirrors the public LinkedIn profile (used when RAPIDAPI_* env vars are absent).
+// Keep in sync with linkedin.com/in/shantanu-suthar.
 export const DEFAULT_LINKEDIN_PROFILE = {
     full_name: "Shantanu Suthar",
-    headline: "Frontend Developer | React · Next.js · TypeScript",
-    location: "Gurugram, India",
-    company: "Infyni",
-    job_title: "Associate Frontend Developer",
+    headline: "SDE @WhizHack | Next.js & TypeScript | Scalable UI/UX Solutions | MERN Stack | Tailwind CSS",
+    location: "Gurugram, Haryana, India",
+    company: "WhizHack Technologies",
+    job_title: "Software Engineer",
     linkedin_url: "https://linkedin.com/in/shantanu-suthar",
-    follower_count: 500,
-    connection_count: 500,
+    follower_count: 514,
+    connection_count: 514,
     is_verified: true,
     languages: [
         { name: "English", proficiency: "Professional" },
         { name: "Hindi", proficiency: "Native" },
     ],
-    current_job_duration: "1 yr+",
-    current_company_join_year: 2023,
-    current_company_join_month: 10,
+    current_job_duration: "",
+    current_company_join_year: 2025,
+    current_company_join_month: 8,
+    profile_status: { joined_date: "July 2020" },
     certifications: [
+        { name: "TypeScript Variables and Data Types", authority: "Coursera Project Network", issued: "Jun 2025", url: "" },
+        { name: "JavaScript (Basic) Certificate", authority: "HackerRank", issued: "Jun 2023", url: "" },
+        { name: "Full Stack Web Development", authority: "Masai", issued: "May 2023", url: "" },
+        { name: "Basics of Web Development", authority: "Masai", issued: "Jul 2022", url: "" },
+        { name: "Responsive Web Design", authority: "freeCodeCamp", issued: "Dec 2021", url: "" },
+        { name: "HTML5", authority: "Udemy", issued: "Dec 2021", url: "" },
+    ],
+    experiences: [
         {
-            name: "Full Stack Web Development",
-            authority: "Masai School",
-            issued: "May 2023",
-            url: "https://linkedin.com/in/shantanu-suthar",
+            title: "Software Engineer",
+            company: "WhizHack Technologies",
+            location: "Gurugram, Haryana, India",
+            start_year: 2025, start_month: 8, end_year: "", end_month: "",
+            is_current: true,
+            description: "",
         },
         {
-            name: "React & Next.js Development",
-            authority: "Self-Paced / Projects",
-            issued: "2024",
-            url: "https://linkedin.com/in/shantanu-suthar",
+            title: "Associate Frontend Developer",
+            company: "Infyni",
+            location: "Gurugram, Haryana, India",
+            start_year: 2023, start_month: 10, end_year: 2025, end_month: 8,
+            is_current: false,
+            description:
+                "Built an internal HR portal with modular React + TypeScript components, advanced filter tables and modal workflows.\nIntegrated NextAuth.js session-based access control and protected routes.\nStreamlined build pipelines, resolved client-facing production issues and improved SEO benchmarks.",
+        },
+        {
+            title: "Front End Developer",
+            company: "Branding Pioneers",
+            location: "Gurugram, Haryana, India",
+            start_year: 2023, start_month: 8, end_year: 2023, end_month: 10,
+            is_current: false,
+            description:
+                "Engineered responsive, high-conversion landing pages with Tailwind CSS.\nImplemented structured metadata, OpenGraph tags and Google Analytics event funnels.",
+        },
+        {
+            title: "Internship Trainee",
+            company: "Masai",
+            location: "Bengaluru, Karnataka, India",
+            start_year: 2022, start_month: 7, end_year: 2023, end_month: 6,
+            is_current: false,
+            description:
+                "1,000+ hours of full-stack engineering (MERN, DSA, clean code).\nLed sprint planning and Git feature-branch workflows on full-stack capstone projects.",
         },
     ],
-    experiences: [],
-    recommendations_received: [],
+    recommendations_received: [
+        {
+            username: "ishan-bhatia-a",
+            profile_url: "https://linkedin.com/in/ishan-bhatia-a",
+            text: "Shantanu consistently demonstrated strong technical expertise, problem-solving abilities, and a keen eye for detail. One of his greatest strengths is his ability to complete projects efficiently and on time, without compromising on quality. … Any team would be fortunate to have him.",
+        },
+        {
+            username: "sudhanshu-singh-",
+            profile_url: "https://linkedin.com/in/sudhanshu-singh-",
+            text: "…he is one of the most dependable and skilled frontend developers I’ve worked with. … The result? A 30% increase in lead conversions and a much lower bounce rate.",
+        },
+        {
+            username: "ayushbhatia",
+            profile_url: "https://linkedin.com/in/ayushbhatia",
+            text: "He took the time to understand my vision and delivered a beautiful, user-friendly, and responsive website that exceeded my expectations. … The project was completed ahead of schedule without compromising on quality.",
+        },
+    ],
 };
 
 export const DEFAULT_GITHUB_USER: GitHubUser = {

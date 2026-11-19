@@ -1,0 +1,33 @@
+# Shantanu Suthar
+
+> Software Engineer at WhizHack Technologies (Gurugram, India) building scalable, accessible web apps with Next.js, React and TypeScript. This is his personal portfolio.
+
+The site is a single page with tabbed sections. Each section can be linked directly with a URL hash.
+
+## Sections
+
+- [Overview](https://shantanusuthar.vercel.app/): about, current role, GitHub and LinkedIn stats
+- [Work](https://shantanusuthar.vercel.app/#work): featured projects plus all public GitHub repositories
+- [Experience](https://shantanusuthar.vercel.app/#experience): roles synced from LinkedIn, plus certifications
+- [Skills](https://shantanusuthar.vercel.app/#skills): frontend, backend, deployment and tooling
+- [Social](https://shantanusuthar.vercel.app/#social): GitHub contributions/activity, LinkedIn profile, recommendations
+- [Contact](https://shantanusuthar.vercel.app/#contact): contact form
+
+## Experience
+
+- Software Engineer, WhizHack Technologies — Aug 2025 to present, Gurugram
+- Associate Frontend Developer, Infyni — Oct 2023 to Aug 2025, Gurugram
+- Front End Developer, Branding Pioneers — Aug 2023 to Oct 2023, Gurugram
+- Internship Trainee, Masai — Jul 2022 to Jun 2023, Bengaluru
+
+## Featured projects
+
+- [Boozeblues E-Commerce](https://boozeblues.vercel.app): Next.js storefront and checkout engine
+- [Geekycart Tech Store](https://geekycart.vercel.app): full-stack MERN marketplace
+- [Portfolio source](https://github.com/SutharShantanu/SutharShantanu.github.io): this site (Next.js, HeroUI v3)
+
+## Contact
+
+- Email: shantanusut2000@gmail.com
+- GitHub: https://github.com/SutharShantanu
+- LinkedIn: https://linkedin.com/in/shantanu-suthar

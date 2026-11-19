@@ -1,198 +1,134 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-    CommandDialog,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    CommandSeparator,
-    CommandShortcut,
-} from "@/components/ui/command";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
-import { toast } from "sonner";
+import { Kbd, Label, ListBox, Modal, SearchField, toast } from "@heroui/react";
 import {
-    FolderGit2,
     Briefcase,
-    Wrench,
-    Activity,
-    Mail,
-    Download,
-    Github,
-    Linkedin,
-    Moon,
-    Sun,
-    Monitor,
     Copy,
-    ArrowUpRight,
-    Home,
+    Download,
+    FileText,
+    FolderGit2,
+    Github,
+    LayoutDashboard,
+    Linkedin,
+    Mail,
+    Monitor,
+    Moon,
     Sparkles,
+    Sun,
+    Users,
 } from "lucide-react";
-
-const RESUME_URL = "https://drive.google.com/uc?export=download&id=173kc0AW6miCrWOsqeYN3ad348otgyA13";
-const EMAIL = "shantanusut2000@gmail.com";
+import type { TabKey } from "./shell/portfolio-shell";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL, RESUME_URL } from "./sections/constants/social.constant";
 
 interface CommandPaletteProps {
-    open?: boolean;
-    onOpenChange?: (open: boolean) => void;
+    open: boolean;
+    onOpenChange: (open: boolean) => void;
+    onNavigate: (tab: TabKey) => void;
+    onOpenResume: () => void;
 }
 
-export function CommandPalette({ open: controlledOpen, onOpenChange }: CommandPaletteProps) {
-    const [open, setOpen] = useState(false);
-    const { setTheme } = useTheme();
+interface Command {
+    id: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    run: () => void;
+}
 
-    const isControlled = controlledOpen !== undefined;
-    const isOpen = isControlled ? controlledOpen : open;
-    const setIsOpen = isControlled && onOpenChange ? onOpenChange : setOpen;
+const openExternal = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
+
+export function CommandPalette({ open, onOpenChange, onNavigate, onOpenResume }: CommandPaletteProps) {
+    const { setTheme } = useTheme();
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
-            if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+            if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();
-                setIsOpen(!isOpen);
+                onOpenChange(!open);
             }
         };
-
         document.addEventListener("keydown", down);
         return () => document.removeEventListener("keydown", down);
-    }, [isOpen, setIsOpen]);
+    }, [open, onOpenChange]);
 
-    const runCommand = (command: () => void) => {
-        setIsOpen(false);
-        command();
-    };
+    const commands = useMemo<Command[]>(
+        () => [
+            { id: "overview", label: "Go to Overview", icon: LayoutDashboard, run: () => onNavigate("overview") },
+            { id: "work", label: "Go to Work", icon: FolderGit2, run: () => onNavigate("work") },
+            { id: "experience", label: "Go to Experience", icon: Briefcase, run: () => onNavigate("experience") },
+            { id: "skills", label: "Go to Skills", icon: Sparkles, run: () => onNavigate("skills") },
+            { id: "social", label: "Go to Social", icon: Users, run: () => onNavigate("social") },
+            { id: "contact", label: "Go to Contact", icon: Mail, run: () => onNavigate("contact") },
+            {
+                id: "copy-email",
+                label: `Copy email (${EMAIL})`,
+                icon: Copy,
+                run: () => {
+                    navigator.clipboard.writeText(EMAIL);
+                    toast.success("Email copied to clipboard");
+                },
+            },
+            { id: "resume", label: "View résumé", icon: FileText, run: onOpenResume },
+            { id: "resume-download", label: "Download résumé (PDF)", icon: Download, run: () => openExternal(RESUME_URL) },
+            { id: "light", label: "Switch to light theme", icon: Sun, run: () => setTheme("light") },
+            { id: "dark", label: "Switch to dark theme", icon: Moon, run: () => setTheme("dark") },
+            { id: "system", label: "Use system theme", icon: Monitor, run: () => setTheme("system") },
+            { id: "github", label: "Open GitHub profile", icon: Github, run: () => openExternal(GITHUB_URL) },
+            { id: "linkedin", label: "Open LinkedIn profile", icon: Linkedin, run: () => openExternal(LINKEDIN_URL) },
+        ],
+        [onNavigate, onOpenResume, setTheme]
+    );
 
-    const scrollTo = (id: string) => {
-        runCommand(() => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-            }
-        });
-    };
+    const filtered = commands.filter((c) => c.label.toLowerCase().includes(query.trim().toLowerCase()));
 
-    const copyEmail = () => {
-        runCommand(() => {
-            navigator.clipboard.writeText(EMAIL);
-            toast.success("Email copied to clipboard!", {
-                description: EMAIL,
-            });
-        });
-    };
-
-    const downloadResume = () => {
-        runCommand(() => {
-            window.open(RESUME_URL, "_blank", "noopener,noreferrer");
-            toast.success("Opening résumé download...");
-        });
+    const handleOpenChange = (next: boolean) => {
+        if (!next) setQuery("");
+        onOpenChange(next);
     };
 
     return (
-        <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
-            <CommandInput placeholder="Type a command or search sections..." />
-            <CommandList className="max-h-[380px]">
-                <CommandEmpty>No results found.</CommandEmpty>
-
-                <CommandGroup heading="Navigation">
-                    <CommandItem onSelect={() => scrollTo("top")}>
-                        <Home className="mr-2 h-4 w-4" />
-                        <span>Intro &amp; Signature</span>
-                        <CommandShortcut>G T</CommandShortcut>
-                    </CommandItem>
-                    <CommandItem onSelect={() => scrollTo("about")}>
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        <span>1 / About</span>
-                        <CommandShortcut>G A</CommandShortcut>
-                    </CommandItem>
-                    <CommandItem onSelect={() => scrollTo("work")}>
-                        <FolderGit2 className="mr-2 h-4 w-4" />
-                        <span>2 / Selected Work</span>
-                        <CommandShortcut>G W</CommandShortcut>
-                    </CommandItem>
-                    <CommandItem onSelect={() => scrollTo("experience")}>
-                        <Briefcase className="mr-2 h-4 w-4" />
-                        <span>3 / Experience</span>
-                        <CommandShortcut>G E</CommandShortcut>
-                    </CommandItem>
-                    <CommandItem onSelect={() => scrollTo("elsewhere")}>
-                        <Wrench className="mr-2 h-4 w-4" />
-                        <span>4 / Elsewhere</span>
-                        <CommandShortcut>G L</CommandShortcut>
-                    </CommandItem>
-                    <CommandItem onSelect={() => scrollTo("education")}>
-                        <Activity className="mr-2 h-4 w-4" />
-                        <span>5 / Education &amp; Craft</span>
-                        <CommandShortcut>G D</CommandShortcut>
-                    </CommandItem>
-                    <CommandItem onSelect={() => scrollTo("contact")}>
-                        <Mail className="mr-2 h-4 w-4" />
-                        <span>6 / Get in Touch</span>
-                        <CommandShortcut>G C</CommandShortcut>
-                    </CommandItem>
-                </CommandGroup>
-
-                <CommandSeparator />
-
-                <CommandGroup heading="Quick Actions">
-                    <CommandItem onSelect={copyEmail}>
-                        <Copy className="mr-2 h-4 w-4" />
-                        <span>Copy Email ({EMAIL})</span>
-                    </CommandItem>
-                    <CommandItem onSelect={downloadResume}>
-                        <Download className="mr-2 h-4 w-4" />
-                        <span>Download Résumé (PDF)</span>
-                    </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
-                        <Sun className="mr-2 h-4 w-4" />
-                        <span>Switch to Light Theme</span>
-                    </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
-                        <Moon className="mr-2 h-4 w-4" />
-                        <span>Switch to Dark Theme</span>
-                    </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
-                        <Monitor className="mr-2 h-4 w-4" />
-                        <span>Use System Theme</span>
-                    </CommandItem>
-                </CommandGroup>
-
-                <CommandSeparator />
-
-                <CommandGroup heading="External Links">
-                    <CommandItem
-                        onSelect={() =>
-                            runCommand(() =>
-                                window.open(
-                                    "https://github.com/SutharShantanu",
-                                    "_blank",
-                                    "noopener,noreferrer"
-                                )
-                            )
-                        }
-                    >
-                        <Github className="mr-2 h-4 w-4" />
-                        <span>GitHub Profile (@SutharShantanu)</span>
-                        <ArrowUpRight className="ml-auto h-3.5 w-3.5 opacity-60" />
-                    </CommandItem>
-                    <CommandItem
-                        onSelect={() =>
-                            runCommand(() =>
-                                window.open(
-                                    "https://linkedin.com/in/shantanu-suthar",
-                                    "_blank",
-                                    "noopener,noreferrer"
-                                )
-                            )
-                        }
-                    >
-                        <Linkedin className="mr-2 h-4 w-4" />
-                        <span>LinkedIn Profile (/in/shantanu-suthar)</span>
-                        <ArrowUpRight className="ml-auto h-3.5 w-3.5 opacity-60" />
-                    </CommandItem>
-                </CommandGroup>
-            </CommandList>
-        </CommandDialog>
+        <Modal.Backdrop isOpen={open} onOpenChange={handleOpenChange}>
+            <Modal.Container placement="top">
+                <Modal.Dialog className="sm:max-w-[480px]">
+                    <Modal.Header>
+                        <SearchField aria-label="Search commands" value={query} onChange={setQuery} autoFocus className="w-full">
+                            <SearchField.Group>
+                                <SearchField.SearchIcon />
+                                <SearchField.Input placeholder="Type a command or search..." />
+                                <SearchField.ClearButton />
+                            </SearchField.Group>
+                        </SearchField>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <ListBox
+                            aria-label="Commands"
+                            className="max-h-[360px] overflow-y-auto"
+                            renderEmptyState={() => <p className="p-3 text-sm text-muted">No results found.</p>}
+                            onAction={(key) => {
+                                const cmd = commands.find((c) => c.id === key);
+                                handleOpenChange(false);
+                                cmd?.run();
+                            }}
+                        >
+                            {filtered.map(({ id, label, icon: Icon }) => (
+                                <ListBox.Item key={id} id={id} textValue={label}>
+                                    <Icon className="size-4 text-muted" />
+                                    <Label>{label}</Label>
+                                </ListBox.Item>
+                            ))}
+                        </ListBox>
+                    </Modal.Body>
+                    <Modal.Footer className="justify-start text-xs text-muted">
+                        <Kbd>
+                            <Kbd.Abbr keyValue="command" />
+                            <Kbd.Content>K</Kbd.Content>
+                        </Kbd>
+                        to toggle
+                    </Modal.Footer>
+                </Modal.Dialog>
+            </Modal.Container>
+        </Modal.Backdrop>
     );
 }

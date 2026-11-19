@@ -1,388 +1,189 @@
 "use client";
 
-import React, { useState, useSyncExternalStore } from "react";
-import Link from "next/link";
-import {
-    GitCommitVertical,
-    GitPullRequestArrow,
-    Github,
-    Linkedin,
-    Terminal,
-    Users,
-    FolderGit2,
-    ArrowUpRight,
-    MessageSquare,
-} from "lucide-react";
-import {
-    SocialProps,
-} from "./types/social.types";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import {
-    ChartConfig,
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "../ui/chart";
-import { formatDistanceToNow } from "date-fns";
+import React from "react";
+import { Button, Card, Chip, Separator } from "@heroui/react";
+import { BadgeCheck, CalendarDays, Github, GitCommitHorizontal, Linkedin, Quote } from "lucide-react";
+import { Bento, CountUp, Tile } from "../ui/motion";
+import type { PortfolioData } from "@/lib/portfolio-data";
 
-const emptySubscribe = () => () => {};
-const getClientSnapshot = () => true;
-const getServerSnapshot = () => false;
+const openExternal = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
+const LEVEL_OPACITY = ["opacity-[0.07]", "opacity-30", "opacity-50", "opacity-75", "opacity-100"];
 
-const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-export default function Social({ github, linkedin }: SocialProps) {
-    const isMounted = useSyncExternalStore(
-        emptySubscribe,
-        getClientSnapshot,
-        getServerSnapshot
+function Stat({ label, value }: { label: string; value: number }) {
+    return (
+        <div className="rounded-2xl bg-default px-3 py-2">
+            <p className="font-display text-xl font-semibold tabular-nums text-foreground">
+                <CountUp value={value} />
+            </p>
+            <p className="truncate text-xs text-muted">{label}</p>
+        </div>
     );
+}
 
-    const {
-        html_url = "https://github.com/SutharShantanu",
-        public_repos = 35,
-        followers = 18,
-        contributions = [],
-        recentActivities = [],
-        topLanguages = {},
-    } = github || {};
+export default function Social({ data }: { data: PortfolioData }) {
+    const { github, profile, recommendations, roles } = data;
+    const current = roles.find((r) => r.isCurrent);
 
-    const {
-        linkedin_url = "https://linkedin.com/in/shantanu-suthar",
-        connection_count = 500,
-        recommendations_received = [],
-    } = linkedin || {};
-
-    const [selectedYear, setSelectedYear] = useState<string>("all");
-
-    // Year options from activity
-    const yearSet = new Set(
-        (contributions || []).map((day) =>
-            new Date(day.date).getFullYear().toString()
-        )
-    );
-    const years = ["all", ...Array.from(yearSet).sort((a, b) => +b - +a)];
-
-    const filteredDays =
-        !contributions || contributions.length === 0
-            ? []
-            : selectedYear === "all"
-            ? contributions
-            : contributions.filter(
-                  (day) => new Date(day.date).getFullYear().toString() === selectedYear
-              );
-
-    const totalCommitsCount = filteredDays.reduce(
-        (acc, curr) => acc + (curr.count || 0),
-        0
-    );
-
-    // Monthly aggregates for area chart
-    const monthlyCounts: Record<string, number> = {};
-    MONTH_NAMES.forEach((m) => (monthlyCounts[m] = 0));
-
-    filteredDays.forEach((day) => {
-        const date = new Date(day.date);
-        if (!isNaN(date.getTime())) {
-            const month = date.toLocaleString("default", { month: "short" });
-            monthlyCounts[month] = (monthlyCounts[month] || 0) + (day.count || 0);
-        }
+    // Group contribution days into week columns for the heatmap.
+    const weeks: PortfolioData["github"]["contributions"][] = [];
+    github.contributions.forEach((d, i) => {
+        if (i % 7 === 0) weeks.push([]);
+        weeks[weeks.length - 1].push(d);
     });
-
-    const areaChartData = MONTH_NAMES.map((month) => ({
-        month,
-        commits: monthlyCounts[month] || 0,
-    }));
-
-    const chartConfig = {
-        commits: {
-            label: "Commits",
-            color: "var(--foreground)",
-        },
-    } satisfies ChartConfig;
-
-    // Filter valid recent activities
-    const validActivities = (recentActivities || [])
-        .filter(
-            (act) =>
-                act &&
-                act.created_at &&
-                !isNaN(new Date(act.created_at).getTime())
-        )
-        .slice(0, 5);
-
-    // Language list sorted
-    const languageEntries = Object.entries(topLanguages || {}).sort(
-        (a, b) => b[1] - a[1]
-    );
-    const totalLangRepos = languageEntries.reduce((sum, [, count]) => sum + count, 0) || 1;
+    const recentTotal = github.contributions.reduce((s, d) => s + d.count, 0);
 
     return (
-        <section id="activity" className="w-full py-12 scroll-mt-24 space-y-8">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground font-mono text-sm tabular-nums">05</span>
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground font-sans">
-                        Developer activity
-                    </h2>
-                </div>
-
-                {/* Quick Profile Links */}
-                <div className="flex items-center gap-2 font-mono text-xs">
-                    <Link
-                        href={html_url || "https://github.com/SutharShantanu"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="glass-pill px-3 py-1.5 rounded-xl hover:bg-foreground hover:text-background text-foreground transition-all flex items-center gap-1.5"
-                    >
-                        <Github className="size-3.5" />
-                        <span>GitHub</span>
-                        <ArrowUpRight className="size-3 text-muted-foreground" />
-                    </Link>
-                    <Link
-                        href={linkedin_url || "https://linkedin.com/in/shantanu-suthar"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="glass-subtle px-3 py-1.5 rounded-xl hover:bg-muted text-foreground transition-all flex items-center gap-1.5"
-                    >
-                        <Linkedin className="size-3.5" />
-                        <span>LinkedIn</span>
-                        <ArrowUpRight className="size-3 text-muted-foreground" />
-                    </Link>
-                </div>
-            </div>
-
-            {/* Dashboard Container */}
-            <div className="glass-panel rounded-3xl overflow-hidden shadow-sm">
-                {/* Telemetry Header */}
-                <div className="p-4 border-b border-border/70 flex items-center justify-between font-mono text-xs bg-muted/30">
-                    <div className="flex items-center gap-2">
-                        <Terminal className="size-3.5 text-primary" />
-                        <span className="font-semibold text-foreground uppercase tracking-wider">
-                            Telemetry // GitHub Activity
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground text-[11px]">
-                        <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>Connected</span>
-                    </div>
-                </div>
-
-                {/* Metrics Stats Row */}
-                <div className="grid grid-cols-2 md:grid-cols-4 border-b border-border/70 font-mono divide-x divide-border/70">
-                    <div className="p-5">
-                        <div className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5 mb-1">
-                            <FolderGit2 className="size-3.5 text-primary" />
-                            <span>Repositories</span>
-                        </div>
-                        <div className="text-2xl sm:text-3xl font-bold font-sans text-foreground">
-                            {public_repos}
-                        </div>
-                        <span className="text-[11px] text-muted-foreground">Public open source</span>
-                    </div>
-
-                    <div className="p-5">
-                        <div className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5 mb-1">
-                            <GitCommitVertical className="size-3.5 text-emerald-500" />
-                            <span>Commits</span>
-                        </div>
-                        <div className="text-2xl sm:text-3xl font-bold font-sans text-foreground">
-                            {totalCommitsCount || 240}+
-                        </div>
-                        <span className="text-[11px] text-muted-foreground">Across active repos</span>
-                    </div>
-
-                    <div className="p-5">
-                        <div className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5 mb-1">
-                            <Users className="size-3.5 text-sky-500" />
-                            <span>Followers</span>
-                        </div>
-                        <div className="text-2xl sm:text-3xl font-bold font-sans text-foreground">
-                            {followers}
-                        </div>
-                        <span className="text-[11px] text-muted-foreground">Dev network</span>
-                    </div>
-
-                    <div className="p-5">
-                        <div className="text-muted-foreground text-xs uppercase tracking-wider flex items-center gap-1.5 mb-1">
-                            <Linkedin className="size-3.5 text-blue-500" />
-                            <span>Network</span>
-                        </div>
-                        <div className="text-2xl sm:text-3xl font-bold font-sans text-foreground">
-                            {connection_count}+
-                        </div>
-                        <span className="text-[11px] text-muted-foreground">Professional network</span>
-                    </div>
-                </div>
-
-                {/* Main Activity Grid: Commit Velocity Chart + Recent Activity */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border/70">
-                    {/* Left 7 Cols: Commit Velocity Area Chart */}
-                    <div className="lg:col-span-7 p-6 space-y-4">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <div>
-                                <h3 className="font-sans font-bold text-base text-foreground">
-                                    Commit Frequency &amp; Velocity
-                                </h3>
-                                <p className="font-mono text-xs text-muted-foreground">
-                                    Monthly distribution of contributions.
-                                </p>
-                            </div>
-
-                            {/* Year Filter Tabs */}
-                            {years.length > 1 && (
-                                <div className="flex items-center gap-1 glass-pill p-0.5 rounded-full">
-                                    {years.map((y) => (
-                                        <button
-                                            key={y}
-                                            type="button"
-                                            onClick={() => setSelectedYear(y)}
-                                            className={`px-2.5 py-0.5 text-[10px] font-mono rounded-full transition-colors ${
-                                                selectedYear === y
-                                                    ? "bg-foreground text-background font-semibold shadow-xs"
-                                                    : "text-muted-foreground hover:text-foreground"
-                                            }`}
-                                        >
-                                            {y.toUpperCase()}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Area Chart Container */}
-                        <div className="glass-subtle rounded-2xl p-3 min-h-[190px]">
-                            {isMounted ? (
-                                <ChartContainer
-                                    config={chartConfig}
-                                    className="w-full aspect-[2/1] max-h-[220px] min-h-[170px]"
-                                >
-                                    <AreaChart data={areaChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                        <CartesianGrid vertical={false} strokeDasharray="3 3" opacity={0.2} />
-                                        <XAxis
-                                            dataKey="month"
-                                            tickLine={false}
-                                            axisLine={false}
-                                            tickMargin={6}
-                                            fontSize={10}
-                                            fontFamily="var(--font-geist-mono)"
-                                        />
-                                        <ChartTooltip
-                                            cursor={{ stroke: "var(--foreground)", strokeWidth: 1, strokeDasharray: "2 2" }}
-                                            content={<ChartTooltipContent indicator="line" />}
-                                        />
-                                        <Area
-                                            dataKey="commits"
-                                            type="monotone"
-                                            fill="var(--foreground)"
-                                            fillOpacity={0.12}
-                                            stroke="var(--foreground)"
-                                            strokeWidth={1.5}
-                                        />
-                                    </AreaChart>
-                                </ChartContainer>
-                            ) : (
-                                <div className="w-full h-[180px] bg-muted/30 animate-pulse rounded-2xl" />
-                            )}
-                        </div>
-
-                        {/* Language Distribution Bar */}
-                        {languageEntries.length > 0 && (
-                            <div className="space-y-2 pt-2">
-                                <div className="flex items-center justify-between font-mono text-[11px] text-muted-foreground">
-                                    <span>PRIMARY LANGUAGES</span>
-                                    <span>BY REPOSITORIES</span>
-                                </div>
-                                <div className="h-2 w-full rounded-full bg-muted overflow-hidden flex">
-                                    {languageEntries.slice(0, 4).map(([lang, count], idx) => {
-                                        const pct = Math.max(5, Math.round((count / totalLangRepos) * 100));
-                                        const opacities = ["bg-foreground", "bg-foreground/75", "bg-foreground/50", "bg-foreground/30"];
-                                        return (
-                                            <div
-                                                key={lang}
-                                                style={{ width: `${pct}%` }}
-                                                className={`h-full ${opacities[idx % opacities.length]}`}
-                                                title={`${lang}: ${pct}%`}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                                <div className="flex flex-wrap gap-3 font-mono text-[10px] text-muted-foreground pt-1">
-                                    {languageEntries.slice(0, 4).map(([lang, count]) => {
-                                        const pct = Math.round((count / totalLangRepos) * 100);
-                                        return (
-                                            <span key={lang} className="flex items-center gap-1.5">
-                                                <span className="size-1.5 rounded-full bg-foreground" />
-                                                <span className="text-foreground">{lang}</span>
-                                                <span>{pct}%</span>
-                                            </span>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Right 5 Cols: Recent Git Activities Feed */}
-                    <div className="lg:col-span-5 p-6 space-y-4">
-                        <div className="flex items-center justify-between">
-                            <h3 className="font-sans font-bold text-base text-foreground">
-                                Recent Events
-                            </h3>
-                            <span className="font-mono text-[10px] text-muted-foreground uppercase">
-                                Git Stream
+        <Bento className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+            {/* GitHub profile */}
+            <Tile className="lg:col-span-2" lift={false}>
+                <Card className="h-full">
+                    <Card.Header className="flex flex-row items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                            <span className="grid size-11 place-items-center rounded-2xl bg-default">
+                                <Github className="size-5 text-foreground" />
                             </span>
-                        </div>
-
-                        <div className="space-y-2.5">
-                            {validActivities.length > 0 ? (
-                                validActivities.map((act, index) => (
-                                    <div
-                                        key={index}
-                                        className="p-3.5 glass-subtle rounded-2xl font-mono text-xs space-y-1 transition-colors hover:border-foreground/30"
-                                    >
-                                        <div className="flex items-center justify-between gap-2">
-                                            <div className="flex items-center gap-1.5 font-semibold text-foreground">
-                                                <GitPullRequestArrow className="size-3.5 text-muted-foreground" />
-                                                <span>{act.type}</span>
-                                            </div>
-                                            <span className="text-[10px] text-muted-foreground">
-                                                {formatDistanceToNow(new Date(act.created_at), { addSuffix: true })}
-                                            </span>
-                                        </div>
-                                        {act.repo?.name && (
-                                            <p className="text-[11px] text-muted-foreground truncate">
-                                                repo: <span className="text-foreground font-medium">{act.repo.name}</span>
-                                            </p>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="p-4 glass-subtle rounded-2xl font-mono text-xs text-muted-foreground text-center">
-                                    Active commits pushing directly to feature branches.
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Peer Recommendation Quote (if available) */}
-                        {recommendations_received && recommendations_received.length > 0 && (
-                            <div className="border-t border-border/70 pt-4 space-y-2">
-                                <div className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                                    <MessageSquare className="size-3 text-primary" />
-                                    <span>Peer Endorsement</span>
-                                </div>
-                                <blockquote className="p-3.5 rounded-2xl glass-subtle text-xs text-muted-foreground italic leading-relaxed">
-                                    &ldquo;{recommendations_received[0].text}&rdquo;
-                                    <footer className="mt-2 text-right not-italic font-mono text-[10px] text-foreground font-semibold">
-                                        — LinkedIn Recommendation
-                                    </footer>
-                                </blockquote>
+                            <div>
+                                <Card.Title>@{github.login}</Card.Title>
+                                <Card.Description className="flex items-center gap-1 font-mono text-xs">
+                                    <CalendarDays className="size-3" /> Joined {github.joined}
+                                </Card.Description>
                             </div>
+                        </div>
+                        <Button size="sm" variant="secondary" onPress={() => openExternal(github.url)}>
+                            Follow
+                        </Button>
+                    </Card.Header>
+                    <Card.Content className="grid gap-4">
+                        {github.bio && <p className="font-serif text-lg leading-snug text-foreground italic">{github.bio}</p>}
+                        <div className="grid grid-cols-2 gap-2 xl:grid-cols-4">
+                            <Stat label="Repos" value={github.publicRepos} />
+                            <Stat label="Followers" value={github.followers} />
+                            <Stat label="Following" value={github.following} />
+                            <Stat label="Stars" value={github.totalStars} />
+                        </div>
+                    </Card.Content>
+                </Card>
+            </Tile>
+
+            {/* LinkedIn profile */}
+            <Tile className="lg:col-span-2" lift={false}>
+                <Card className="h-full">
+                    <Card.Header className="flex flex-row items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                            <span className="grid size-11 place-items-center rounded-2xl bg-default">
+                                <Linkedin className="size-5 text-foreground" />
+                            </span>
+                            <div>
+                                <Card.Title className="flex items-center gap-1">
+                                    {profile.name} <BadgeCheck className="size-4 text-focus" aria-label="Verified" />
+                                </Card.Title>
+                                <Card.Description className="font-mono text-xs">
+                                    {profile.location}
+                                    {profile.joined && ` · Joined ${profile.joined}`}
+                                </Card.Description>
+                            </div>
+                        </div>
+                        <Button size="sm" variant="secondary" onPress={() => openExternal(profile.linkedinUrl)}>
+                            Connect
+                        </Button>
+                    </Card.Header>
+                    <Card.Content className="grid gap-4">
+                        <p className="line-clamp-2 text-sm text-muted">{profile.headline}</p>
+                        <div className="grid grid-cols-2 gap-2 xl:grid-cols-4">
+                            <Stat label="Followers" value={profile.followers} />
+                            <Stat label="Connections" value={profile.connections} />
+                            <Stat label="Yrs experience" value={profile.experienceYears} />
+                            <Stat label="Recommendations" value={recommendations.length} />
+                        </div>
+                        {current && (
+                            <p className="text-xs text-muted">
+                                Current position: <span className="text-foreground">{current.title}</span> · {current.company} · {current.duration}
+                            </p>
                         )}
-                    </div>
-                </div>
-            </div>
-        </section>
+                    </Card.Content>
+                </Card>
+            </Tile>
+
+            {/* Contribution heatmap */}
+            <Tile className="lg:col-span-3" lift={false}>
+                <Card className="h-full">
+                    <Card.Header className="flex flex-row items-end justify-between">
+                        <div>
+                            <Card.Title>Contributions</Card.Title>
+                            <Card.Description>Last 26 weeks</Card.Description>
+                        </div>
+                        <Chip size="sm" variant="soft" color="success">
+                            {recentTotal} recent · {github.contributionTotal} all time
+                        </Chip>
+                    </Card.Header>
+                    <Card.Content>
+                        {weeks.length ? (
+                            <div className="flex gap-[3px] overflow-x-auto pb-1" role="img" aria-label={`${recentTotal} GitHub contributions in the last 26 weeks`}>
+                                {weeks.map((week, wi) => (
+                                    <div key={wi} className="grid grid-rows-7 gap-[3px]">
+                                        {week.map((d) => (
+                                            <span
+                                                key={d.date}
+                                                title={`${d.count} contributions · ${d.date}`}
+                                                className={`size-3 rounded-[3px] bg-foreground transition-transform hover:scale-150 ${LEVEL_OPACITY[d.level] ?? LEVEL_OPACITY[0]}`}
+                                            />
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-muted">Contribution data unavailable right now.</p>
+                        )}
+                    </Card.Content>
+                </Card>
+            </Tile>
+
+            {/* Recent activity */}
+            <Tile lift={false}>
+                <Card className="h-full">
+                    <Card.Header>
+                        <Card.Title>Recent activity</Card.Title>
+                    </Card.Header>
+                    <Card.Content className="grid gap-2">
+                        {github.activity.length ? (
+                            github.activity.map((a) => (
+                                <div key={a.id} className="flex items-start gap-2 text-xs">
+                                    <GitCommitHorizontal className="mt-0.5 size-3.5 shrink-0 text-muted" />
+                                    <div className="min-w-0">
+                                        <p className="truncate text-foreground">{a.repo.split("/").pop()}</p>
+                                        <p className="font-mono text-muted">
+                                            {a.type} · {new Date(a.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-sm text-muted">No public activity yet.</p>
+                        )}
+                    </Card.Content>
+                </Card>
+            </Tile>
+
+            {/* Recommendations */}
+            {recommendations.map((r, i) => (
+                <Tile key={r.username || i} className={i === 0 ? "lg:col-span-2" : undefined}>
+                    <Card className="h-full">
+                        <Card.Content className="grid h-full content-between gap-3">
+                            <Quote className="size-5 text-muted" />
+                            <p className={`font-serif leading-snug text-foreground italic ${i === 0 ? "text-xl" : "text-base"}`}>&ldquo;{r.text}&rdquo;</p>
+                            <Separator />
+                            <a
+                                href={r.profileUrl || profile.linkedinUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex min-h-6 items-center font-mono text-xs text-muted hover:text-foreground"
+                            >
+                                @{r.username} · LinkedIn recommendation
+                            </a>
+                        </Card.Content>
+                    </Card>
+                </Tile>
+            ))}
+        </Bento>
     );
 }

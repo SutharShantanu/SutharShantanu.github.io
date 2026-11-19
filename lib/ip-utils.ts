@@ -1,24 +1,19 @@
 import type { NextRequest } from "next/server"
 
+/**
+ * Client IP as set by the hosting platform (Vercel sets x-real-ip / x-forwarded-for).
+ * Headers like cf-connecting-ip are NOT trusted: off Cloudflare, any client can send them
+ * and rotate them to dodge rate limiting.
+ */
 export function getClientIP(request: NextRequest): string {
-    // Check various headers for the real IP
-    const forwarded = request.headers.get("x-forwarded-for")
     const realIP = request.headers.get("x-real-ip")
-    const cfConnectingIP = request.headers.get("cf-connecting-ip")
-
-    if (cfConnectingIP) return cfConnectingIP
-    if (realIP) return realIP
+    if (realIP) return realIP.trim()
+    const forwarded = request.headers.get("x-forwarded-for")
     if (forwarded) return forwarded.split(",")[0].trim()
-
-    // Fallback if no IP headers are found
     return "unknown"
 }
 
+/** Rate-limit key. IP only: user-agent/accept-language are free for a bot to rotate. */
 export function createFingerprint(request: NextRequest): string {
-    const ip = getClientIP(request)
-    const userAgent = request.headers.get("user-agent") || ""
-    const acceptLanguage = request.headers.get("accept-language") || ""
-
-    // Create a simple fingerprint
-    return `${ip}-${userAgent.slice(0, 50)}-${acceptLanguage.slice(0, 20)}`
+    return getClientIP(request)
 }

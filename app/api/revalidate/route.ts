@@ -12,9 +12,17 @@
 
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
+
+const safeEqual = (a: string, b: string) => {
+    const x = Buffer.from(a);
+    const y = Buffer.from(b);
+    return x.length === y.length && timingSafeEqual(x, y);
+};
 
 export async function GET(request: NextRequest) {
-    const secret = request.nextUrl.searchParams.get("secret");
+    // Prefer the header so the secret stays out of URLs/access logs; query param kept for the existing GitHub Action.
+    const secret = request.headers.get("x-revalidate-secret") ?? request.nextUrl.searchParams.get("secret") ?? "";
     const tag = request.nextUrl.searchParams.get("tag");
 
     // Validate secret
@@ -25,7 +33,7 @@ export async function GET(request: NextRequest) {
         );
     }
 
-    if (secret !== process.env.REVALIDATION_SECRET) {
+    if (!safeEqual(secret, process.env.REVALIDATION_SECRET)) {
         return NextResponse.json(
             { error: "Invalid secret" },
             { status: 401 }

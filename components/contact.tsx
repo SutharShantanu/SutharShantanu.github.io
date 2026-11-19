@@ -2,169 +2,136 @@
 
 import React, { useState } from "react";
 import { useContactForm } from "./hooks/useContact";
-import { TextField, Label, Input, TextArea, FieldError, Button, Spinner } from "@heroui/react";
-import { ArrowUpRight, Copy, Check } from "lucide-react";
-import { FluidReveal } from "./ui/fluid-reveal";
-import { toast } from "sonner";
+import { Button, Card, Description, FieldError, Input, Label, ListBox, Select, Spinner, TextArea, TextField, toast } from "@heroui/react";
+import { Bento, IconSwap, Tile, useShake } from "./ui/motion";
+
+import { ArrowUpRight, Check, Copy } from "lucide-react";
+import { EMAIL } from "./sections/constants/social.constant";
+
+const SUBJECTS = [
+    { id: "general", label: "General inquiry" },
+    { id: "proposal", label: "Project proposal" },
+    { id: "feedback", label: "Feedback" },
+    { id: "other", label: "Other" },
+] as const;
 
 export default function Contact() {
     const { form, onSubmit, isSubmitting } = useContactForm();
     const [copied, setCopied] = useState(false);
+    const { errors } = form.formState;
+    const subject = form.watch("subject");
+    const messageLength = form.watch("message")?.length ?? 0;
+    const [formRef, shake] = useShake<HTMLFormElement>();
 
     const handleCopyEmail = () => {
-        navigator.clipboard.writeText("shantanusut2000@gmail.com");
+        navigator.clipboard.writeText(EMAIL);
         setCopied(true);
-        toast.success("Email copied to clipboard!");
+        toast.success("Email copied to clipboard");
         setTimeout(() => setCopied(false), 2500);
     };
 
     return (
-        <FluidReveal id="contact" aria-labelledby="contact-heading" className="scroll-mt-12">
-            <h2
-                id="contact-heading"
-                className="relative text-foreground text-[15px] font-medium leading-6 mb-4"
-            >
-                <span
-                    aria-hidden="true"
-                    className="sm:absolute sm:top-0 sm:right-[calc(100%+12px)] text-muted font-normal tabular-nums mr-2 sm:mr-0 inline-block"
-                >
-                    6
-                </span>
-                Get in touch
-            </h2>
-
-            <div className="grid gap-6 text-[15px]">
-                <p className="text-muted leading-relaxed">
-                    Whether you have an upcoming project, frontend engineering opportunity, or simply want to connect, feel free to dispatch a note below or reach out directly.
-                </p>
-
-                {/* Direct email quick action using HeroUI v3 Button */}
-                <div className="flex items-center gap-3 py-1">
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        onPress={handleCopyEmail}
-                        className="font-mono text-xs flex items-center gap-2"
-                        aria-label="Copy email address"
-                    >
-                        {copied ? (
-                            <>
-                                <Check className="size-3.5 text-success" />
-                                <span>Copied to clipboard</span>
-                            </>
-                        ) : (
-                            <>
-                                <Copy className="size-3.5 text-muted" />
-                                <span>shantanusut2000@gmail.com</span>
-                            </>
-                        )}
+        <Bento className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+            <Tile lift={false}>
+            <Card>
+                <Card.Header>
+                    <Card.Title className="text-2xl">
+                        Let&apos;s <span className="font-serif font-normal italic">connect</span>
+                    </Card.Title>
+                    <Card.Description>
+                        Upcoming project, frontend role, or just want to connect? Send a note or reach out directly.
+                    </Card.Description>
+                </Card.Header>
+                <Card.Content className="flex flex-row flex-wrap items-center gap-2">
+                    <Button variant="secondary" size="sm" onPress={handleCopyEmail} aria-label="Copy email address">
+                        <IconSwap swapKey={copied ? "copied" : "idle"}>
+                            {copied ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
+                            {copied ? "Copied" : EMAIL}
+                        </IconSwap>
                     </Button>
-                    <a
-                        href="mailto:shantanusut2000@gmail.com"
-                        className="text-muted hover:text-foreground transition-colors"
-                        title="Open email client"
+                    <Button
+                        isIconOnly
+                        variant="ghost"
+                        size="sm"
                         aria-label="Open default mail client"
+                        onPress={() => (window.location.href = `mailto:${EMAIL}`)}
                     >
                         <ArrowUpRight className="size-4" />
-                    </a>
-                </div>
+                    </Button>
+                </Card.Content>
+            </Card>
+            </Tile>
 
-                {/* Form built with native HeroUI v3 Field & Form components (no customization) */}
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 pt-1"
-                    aria-label="Contact form"
-                >
-                    {/* Honeypot */}
-                    <div style={{ display: "none" }} aria-hidden="true">
-                        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
-                        <input type="text" name="phone" tabIndex={-1} autoComplete="off" />
-                    </div>
+            <Tile lift={false}>
+            <Card>
+                <Card.Content>
+                    <form ref={formRef} onSubmit={form.handleSubmit(onSubmit, shake)} className="grid gap-4" aria-label="Contact form">
+                        {/* Honeypot */}
+                        <div style={{ display: "none" }} aria-hidden="true">
+                            <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+                            <input type="text" name="phone" tabIndex={-1} autoComplete="off" />
+                        </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {/* Name Field */}
-                        <TextField
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            <TextField isRequired isInvalid={!!errors.name}>
+                                <Label>Your name</Label>
+                                <Input {...form.register("name")} placeholder="Jane Doe" />
+                                <FieldError>{errors.name?.message}</FieldError>
+                            </TextField>
+
+                            <TextField isRequired type="email" isInvalid={!!errors.email}>
+                                <Label>Email address</Label>
+                                <Input {...form.register("email")} type="email" placeholder="jane@company.com" />
+                                <FieldError>{errors.email?.message}</FieldError>
+                            </TextField>
+                        </div>
+
+                        <Select
                             isRequired
-                            isInvalid={!!form.formState.errors.name}
-                            className="w-full"
+                            isInvalid={!!errors.subject}
+                            placeholder="Choose a subject"
+                            value={subject ?? null}
+                            onChange={(v) => form.setValue("subject", v as (typeof SUBJECTS)[number]["id"], { shouldValidate: true })}
                         >
-                            <Label className="text-xs text-muted mb-1">Your Name</Label>
-                            <Input
-                                {...form.register("name")}
-                                placeholder="Jane Doe"
-                                required
-                            />
-                            {form.formState.errors.name && (
-                                <FieldError className="text-xs text-danger mt-1">
-                                    {form.formState.errors.name.message}
-                                </FieldError>
-                            )}
+                            <Label>Subject</Label>
+                            <Select.Trigger>
+                                <Select.Value />
+                                <Select.Indicator />
+                            </Select.Trigger>
+                            <Select.Popover>
+                                <ListBox>
+                                    {SUBJECTS.map((s) => (
+                                        <ListBox.Item key={s.id} id={s.id} textValue={s.label}>
+                                            {s.label}
+                                            <ListBox.ItemIndicator />
+                                        </ListBox.Item>
+                                    ))}
+                                </ListBox>
+                            </Select.Popover>
+                            <FieldError>{errors.subject?.message}</FieldError>
+                        </Select>
+
+                        <TextField isRequired isInvalid={!!errors.message}>
+                            <Label>Message</Label>
+                            <TextArea {...form.register("message")} placeholder="Write your note, inquiry, or project scope..." rows={5} />
+                            <Description className="tabular-nums">{messageLength}/1000 characters</Description>
+                            <FieldError>{errors.message?.message}</FieldError>
                         </TextField>
 
-                        {/* Email Field */}
-                        <TextField
-                            isRequired
-                            type="email"
-                            isInvalid={!!form.formState.errors.email}
-                            className="w-full"
-                        >
-                            <Label className="text-xs text-muted mb-1">Email Address</Label>
-                            <Input
-                                {...form.register("email")}
-                                type="email"
-                                placeholder="jane@company.com"
-                                required
-                            />
-                            {form.formState.errors.email && (
-                                <FieldError className="text-xs text-danger mt-1">
-                                    {form.formState.errors.email.message}
-                                </FieldError>
-                            )}
-                        </TextField>
-                    </div>
-
-                    {/* Hidden subject default */}
-                    <input type="hidden" {...form.register("subject")} value="general" />
-
-                    {/* Message Field */}
-                    <TextField
-                        isRequired
-                        isInvalid={!!form.formState.errors.message}
-                        className="w-full"
-                    >
-                        <Label className="text-xs text-muted mb-1">Message</Label>
-                        <TextArea
-                            {...form.register("message")}
-                            placeholder="Write your note, inquiry, or project scope..."
-                            rows={4}
-                            required
-                        />
-                        {form.formState.errors.message && (
-                            <FieldError className="text-xs text-danger mt-1">
-                                {form.formState.errors.message.message}
-                            </FieldError>
-                        )}
-                    </TextField>
-
-                    {/* Submit Button using standard HeroUI v3 Button with isPending */}
-                    <div className="pt-1">
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            isPending={isSubmitting}
-                            className="rounded-full px-5"
-                        >
-                            {({ isPending }) => (
-                                <div className="flex items-center gap-1.5">
-                                    {isPending && <Spinner size="sm" color="current" />}
-                                    <span>{isPending ? "Sending..." : "Send message"}</span>
-                                    {!isPending && <ArrowUpRight className="size-3.5" />}
-                                </div>
-                            )}
-                        </Button>
-                    </div>
-                </form>
-            </div>
-        </FluidReveal>
+                        <div>
+                            <Button type="submit" variant="primary" isPending={isSubmitting}>
+                                {({ isPending }) => (
+                                    <IconSwap swapKey={isPending ? "sending" : "idle"}>
+                                        {isPending ? <Spinner size="sm" color="current" /> : <ArrowUpRight className="size-3.5" />}
+                                        {isPending ? "Sending…" : "Send message"}
+                                    </IconSwap>
+                                )}
+                            </Button>
+                        </div>
+                    </form>
+                </Card.Content>
+            </Card>
+            </Tile>
+        </Bento>
     );
 }

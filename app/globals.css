@@ -4,242 +4,149 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--color-background);
-  --color-foreground: var(--color-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-handwriting: var(--font-handwriting);
-  --color-scene: var(--color-scene);
-  --color-heading: var(--color-heading);
-  --color-muted: var(--color-muted);
-  --color-preview: var(--color-preview);
-  --color-border: var(--color-border);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--nf-display), var(--font-geist-sans), sans-serif;
+  --font-serif: var(--nf-serif), Georgia, serif;
+
+  /* Motion tokens → utilities: ease-fluid, ease-snappy, duration-quick, duration-base */
+  --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+  --duration-quick: 150ms;
+  --duration-base: 240ms;
 }
 
-:root {
-  color-scheme: light;
-  --color-background: #ffffff;
-  --color-scene: #f5f5f3;
-  --color-heading: #171717;
-  --color-foreground: #444444;
-  --color-muted: #737373;
-  --color-preview: #eaeae6;
-  --color-border: rgba(0, 0, 0, 0.08);
+/* ───────────────────────────────────────────────────────────
+   GLASS THEME — overrides HeroUI v3 semantic tokens.
+   Surfaces are translucent; the mesh backdrop on <body>
+   shows through and backdrop-filter frosts it.
+   ─────────────────────────────────────────────────────────── */
+:root,
+.light,
+[data-theme="light"] {
+  --radius: 0.75rem;
 
-  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
-  --font-handwriting: var(--font-handwriting), "Caveat", "Brush Script MT", cursive;
+  --background: oklch(0.965 0.008 300);
+  --foreground: oklch(0.2103 0.0059 285.89);
+  --muted: oklch(0.52 0.014 285.94);
 
-  --container-content: 468px;
-  --aspect-project: 2874 / 1524;
+  --surface: oklch(1 0 0 / 0.55);
+  --surface-secondary: oklch(1 0 0 / 0.4);
+  --surface-tertiary: oklch(1 0 0 / 0.7);
+  --overlay: oklch(1 0 0 / 0.94);
 
-  /* 3D Folder Colors */
-  --folder-color: #aaa9a3;
-  --folder-edge: #94938e;
-  --paper-bg: #f7f7f3;
-  --paper-border: #ddddd7;
+  --default: oklch(0.2103 0.0059 285.89 / 0.06);
+  --segment: oklch(1 0 0 / 0.95);
+
+  /* Primary actions are ink-black, like the HeroUI Pro "Glass" theme */
+  --accent: oklch(0.2103 0.0059 285.89);
+  --accent-foreground: oklch(0.9911 0 0);
+  --focus: oklch(0.6204 0.195 253.83);
+  --link: var(--foreground);
+
+  --field-background: oklch(1 0 0 / 0.6);
+  --border: oklch(1 0 0 / 0.65);
+  --separator: oklch(0.2103 0.0059 285.89 / 0.08);
+
+  --surface-shadow: 0 1px 2px 0 rgb(24 24 27 / 0.04), 0 8px 24px -8px rgb(24 24 27 / 0.08);
+  --overlay-shadow: 0 8px 32px 0 rgb(24 24 27 / 0.14);
+
+  --glass-edge: oklch(1 0 0 / 0.7);
+  --glass-shell: oklch(1 0 0 / 0.35);
+  --mesh-1: oklch(0.78 0.17 50 / 0.75);
+  --mesh-2: oklch(0.7 0.12 300 / 0.55);
+  --mesh-3: oklch(0.82 0.08 250 / 0.6);
 }
 
-.dark {
-  color-scheme: dark;
-  --color-background: #0d0d0f;
-  --color-scene: #070709;
-  --color-heading: #f4f4f5;
-  --color-foreground: #a1a1aa;
-  --color-muted: #71717a;
-  --color-preview: #18181b;
-  --color-border: rgba(255, 255, 255, 0.1);
+.dark,
+[data-theme="dark"] {
+  --background: oklch(0.14 0.01 285);
+  --foreground: oklch(0.9911 0 0);
+  --muted: oklch(0.7 0.015 286.067);
 
-  /* 3D Folder Colors (Dark) */
-  --folder-color: #27272a;
-  --folder-edge: #3f3f46;
-  --paper-bg: #18181b;
-  --paper-border: #27272a;
+  --surface: oklch(0.25 0.01 285 / 0.5);
+  --surface-secondary: oklch(0.25 0.01 285 / 0.35);
+  --surface-tertiary: oklch(0.3 0.01 285 / 0.6);
+  --overlay: oklch(0.22 0.01 285 / 0.94);
+
+  --default: oklch(1 0 0 / 0.08);
+  --segment: oklch(0.42 0.01 285 / 0.9);
+
+  --accent: oklch(0.9911 0 0);
+  --accent-foreground: oklch(0.2103 0.0059 285.89);
+
+  --field-background: oklch(0.3 0.01 285 / 0.5);
+  --border: oklch(1 0 0 / 0.1);
+  --separator: oklch(1 0 0 / 0.08);
+
+  --glass-edge: oklch(1 0 0 / 0.12);
+  --glass-shell: oklch(0.2 0.01 285 / 0.4);
+  --mesh-1: oklch(0.55 0.15 45 / 0.45);
+  --mesh-2: oklch(0.45 0.14 300 / 0.45);
+  --mesh-3: oklch(0.4 0.1 250 / 0.4);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 3rem;
-  background-color: var(--color-scene);
 }
 
 body {
   min-height: 100vh;
-  background-color: var(--color-background);
-  color: var(--color-foreground);
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.6;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-::selection {
-  background: rgba(0, 0, 0, 0.08);
-  color: var(--color-heading);
-}
-
-.dark ::selection {
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--color-heading);
-}
-
-/* ───────────────────────────────────────────────────────────
-   GLASS & SPHERE AMBIENT SCENE
-   ─────────────────────────────────────────────────────────── */
-.bg-scene {
-  background-color: var(--color-scene);
-}
-
-.sphere-ambient {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  overflow: visible;
-  z-index: 0;
-}
-
-/* ───────────────────────────────────────────────────────────
-   INTERACTIVE 3D PHYSICAL FOLDERS (from glass-portfolio-v1.21st.app)
-   ─────────────────────────────────────────────────────────── */
-.folder-shell {
-  aspect-ratio: 1.34;
-  perspective: 520px;
-  width: 100%;
-  transform-style: preserve-3d;
-  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.06)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.04));
+  /* own stacking context so the z-index:-1 mesh paints above body bg */
   position: relative;
-  transition: filter 0.25s ease;
+  isolation: isolate;
 }
 
-.dark .folder-shell {
-  filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.35)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+/* Blurred colour mesh behind everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 50% at 12% 55%, var(--mesh-1), transparent 70%),
+    radial-gradient(45% 45% at 85% 20%, var(--mesh-2), transparent 70%),
+    radial-gradient(50% 40% at 70% 90%, var(--mesh-3), transparent 70%);
+  filter: blur(60px);
 }
 
-.folder-back {
-  position: absolute;
-  inset: 5% 7% 4%;
-  overflow: visible;
+/* Headings + card titles use the expressive display face */
+h1,
+h2,
+h3,
+.card__title,
+.modal__heading {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
-.folder-back-shape {
-  fill: var(--folder-color);
-  stroke: var(--folder-edge);
-  stroke-width: 1px;
-  vector-effect: non-scaling-stroke;
-}
+@layer components {
+  /* Frost every HeroUI surface that sits on the mesh */
+  .card:not(.card--transparent),
+  .surface,
+  .tabs__list-container,
+  .glass-shell {
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    box-shadow: inset 0 0 0 1px var(--glass-edge), var(--surface-shadow);
+  }
 
-.folder-paper {
-  transform-origin: bottom;
-  background: var(--paper-bg);
-  border: 1px solid var(--paper-border);
-  border-radius: 8px 8px 6px 6px;
-  height: 66%;
-  padding: 17% 10% 10%;
-  transition: transform 0.36s cubic-bezier(0.2, 0.75, 0.2, 1);
-  position: absolute;
-  inset: 0 5% auto;
-}
+  .glass-shell {
+    background: var(--glass-shell);
+  }
 
-.folder-paper-back {
-  transform: translateY(6%) rotate(-2deg);
-}
-
-.folder-paper-middle {
-  transform: translateY(11%) rotate(1.25deg);
-}
-
-.folder-paper-front {
-  transform: translateY(17%) rotate(-0.75deg);
-}
-
-.paper-line {
-  display: block;
-  height: 2px;
-  border-radius: 1px;
-  background: color-mix(in srgb, var(--color-muted) 35%, transparent);
-  margin-bottom: 5px;
-}
-
-.paper-line-short {
-  width: 50%;
-}
-
-.paper-line-medium {
-  width: 75%;
-}
-
-.folder-front {
-  z-index: 2;
-  position: absolute;
-  inset: 22% 0 0;
-  border-radius: 0 0 8px 8px;
-  border: 1px solid var(--folder-edge);
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.18) 0% 25%, transparent 45%),
-    linear-gradient(160deg, color-mix(in srgb, var(--folder-color) 85%, white), var(--folder-color) 55%, color-mix(in srgb, var(--folder-color) 85%, black));
-  transform-origin: bottom;
-  transition: transform 0.36s cubic-bezier(0.2, 0.75, 0.2, 1);
-  display: flex;
-  align-items: flex-end;
-  padding: 12px 14px;
-}
-
-.folder-link:hover .folder-paper-back,
-.folder-link:focus-visible .folder-paper-back {
-  transform: translateY(-4%) rotate(-4deg);
-}
-
-.folder-link:hover .folder-paper-middle,
-.folder-link:focus-visible .folder-paper-middle {
-  transform: translateY(0%) rotate(2.5deg);
-}
-
-.folder-link:hover .folder-paper-front,
-.folder-link:focus-visible .folder-paper-front {
-  transform: translateY(6%) rotate(-1.25deg);
-}
-
-.folder-link:hover .folder-front,
-.folder-link:focus-visible .folder-front {
-  transform: rotateX(-30deg);
-}
-
-/* ───────────────────────────────────────────────────────────
-   GLASS PANEL & CLEAN CARD
-   ─────────────────────────────────────────────────────────── */
-.glass-subtle {
-  background: color-mix(in srgb, var(--color-background) 80%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border);
-}
-
-.card-frame {
-  border: 1px solid var(--color-border);
-  background-color: var(--color-background);
-  border-radius: 12px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.card-frame:hover {
-  border-color: color-mix(in srgb, var(--color-heading) 35%, transparent);
-}
-
-/* ───────────────────────────────────────────────────────────
-   HORIZONTAL SNAP GALLERY & SCROLL MASK (from glass-portfolio-v1.21st.app)
-   ─────────────────────────────────────────────────────────── */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scroll-fade-x {
-  mask-image: linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%);
+  /* Floating layers: stronger frost so content behind stays unreadable */
+  .modal__dialog,
+  .popover,
+  .tooltip,
+  .toast {
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

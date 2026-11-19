@@ -19,6 +19,10 @@ class RateLimiter {
 
     isAllowed(identifier: string): { allowed: boolean; resetTime?: number } {
         const now = Date.now()
+        // ponytail: in-memory + per-instance; move to Redis/Upstash if multiple instances need a shared limit
+        if (this.limits.size > 1000) {
+            for (const [key, value] of this.limits) if (now > value.resetTime) this.limits.delete(key)
+        }
         const entry = this.limits.get(identifier)
 
         // Clean up expired entries

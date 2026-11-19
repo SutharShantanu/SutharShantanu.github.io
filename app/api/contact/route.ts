@@ -16,6 +16,12 @@ const contactFormSchema = z.object({
     formStartTime: z.number().optional(),
 })
 
+const MAX_BODY_BYTES = 10_000
+
+/** Escape user input before it goes into the notification email's HTML. */
+const escapeHtml = (value: string) =>
+    value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)
+
 export async function POST(request: NextRequest) {
     try {
         // Get client information
@@ -42,10 +48,19 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        // Reject oversized bodies before parsing
+        if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+            return NextResponse.json({ error: "Payload too large" }, { status: 413 })
+        }
+
         // Parse request body
         let body
         try {
-            body = await request.json()
+            const raw = await request.text()
+            if (raw.length > MAX_BODY_BYTES) {
+                return NextResponse.json({ error: "Payload too large" }, { status: 413 })
+            }
+            body = JSON.parse(raw)
         } catch {
             return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 })
         }
@@ -139,17 +154,27 @@ export async function POST(request: NextRequest) {
             const toEmail = process.env.CONTACT_TO_EMAIL || "shantanusut2000@gmail.com"
             const siteName = process.env.SITE_NAME || "Portfolio Website"
 
+            const safe = {
+                name: escapeHtml(validatedData.name),
+                email: escapeHtml(validatedData.email),
+                subject: escapeHtml(validatedData.subject),
+                message: escapeHtml(validatedData.message),
+                siteName: escapeHtml(siteName),
+            }
+            const mailtoEmail = encodeURIComponent(validatedData.email)
+            const mailtoSubject = encodeURIComponent(`Re: ${validatedData.subject}`)
+
             // Send email to you
             const result = await sendMail({
                 from: `${siteName} <${fromEmail}>`,
                 to: toEmail,
-                subject: `${siteName} Contact: ${validatedData.subject}`,
+                subject: `${siteName} Contact: ${validatedData.subject.replace(/[\r\n]+/g, " ")}`,
                 html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
             <!-- Header -->
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
               <h1 style="color: white; margin: 0; font-size: 24px;">New Contact Form Message</h1>
-              <p style="color: #e0e7ff; margin: 10px 0 0 0;">From ${siteName}</p>
+              <p style="color: #e0e7ff; margin: 10px 0 0 0;">From ${safe.siteName}</p>
             </div>
 
             <!-- Content -->
@@ -160,15 +185,15 @@ export async function POST(request: NextRequest) {
                 <div style="display: grid; gap: 12px;">
                   <div style="display: flex; align-items: center;">
                     <span style="font-weight: 600; color: #475569; min-width: 80px;">Name:</span>
-                    <span style="color: #1e293b;">${validatedData.name}</span>
+                    <span style="color: #1e293b;">${safe.name}</span>
                   </div>
                   <div style="display: flex; align-items: center;">
                     <span style="font-weight: 600; color: #475569; min-width: 80px;">Email:</span>
-                    <a href="mailto:${validatedData.email}" style="color: #667eea; text-decoration: none;">${validatedData.email}</a>
+                    <a href="mailto:${mailtoEmail}" style="color: #667eea; text-decoration: none;">${safe.email}</a>
                   </div>
                   <div style="display: flex; align-items: center;">
                     <span style="font-weight: 600; color: #475569; min-width: 80px;">Subject:</span>
-                    <span style="color: #1e293b;">${validatedData.subject}</span>
+                    <span style="color: #1e293b;">${safe.subject}</span>
                   </div>
                 </div>
               </div>
@@ -176,13 +201,13 @@ export async function POST(request: NextRequest) {
               <!-- Message -->
               <div style="background-color: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 25px;">
                 <h2 style="color: #1e293b; margin: 0 0 15px 0; font-size: 18px;">Message</h2>
-                <div style="color: #475569; line-height: 1.6; white-space: pre-wrap; font-size: 15px;">${validatedData.message}</div>
+                <div style="color: #475569; line-height: 1.6; white-space: pre-wrap; font-size: 15px;">${safe.message}</div>
               </div>
 
               <!-- Quick Actions -->
               <div style="background-color: #f1f5f9; padding: 20px; border-radius: 12px; text-align: center;">
                 <p style="margin: 0 0 15px 0; color: #64748b; font-size: 14px;">Quick Actions</p>
-                <a href="mailto:${validatedData.email}?subject=Re: ${validatedData.subject}"
+                <a href="mailto:${mailtoEmail}?subject=${mailtoSubject}"
                    style="display: inline-block; background-color: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; margin: 0 8px;">
                   Reply via Email
                 </a>
@@ -192,7 +217,7 @@ export async function POST(request: NextRequest) {
             <!-- Footer -->
             <div style="background-color: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0;">
               <p style="margin: 0; color: #64748b; font-size: 12px;">
-                📧 Sent from ${siteName} contact form<br>
+                📧 Sent from ${safe.siteName} contact form<br>
                 🕒 ${new Date().toLocaleString()}<br>
                 🌐 IP: ${clientIP} | Spam Score: ${spamCheck.score}/100
               </p>

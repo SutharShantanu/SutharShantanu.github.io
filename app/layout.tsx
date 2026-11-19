@@ -1,24 +1,47 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/themeProvider";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import { FloatingControls } from "@/components/floating-controls";
-import { ScrollProgress } from "@/components/scroll-progress";
+import { Bricolage_Grotesque, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+
+const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--nf-display", display: "swap" });
+const sans = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
+const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--nf-serif", display: "swap" });
+
+const SITE_URL = "https://shantanusuthar.vercel.app";
+const DESCRIPTION =
+  "Shantanu Suthar — Software Engineer at WhizHack building scalable, accessible web apps with Next.js, React and TypeScript. Based in Gurugram, India.";
 
 export const metadata: Metadata = {
-  title: "Shantanu Suthar — Frontend Developer",
-  description:
-    "Frontend Developer crafting high-performance, thoughtful web experiences and design systems. Based in Gurugram, India.",
-  metadataBase: new URL("https://sutharshantanu.github.io"),
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Shantanu Suthar — Software Engineer", template: "%s · Shantanu Suthar" },
+  description: DESCRIPTION,
+  applicationName: "Shantanu Suthar",
+  authors: [{ name: "Shantanu Suthar", url: SITE_URL }],
+  creator: "Shantanu Suthar",
+  keywords: ["Shantanu Suthar", "Software Engineer", "Frontend Developer", "Next.js", "React", "TypeScript", "HeroUI", "Portfolio", "Gurugram"],
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "Shantanu Suthar — Frontend Developer",
-    description:
-      "Frontend Developer crafting high-performance, thoughtful web experiences and design systems. Based in Gurugram, India.",
-    url: "https://sutharshantanu.github.io",
+    title: "Shantanu Suthar — Software Engineer",
+    description: DESCRIPTION,
+    url: SITE_URL,
     siteName: "Shantanu Suthar",
     locale: "en_US",
-    type: "website",
+    type: "profile",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shantanu Suthar — Software Engineer",
+    description: DESCRIPTION,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f2f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0d12" },
+  ],
 };
 
 export default function RootLayout({
@@ -27,9 +50,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${sans.variable} ${mono.variable} ${serif.variable}`}>
       <body
-        className="min-h-full flex flex-col bg-background text-foreground antialiased selection:bg-black/10 dark:selection:bg-white/15"
+        className="min-h-full bg-background text-foreground antialiased"
       >
         <ThemeProvider
           disableTransitionOnChange
@@ -37,9 +60,6 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
         >
-          <ScrollProgress />
-          <Toaster position="top-center" expand={false} richColors />
-          <FloatingControls />
           {children}
         </ThemeProvider>
       </body>

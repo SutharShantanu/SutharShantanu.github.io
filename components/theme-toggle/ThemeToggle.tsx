@@ -2,16 +2,13 @@
 
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
-import { Moon, Sun, Monitor } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { Monitor, Moon, Sun } from "lucide-react";
+import { ToggleButton, ToggleButtonGroup } from "@heroui/react";
 import { ThemeToggleProps } from "./types/theme-toggle.types";
 
 const subscribe = () => () => {};
-const getSnapshot = () => true;
-const getServerSnapshot = () => false;
 
-const themes = [
+const THEMES = [
     { key: "system", icon: Monitor, label: "System theme" },
     { key: "light", icon: Sun, label: "Light theme" },
     { key: "dark", icon: Moon, label: "Dark theme" },
@@ -19,45 +16,30 @@ const themes = [
 
 const ThemeToggle = ({ className }: ThemeToggleProps) => {
     const { theme, setTheme } = useTheme();
-    const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    const mounted = useSyncExternalStore(subscribe, () => true, () => false);
 
     if (!mounted) return null;
 
     return (
-        <div className={cn("relative flex rounded-full p-1 w-fit ring-1 ring-border", className)}>
-            {themes.map(({ key, icon: Icon, label }) => {
-                const isActive = theme === key;
-                return (
-                    <button
-                        type="button"
-                        key={key}
-                        className="relative h-6 w-6 rounded-full"
-                        onClick={() => setTheme(key)}
-                        aria-label={label}
-                        aria-pressed={isActive}
-                    >
-                        {isActive && (
-                            <motion.div
-                                layoutId="activeTheme"
-                                className="absolute inset-0 rounded-full bg-secondary"
-                                transition={{ type: "spring", duration: 0.5 }}
-                            />
-                        )}
-                        <Icon
-                            className={cn(
-                                "relative m-auto h-4 w-4",
-                                key === "system" && isActive
-                                    ? "text-neutral-800 dark:text-neutral-50"
-                                    : isActive
-                                        ? "text-yellow-500 dark:text-neutral-50 fill-yellow-500 dark:fill-neutral-50"
-                                        : "text-neutral-400 dark:text-neutral-600"
-                            )}
-                            strokeWidth={1}
-                        />
-                    </button>
-                );
-            })}
-        </div>
+        <ToggleButtonGroup
+            aria-label="Color theme"
+            size="sm"
+            selectionMode="single"
+            disallowEmptySelection
+            selectedKeys={new Set([theme ?? "system"])}
+            onSelectionChange={(keys) => {
+                const [next] = keys;
+                if (next) setTheme(String(next));
+            }}
+            className={className}
+        >
+            {THEMES.map(({ key, icon: Icon, label }, i) => (
+                <ToggleButton key={key} id={key} isIconOnly aria-label={label}>
+                    {i > 0 && <ToggleButtonGroup.Separator />}
+                    <Icon className="size-4" />
+                </ToggleButton>
+            ))}
+        </ToggleButtonGroup>
     );
 };
 

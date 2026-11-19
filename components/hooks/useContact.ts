@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "sonner";
+import { toast } from "@heroui/react";
 
 // Updated subject field to accept only defined options
 const allowedSubjects = ["general", "proposal", "feedback", "other"] as const;
@@ -28,7 +28,7 @@ export type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export function useContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formStartTime] = useState(Date.now());
+    const [formStartTime] = useState(() => Date.now());
 
     const form = useForm<ContactFormData>({
         resolver: zodResolver(contactFormSchema),
@@ -41,15 +41,18 @@ export function useContactForm() {
         },
     });
 
-    const onSubmit = async (data: ContactFormData) => {
+    const onSubmit = async (data: ContactFormData, event?: React.BaseSyntheticEvent) => {
         setIsSubmitting(true);
 
         try {
+            // Honeypots: real users never see these inputs; bots that fill them get a silent 200.
+            const formEl = event?.target instanceof HTMLFormElement ? event.target : null;
+            const honeypot = (name: string) => String(formEl ? (new FormData(formEl).get(name) ?? "") : "");
             const submissionData = {
                 ...data,
                 formStartTime,
-                website: "",
-                phone: "",
+                website: honeypot("website"),
+                phone: honeypot("phone"),
             };
 
             const response = await fetch("/api/contact", {
@@ -83,7 +86,7 @@ export function useContactForm() {
         } catch (error) {
             console.error("Form submission error:", error);
 
-            toast.error(
+            toast.danger(
                 error instanceof Error
                     ? `Failed to send message: ${error.message}`
                     : "Failed to send message. Please try again later."

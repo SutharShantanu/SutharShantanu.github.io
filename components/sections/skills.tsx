@@ -1,77 +1,68 @@
 "use client";
 
-import React from "react";
-import { Chip, Separator } from "@heroui/react";
-import { FluidReveal, FluidItem } from "../ui/fluid-reveal";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Avatar, Card, Tabs } from "@heroui/react";
+import { SKILLS, type SkillCategory } from "./constants/skills.constant";
 
-const CORE_STACK = [
-    "Next.js 15",
-    "React 19",
-    "TypeScript",
-    "HeroUI v3",
-    "Tailwind CSS v4",
-    "TanStack Query",
-    "Framer Motion",
-    "Zod",
-    "Node.js",
-    "Express",
-    "MongoDB",
-];
+const CATEGORIES: ("All" | SkillCategory)[] = ["All", "Frontend", "Backend", "Deployment", "Tools"];
 
 export default function Skills() {
+    const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
+    const visible = category === "All" ? SKILLS : SKILLS.filter((s) => s.category === category);
+
     return (
-        <FluidReveal id="education" aria-labelledby="education-heading" className="scroll-mt-12">
-            <h2
-                id="education-heading"
-                className="relative text-foreground text-[15px] font-medium leading-6 mb-6"
-            >
-                <span
-                    aria-hidden="true"
-                    className="sm:absolute sm:top-0 sm:right-[calc(100%+12px)] text-muted font-normal tabular-nums mr-2 sm:mr-0 inline-block"
-                >
-                    5
-                </span>
-                Education &amp; Craft
-            </h2>
-
-            <dl className="grid gap-6 text-[15px]">
-                {/* Education */}
-                <FluidItem delay={0.05} className="grid grid-cols-1 sm:grid-cols-[100px_minmax(0,1fr)] gap-1 sm:gap-6">
-                    <dt className="text-muted text-sm sm:text-[15px] pt-0.5">2022 – 2023</dt>
-                    <dd>
-                        <span className="font-medium text-foreground">
-                            Full Stack Web Development
-                        </span>
-                        <span className="block text-muted text-sm mt-1 leading-relaxed">
-                            Masai School · Intensive 1,000+ hour coding curriculum, data structures &amp; collaborative agile sprints.
-                        </span>
-                    </dd>
-                </FluidItem>
-
-                <Separator className="opacity-50" />
-
-                {/* Core Craft */}
-                <FluidItem delay={0.1} className="grid grid-cols-1 sm:grid-cols-[100px_minmax(0,1fr)] gap-1 sm:gap-6">
-                    <dt className="text-muted text-sm sm:text-[15px] pt-1">Core Stack</dt>
-                    <dd>
-                        <span className="font-medium text-foreground">
-                            Frontend Architecture &amp; UI Systems
-                        </span>
-                        <div className="flex flex-wrap gap-1.5 mt-2.5">
-                            {CORE_STACK.map((tech) => (
-                                <Chip
-                                    key={tech}
-                                    size="sm"
-                                    variant="secondary"
-                                    className="font-mono text-xs"
-                                >
-                                    {tech}
-                                </Chip>
+        <div className="grid grid-cols-1 gap-4">
+            <div className="flex min-w-0 flex-wrap items-end justify-between gap-3">
+                <div>
+                    <h2 className="text-lg font-semibold text-foreground">Skills &amp; technologies</h2>
+                    <p className="font-serif text-base text-muted italic">Tools I use across the stack</p>
+                </div>
+                <div className="w-full min-w-0 overflow-x-auto [scrollbar-width:none] sm:w-auto">
+                <Tabs variant="secondary" selectedKey={category} onSelectionChange={(k) => setCategory(k as typeof category)}>
+                    <Tabs.ListContainer className="max-w-full">
+                        <Tabs.List aria-label="Skill categories">
+                            {CATEGORIES.map((c) => (
+                                <Tabs.Tab key={c} id={c}>
+                                    {c}
+                                    <Tabs.Indicator />
+                                </Tabs.Tab>
                             ))}
-                        </div>
-                    </dd>
-                </FluidItem>
-            </dl>
-        </FluidReveal>
+                        </Tabs.List>
+                    </Tabs.ListContainer>
+                </Tabs>
+                </div>
+            </div>
+
+            <motion.ul layout className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                <AnimatePresence mode="popLayout" initial={false}>
+                    {visible.map((skill, i) => (
+                        <motion.li
+                            key={skill.title}
+                            layout
+                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0, transition: { delay: i * 0.02, type: "spring", stiffness: 320, damping: 26 } }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            whileHover={{ y: -4, rotate: -1 }}
+                            // Bento rhythm: every 5th tile spans two columns on wide screens
+                            className={i % 5 === 0 ? "lg:col-span-2" : undefined}
+                        >
+                            <Card className="h-full">
+                                <Card.Content className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
+                                    <Avatar size="md" className="shrink-0 bg-white p-1.5 dark:bg-white/90">
+                                        {skill.icon ? <Avatar.Image src={skill.icon} alt="" className="object-contain" /> : null}
+                                        <Avatar.Fallback>{skill.title.slice(0, 2)}</Avatar.Fallback>
+                                    </Avatar>
+                                    <div className="min-w-0">
+                                        <p className="font-display text-sm font-medium text-foreground sm:truncate">{skill.title}</p>
+                                        <p className="font-mono text-[11px] text-muted">{skill.category}</p>
+                                    </div>
+                                </Card.Content>
+                            </Card>
+                        </motion.li>
+                    ))}
+                </AnimatePresence>
+            </motion.ul>
+        </div>
     );
 }
