@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button, Skeleton, ToggleButton, ToggleButtonGroup, Tooltip } from "@heroui/react";
-import { BookOpen, ChevronLeft, ChevronRight, Download, FileText, Rows3, ZoomIn, ZoomOut } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, Download, FileText, Rows3, ZoomIn, ZoomOut } from "@/components/icons";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 

@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
-import { Card, Chip } from "@heroui/react";
-import { ArrowUpRight, Github, Linkedin, Mail, Quote } from "lucide-react";
+import { Card, Chip, Skeleton } from "@heroui/react";
+import { ArrowUpRight, Github, Linkedin, Mail, Quote } from "@/components/icons";
 import dynamic from "next/dynamic";
 import { Signature } from "../signature";
-import { Bento, CountUp, Tile } from "../ui/motion";
+import { motion } from "framer-motion";
+import { Bento, CountUp, hoverArrow, hoverIcon, LogoLoop, Marker, Ping, Tile } from "../ui/motion";
+import { SKILLS } from "./constants/skills.constant";
 import { EMAIL } from "./constants/social.constant";
 import type { PortfolioData } from "@/lib/portfolio-data";
 import type { TabKey } from "../shell/portfolio-shell";
@@ -13,7 +15,7 @@ import type { TabKey } from "../shell/portfolio-shell";
 // Recharts is ~100KB+; load it after first paint.
 const LanguageChart = dynamic(() => import("./language-chart"), {
     ssr: false,
-    loading: () => <div className="h-full min-h-56 animate-pulse rounded-3xl bg-surface" />,
+    loading: () => <Skeleton className="h-full min-h-56 rounded-3xl" />,
 });
 
 const CORE_STACK = ["Next.js", "React 19", "TypeScript", "HeroUI v3", "Tailwind CSS v4", "TanStack Query", "Framer Motion", "Zod", "Node.js", "Express", "MongoDB"];
@@ -49,10 +51,12 @@ function LinkTile({ title, note, href, icon: Icon }: { title: string; note: stri
             >
                 <Card className="h-full">
                     <Card.Header className="flex flex-row items-start justify-between">
-                        <span className="grid size-10 place-items-center rounded-xl bg-default transition-transform duration-300 ease-fluid group-hover:rotate-[-8deg] group-hover:scale-110">
+                        <motion.span variants={hoverIcon} className="grid size-10 place-items-center rounded-xl bg-default">
                             <Icon className="size-5 text-foreground" />
-                        </span>
-                        <ArrowUpRight className="size-4 text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                        </motion.span>
+                        <motion.span variants={hoverArrow}>
+                            <ArrowUpRight className="size-4 text-muted" />
+                        </motion.span>
                     </Card.Header>
                     <Card.Content className="min-w-0">
                         <span className="block font-display text-sm font-medium text-foreground">{title}</span>
@@ -91,7 +95,7 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
                         </p>
                         <p>
                             {profile.jobTitle} at <span className="font-medium text-foreground">{profile.company}</span>, based in{" "}
-                            {profile.location}. I focus on performant, accessible and visually polished interfaces — design systems,
+                            {profile.location}. I focus on <Marker>performant, accessible</Marker> and visually polished interfaces — <Marker variant="underline">design systems</Marker>,
                             smooth motion and clean, maintainable code.
                         </p>
                     </Card.Content>
@@ -112,10 +116,7 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
                             <Card.Header className="flex flex-row items-center justify-between">
                                 <Card.Description>Currently</Card.Description>
                                 <Chip size="sm" variant="soft" color="success">
-                                    <span className="relative mr-1 flex size-1.5">
-                                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-success opacity-75" />
-                                        <span className="relative inline-flex size-1.5 rounded-full bg-success" />
-                                    </span>
+                                    <Ping />
                                     {current.duration}
                                 </Chip>
                             </Card.Header>
@@ -142,12 +143,15 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
                         <Card.Title>Core stack</Card.Title>
                         <Card.Description>Frontend architecture &amp; UI systems</Card.Description>
                     </Card.Header>
-                    <Card.Content className="flex flex-row flex-wrap content-start items-center gap-1.5">
+                    <Card.Content className="grid content-start gap-3">
+                        <LogoLoop logos={SKILLS.map((s) => ({ src: s.icon, alt: s.title }))} />
+                        <div className="flex flex-row flex-wrap items-center gap-1.5">
                         {CORE_STACK.map((tech) => (
                             <Chip key={tech} size="sm" variant="secondary">
                                 {tech}
                             </Chip>
                         ))}
+                        </div>
                     </Card.Content>
                 </Card>
             </Tile>

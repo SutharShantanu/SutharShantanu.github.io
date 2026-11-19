@@ -6,8 +6,8 @@
  * and Expandable Tabs (active item expands to reveal its label).
  * Rebuilt with HeroUI Button/Tooltip/Separator + framer-motion.
  */
-import React from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { Button, Separator, Tooltip } from "@heroui/react";
 
 export interface DockItem {
@@ -72,19 +72,30 @@ function DockButton({ item }: { item: DockItem }) {
 
 /** Floating glass dock. `groups` are separated by a divider. */
 export function Dock({ groups }: { groups: DockItem[][] }) {
+    // Scroll-aware: tuck away while scrolling down, return on scroll up (or near the top).
+    const { scrollY } = useScroll();
+    const [hidden, setHidden] = useState(false);
+    useMotionValueEvent(scrollY, "change", (y) => {
+        const prev = scrollY.getPrevious() ?? 0;
+        if (Math.abs(y - prev) < 4) return;
+        setHidden(y > prev && y > 160);
+    });
+
     return (
         <motion.nav
             aria-label="Portfolio navigation"
             initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 160, damping: 20 }}
+            animate={hidden ? { y: 96, opacity: 0 } : { y: 0, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 28 }}
+            onFocusCapture={() => setHidden(false)}
+            style={{ pointerEvents: hidden ? "none" : undefined }}
             className="fixed inset-x-0 bottom-3 z-40 flex justify-center px-2 sm:bottom-4 sm:px-3"
         >
             <motion.div
                 layout
                 transition={spring}
                 style={{ background: "color-mix(in oklab, var(--overlay) 72%, transparent)" }}
-                className="glass-shell flex max-w-full items-center gap-0.5 overflow-x-auto rounded-[1.75rem] p-1.5 [scrollbar-width:none] sm:gap-1"
+                className="glass-shell flex max-w-full items-center gap-0.5 overflow-x-auto rounded-[1.75rem] p-1.5 [scrollbar-width:none] sm:gap-1 backdrop-blur-sm"
             >
                 {groups.map((group, gi) => (
                     <React.Fragment key={gi}>

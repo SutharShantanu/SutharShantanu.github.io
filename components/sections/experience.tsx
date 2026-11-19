@@ -3,8 +3,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Accordion, Avatar, Card, Chip } from "@heroui/react";
-import { Award, ChevronDown, MapPin } from "lucide-react";
-import { Bento, Tile } from "../ui/motion";
+import { Award, ChevronDown, MapPin } from "@/components/icons";
+import { Bento, Tile, RevealText } from "../ui/motion";
 import type { PortfolioData } from "@/lib/portfolio-data";
 
 export default function Experience({
@@ -19,7 +19,7 @@ export default function Experience({
             <Card>
                 <Card.Header>
                     <Card.Title>Experience</Card.Title>
-                    <Card.Description className="font-serif text-base italic">Synced with LinkedIn</Card.Description>
+                    <Card.Description className="font-hand text-lg">Synced with LinkedIn</Card.Description>
                 </Card.Header>
                 <Card.Content>
                     <ol className="relative grid gap-6">
@@ -99,9 +99,9 @@ export default function Experience({
                 <section aria-labelledby="certs-heading" className="grid gap-4">
                     <div>
                         <h2 id="certs-heading" className="text-lg font-semibold text-foreground">
-                            Certifications
+                            <RevealText text="Certifications" />
                         </h2>
-                        <p className="font-serif text-base text-muted italic">Continuous learning, verified</p>
+                        <p className="font-hand text-lg text-muted">Continuous learning, verified</p>
                     </div>
                     <Bento className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {certifications.map((c) => {

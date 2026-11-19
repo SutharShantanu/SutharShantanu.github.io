@@ -20,8 +20,10 @@ export function Signature({ className = "" }: { className?: string }) {
         >
             <motion.div
                 key={replayKey}
-                initial={{ rotate: -1.5, scale: 0.98 }}
-                whileHover={{ rotate: 0, scale: 1.02 }}
+                variants={{ rest: { rotate: -1.5, scale: 0.98 }, hover: { rotate: 0, scale: 1.02 } }}
+                initial="rest"
+                animate="rest"
+                whileHover="hover"
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="relative"
             >
@@ -141,10 +143,13 @@ export function Signature({ className = "" }: { className?: string }) {
                     />
                 </svg>
 
-                {/* Subtle replay prompt tooltip on hover */}
-                <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[11px] font-mono text-muted/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
+                {/* Subtle replay prompt, revealed by the parent's "hover" variant */}
+                <motion.span
+                    variants={{ rest: { opacity: 0, y: -2 }, hover: { opacity: 1, y: 0 } }}
+                    className="absolute -bottom-6 left-1/2 -translate-x-1/2 font-hand text-base text-muted pointer-events-none whitespace-nowrap"
+                >
                     click to replay
-                </span>
+                </motion.span>
             </motion.div>
         </div>
     );

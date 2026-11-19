@@ -12,7 +12,7 @@ import {
     getLinkedInRecommendations,
 } from "./cached-fetchers";
 import type { GitHubRepo } from "@/components/sections/types/projects.types";
-import type { GitHubActivityDay, GitHubActivityEvent, GitHubUser } from "@/components/sections/types/social.types";
+import type { GitHubActivityEvent, GitHubUser } from "@/components/sections/types/social.types";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -38,6 +38,19 @@ export interface RepoItem {
     forks: number;
     updatedAt: string;
     topics: string[];
+}
+
+export interface ActivityItem {
+    id: string;
+    kind: "push" | "pr" | "issue" | "create" | "star" | "fork" | "release" | "other";
+    repo: string;
+    repoUrl: string;
+    title: string;
+    branch?: string;
+    url: string;
+    commits: { sha: string; message: string; url: string }[];
+    commitCount?: number;
+    ago: string;
 }
 
 export interface PortfolioData {
@@ -67,9 +80,11 @@ export interface PortfolioData {
         joined: string;
         totalStars: number;
         languages: { name: string; count: number }[];
-        contributions: GitHubActivityDay[];
+        /** Every day since the first contribution year, compact: day i = start + i, value = count * 5 + level. */
+        contributions: { start: string; days: number[] };
+        yearTotals: Record<string, number>;
         contributionTotal: number;
-        activity: { id: string; type: string; repo: string; createdAt: string }[];
+        activity: ActivityItem[];
     };
     repos: RepoItem[];
 }
@@ -164,10 +179,12 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
 
     const today = now.toISOString().slice(0, 10);
     const contrib = contributions as typeof DEFAULT_CONTRIBUTIONS;
-    const days = (contrib?.contributions ?? []).filter((d) => d.date <= today);
+    // Full history (up to today) for the activity calendar's year filter, sorted so day i = start + i.
+    const days = [...(contrib?.contributions ?? [])].filter((d) => d.date <= today).sort((x, y) => x.date.localeCompare(y.date));
     const totals = contrib?.total ?? {};
 
     const events = (Array.isArray(activity) ? activity : []) as GitHubActivityEvent[];
+    const activityItems = await buildActivity(events, now);
     const joinedAt = user.created_at ? new Date(user.created_at) : null;
 
     return {
@@ -197,14 +214,10 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
             joined: joinedAt ? `${MONTHS[joinedAt.getMonth()]} ${joinedAt.getFullYear()}` : "",
             totalStars: repoList.reduce((s, r) => s + (r.stargazers_count || 0), 0),
             languages,
-            contributions: days.slice(-26 * 7),
+            contributions: { start: days[0]?.date ?? today, days: days.map((d) => d.count * 5 + Math.min(4, Math.max(0, d.level))) },
+            yearTotals: Object.fromEntries(Object.entries(totals).map(([y, n]) => [y, Number(n) || 0])),
             contributionTotal: Object.values(totals).reduce((a, b) => a + Number(b || 0), 0),
-            activity: events.slice(0, 6).map((e) => ({
-                id: e.id,
-                type: e.type.replace(/Event$/, ""),
-                repo: e.repo?.name ?? "",
-                createdAt: e.created_at,
-            })),
+            activity: activityItems,
         },
         repos: repoList.map((r) => ({
             id: r.id,
@@ -219,4 +232,132 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
             topics: r.topics ?? [],
         })),
     };
+}
+
+// ── Recent activity ─────────────────────────────────────────
+// GitHub's public events no longer include commits on PushEvent (only ref/before/head),
+// so consecutive pushes to the same repo+branch are grouped and enriched with one
+// compare call each (cached 30 min alongside the other GitHub data).
+
+const ZERO_SHA = /^0+$/;
+const ghHeaders = {
+    Accept: "application/vnd.github+json",
+    ...(process.env.NEXT_GITHUB_TOKEN && { Authorization: `Bearer ${process.env.NEXT_GITHUB_TOKEN}` }),
+};
+
+export function timeAgo(iso: string, now = new Date()) {
+    const s = Math.max(0, (now.getTime() - new Date(iso).getTime()) / 1000);
+    const steps: [number, string][] = [[60, "s"], [60, "m"], [24, "h"], [7, "d"], [4.35, "w"], [12, "mo"]];
+    let v = s;
+    for (const [size, unit] of steps) {
+        if (v < size) return unit === "s" ? "just now" : `${Math.floor(v)}${unit} ago`;
+        v /= size;
+    }
+    return `${Math.floor(v)}y ago`;
+}
+
+type RawPayload = {
+    ref?: string;
+    ref_type?: string;
+    before?: string;
+    head?: string;
+    action?: string;
+    pull_request?: { title?: string; number?: number; html_url?: string; merged?: boolean };
+    issue?: { title?: string; number?: number; html_url?: string };
+    release?: { tag_name?: string; name?: string; html_url?: string };
+    forkee?: { full_name?: string; html_url?: string };
+};
+
+async function compareCommits(repo: string, before: string, head: string) {
+    const url = ZERO_SHA.test(before)
+        ? `https://api.github.com/repos/${repo}/commits/${head}`
+        : `https://api.github.com/repos/${repo}/compare/${before}...${head}`;
+    try {
+        const res = await fetch(url, { headers: ghHeaders, next: { revalidate: 1800, tags: ["github"] } });
+        if (!res.ok) return null;
+        const data = await res.json();
+        type C = { sha: string; html_url: string; commit: { message: string } };
+        const list: C[] = data.commits ?? [data];
+        return {
+            total: (data.total_commits as number | undefined) ?? list.length,
+            compareUrl: (data.html_url as string | undefined) ?? `https://github.com/${repo}/commit/${head}`,
+            commits: list
+                .slice(-3)
+                .reverse()
+                .map((c) => ({ sha: c.sha.slice(0, 7), message: c.commit.message.split("\n")[0], url: c.html_url })),
+        };
+    } catch {
+        return null;
+    }
+}
+
+async function buildActivity(events: GitHubActivityEvent[], now: Date): Promise<ActivityItem[]> {
+    type Group = { e: GitHubActivityEvent; p: RawPayload; before?: string; pushes: number };
+    const groups: Group[] = [];
+    for (const e of events) {
+        const p = (e.payload ?? {}) as unknown as RawPayload;
+        const last = groups[groups.length - 1];
+        // Events are newest-first: extend the group backwards to the oldest "before".
+        if (e.type === "PushEvent" && last?.e.type === "PushEvent" && last.e.repo?.name === e.repo?.name && last.p.ref === p.ref) {
+            last.before = p.before;
+            last.pushes++;
+            continue;
+        }
+        if (groups.length >= 6) break;
+        groups.push({ e, p, before: p.before, pushes: 1 });
+    }
+
+    return Promise.all(
+        groups.map(async ({ e, p, before }): Promise<ActivityItem> => {
+            const repo = e.repo?.name ?? "";
+            const repoUrl = `https://github.com/${repo}`;
+            const base = { id: e.id, repo, repoUrl, ago: timeAgo(e.created_at, now), commits: [] as ActivityItem["commits"] };
+            switch (e.type) {
+                case "PushEvent": {
+                    const branch = (p.ref ?? "").replace("refs/heads/", "");
+                    const cmp = p.head && before ? await compareCommits(repo, before, p.head) : null;
+                    const n = cmp?.total;
+                    return {
+                        ...base,
+                        kind: "push",
+                        branch,
+                        title: n ? `Pushed ${n} commit${n === 1 ? "" : "s"}` : "Pushed commits",
+                        url: cmp?.compareUrl ?? `${repoUrl}/tree/${branch}`,
+                        commits: cmp?.commits ?? [],
+                        commitCount: n,
+                    };
+                }
+                case "PullRequestEvent":
+                    return {
+                        ...base,
+                        kind: "pr",
+                        title: `${p.pull_request?.merged ? "Merged" : (p.action ?? "Updated").replace(/^\w/, (c) => c.toUpperCase())} PR #${p.pull_request?.number}: ${p.pull_request?.title ?? ""}`,
+                        url: p.pull_request?.html_url ?? repoUrl,
+                    };
+                case "IssuesEvent":
+                    return {
+                        ...base,
+                        kind: "issue",
+                        title: `${(p.action ?? "Updated").replace(/^\w/, (c) => c.toUpperCase())} issue #${p.issue?.number}: ${p.issue?.title ?? ""}`,
+                        url: p.issue?.html_url ?? repoUrl,
+                    };
+                case "CreateEvent":
+                    return {
+                        ...base,
+                        kind: "create",
+                        branch: p.ref_type === "branch" ? p.ref : undefined,
+                        title: p.ref_type === "repository" ? "Created repository" : `Created ${p.ref_type} ${p.ref ?? ""}`.trim(),
+                        url: repoUrl,
+                    };
+                case "WatchEvent":
+                    return { ...base, kind: "star", title: "Starred repository", url: repoUrl };
+                case "ForkEvent":
+                    return { ...base, kind: "fork", title: `Forked to ${p.forkee?.full_name ?? ""}`.trim(), url: p.forkee?.html_url ?? repoUrl };
+                case "ReleaseEvent":
+                    return { ...base, kind: "release", title: `Released ${p.release?.tag_name ?? p.release?.name ?? ""}`.trim(), url: p.release?.html_url ?? repoUrl };
+                default:
+                    return { ...base, kind: "other", title: e.type.replace(/Event$/, ""), url: repoUrl };
+            }
+        })
+    );
 }

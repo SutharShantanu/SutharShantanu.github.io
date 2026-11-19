@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
-import { Monitor, Moon, Sun } from "lucide-react";
+import { Monitor, Moon, Sun } from "@/components/icons";
 import { ToggleButton, ToggleButtonGroup } from "@heroui/react";
 import { ThemeToggleProps } from "./types/theme-toggle.types";
 

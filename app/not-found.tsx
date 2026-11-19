@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { buttonVariants } from "@heroui/styles";
-import { Briefcase, FolderGit2, Home, Mail } from "lucide-react";
+import { Briefcase, FolderGit2, Home, Mail } from "@/components/icons";
 import { StatusScreen } from "@/components/status-screen";
 
 export default function NotFound() {
@@ -11,7 +11,7 @@ export default function NotFound() {
       code="404"
       title={
         <>
-          Lost in <span className="font-serif font-normal italic">the glass</span>
+          Lost in <span className="inline-block -rotate-2 font-hand font-semibold text-[1.3em] leading-none">the glass</span>
         </>
       }
       description="This page doesn't exist — it may have moved during the redesign. Try one of these instead."

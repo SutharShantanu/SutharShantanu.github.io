@@ -1,5 +1,7 @@
 "use client";
 
+import { RevealText } from "../ui/motion";
+
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, Card, Tabs } from "@heroui/react";
@@ -15,11 +17,13 @@ export default function Skills() {
         <div className="grid grid-cols-1 gap-4">
             <div className="flex min-w-0 flex-wrap items-end justify-between gap-3">
                 <div>
-                    <h2 className="text-lg font-semibold text-foreground">Skills &amp; technologies</h2>
-                    <p className="font-serif text-base text-muted italic">Tools I use across the stack</p>
+                    <h2 className="text-lg font-semibold text-foreground">
+                        <RevealText text="Skills & technologies" />
+                    </h2>
+                    <p className="font-hand text-lg text-muted">Tools I use across the stack</p>
                 </div>
                 <div className="w-full min-w-0 overflow-x-auto [scrollbar-width:none] sm:w-auto">
-                <Tabs variant="secondary" selectedKey={category} onSelectionChange={(k) => setCategory(k as typeof category)}>
+                <Tabs selectedKey={category} onSelectionChange={(k) => setCategory(k as typeof category)}>
                     <Tabs.ListContainer className="max-w-full">
                         <Tabs.List aria-label="Skill categories">
                             {CATEGORIES.map((c) => (

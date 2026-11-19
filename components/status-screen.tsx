@@ -4,8 +4,8 @@ import React from "react";
 import Link from "next/link";
 import { MotionConfig, motion } from "framer-motion";
 import { Card } from "@heroui/react";
-import { ArrowUpRight } from "lucide-react";
-import { Bento, Tile } from "./ui/motion";
+import { ArrowUpRight } from "@/components/icons";
+import { Bento, hoverArrow, hoverIcon, Tile } from "./ui/motion";
 
 export interface StatusLink {
     href: string;
@@ -76,10 +76,12 @@ export function StatusScreen({
                                     <Link href={href} className="group block h-full rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-focus">
                                         <Card className="h-full">
                                             <Card.Header className="flex flex-row items-center justify-between">
-                                                <span className="grid size-9 place-items-center rounded-xl bg-default transition-transform duration-300 ease-fluid group-hover:-rotate-6 group-hover:scale-110">
+                                                <motion.span variants={hoverIcon} className="grid size-9 place-items-center rounded-xl bg-default">
                                                     <Icon className="size-4 text-foreground" />
-                                                </span>
-                                                <ArrowUpRight className="size-4 text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                                                </motion.span>
+                                                <motion.span variants={hoverArrow}>
+                                                    <ArrowUpRight className="size-4 text-muted" />
+                                                </motion.span>
                                             </Card.Header>
                                             <Card.Content>
                                                 <span className="block font-display text-sm font-medium text-foreground">{label}</span>

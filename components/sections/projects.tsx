@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { ExternalLink, GitFork, Github, Star } from "lucide-react";
+import { ExternalLink, GitFork, Github, Star } from "@/components/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button, Card, Chip, Label, ListBox, Pagination, SearchField, Select, Separator } from "@heroui/react";
-import { Bento, Tile, Tilt } from "../ui/motion";
+import { Bento, CursorLabel, Tile, Tilt, RevealText } from "../ui/motion";
 import type { RepoItem } from "@/lib/portfolio-data";
 
 interface ProjectPreviewCard {
@@ -76,32 +76,6 @@ const PROJECTS: ProjectItem[] = [
                 badge: "40ms API",
                 type: "architecture",
                 metrics: ["Express Routing", "Mongo Aggregations", "Bcrypt Hashing"],
-            },
-        ],
-    },
-    {
-        id: "portfolio",
-        title: "Glass Editorial Portfolio",
-        subtitle: "Fluid whitespace personal site",
-        description:
-            "Minimalist personal website featuring 3D physical folders, fluid handwritten signature, and frosted glass depth. Built with Next.js 16, React 19, and Tailwind CSS.",
-        liveUrl: "https://sutharshantanu.github.io",
-        githubUrl: "https://github.com/SutharShantanu/SutharShantanu.github.io",
-        tech: ["Next.js 16", "React 19", "HeroUI v3", "Framer Motion", "Tailwind CSS v4"],
-        previews: [
-            {
-                title: "Single-Column Editorial",
-                caption: "468px reading column with liquid glass sphere optics and 3D folder physics",
-                badge: "HeroUI v3",
-                type: "interface",
-                metrics: ["SVG Ink Engine", "3D Folders", "Zero-Clutter"],
-            },
-            {
-                title: "Micro-Animation System",
-                caption: "Spring-damped physics, scroll-triggered reveals, and tactile micro-states",
-                badge: "60 FPS",
-                type: "architecture",
-                metrics: ["Framer Motion 12", "HeroUI Tokens", "Accessible ARIA"],
             },
         ],
     },
@@ -202,11 +176,13 @@ export default function Projects({ repos }: { repos: RepoItem[] }) {
             <Bento className="grid gap-4 lg:grid-cols-2">
                 <Tile className="lg:col-span-2" lift={false}>
                     <Tilt className="h-full" max={3}>
-                        <FeaturedCard project={first} featured />
+                        <CursorLabel label={first.liveUrl ? "View live ↗" : "View source ↗"} className="h-full">
+                            <FeaturedCard project={first} featured />
+                        </CursorLabel>
                     </Tilt>
                 </Tile>
                 {rest.map((p) => (
-                    <Tile key={p.id}>
+                    <Tile key={p.id} className={rest.length === 1 ? "lg:col-span-2" : undefined}>
                         <FeaturedCard project={p} />
                     </Tile>
                 ))}
@@ -217,9 +193,9 @@ export default function Projects({ repos }: { repos: RepoItem[] }) {
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div>
                         <h2 id="repos-heading" className="text-lg font-semibold text-foreground">
-                            All repositories
+                            <RevealText text="All repositories" />
                         </h2>
-                        <p className="font-serif text-base text-muted italic">Live from GitHub — {repos.length} most recently updated</p>
+                        <p className="font-hand text-lg text-muted">Live from GitHub — {repos.length} most recently updated</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <SearchField aria-label="Search repositories" value={query} onChange={reset(setQuery)} className="w-48">

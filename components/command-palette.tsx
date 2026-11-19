@@ -18,7 +18,7 @@ import {
     Sparkles,
     Sun,
     Users,
-} from "lucide-react";
+} from "@/components/icons";
 import type { TabKey } from "./shell/portfolio-shell";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL, RESUME_URL } from "./sections/constants/social.constant";
 

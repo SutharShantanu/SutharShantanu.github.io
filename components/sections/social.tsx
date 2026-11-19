@@ -2,12 +2,31 @@
 
 import React from "react";
 import { Button, Card, Chip, Separator } from "@heroui/react";
-import { BadgeCheck, CalendarDays, Github, GitCommitHorizontal, Linkedin, Quote } from "lucide-react";
+import { BadgeCheck, CalendarDays, FolderGit2, GitCommitHorizontal, GitFork, Github, Linkedin, Quote, Sparkles, Star } from "@/components/icons";
 import { Bento, CountUp, Tile } from "../ui/motion";
-import type { PortfolioData } from "@/lib/portfolio-data";
+import { ActivityCalendar } from "./activity-calendar";
+import type { ActivityItem, PortfolioData } from "@/lib/portfolio-data";
+
+const ACTIVITY_ICON: Record<ActivityItem["kind"], React.ComponentType<{ className?: string }>> = {
+    push: GitCommitHorizontal,
+    pr: GitFork,
+    issue: Sparkles,
+    create: FolderGit2,
+    star: Star,
+    fork: GitFork,
+    release: Sparkles,
+    other: Github,
+};
 
 const openExternal = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
-const LEVEL_OPACITY = ["opacity-[0.07]", "opacity-30", "opacity-50", "opacity-75", "opacity-100"];
+
+/** Recommendation tile spans on lg (4 cols): first spans 2, the rest 1; a lone last tile fills its row. */
+const recSpan = (i: number, n: number) => {
+    if (i === 0) return "lg:col-span-2";
+    if (i !== n - 1) return undefined;
+    const before = 2 + (n - 2); // first (2 cols) + middle tiles; activity sits on its own row above
+    return ["lg:col-span-4", "lg:col-span-3", "lg:col-span-2", undefined][before % 4];
+};
 
 function Stat({ label, value }: { label: string; value: number }) {
     return (
@@ -21,16 +40,8 @@ function Stat({ label, value }: { label: string; value: number }) {
 }
 
 export default function Social({ data }: { data: PortfolioData }) {
-    const { github, profile, recommendations, roles } = data;
-    const current = roles.find((r) => r.isCurrent);
+    const { github, profile, recommendations } = data;
 
-    // Group contribution days into week columns for the heatmap.
-    const weeks: PortfolioData["github"]["contributions"][] = [];
-    github.contributions.forEach((d, i) => {
-        if (i % 7 === 0) weeks.push([]);
-        weeks[weeks.length - 1].push(d);
-    });
-    const recentTotal = github.contributions.reduce((s, d) => s + d.count, 0);
 
     return (
         <Bento className="grid grid-cols-1 gap-4 lg:grid-cols-4">
@@ -94,69 +105,88 @@ export default function Social({ data }: { data: PortfolioData }) {
                             <Stat label="Connections" value={profile.connections} />
                             <Stat label="Yrs experience" value={profile.experienceYears} />
                             <Stat label="Recommendations" value={recommendations.length} />
-                        </div>
-                        {current && (
-                            <p className="text-xs text-muted">
-                                Current position: <span className="text-foreground">{current.title}</span> · {current.company} · {current.duration}
-                            </p>
-                        )}
+                        </div>                       
                     </Card.Content>
                 </Card>
             </Tile>
 
-            {/* Contribution heatmap */}
-            <Tile className="lg:col-span-3" lift={false}>
+            {/* Contribution calendar (full width: a year is ~780px) */}
+            <Tile className="lg:col-span-4" lift={false}>
                 <Card className="h-full">
-                    <Card.Header className="flex flex-row items-end justify-between">
+                    <Card.Header className="flex flex-row flex-wrap items-end justify-between gap-2">
                         <div>
                             <Card.Title>Contributions</Card.Title>
-                            <Card.Description>Last 26 weeks</Card.Description>
+                            <Card.Description className="font-hand text-lg">Every commit, by year</Card.Description>
                         </div>
                         <Chip size="sm" variant="soft" color="success">
-                            {recentTotal} recent · {github.contributionTotal} all time
+                            {github.contributionTotal.toLocaleString()} all time
                         </Chip>
                     </Card.Header>
                     <Card.Content>
-                        {weeks.length ? (
-                            <div className="flex gap-[3px] overflow-x-auto pb-1" role="img" aria-label={`${recentTotal} GitHub contributions in the last 26 weeks`}>
-                                {weeks.map((week, wi) => (
-                                    <div key={wi} className="grid grid-rows-7 gap-[3px]">
-                                        {week.map((d) => (
-                                            <span
-                                                key={d.date}
-                                                title={`${d.count} contributions · ${d.date}`}
-                                                className={`size-3 rounded-[3px] bg-foreground transition-transform hover:scale-150 ${LEVEL_OPACITY[d.level] ?? LEVEL_OPACITY[0]}`}
-                                            />
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-sm text-muted">Contribution data unavailable right now.</p>
-                        )}
+                        <ActivityCalendar history={github.contributions} yearTotals={github.yearTotals} />
                     </Card.Content>
                 </Card>
             </Tile>
 
-            {/* Recent activity */}
-            <Tile lift={false}>
+            {/* Recent activity: grouped pushes with commit messages, PRs, issues, releases… */}
+            <Tile className="lg:col-span-4" lift={false}>
                 <Card className="h-full">
-                    <Card.Header>
-                        <Card.Title>Recent activity</Card.Title>
+                    <Card.Header className="flex flex-row items-end justify-between gap-2">
+                        <div>
+                            <Card.Title>Recent activity</Card.Title>
+                            <Card.Description className="font-hand text-lg">What I&apos;ve been shipping lately</Card.Description>
+                        </div>
+                        <Button size="sm" variant="ghost" onPress={() => openExternal(github.url)}>
+                            View on GitHub
+                        </Button>
                     </Card.Header>
-                    <Card.Content className="grid gap-2">
+                    <Card.Content>
                         {github.activity.length ? (
-                            github.activity.map((a) => (
-                                <div key={a.id} className="flex items-start gap-2 text-xs">
-                                    <GitCommitHorizontal className="mt-0.5 size-3.5 shrink-0 text-muted" />
-                                    <div className="min-w-0">
-                                        <p className="truncate text-foreground">{a.repo.split("/").pop()}</p>
-                                        <p className="font-mono text-muted">
-                                            {a.type} · {new Date(a.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))
+                            <ul className="grid gap-3 md:grid-cols-2">
+                                {github.activity.map((a) => {
+                                    const Icon = ACTIVITY_ICON[a.kind];
+                                    return (
+                                        <li key={a.id} className="flex gap-3 rounded-2xl bg-default p-3">
+                                            <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-xl bg-surface">
+                                                <Icon className="size-4 text-foreground" />
+                                            </span>
+                                            <div className="min-w-0 flex-1">
+                                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                    <a href={a.repoUrl} target="_blank" rel="noopener noreferrer" className="truncate font-display text-sm font-medium text-foreground hover:underline">
+                                                        {a.repo.split("/").pop()}
+                                                    </a>
+                                                    {a.branch && (
+                                                        <Chip size="sm" variant="secondary" className="font-mono">
+                                                            {a.branch}
+                                                        </Chip>
+                                                    )}
+                                                    <span className="ml-auto font-mono text-[11px] text-muted">{a.ago}</span>
+                                                </div>
+                                                <a href={a.url} target="_blank" rel="noopener noreferrer" className="mt-0.5 block text-sm text-muted hover:text-foreground">
+                                                    {a.title}
+                                                </a>
+                                                {a.commits.length > 0 && (
+                                                    <ul className="mt-2 grid gap-1">
+                                                        {a.commits.map((c) => (
+                                                            <li key={c.sha} className="flex min-w-0 items-baseline gap-2 text-xs">
+                                                                <a href={c.url} target="_blank" rel="noopener noreferrer" className="shrink-0 font-mono text-muted hover:text-foreground">
+                                                                    {c.sha}
+                                                                </a>
+                                                                <span className="truncate text-foreground/80" title={c.message}>
+                                                                    {c.message}
+                                                                </span>
+                                                            </li>
+                                                        ))}
+                                                        {a.commitCount && a.commitCount > a.commits.length && (
+                                                            <li className="text-xs text-muted">+{a.commitCount - a.commits.length} more</li>
+                                                        )}
+                                                    </ul>
+                                                )}
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
                         ) : (
                             <p className="text-sm text-muted">No public activity yet.</p>
                         )}
@@ -166,7 +196,7 @@ export default function Social({ data }: { data: PortfolioData }) {
 
             {/* Recommendations */}
             {recommendations.map((r, i) => (
-                <Tile key={r.username || i} className={i === 0 ? "lg:col-span-2" : undefined}>
+                <Tile key={r.username || i} className={recSpan(i, recommendations.length)}>
                     <Card className="h-full">
                         <Card.Content className="grid h-full content-between gap-3">
                             <Quote className="size-5 text-muted" />

@@ -1,18 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion, useAnimate, useMotionTemplate, useMotionValue, useReducedMotion, useSpring, useTransform, type Variants } from "framer-motion";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useAnimate, useAnimationFrame, useMotionTemplate, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, type Variants } from "framer-motion";
 import NumberFlow from "@number-flow/react";
 
 // Server HTML must be visible (LCP/no-JS); only tiles mounted after hydration animate in.
 let hydrated = false;
 
-const stagger: Variants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.05, delayChildren: 0.02 } },
-};
+const spring = { type: "spring", stiffness: 400, damping: 24 } as const;
 
-const rise: Variants = {
+const tileVariants: Variants = {
     hidden: { opacity: 0, y: 16, scale: 0.98, filter: "blur(6px)" },
     show: {
         opacity: 1,
@@ -21,31 +18,78 @@ const rise: Variants = {
         filter: "blur(0px)",
         transition: { type: "spring", stiffness: 260, damping: 26 },
     },
+    hover: { y: -4, transition: spring },
 };
 
-/** Grid container that staggers its <Tile> children in on mount. */
+/** Child variants that react to a parent Tile's "hover" (icon tilt / arrow nudge). */
+export const hoverIcon: Variants = {
+    hidden: { rotate: 0, scale: 1 },
+    show: { rotate: 0, scale: 1, transition: spring },
+    hover: { rotate: -8, scale: 1.1, transition: spring },
+};
+export const hoverArrow: Variants = {
+    hidden: { x: 0, y: 0 },
+    show: { x: 0, y: 0, transition: spring },
+    hover: { x: 2, y: -2, transition: spring },
+};
+
+const BentoContext = createContext(false);
+
+/** Grid wrapper. Tiles reveal as they scroll into view (skipped on the first SSR paint for LCP). */
 export function Bento({ className, children }: { className?: string; children: React.ReactNode }) {
     const [animateIn] = useState(() => hydrated);
     useEffect(() => {
         hydrated = true;
     }, []);
     return (
-        <motion.div className={className} variants={stagger} initial={animateIn ? "hidden" : false} animate="show">
+        <BentoContext.Provider value={animateIn}>
+            <div className={className}>{children}</div>
+        </BentoContext.Provider>
+    );
+}
+
+/** Bento cell: rises in when scrolled into view, lifts on hover and passes "hover" to children. */
+export function Tile({ className, children, lift = true }: { className?: string; children: React.ReactNode; lift?: boolean }) {
+    const animateIn = useContext(BentoContext);
+    return (
+        <motion.div
+            className={className}
+            variants={tileVariants}
+            initial={animateIn ? "hidden" : "show"}
+            whileInView="show"
+            viewport={{ once: true, amount: 0.15 }}
+            whileHover={lift ? "hover" : undefined}
+        >
             {children}
         </motion.div>
     );
 }
 
-/** Bento cell: rises in with its siblings, lifts on hover. Put grid spans here; child Card should be h-full. */
-export function Tile({ className, children, lift = true }: { className?: string; children: React.ReactNode; lift?: boolean }) {
+/** Live-status dot: a framer-motion ripple instead of CSS animate-ping. */
+export function Ping({ className = "bg-success" }: { className?: string }) {
+    return (
+        <span className="relative mr-1 inline-flex size-1.5">
+            <motion.span
+                aria-hidden="true"
+                className={`absolute inset-0 rounded-full ${className}`}
+                animate={{ scale: [1, 2.4], opacity: [0.7, 0] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
+            />
+            <span className={`relative inline-flex size-1.5 rounded-full ${className}`} />
+        </span>
+    );
+}
+
+/** Scroll-linked reading progress bar (useScroll + spring). */
+export function ScrollProgress() {
+    const { scrollYProgress } = useScroll();
+    const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 });
     return (
         <motion.div
-            className={className}
-            variants={rise}
-            whileHover={lift ? { y: -4, transition: { type: "spring", stiffness: 400, damping: 22 } } : undefined}
-        >
-            {children}
-        </motion.div>
+            aria-hidden="true"
+            style={{ scaleX }}
+            className="fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-foreground/70"
+        />
     );
 }
 
@@ -98,6 +142,7 @@ export function Tilt({ children, className, max = 6 }: { children: React.ReactNo
     const rotateY = useSpring(useTransform(px, [0, 1], [-max, max]), spring);
     const glareX = useTransform(px, (v) => `${v * 100}%`);
     const glareY = useTransform(py, (v) => `${v * 100}%`);
+    const glareOpacity = useSpring(0, { stiffness: 200, damping: 30 });
     const glare = useMotionTemplate`radial-gradient(400px circle at ${glareX} ${glareY}, rgb(255 255 255 / 0.22), transparent 60%)`;
 
     if (reduce) return <div className={className}>{children}</div>;
@@ -112,17 +157,202 @@ export function Tilt({ children, className, max = 6 }: { children: React.ReactNo
                 px.set((e.clientX - r.left) / r.width);
                 py.set((e.clientY - r.top) / r.height);
             }}
+            onPointerEnter={(e) => e.pointerType === "mouse" && glareOpacity.set(1)}
             onPointerLeave={() => {
                 px.set(0.5);
                 py.set(0.5);
+                glareOpacity.set(0);
             }}
         >
             {children}
             <motion.div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover/tilt:opacity-100"
-                style={{ background: glare }}
+                className="pointer-events-none absolute inset-0 rounded-3xl"
+                style={{ background: glare, opacity: glareOpacity }}
             />
         </motion.div>
+    );
+}
+
+/**
+ * Infinite logo marquee (inspired by React Bits "Logo Loop"), driven by framer-motion.
+ * Decorative: pass the same names as visible text elsewhere for screen readers.
+ * Pauses on hover; static row when the user prefers reduced motion.
+ */
+export function LogoLoop({ logos, speed = 28 }: { logos: { src: string; alt: string }[]; speed?: number }) {
+    const reduce = useReducedMotion();
+    const [paused, setPaused] = useState(false);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const x = useMotionValue(0);
+    // Advance by frame time so it can pause in place; wrap at half (the duplicated row) for a seamless loop.
+    useAnimationFrame((_, delta) => {
+        const track = trackRef.current;
+        if (reduce || paused || !track) return;
+        const half = track.scrollWidth / 2;
+        let next = x.get() - (half / speed) * (delta / 1000);
+        if (-next >= half) next += half;
+        x.set(next);
+    });
+    const row = (copy: number) =>
+        logos.map((l) => (
+            // eslint-disable-next-line @next/next/no-img-element -- tiny local SVGs; next/image adds nothing here
+            <img key={`${copy}-${l.src}`} src={l.src} alt="" className="size-7 shrink-0 opacity-80 transition-none" draggable={false} />
+        ));
+    return (
+        <div
+            aria-hidden="true"
+            className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+            onPointerEnter={() => setPaused(true)}
+            onPointerLeave={() => setPaused(false)}
+        >
+            <motion.div ref={trackRef} className="flex w-max gap-6 py-1 pr-6" style={{ x }}>
+                {row(0)}
+                {row(1)}
+            </motion.div>
+        </div>
+    );
+}
+
+const revealWord: Variants = {
+    hidden: { opacity: 0, y: 12, filter: "blur(8px)" },
+    show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
+};
+
+/**
+ * Word-by-word blur-in-up text (adapted from Magic UI "Text Animate", blurInUp/by word preset).
+ * Render inside your own heading/paragraph to keep semantics; screen readers get the plain string.
+ */
+export function RevealText({ text, delay = 0 }: { text: string; delay?: number }) {
+    const words = text.split(/(\s+)/);
+    return (
+        <>
+            <span className="sr-only">{text}</span>
+            <motion.span
+                aria-hidden="true"
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ delayChildren: delay, staggerChildren: 0.06 }}
+            >
+                {words.map((w, i) =>
+                    /^\s+$/.test(w) ? (
+                        w
+                    ) : (
+                        <motion.span key={i} variants={revealWord} className="inline-block">
+                            {w}
+                        </motion.span>
+                    )
+                )}
+            </motion.span>
+        </>
+    );
+}
+
+/**
+ * Hand-drawn marker (adapted from Magic UI "Highlighter"). Drawn with an SVG path animated via
+ * framer-motion pathLength instead of rough-notation, so no extra dependency and it respects MotionConfig.
+ */
+export function Marker({
+    children,
+    variant = "highlight",
+    color = "var(--mesh-1)",
+}: {
+    children: React.ReactNode;
+    variant?: "highlight" | "underline";
+    color?: string;
+}) {
+    const highlight = variant === "highlight";
+    return (
+        <span className="relative isolate inline-block whitespace-nowrap">
+            <svg
+                aria-hidden="true"
+                viewBox="0 0 100 20"
+                preserveAspectRatio="none"
+                className={`pointer-events-none absolute -inset-x-1 -z-10 ${highlight ? "inset-y-0 h-full" : "-bottom-1 h-2"}`}
+                style={{ width: "calc(100% + 0.5rem)" }}
+            >
+                <motion.path
+                    d={highlight ? "M2 11 C 25 7, 55 15, 98 9" : "M2 12 C 30 6, 65 16, 98 8"}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth={highlight ? 16 : 4}
+                    strokeLinecap="round"
+                    style={{ opacity: highlight ? 0.45 : 0.9 }}
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true, amount: 0.8 }}
+                    transition={{ duration: 0.7, delay: 0.25, ease: [0.65, 0, 0.35, 1] }}
+                />
+            </svg>
+            {children}
+        </span>
+    );
+}
+
+/** Text laid around a circle that slowly spins (adapted from Magic UI "Spinning Text"). */
+export function SpinningText({ text, radius = 5, duration = 14, className = "" }: { text: string; radius?: number; duration?: number; className?: string }) {
+    const letters = [...text, " "];
+    return (
+        <motion.div
+            className={`relative ${className}`}
+            animate={{ rotate: 360 }}
+            transition={{ duration, ease: "linear", repeat: Infinity }}
+            aria-hidden="true"
+        >
+            {letters.map((l, i) => (
+                <span
+                    key={i}
+                    className="absolute top-1/2 left-1/2 inline-block"
+                    style={{
+                        transform: `translate(-50%, -50%) rotate(${(360 / letters.length) * i}deg) translateY(-${radius}ch)`,
+                        transformOrigin: "center",
+                    }}
+                >
+                    {l}
+                </span>
+            ))}
+        </motion.div>
+    );
+}
+
+/**
+ * Scoped cursor-follow label (inspired by Animate UI "CursorFollow"), framer-motion springs.
+ * Keeps the native pointer; mouse only; reduced motion = follows without spring.
+ */
+export function CursorLabel({ label, children, className = "" }: { label: React.ReactNode; children: React.ReactNode; className?: string }) {
+    const reduce = useReducedMotion();
+    const [active, setActive] = useState(false);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const sx = useSpring(x, { stiffness: 500, damping: 50 });
+    const sy = useSpring(y, { stiffness: 500, damping: 50 });
+    return (
+        <div
+            className={`relative ${className}`}
+            onPointerMove={(e) => {
+                if (e.pointerType !== "mouse") return;
+                const r = e.currentTarget.getBoundingClientRect();
+                x.set(e.clientX - r.left + 14);
+                y.set(e.clientY - r.top + 14);
+                if (!active) setActive(true);
+            }}
+            onPointerLeave={() => setActive(false)}
+        >
+            {children}
+            <AnimatePresence>
+                {active && (
+                    <motion.span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-0 left-0 z-20 rounded-full bg-accent px-3 py-1 text-xs font-medium whitespace-nowrap text-accent-foreground shadow-lg"
+                        style={{ x: reduce ? x : sx, y: reduce ? y : sy }}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1, transition: { type: "spring", stiffness: 550, damping: 30 } }}
+                        exit={{ scale: 0, opacity: 0, transition: { duration: 0.15 } }}
+                    >
+                        {label}
+                    </motion.span>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }

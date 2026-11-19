@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { useContactForm } from "./hooks/useContact";
 import { Button, Card, Description, FieldError, Input, Label, ListBox, Select, Spinner, TextArea, TextField, toast } from "@heroui/react";
-import { Bento, IconSwap, Tile, useShake } from "./ui/motion";
+import { Bento, IconSwap, SpinningText, Tile, useShake } from "./ui/motion";
 
-import { ArrowUpRight, Check, Copy } from "lucide-react";
+import { ArrowUpRight, Check, Copy, Mail } from "@/components/icons";
 import { EMAIL } from "./sections/constants/social.constant";
 
 const SUBJECTS = [
@@ -33,21 +33,28 @@ export default function Contact() {
     return (
         <Bento className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
             <Tile lift={false}>
-            <Card>
-                <Card.Header>
+            <Card className="relative">
+                {/* Spinning "say hello" badge (Magic UI Spinning Text, framer-motion) */}
+                <div className="pointer-events-none absolute top-3 right-3 hidden size-20 place-items-center sm:grid" aria-hidden="true">
+                    <SpinningText text="say hello • let's build • " radius={4.4} className="font-mono text-[9px] tracking-wider text-muted uppercase" />
+                    <span className="absolute grid size-9 place-items-center rounded-full bg-default">
+                        <Mail className="size-4 text-foreground" />
+                    </span>
+                </div>
+                <Card.Header className="sm:pr-24">
                     <Card.Title className="text-2xl">
-                        Let&apos;s <span className="font-serif font-normal italic">connect</span>
+                        Let&apos;s <span className="inline-block -rotate-2 font-hand font-semibold text-[1.3em] leading-none">connect</span>
                     </Card.Title>
                     <Card.Description>
                         Upcoming project, frontend role, or just want to connect? Send a note or reach out directly.
                     </Card.Description>
                 </Card.Header>
                 <Card.Content className="flex flex-row flex-wrap items-center gap-2">
-                    <Button variant="secondary" size="sm" onPress={handleCopyEmail} aria-label="Copy email address">
-                        <IconSwap swapKey={copied ? "copied" : "idle"}>
+                    <Button variant="secondary" size="sm" onPress={handleCopyEmail} aria-label={copied ? "Email address copied" : "Copy email address"}>
+                        <IconSwap swapKey={copied ? "copied" : "idle"} className="inline-flex items-center">
                             {copied ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
-                            {copied ? "Copied" : EMAIL}
                         </IconSwap>
+                        {EMAIL}
                     </Button>
                     <Button
                         isIconOnly
@@ -65,7 +72,7 @@ export default function Contact() {
             <Tile lift={false}>
             <Card>
                 <Card.Content>
-                    <form ref={formRef} onSubmit={form.handleSubmit(onSubmit, shake)} className="grid gap-4" aria-label="Contact form">
+                    <form ref={formRef} noValidate onSubmit={form.handleSubmit(onSubmit, shake)} className="grid gap-4" aria-label="Contact form">
                         {/* Honeypot */}
                         <div style={{ display: "none" }} aria-hidden="true">
                             <input type="text" name="website" tabIndex={-1} autoComplete="off" />

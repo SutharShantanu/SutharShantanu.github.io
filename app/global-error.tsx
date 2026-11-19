@@ -3,7 +3,7 @@
 // Replaces the root layout when the layout itself throws, so it renders its own <html>.
 import "./globals.css";
 import { Button } from "@heroui/react";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw } from "@/components/icons";
 import { StatusScreen } from "@/components/status-screen";
 
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {

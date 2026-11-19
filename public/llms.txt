@@ -24,7 +24,6 @@ The site is a single page with tabbed sections. Each section can be linked direc
 
 - [Boozeblues E-Commerce](https://boozeblues.vercel.app): Next.js storefront and checkout engine
 - [Geekycart Tech Store](https://geekycart.vercel.app): full-stack MERN marketplace
-- [Portfolio source](https://github.com/SutharShantanu/SutharShantanu.github.io): this site (Next.js, HeroUI v3)
 
 ## Contact
 

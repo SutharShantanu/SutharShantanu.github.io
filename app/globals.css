@@ -8,6 +8,7 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--nf-display), var(--font-geist-sans), sans-serif;
   --font-serif: var(--nf-serif), Georgia, serif;
+  --font-hand: var(--nf-hand), "Segoe Print", cursive;
 
   /* Motion tokens → utilities: ease-fluid, ease-snappy, duration-quick, duration-base */
   --ease-fluid: cubic-bezier(0.16, 1, 0.3, 1);
@@ -53,9 +54,16 @@
 
   --glass-edge: oklch(1 0 0 / 0.7);
   --glass-shell: oklch(1 0 0 / 0.35);
+  /* Main card: opaque enough that the dither dots stay behind it, still frosted */
+  --glass-main: oklch(0.985 0.004 300 / 0.82);
   --mesh-1: oklch(0.78 0.17 50 / 0.75);
   --mesh-2: oklch(0.7 0.12 300 / 0.55);
   --mesh-3: oklch(0.82 0.08 250 / 0.6);
+
+  /* Dither Field ramp (dim → bright): cool blue → peach → warm orange */
+  --dither-low: oklch(0.72 0.09 250 / 0.35);
+  --dither-mid: oklch(0.8 0.1 60 / 0.55);
+  --dither-high: oklch(0.72 0.17 45 / 0.8);
 }
 
 .dark,
@@ -81,9 +89,14 @@
 
   --glass-edge: oklch(1 0 0 / 0.12);
   --glass-shell: oklch(0.2 0.01 285 / 0.4);
+  --glass-main: oklch(0.16 0.008 285 / 0.86);
   --mesh-1: oklch(0.55 0.15 45 / 0.45);
   --mesh-2: oklch(0.45 0.14 300 / 0.45);
   --mesh-3: oklch(0.4 0.1 250 / 0.4);
+
+  --dither-low: oklch(0.55 0.1 250 / 0.45);
+  --dither-mid: oklch(0.7 0.12 60 / 0.6);
+  --dither-high: oklch(0.78 0.16 45 / 0.9);
 }
 
 html {
@@ -137,6 +150,13 @@ h3,
 
   .glass-shell {
     background: var(--glass-shell);
+  }
+
+  /* The main portfolio card: denser frost so the animated background never reads "in front" of it */
+  .glass-main {
+    background: var(--glass-main);
+    backdrop-filter: blur(48px) saturate(170%);
+    -webkit-backdrop-filter: blur(48px) saturate(170%);
   }
 
   /* Floating layers: stronger frost so content behind stays unreadable */
