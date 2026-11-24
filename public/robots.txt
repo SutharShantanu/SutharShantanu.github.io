@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://shantanusuthar.vercel.app
-
-# Sitemaps
-Sitemap: https://shantanusuthar.vercel.app/sitemap.xml
