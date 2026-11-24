@@ -27,7 +27,7 @@ const sections = { overview: "Overview", work: "Work", experience: "Experience",
 const envKeys = [
     "SITE_NAME", "SITE_URL", "NEXT_GITHUB_USERNAME", "LINKEDIN_USERNAME",
     "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASSWORD", "CONTACT_TO_EMAIL",
-    "NEXT_GITHUB_TOKEN", "RAPIDAPI_KEY", "RAPIDAPI_HOST", "REVALIDATION_SECRET",
+    "NEXT_GITHUB_TOKEN",
 ];
 
 function safeRead(path) {
@@ -515,6 +515,7 @@ async function connectAndroid() {
     const sdk = process.env.ANDROID_HOME || process.env.ANDROID_SDK_ROOT || "/home/shantanu/Android/Sdk";
     const adb = sdk ? join(sdk, "platform-tools", "adb") : "adb";
     await run(adb, ["reverse", "tcp:4317", `tcp:${port}`]);
+    await run(adb, ["reverse", "tcp:3002", "tcp:3002"]).catch(() => "");
     await run(adb, ["shell", "am", "start", "-n", "dev.shantanusuthar.portfolio/.MainActivity"], 30000).catch(() => "");
 }
 
