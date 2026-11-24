@@ -358,21 +358,24 @@ const server = createServer(async (request, response) => {
         else if (request.method === "PUT" && request.url === "/environment") respond(200, saveEnv(await payload(request)));
         else respond(404, { error: "Unknown operation." });
     } catch (error) {
+        console.error("Bridge request error:", request.method, request.url, error);
         respond(error instanceof RequestError ? error.status : 500, {
             error: error instanceof RequestError ? error.message : "The bridge couldn’t complete the operation.",
         });
     }
 });
+const port = Number(process.env.PORTFOLIO_ADMIN_PORT ?? 4321);
+
 /** Forward the bridge port to a USB/ADB-connected phone and open the app (it then signs in with GitHub). */
 async function connectAndroid() {
-    const sdk = process.env.ANDROID_HOME || process.env.ANDROID_SDK_ROOT;
+    const sdk = process.env.ANDROID_HOME || process.env.ANDROID_SDK_ROOT || "/home/shantanu/Android/Sdk";
     const adb = sdk ? join(sdk, "platform-tools", "adb") : "adb";
-    await run(adb, ["reverse", "tcp:4317", "tcp:4317"]);
+    await run(adb, ["reverse", "tcp:4317", `tcp:${port}`]);
     await run(adb, ["shell", "am", "start", "-n", "dev.shantanusuthar.portfolio/.MainActivity"], 30000).catch(() => "");
 }
 
-server.listen(4317, "127.0.0.1", async () => {
-    console.log("Portfolio Admin bridge listening on 127.0.0.1:4317");
+server.listen(port, "127.0.0.1", async () => {
+    console.log(`Portfolio Admin bridge listening on 127.0.0.1:${port} (ADB reversed to phone:4317)`);
     console.log(githubClientId ? "GitHub sign-in ready." : "GitHub sign-in not set up: add PORTFOLIO_GITHUB_CLIENT_ID to .env.local.");
     ownerAccounts()
         .then((a) => console.log(`Owners: ${[...a.values()].map((l) => `@${l}`).join(", ")}. ${sessions.size} signed-in device(s).`))
