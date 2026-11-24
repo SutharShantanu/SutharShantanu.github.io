@@ -24,7 +24,17 @@
 .DS_Store
 *.pem
 scripts/*.png
-/apps/
+# apps
+/apps/*/node_modules/
+/apps/*/.expo/
+/apps/*/.gradle/
+/apps/*/.kotlin/
+/apps/*/local.properties
+/apps/*/app/build/
+/apps/*/build/
+/apps/*/android/build/
+/apps/*/android/app/build/
+/apps/*/.metro-health-check*
 
 # debug
 npm-debug.log*

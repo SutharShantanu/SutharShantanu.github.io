@@ -1,0 +1,138 @@
+name: Publish Release
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g. v1.0.1)'
+        required: false
+      prerelease:
+        description: 'Mark as pre-release'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Make Gradle Wrapper executable
+        run: chmod +x apps/android/gradlew
+
+      - name: Determine release version
+        id: version_info
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          elif [ "${{ startsWith(github.ref, 'refs/tags/v') }}" = "true" ]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            VERSION_NAME="1.0"
+            TAG="v${VERSION_NAME}.${{ github.run_number }}"
+          fi
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          echo "VERSION_CODE=${{ github.run_number }}" >> $GITHUB_ENV
+          echo "VERSION_NAME=${TAG#v}" >> $GITHUB_ENV
+
+      - name: Build Android APK
+        working-directory: apps/android
+        env:
+          VERSION_CODE: ${{ env.VERSION_CODE }}
+          VERSION_NAME: ${{ env.VERSION_NAME }}
+        run: ./gradlew :app:assembleDebug --stacktrace
+
+      - name: Prepare Release Artifacts
+        run: |
+          mkdir -p release-artifacts
+          APK_NAME="Portfolio-${TAG}.apk"
+          cp apps/android/app/build/outputs/apk/debug/app-debug.apk "release-artifacts/${APK_NAME}"
+          cp apps/android/app/build/outputs/apk/debug/app-debug.apk "release-artifacts/Portfolio.apk"
+          cd release-artifacts
+          sha256sum "${APK_NAME}" Portfolio.apk > checksums.txt
+          cat checksums.txt
+
+      - name: Upload Artifacts to Actions
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-release-${{ env.TAG }}
+          path: release-artifacts/
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: Portfolio ${{ env.TAG }}
+          body: |
+            ## Portfolio ${{ env.TAG }}
+            
+            Automated Android release built from commit `${{ github.sha }}` on `main`.
+            
+            ### 📦 Download Assets
+            | Asset | Description |
+            | :--- | :--- |
+            | **[Portfolio-${{ env.TAG }}.apk](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG }}/Portfolio-${{ env.TAG }}.apk)** | Standalone Android APK (Direct install) |
+            | **[Portfolio.apk](https://github.com/${{ github.repository }}/releases/download/${{ env.TAG }}/Portfolio.apk)** | Latest binary alias |
+            | **checksums.txt** | SHA-256 integrity checksums |
+            
+            ### 🚀 Quick Install (ADB)
+            ```bash
+            adb install -r Portfolio-${{ env.TAG }}.apk
+            ```
+            
+            ### 🔒 Integrity Check
+            ```bash
+            sha256sum -c checksums.txt
+            ```
+          draft: false
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease == true }}
+          generate_release_notes: true
+          files: |
+            release-artifacts/*
+
+      - name: Reset rolling latest release
+        if: github.ref == 'refs/heads/main'
+        run: gh release delete latest --cleanup-tag -y || true
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Publish latest rolling release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          target_commitish: ${{ github.sha }}
+          name: Portfolio — Latest Build
+          body: |
+            Automated latest release tracking the tip of `main` (`${{ env.TAG }}`).
+            
+            ### 📦 Download
+            - **Direct APK:** [Portfolio.apk](https://github.com/${{ github.repository }}/releases/download/latest/Portfolio.apk)
+          prerelease: false
+          files: |
+            release-artifacts/Portfolio.apk
+            release-artifacts/checksums.txt
