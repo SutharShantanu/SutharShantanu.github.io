@@ -1,0 +1,2 @@
+# The Android app (apps/android) is built separately; keep it out of Vercel deploys.
+apps

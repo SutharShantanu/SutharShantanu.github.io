@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "heroui-react": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@heroui/react-mcp@latest"
+      ]
+    },
+    "iconmcp": {
+      "type": "http",
+      "url": "https://iconmcp.com/mcp"
+    }
+  }
+}
