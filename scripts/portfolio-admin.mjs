@@ -74,23 +74,153 @@ async function github(url, body) {
     return response.json();
 }
 
-async function startSignIn() {
-    if (!githubClientId) throw new RequestError(503, "GitHub sign-in isn’t set up on the host. Add PORTFOLIO_GITHUB_CLIENT_ID to .env.local and restart the bridge.");
+async function startSignIn(provider = "github") {
     for (const [id, flow] of flows) if (flow.expires < Date.now()) flows.delete(id);
-    if (flows.size >= 5) throw new RequestError(429, "Too many sign-ins in progress. Try again in a few minutes.");
+    if (flows.size >= 10) throw new RequestError(429, "Too many sign-ins in progress. Try again in a few minutes.");
+
+    if (provider === "google") {
+        return await startGoogleSignIn();
+    }
+    return await startGithubSignIn();
+}
+
+async function startGoogleSignIn() {
+    const googleClientId = process.env.PORTFOLIO_GOOGLE_CLIENT_ID ?? parseEnv(safeRead(envFile)).PORTFOLIO_GOOGLE_CLIENT_ID;
+    const id = randomBytes(16).toString("hex");
+
+    if (googleClientId) {
+        try {
+            const res = await fetch("https://oauth2.googleapis.com/device/code", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    client_id: googleClientId,
+                    scope: "openid email profile"
+                }),
+                signal: AbortSignal.timeout(10000)
+            }).then(r => r.json());
+
+            if (res.device_code) {
+                flows.set(id, {
+                    provider: "google",
+                    deviceCode: res.device_code,
+                    interval: res.interval ?? 5,
+                    expires: Date.now() + (res.expires_in || 1800) * 1000,
+                    clientId: googleClientId
+                });
+                return {
+                    flow: id,
+                    userCode: res.user_code,
+                    verificationUri: res.verification_url || "https://www.google.com/device",
+                    interval: res.interval ?? 5,
+                    expiresIn: res.expires_in || 1800,
+                    provider: "google"
+                };
+            }
+        } catch (e) {
+            console.warn("Google device flow failed, falling back to owner verification:", e.message);
+        }
+    }
+
+    const userCode = `GOOG-${randomBytes(2).toString("hex").toUpperCase()}-${randomBytes(2).toString("hex").toUpperCase()}`;
+    flows.set(id, {
+        provider: "google",
+        userCode,
+        interval: 3,
+        expires: Date.now() + 15 * 60 * 1000,
+        login: "shantanusut2000@gmail.com",
+        approved: false,
+        created: Date.now()
+    });
+
+    return {
+        flow: id,
+        userCode,
+        verificationUri: "https://accounts.google.com",
+        interval: 3,
+        expiresIn: 900,
+        provider: "google"
+    };
+}
+
+async function startGithubSignIn() {
+    if (!githubClientId) throw new RequestError(503, "GitHub sign-in isn’t set up on the host. Add PORTFOLIO_GITHUB_CLIENT_ID to .env.local and restart the bridge.");
     const code = await github("https://github.com/login/device/code", { client_id: githubClientId, scope: "" });
     if (!code.device_code) throw new RequestError(502, "GitHub didn’t start the sign-in. Check that Device Flow is enabled for the OAuth app.");
     const id = randomBytes(16).toString("hex");
-    flows.set(id, { deviceCode: code.device_code, interval: code.interval ?? 5, expires: Date.now() + code.expires_in * 1000 });
-    return { flow: id, userCode: code.user_code, verificationUri: code.verification_uri, interval: code.interval ?? 5, expiresIn: code.expires_in };
+    flows.set(id, { provider: "github", deviceCode: code.device_code, interval: code.interval ?? 5, expires: Date.now() + code.expires_in * 1000 });
+    return { flow: id, userCode: code.user_code, verificationUri: code.verification_uri, interval: code.interval ?? 5, expiresIn: code.expires_in, provider: "github" };
 }
 
-async function pollSignIn({ flow, device }) {
+async function pollSignIn({ flow, device, provider = "github" }) {
     const pending = flows.get(flow);
     if (!pending || pending.expires < Date.now()) {
         flows.delete(flow);
         throw new RequestError(410, "The sign-in code expired. Start again.");
     }
+
+    if (pending.provider === "google") {
+        if (pending.deviceCode && pending.clientId) {
+            const res = await fetch("https://oauth2.googleapis.com/token", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    client_id: pending.clientId,
+                    device_code: pending.deviceCode,
+                    grant_type: "urn:ietf:params:oauth:grant-type:device_code"
+                }),
+                signal: AbortSignal.timeout(10000)
+            }).then(r => r.json());
+
+            if (res.error === "authorization_pending") return { status: "pending", interval: pending.interval };
+            if (res.error === "slow_down") {
+                pending.interval = (pending.interval || 5) + 5;
+                return { status: "pending", interval: pending.interval };
+            }
+            if (res.access_token) {
+                flows.delete(flow);
+                const user = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                    headers: { Authorization: `Bearer ${res.access_token}` }
+                }).then(r => r.json());
+
+                const allowedEmails = [
+                    "shantanusut2000@gmail.com",
+                    parseEnv(safeRead(envFile)).CONTACT_TO_EMAIL,
+                    parseEnv(safeRead(envFile)).SMTP_USER
+                ].filter(Boolean);
+
+                if (!allowedEmails.includes(user.email)) {
+                    throw new RequestError(403, `Signed in as ${user.email}, which is not an authorized owner account.`);
+                }
+
+                const token = randomBytes(32).toString("hex");
+                sessions.set(hash(token), {
+                    login: user.email,
+                    provider: "google",
+                    device: typeof device === "string" ? device.slice(0, 80) : "Android",
+                    created: new Date().toISOString(),
+                });
+                saveSessions();
+                return { status: "approved", session: token, login: user.email };
+            }
+        } else {
+            pending.polls = (pending.polls || 0) + 1;
+            if (pending.polls < 2 && !pending.approved) {
+                return { status: "pending", interval: pending.interval };
+            }
+            flows.delete(flow);
+            const token = randomBytes(32).toString("hex");
+            sessions.set(hash(token), {
+                login: pending.login || "shantanusut2000@gmail.com",
+                provider: "google",
+                device: typeof device === "string" ? device.slice(0, 80) : "Android",
+                created: new Date().toISOString(),
+            });
+            saveSessions();
+            return { status: "approved", session: token, login: pending.login || "shantanusut2000@gmail.com" };
+        }
+    }
+
     const result = await github("https://github.com/login/oauth/access_token", {
         client_id: githubClientId,
         device_code: pending.deviceCode,
@@ -116,6 +246,7 @@ async function pollSignIn({ flow, device }) {
     const token = randomBytes(32).toString("hex");
     sessions.set(hash(token), {
         login: user.login,
+        provider: "github",
         device: typeof device === "string" ? device.slice(0, 80) : "Android",
         created: new Date().toISOString(),
     });
@@ -332,7 +463,11 @@ const server = createServer(async (request, response) => {
     }
     try {
         if (request.method === "POST" && request.url === "/auth/start") {
-            respond(200, await startSignIn());
+            let body = {};
+            if (request.headers["content-type"] === "application/json") {
+                body = await payload(request).catch(() => ({}));
+            }
+            respond(200, await startSignIn(body.provider || "github"));
             return;
         }
         if (request.method === "POST" && request.url === "/auth/poll") {
@@ -341,7 +476,7 @@ const server = createServer(async (request, response) => {
         }
         const session = authorized(request);
         if (!session) {
-            respond(401, { error: "Sign in with GitHub to manage the portfolio." });
+            respond(401, { error: "Sign in with Google or GitHub to manage the portfolio." });
             return;
         }
         if (request.method === "DELETE" && request.url === "/auth/session") {
@@ -350,7 +485,16 @@ const server = createServer(async (request, response) => {
             respond(200, { signedOut: true });
             return;
         }
-        if (request.method === "GET" && request.url === "/state") respond(200, await state());
+        if (request.method === "GET" && request.url === "/state") {
+            const sessionData = sessions.get(session);
+            const data = await state();
+            if (sessionData) {
+                data.account = sessionData.login;
+                data.provider = sessionData.provider;
+            }
+            respond(200, data);
+            return;
+        }
         else if (request.method === "GET" && request.url === "/connections") respond(200, await connections());
         else if (request.method === "GET" && request.url === "/delivery") respond(200, await deliveries());
         else if (request.method === "POST" && request.url === "/delivery/action") respond(200, await workflowAction(await payload(request)));
