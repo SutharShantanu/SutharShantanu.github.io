@@ -6,7 +6,8 @@ import { AnimatePresence, MotionConfig, motion } from "framer-motion";
 import { Avatar, Button, Kbd, Modal, Skeleton } from "@heroui/react";
 import { ScrollProgress } from "../ui/motion";
 import { ProgressiveBlur } from "../ui/progressive-blur";
-import { SmoothScroll } from "../ui/smooth-scroll";
+import { SmoothScroll, useScrollTop } from "../ui/smooth-scroll";
+import { GlassCursor } from "../ui/glass-cursor";
 import {
     Briefcase,
     Download,
@@ -28,7 +29,33 @@ import dynamic from "next/dynamic";
 import Overview from "../sections/overview";
 
 // Only Overview is needed for first paint; other panels + palette load on demand (smaller initial JS).
-const PanelFallback = () => <Skeleton className="h-96 rounded-3xl" aria-busy="true" />;
+// Panel placeholder shaped like the real content: heading, then a responsive grid of cards.
+const PanelFallback = () => (
+    <div className="grid gap-4" aria-busy="true" aria-label="Loading">
+        <div className="grid gap-2">
+            <Skeleton className="h-5 w-48 rounded-lg" />
+            <Skeleton className="h-4 w-32 rounded-lg" />
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className={`grid content-start gap-3 rounded-3xl bg-surface p-4 ${i === 0 ? "sm:col-span-2" : ""}`}>
+                    <div className="flex items-center gap-3">
+                        <Skeleton className="size-10 shrink-0 rounded-xl" />
+                        <div className="grid flex-1 gap-2">
+                            <Skeleton className="h-3.5 w-3/4 rounded-md" />
+                            <Skeleton className="h-3 w-1/2 rounded-md" />
+                        </div>
+                    </div>
+                    <Skeleton className="h-24 rounded-2xl" />
+                    <div className="flex gap-2">
+                        <Skeleton className="h-7 w-20 rounded-full" />
+                        <Skeleton className="h-7 w-16 rounded-full" />
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+);
 const Projects = dynamic(() => import("../sections/projects"), { loading: PanelFallback });
 const Experience = dynamic(() => import("../sections/experience"), { loading: PanelFallback });
 const Skills = dynamic(() => import("../sections/skills"), { loading: PanelFallback });
@@ -53,11 +80,24 @@ export const NAV: { id: TabKey; label: string; icon: React.ComponentType<{ class
 
 const openExternal = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
 
-export function PortfolioShell({ data }: { data: PortfolioData }) {
-    const [tab, setTabState] = useState<TabKey>("overview");
+type ShellProps = { data: PortfolioData; visibility: Record<TabKey, boolean> };
+
+export function PortfolioShell({ data, visibility }: ShellProps) {
+    return (
+        <SmoothScroll>
+            <Shell data={data} visibility={visibility} />
+        </SmoothScroll>
+    );
+}
+
+function Shell({ data, visibility }: ShellProps) {
+    const visibleNav = NAV.filter(({ id }) => visibility[id]);
+    const firstTab = NAV.find(({ id }) => visibility[id])?.id ?? "overview";
+    const scrollTop = useScrollTop();
+    const [tab, setTabState] = useState<TabKey>(firstTab);
     // +1 when moving right along the dock, -1 when moving left (drives slide direction).
     const [direction, setDirection] = useState(1);
-    const tabRef = useRef<TabKey>("overview");
+    const tabRef = useRef<TabKey>(firstTab);
     const changeTab = useCallback((next: TabKey) => {
         const index = (key: TabKey) => NAV.findIndex((n) => n.id === key);
         setDirection(index(next) >= index(tabRef.current) ? 1 : -1);
@@ -67,24 +107,27 @@ export function PortfolioShell({ data }: { data: PortfolioData }) {
 
     // Deep-link tabs via URL hash (e.g. /#work) and keep the hash in sync.
     const setTab = useCallback((next: TabKey) => {
+        if (!visibility[next]) return;
         changeTab(next);
+        scrollTop();
         window.history.replaceState(null, "", next === "overview" ? window.location.pathname : `#${next}`);
-    }, [changeTab]);
+    }, [changeTab, scrollTop, visibility]);
     useEffect(() => {
         const sync = () => {
             const hash = window.location.hash.slice(1) as TabKey;
-            if (NAV.some((n) => n.id === hash)) changeTab(hash);
+            if (NAV.some(({ id }) => id === hash && visibility[id])) changeTab(hash);
+            else changeTab(firstTab);
         };
         sync();
         window.addEventListener("hashchange", sync);
         return () => window.removeEventListener("hashchange", sync);
-    }, [changeTab]);
+    }, [changeTab, firstTab, visibility]);
     const [paletteOpen, setPaletteOpen] = useState(false);
     const [resumeOpen, setResumeOpen] = useState(false);
     const { profile } = data;
 
     const PANELS: Record<TabKey, React.ReactNode> = {
-        overview: <Overview data={data} onNavigate={setTab} />,
+        overview: <Overview data={data} onNavigate={setTab} visibility={visibility} />,
         work: <Projects repos={data.repos} />,
         experience: <Experience roles={data.roles} certifications={data.certifications} />,
         skills: <Skills />,
@@ -102,8 +145,7 @@ export function PortfolioShell({ data }: { data: PortfolioData }) {
             >
                 Skip to content
             </a>
-            <SmoothScroll>
-                <div className="mx-auto w-full max-w-6xl px-3 pt-4 pb-32 sm:px-6 sm:pt-10">
+            <div className="mx-auto w-full max-w-6xl px-3 pt-4 pb-32 sm:px-6 sm:pt-10">
                     <motion.main
                         id="main"
                         initial={{ y: 16, scale: 0.99 }}
@@ -135,10 +177,10 @@ export function PortfolioShell({ data }: { data: PortfolioData }) {
                             </div>
                             <div className="flex shrink-0 items-center gap-2">
                                 <ThemeToggle />
-                                <Button size="sm" variant="primary" className="hidden sm:inline-flex" onPress={() => setTab("contact")}>
+                                {visibility.contact && <Button size="sm" variant="primary" className="hidden sm:inline-flex" onPress={() => setTab("contact")}>
                                     <Send className="size-3.5" />
                                     Hire me
-                                </Button>
+                                </Button>}
                             </div>
                         </header>
 
@@ -178,14 +220,13 @@ export function PortfolioShell({ data }: { data: PortfolioData }) {
                         </footer>
                     </motion.main>
                 </div>
-            </SmoothScroll>
-            {/* Fixed / portalled UI stays outside the smoothed (transformed) content */}
+            {/* Fixed / portalled UI */}
 
             {/* Content scrolling under the dock melts into blur instead of colliding with it */}
             <ProgressiveBlur position="bottom" className="fixed inset-x-0 bottom-0 z-30 h-28" />
             <Dock
                 groups={[
-                    NAV.map((n) => ({ ...n, active: tab === n.id, onPress: () => setTab(n.id) })),
+                    visibleNav.map((n) => ({ ...n, active: tab === n.id, onPress: () => setTab(n.id) })),
                     [
                         { id: "search", label: "Search (⌘K)", icon: Search, onPress: () => setPaletteOpen(true), desktopOnly: true },
                         { id: "resume", label: "Résumé", icon: FileText, onPress: () => setResumeOpen(true) },
@@ -202,9 +243,11 @@ export function PortfolioShell({ data }: { data: PortfolioData }) {
                 open={paletteOpen}
                 onOpenChange={setPaletteOpen}
                 onNavigate={setTab}
+                visibility={visibility}
                 onOpenResume={() => setResumeOpen(true)}
             />
             <ResumeDialog open={resumeOpen} onOpenChange={setResumeOpen} />
+            <GlassCursor />
         </MotionConfig>
     );
 }

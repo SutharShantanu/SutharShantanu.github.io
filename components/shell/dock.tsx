@@ -22,7 +22,7 @@ export interface DockItem {
 
 const spring = { type: "spring", stiffness: 380, damping: 30 } as const;
 
-function DockButton({ item }: { item: DockItem }) {
+function DockButton({ item, compact }: { item: DockItem; compact: boolean }) {
     const Icon = item.icon;
     return (
         <motion.div layout transition={spring} className={`relative shrink-0 ${item.desktopOnly ? "hidden sm:block" : ""}`}>
@@ -36,7 +36,7 @@ function DockButton({ item }: { item: DockItem }) {
                     </div>
                 </motion.div>
             )}
-            <Tooltip delay={150} closeDelay={0} isDisabled={item.active}>
+            <Tooltip delay={150} closeDelay={0} isDisabled={item.active && !compact}>
                 <Button
                     variant="ghost"
                     aria-label={item.label}
@@ -48,7 +48,7 @@ function DockButton({ item }: { item: DockItem }) {
                         <Icon className="size-5" />
                     </motion.span>
                     <AnimatePresence initial={false}>
-                        {item.active && (
+                        {item.active && !compact && (
                             <motion.span
                                 key="label"
                                 initial={{ width: 0, opacity: 0, marginLeft: 0 }}
@@ -72,24 +72,24 @@ function DockButton({ item }: { item: DockItem }) {
 
 /** Floating glass dock. `groups` are separated by a divider. */
 export function Dock({ groups }: { groups: DockItem[][] }) {
-    // Scroll-aware: tuck away while scrolling down, return on scroll up (or near the top).
+    // Scroll-aware: shrink to a compact icon bar while scrolling down, expand on scroll up. Never hides.
     const { scrollY } = useScroll();
-    const [hidden, setHidden] = useState(false);
+    const [compact, setCompact] = useState(false);
     useMotionValueEvent(scrollY, "change", (y) => {
         const prev = scrollY.getPrevious() ?? 0;
         if (Math.abs(y - prev) < 4) return;
-        setHidden(y > prev && y > 160);
+        setCompact(y > prev && y > 160);
     });
 
     return (
         <motion.nav
             aria-label="Portfolio navigation"
             initial={{ y: 80, opacity: 0 }}
-            animate={hidden ? { y: 96, opacity: 0 } : { y: 0, opacity: 1 }}
+            animate={compact ? { y: 6, scale: 0.88, opacity: 1 } : { y: 0, scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
-            onFocusCapture={() => setHidden(false)}
-            style={{ pointerEvents: hidden ? "none" : undefined }}
-            className="fixed inset-x-0 bottom-3 z-40 flex justify-center px-2 sm:bottom-4 sm:px-3"
+            onFocusCapture={() => setCompact(false)}
+            onPointerEnter={() => setCompact(false)}
+            className="fixed inset-x-0 bottom-3 z-40 flex origin-bottom justify-center px-2 sm:bottom-4 sm:px-3"
         >
             <motion.div
                 layout
@@ -106,7 +106,7 @@ export function Dock({ groups }: { groups: DockItem[][] }) {
                             />
                         )}
                         {group.map((item) => (
-                            <DockButton key={item.id} item={item} />
+                            <DockButton key={item.id} item={item} compact={compact} />
                         ))}
                     </React.Fragment>
                 ))}

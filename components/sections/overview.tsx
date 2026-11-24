@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Card, Chip, Skeleton } from "@heroui/react";
-import { ArrowUpRight, Github, Linkedin, Mail, Quote } from "@/components/icons";
+import { Avatar, Card, Chip, Skeleton } from "@heroui/react";
+import { ArrowUpRight, Briefcase, FolderGit2, GitCommitHorizontal, Github, Linkedin, Mail, Quote, Star, Users } from "@/components/icons";
 import dynamic from "next/dynamic";
 import { Signature } from "../signature";
 import { motion } from "framer-motion";
@@ -20,15 +20,22 @@ const LanguageChart = dynamic(() => import("./language-chart"), {
 
 const CORE_STACK = ["Next.js", "React 19", "TypeScript", "HeroUI v3", "Tailwind CSS v4", "TanStack Query", "Framer Motion", "Zod", "Node.js", "Express", "MongoDB"];
 
-function StatTile({ label, value, suffix, chip }: { label: string; value: number; suffix?: string; chip: string }) {
+type IconType = React.ComponentType<{ className?: string }>;
+
+/** Stat card: label + icon on top, big number + chip pinned to the bottom, faint watermark icon fills tall cells. */
+function StatTile({ label, value, suffix, chip, icon: Icon }: { label: string; value: number; suffix?: string; chip: string; icon: IconType }) {
     return (
         <Tile>
-            <Card className="h-full justify-between">
-                <Card.Header>
+            <Card className="relative flex h-full flex-col overflow-hidden">
+                <Icon aria-hidden="true" className="pointer-events-none absolute -right-4 -bottom-4 size-28 text-foreground/[0.04]" />
+                <Card.Header className="flex flex-row items-center justify-between gap-2">
                     <Card.Description>{label}</Card.Description>
+                    <motion.span variants={hoverIcon} className="grid size-8 place-items-center rounded-xl bg-default">
+                        <Icon className="size-4 text-foreground" />
+                    </motion.span>
                 </Card.Header>
-                <Card.Content className="flex flex-col items-start gap-2">
-                    <span className="whitespace-nowrap font-display text-3xl font-semibold tabular-nums text-foreground">
+                <Card.Content className="flex flex-1 flex-col items-start justify-end gap-2">
+                    <span className="whitespace-nowrap font-display text-4xl font-semibold tracking-tight tabular-nums text-foreground">
                         <CountUp value={value} suffix={suffix} />
                     </span>
                     <Chip size="sm" variant="soft" color="success">
@@ -40,7 +47,7 @@ function StatTile({ label, value, suffix, chip }: { label: string; value: number
     );
 }
 
-function LinkTile({ title, note, href, icon: Icon }: { title: string; note: string; href: string; icon: React.ComponentType<{ className?: string }> }) {
+function LinkTile({ title, note, href, icon: Icon }: { title: string; note: string; href: string; icon: IconType }) {
     return (
         <Tile>
             <a
@@ -76,7 +83,7 @@ function LinkTile({ title, note, href, icon: Icon }: { title: string; note: stri
  *   [ Stack 2x1      ][ Quote 2x1     ]
  *   [ GitHub ][ LinkedIn ][ Email ][ Contributions ]
  */
-export default function Overview({ data, onNavigate }: { data: PortfolioData; onNavigate: (tab: TabKey) => void }) {
+export default function Overview({ data, onNavigate, visibility }: { data: PortfolioData; onNavigate: (tab: TabKey) => void; visibility: Record<TabKey, boolean> }) {
     const { profile, github, roles, recommendations } = data;
     const current = roles.find((r) => r.isCurrent) ?? roles[0];
     const quote = recommendations[0];
@@ -102,10 +109,10 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
                 </Card>
             </Tile>
 
-            <StatTile label="Experience" value={profile.experienceYears} suffix="+ yrs" chip="Since 2022" />
-            <StatTile label="Public repos" value={github.publicRepos} chip="GitHub" />
+            <StatTile label="Experience" value={profile.experienceYears} suffix="+ yrs" chip="Since 2022" icon={Briefcase} />
+            <StatTile label="Public repos" value={github.publicRepos} chip="GitHub" icon={FolderGit2} />
 
-            {current && (
+            {visibility.experience && current && (
                 <Tile className="col-span-2">
                     <button
                         type="button"
@@ -134,8 +141,8 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
             <Tile className="col-span-2">
                 <LanguageChart languages={github.languages} />
             </Tile>
-            <StatTile label="GitHub stars" value={github.totalStars} chip="All time" />
-            <StatTile label="LinkedIn followers" value={profile.followers} chip="Network" />
+            <StatTile label="GitHub stars" value={github.totalStars} chip="All time" icon={Star} />
+            <StatTile label="LinkedIn followers" value={profile.followers} chip="Network" icon={Users} />
 
             <Tile className="col-span-2">
                 <Card className="h-full">
@@ -156,7 +163,7 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
                 </Card>
             </Tile>
 
-            {quote && (
+            {visibility.social && quote && (
                 <Tile className="col-span-2">
                     <button
                         type="button"
@@ -164,12 +171,32 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
                         className="block h-full w-full rounded-3xl text-left outline-none focus-visible:ring-2 focus-visible:ring-focus"
                     >
                         <Card className="h-full">
-                            <Card.Content className="grid gap-2">
+                            <Card.Content className="flex h-full flex-col gap-4">
                                 <Quote className="size-5 text-muted" />
-                                <p className="line-clamp-3 font-serif text-lg leading-snug text-foreground italic">{quote.text}</p>
-                                <p className="font-mono text-xs text-muted">
-                                    @{quote.username} · {recommendations.length} LinkedIn recommendations →
-                                </p>
+                                <p className="font-serif text-lg leading-snug text-pretty text-foreground italic">&ldquo;{quote.text}&rdquo;</p>
+                                <div className="mt-auto flex items-center gap-3 border-t border-separator pt-3">
+                                    <Avatar size="sm" className="shrink-0">
+                                        <Avatar.Fallback className="font-display text-xs font-semibold">
+                                            {quote.name
+                                                .split(" ")
+                                                .map((w) => w[0])
+                                                .slice(0, 2)
+                                                .join("")}
+                                        </Avatar.Fallback>
+                                    </Avatar>
+                                    <div className="min-w-0 flex-1">
+                                        <p className="truncate font-display text-sm font-semibold text-foreground">{quote.name}</p>
+                                        <p className="flex items-center gap-1 text-xs text-muted">
+                                            <Linkedin className="size-3" /> Recommendation on LinkedIn
+                                        </p>
+                                    </div>
+                                    <span className="inline-flex shrink-0 items-center gap-1 text-xs text-muted">
+                                        +{recommendations.length - 1} more
+                                        <motion.span variants={hoverArrow}>
+                                            <ArrowUpRight className="size-3.5" />
+                                        </motion.span>
+                                    </span>
+                                </div>
                             </Card.Content>
                         </Card>
                     </button>
@@ -179,7 +206,7 @@ export default function Overview({ data, onNavigate }: { data: PortfolioData; on
             <LinkTile title="GitHub" note={`@${github.login}`} href={github.url} icon={Github} />
             <LinkTile title="LinkedIn" note={`${profile.connections}+ connections`} href={profile.linkedinUrl} icon={Linkedin} />
             <LinkTile title="Email" note={EMAIL} href={`mailto:${EMAIL}`} icon={Mail} />
-            <StatTile label="Contributions" value={github.contributionTotal} chip="GitHub" />
+            <StatTile label="Contributions" value={github.contributionTotal} chip="All time" icon={GitCommitHorizontal} />
         </Bento>
     );
 }

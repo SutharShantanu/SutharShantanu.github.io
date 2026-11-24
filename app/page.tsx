@@ -1,3 +1,4 @@
+import visibility from "@/config/portfolio-visibility.json";
 import { PortfolioShell } from "@/components/shell/portfolio-shell";
 import { LINKEDIN_USERNAME, NEXT_GITHUB_USERNAME } from "@/components/sections/constants/social.constant";
 import { getPortfolioData } from "@/lib/portfolio-data";
@@ -29,7 +30,7 @@ export default async function Home() {
         // JSON.stringify output is safe here; escape "<" so data can never close the script tag.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <PortfolioShell data={data} />
+      <PortfolioShell data={data} visibility={visibility} />
     </>
   );
 }

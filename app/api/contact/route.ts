@@ -1,257 +1,229 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
-import { rateLimiter } from "@/lib/rate-limiter"
+import { rateLimiter, emailRateLimiter } from "@/lib/rate-limiter"
 import { detectSpam } from "@/lib/spam-detector"
 import { getClientIP, createFingerprint } from "@/lib/ip-utils"
+import { sendContactEmails } from "@/lib/nodemailer"
 
 const contactFormSchema = z.object({
-    name: z.string().min(2).max(50),
-    email: z.string().email(),
-    subject: z.string().min(5).max(100),
-    message: z.string().min(10).max(1000),
-    // Honeypot fields - should be empty
+    name: z.string().trim().min(2, "Name must be at least 2 characters").max(50, "Name must not exceed 50 characters"),
+    email: z.string().trim().email("Please enter a valid email address"),
+    subject: z.string().trim().min(3, "Subject is required").max(100, "Subject must not exceed 100 characters"),
+    message: z.string().trim().min(10, "Message must be at least 10 characters").max(2000, "Message must not exceed 2000 characters"),
+    // Honeypot fields - expected to remain empty
     website: z.string().optional(),
     phone: z.string().optional(),
-    // Timestamp for form submission time validation
+    companyFax: z.string().optional(),
+    _gotcha: z.string().optional(),
+    // Submission timing
     formStartTime: z.number().optional(),
 })
 
 const MAX_BODY_BYTES = 10_000
 
-/** Escape user input before it goes into the notification email's HTML. */
-const escapeHtml = (value: string) =>
-    value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!)
-
 export async function POST(request: NextRequest) {
     try {
-        // Get client information
+        // 1. Client IP and fingerprinting
         const clientIP = getClientIP(request)
         const fingerprint = createFingerprint(request)
 
-
-        // Rate limiting check
-        const rateLimitResult = rateLimiter.isAllowed(fingerprint)
-        if (!rateLimitResult.allowed) {
-            const remainingTime = rateLimiter.getRemainingTime(fingerprint)
+        // 2. IP Rate limiting check (Sliding Window)
+        const ipRateLimit = rateLimiter.check(fingerprint)
+        if (!ipRateLimit.allowed) {
+            const minutesLeft = Math.ceil(ipRateLimit.retryAfterSeconds / 60)
             return NextResponse.json(
                 {
                     error: "Too many requests",
-                    message: `Please wait ${Math.ceil(remainingTime / 60)} minutes before submitting again.`,
-                    retryAfter: remainingTime,
+                    message: `Please wait ${minutesLeft} minute(s) before submitting again.`,
+                    retryAfter: ipRateLimit.retryAfterSeconds,
                 },
                 {
                     status: 429,
                     headers: {
-                        "Retry-After": remainingTime.toString(),
+                        "Retry-After": ipRateLimit.retryAfterSeconds.toString(),
+                        "X-RateLimit-Limit": ipRateLimit.limit.toString(),
+                        "X-RateLimit-Remaining": "0",
+                        "X-RateLimit-Reset": Math.ceil(ipRateLimit.resetTime / 1000).toString(),
                     },
-                },
+                }
             )
         }
 
-        // Reject oversized bodies before parsing
-        if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
-            return NextResponse.json({ error: "Payload too large" }, { status: 413 })
+        // 3. Body size check before parsing
+        const contentLength = Number(request.headers.get("content-length") ?? 0)
+        if (contentLength > MAX_BODY_BYTES) {
+            return NextResponse.json(
+                { error: "Payload too large", message: "Request payload exceeds allowed limit." },
+                { status: 413 }
+            )
         }
 
-        // Parse request body
-        let body
+        // 4. Safe body JSON parsing
+        let body: unknown
         try {
             const raw = await request.text()
             if (raw.length > MAX_BODY_BYTES) {
-                return NextResponse.json({ error: "Payload too large" }, { status: 413 })
+                return NextResponse.json(
+                    { error: "Payload too large", message: "Request payload exceeds allowed limit." },
+                    { status: 413 }
+                )
             }
             body = JSON.parse(raw)
         } catch {
-            return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 })
-        }
-
-        // Validate the request body
-        let validatedData
-        try {
-            validatedData = contactFormSchema.parse(body)
-        } catch (validationError) {
-            if (validationError instanceof z.ZodError) {
-                return NextResponse.json(
-                    {
-                        error: "Invalid form data",
-                        details: validationError.issues,
-                    },
-                    { status: 400 },
-                )
-            }
-
-            return NextResponse.json({ error: "Validation failed" }, { status: 400 })
-        }
-
-        // Honeypot validation
-        if (validatedData.website || validatedData.phone) {
-            // Return success to not reveal the honeypot
             return NextResponse.json(
-                {
-                    message: "Thank you for your message. We'll get back to you soon.",
-                },
-                { status: 200 },
+                { error: "Invalid JSON", message: "Invalid request payload format." },
+                { status: 400 }
             )
         }
 
-        // Form timing validation (prevent too fast submissions)
-        if (validatedData.formStartTime) {
-            const submissionTime = Date.now()
-            const timeTaken = submissionTime - validatedData.formStartTime
+        // 5. Schema validation
+        const parsed = contactFormSchema.safeParse(body)
+        if (!parsed.success) {
+            return NextResponse.json(
+                {
+                    error: "Invalid form data",
+                    message: parsed.error.issues[0]?.message || "Validation failed",
+                    details: parsed.error.issues,
+                },
+                { status: 400 }
+            )
+        }
 
-            // If form was submitted in less than 3 seconds, it's likely a bot
-            if (timeTaken < 3000) {
+        const data = parsed.data
 
-                // Return success to not reveal the detection
+        // 6. Recipient Email Rate Limiting (Prevents email bombing a single recipient inbox)
+        const emailRateLimit = emailRateLimiter.check(data.email.toLowerCase())
+        if (!emailRateLimit.allowed) {
+            return NextResponse.json(
+                {
+                    error: "Too many requests",
+                    message: "Too many submissions received for this email address. Please try again later.",
+                    retryAfter: emailRateLimit.retryAfterSeconds,
+                },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": emailRateLimit.retryAfterSeconds.toString(),
+                    },
+                }
+            )
+        }
+
+        // 7. Bot Honeypot Check
+        // If any honeypot input is filled, return silent 200 so the bot believes it succeeded
+        const hasHoneypot = Boolean(
+            data.website?.trim() ||
+            data.phone?.trim() ||
+            data.companyFax?.trim() ||
+            data._gotcha?.trim()
+        )
+
+        if (hasHoneypot) {
+            return NextResponse.json(
+                {
+                    success: true,
+                    message: "Thank you for your message. We'll get back to you soon.",
+                    confirmationSent: false,
+                },
+                { status: 200 }
+            )
+        }
+
+        // 8. Bot Timing Check (Submitting too fast or tampered clock)
+        if (data.formStartTime) {
+            const now = Date.now()
+            const timeTaken = now - data.formStartTime
+
+            // If filled in less than 2.5 seconds or future timestamp (> 5s) or older than 24 hours
+            if (timeTaken < 2500 || data.formStartTime > now + 5000 || timeTaken > 86_400_000) {
                 return NextResponse.json(
                     {
+                        success: true,
                         message: "Thank you for your message. We'll get back to you soon.",
+                        confirmationSent: false,
                     },
-                    { status: 200 },
+                    { status: 200 }
                 )
             }
         }
 
-        // Spam detection
+        // 9. Heuristic Spam Detection
         const spamCheck = detectSpam({
-            name: validatedData.name,
-            email: validatedData.email,
-            subject: validatedData.subject,
-            message: validatedData.message,
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.message,
         })
 
         if (spamCheck.isSpam) {
-            // Return a generic success message to not reveal spam detection
+            // Silently return success to avoid leaking spam detection criteria
             return NextResponse.json(
                 {
+                    success: true,
                     message: "Thank you for your message. We'll review it and get back to you soon.",
+                    confirmationSent: false,
                 },
-                { status: 200 },
+                { status: 200 }
             )
         }
 
-        // Check if SMTP credentials are available
+        // 10. Check SMTP Configuration
         if (!process.env.SMTP_HOST || !process.env.SMTP_USER) {
-
-            // Simulate email sending for development
-            await new Promise((resolve) => setTimeout(resolve, 1000))
+            // Simulated mode for local development without credentials
+            await new Promise((resolve) => setTimeout(resolve, 800))
 
             return NextResponse.json(
                 {
-                    message: "Email sent successfully (simulated)",
+                    success: true,
+                    simulated: true,
+                    confirmationSent: true,
+                    message: "Message sent successfully (simulated mode). A confirmation email would be sent to your inbox in production.",
                     id: `sim_${Date.now()}`,
                 },
-                { status: 200 },
+                { status: 200 }
             )
         }
 
-        // Send email with Nodemailer
-        try {
-            const { sendMail } = await import("@/lib/nodemailer")
+        // 11. Send Both Notification and Confirmation Emails
+        const emailResult = await sendContactEmails({
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.message,
+            clientIP,
+            spamScore: spamCheck.score,
+        })
 
-            // Get email configuration from environment variables
-            const fromEmail = process.env.SMTP_USER || "shantanusut2000@gmail.com"
-            const toEmail = process.env.CONTACT_TO_EMAIL || "shantanusut2000@gmail.com"
-            const siteName = process.env.SITE_NAME || "Portfolio Website"
-
-            const safe = {
-                name: escapeHtml(validatedData.name),
-                email: escapeHtml(validatedData.email),
-                subject: escapeHtml(validatedData.subject),
-                message: escapeHtml(validatedData.message),
-                siteName: escapeHtml(siteName),
-            }
-            const mailtoEmail = encodeURIComponent(validatedData.email)
-            const mailtoSubject = encodeURIComponent(`Re: ${validatedData.subject}`)
-
-            // Send email to you
-            const result = await sendMail({
-                from: `${siteName} <${fromEmail}>`,
-                to: toEmail,
-                subject: `${siteName} Contact: ${validatedData.subject.replace(/[\r\n]+/g, " ")}`,
-                html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
-            <!-- Header -->
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
-              <h1 style="color: white; margin: 0; font-size: 24px;">New Contact Form Message</h1>
-              <p style="color: #e0e7ff; margin: 10px 0 0 0;">From ${safe.siteName}</p>
-            </div>
-
-            <!-- Content -->
-            <div style="padding: 30px;">
-              <!-- Contact Details -->
-              <div style="background-color: #f8fafc; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #667eea;">
-                <h2 style="color: #1e293b; margin: 0 0 20px 0; font-size: 18px;">Contact Information</h2>
-                <div style="display: grid; gap: 12px;">
-                  <div style="display: flex; align-items: center;">
-                    <span style="font-weight: 600; color: #475569; min-width: 80px;">Name:</span>
-                    <span style="color: #1e293b;">${safe.name}</span>
-                  </div>
-                  <div style="display: flex; align-items: center;">
-                    <span style="font-weight: 600; color: #475569; min-width: 80px;">Email:</span>
-                    <a href="mailto:${mailtoEmail}" style="color: #667eea; text-decoration: none;">${safe.email}</a>
-                  </div>
-                  <div style="display: flex; align-items: center;">
-                    <span style="font-weight: 600; color: #475569; min-width: 80px;">Subject:</span>
-                    <span style="color: #1e293b;">${safe.subject}</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Message -->
-              <div style="background-color: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 25px;">
-                <h2 style="color: #1e293b; margin: 0 0 15px 0; font-size: 18px;">Message</h2>
-                <div style="color: #475569; line-height: 1.6; white-space: pre-wrap; font-size: 15px;">${safe.message}</div>
-              </div>
-
-              <!-- Quick Actions -->
-              <div style="background-color: #f1f5f9; padding: 20px; border-radius: 12px; text-align: center;">
-                <p style="margin: 0 0 15px 0; color: #64748b; font-size: 14px;">Quick Actions</p>
-                <a href="mailto:${mailtoEmail}?subject=${mailtoSubject}"
-                   style="display: inline-block; background-color: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; margin: 0 8px;">
-                  Reply via Email
-                </a>
-              </div>
-            </div>
-
-            <!-- Footer -->
-            <div style="background-color: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0;">
-              <p style="margin: 0; color: #64748b; font-size: 12px;">
-                📧 Sent from ${safe.siteName} contact form<br>
-                🕒 ${new Date().toLocaleString()}<br>
-                🌐 IP: ${clientIP} | Spam Score: ${spamCheck.score}/100
-              </p>
-            </div>
-          </div>
-        `,
-                replyTo: validatedData.email,
-            })
-
-            return NextResponse.json(
-                {
-                    message: "Message sent successfully! I'll get back to you soon.",
-                    id: result.id,
-                },
-                { status: 200 },
-            )
-        } catch (emailError) {
-            console.log("Nodemailer integration error:", emailError)
+        if (!emailResult.notificationSent) {
             return NextResponse.json(
                 {
                     error: "Email service temporarily unavailable",
-                    message: "Please try again in a few minutes or contact me directly.",
+                    message: "Unable to deliver your message at this time. Please try again shortly or contact me directly via email.",
                 },
-                { status: 500 },
+                { status: 500 }
             )
         }
-    } catch (error) {
-        console.log("Unexpected error in contact API:", error)
+
+        return NextResponse.json(
+            {
+                success: true,
+                simulated: false,
+                confirmationSent: emailResult.confirmationSent,
+                message: emailResult.confirmationSent
+                    ? "Message sent successfully! A confirmation email has been sent to your inbox."
+                    : "Message sent successfully to Shantanu! I'll get back to you soon.",
+                id: emailResult.notificationId,
+            },
+            { status: 200 }
+        )
+    } catch (err) {
+        console.error("Unexpected error in contact API:", err)
         return NextResponse.json(
             {
                 error: "Internal server error",
-                message: "Something went wrong. Please try again later.",
+                message: "An unexpected error occurred. Please try again later.",
             },
-            { status: 500 },
+            { status: 500 }
         )
     }
 }

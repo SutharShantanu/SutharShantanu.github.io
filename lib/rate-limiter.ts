@@ -1,67 +1,130 @@
-// Simple in-memory rate limiter for demonstration
-// In production, use Redis or a database for persistence across server restarts
+// Sliding-window rate limiter
+// In production with multiple serverless instances, this in-memory cache provides
+// per-instance protection. For distributed rate-limiting across multi-region serverless,
+// Upstash Redis can be plugged in as an adapter.
 
-interface RateLimitEntry {
-    count: number
-    resetTime: number
+export interface RateLimitResult {
+    allowed: boolean
+    limit: number
+    remaining: number
+    resetTime: number // Unix timestamp (ms)
+    retryAfterSeconds: number
 }
 
-class RateLimiter {
-    private limits = new Map<string, RateLimitEntry>()
-    private readonly maxRequests: number
-    private readonly windowMs: number
+export class RateLimiter {
+    private limits = new Map<string, { timestamps: number[] }>()
+    private readonly defaultMaxRequests: number
+    private readonly defaultWindowMs: number
 
-    constructor (maxRequests = 5, windowMs: number = 15 * 60 * 1000) {
-        // Default: 5 requests per 15 minutes
-        this.maxRequests = maxRequests
-        this.windowMs = windowMs
+    constructor(defaultMaxRequests = 5, defaultWindowMs = 15 * 60 * 1000) {
+        this.defaultMaxRequests = defaultMaxRequests
+        this.defaultWindowMs = defaultWindowMs
     }
 
-    isAllowed(identifier: string): { allowed: boolean; resetTime?: number } {
+    /**
+     * Check if a request from this identifier is allowed under the sliding window.
+     */
+    check(
+        identifier: string,
+        maxRequests = this.defaultMaxRequests,
+        windowMs = this.defaultWindowMs
+    ): RateLimitResult {
         const now = Date.now()
-        // ponytail: in-memory + per-instance; move to Redis/Upstash if multiple instances need a shared limit
+        const windowStart = now - windowMs
+
+        // Evict stale keys when map grows
         if (this.limits.size > 1000) {
-            for (const [key, value] of this.limits) if (now > value.resetTime) this.limits.delete(key)
-        }
-        const entry = this.limits.get(identifier)
-
-        // Clean up expired entries
-        if (entry && now > entry.resetTime) {
-            this.limits.delete(identifier)
+            this.cleanup(windowMs)
         }
 
-        const currentEntry = this.limits.get(identifier)
+        const entry = this.limits.get(identifier) || { timestamps: [] }
+        // Keep only timestamps within the current sliding window
+        const validTimestamps = entry.timestamps.filter((t) => t > windowStart)
 
-        if (!currentEntry) {
-            // First request
-            this.limits.set(identifier, {
-                count: 1,
-                resetTime: now + this.windowMs,
-            })
-            return { allowed: true }
-        }
+        if (validTimestamps.length >= maxRequests) {
+            const earliest = validTimestamps[0]
+            const resetTime = earliest + windowMs
+            const retryAfterSeconds = Math.max(1, Math.ceil((resetTime - now) / 1000))
 
-        if (currentEntry.count >= this.maxRequests) {
+            this.limits.set(identifier, { timestamps: validTimestamps })
+
             return {
                 allowed: false,
-                resetTime: currentEntry.resetTime,
+                limit: maxRequests,
+                remaining: 0,
+                resetTime,
+                retryAfterSeconds,
             }
         }
 
-        // Increment count
-        currentEntry.count++
-        this.limits.set(identifier, currentEntry)
+        validTimestamps.push(now)
+        this.limits.set(identifier, { timestamps: validTimestamps })
 
-        return { allowed: true }
+        const earliest = validTimestamps[0]
+        const resetTime = earliest + windowMs
+        const remaining = Math.max(0, maxRequests - validTimestamps.length)
+
+        return {
+            allowed: true,
+            limit: maxRequests,
+            remaining,
+            resetTime,
+            retryAfterSeconds: 0,
+        }
     }
 
-    getRemainingTime(identifier: string): number {
-        const entry = this.limits.get(identifier)
-        if (!entry) return 0
+    /**
+     * Backwards-compatible check method.
+     */
+    isAllowed(identifier: string): { allowed: boolean; resetTime?: number } {
+        const res = this.check(identifier)
+        return {
+            allowed: res.allowed,
+            resetTime: res.allowed ? undefined : res.resetTime,
+        }
+    }
 
-        const remaining = entry.resetTime - Date.now()
-        return Math.max(0, Math.ceil(remaining / 1000)) // Return seconds
+    /**
+     * Remaining seconds until rate-limit bucket resets.
+     */
+    getRemainingTime(identifier: string): number {
+        const now = Date.now()
+        const entry = this.limits.get(identifier)
+        if (!entry || entry.timestamps.length === 0) return 0
+        const earliest = entry.timestamps[0]
+        const remaining = earliest + this.defaultWindowMs - now
+        return Math.max(0, Math.ceil(remaining / 1000))
+    }
+
+    /**
+     * Clean up expired entries across the map.
+     */
+    cleanup(maxAgeMs = this.defaultWindowMs): void {
+        const now = Date.now()
+        for (const [key, entry] of this.limits.entries()) {
+            const filtered = entry.timestamps.filter((t) => now - t < maxAgeMs)
+            if (filtered.length === 0) {
+                this.limits.delete(key)
+            } else {
+                this.limits.set(key, { timestamps: filtered })
+            }
+        }
+    }
+
+    /**
+     * Reset limits (for testing or manual administrative clearing).
+     */
+    reset(key?: string): void {
+        if (key) {
+            this.limits.delete(key)
+        } else {
+            this.limits.clear()
+        }
     }
 }
 
-export const rateLimiter = new RateLimiter()
+// 5 submissions per 15 minutes per IP
+export const rateLimiter = new RateLimiter(5, 15 * 60 * 1000)
+
+// 3 submissions per 30 minutes per target recipient email (prevents email bombing/flooding)
+export const emailRateLimiter = new RateLimiter(3, 30 * 60 * 1000)

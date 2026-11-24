@@ -9,7 +9,7 @@ export const ThemeProvider = ({
     ...props
 }: React.ComponentProps<typeof NextThemesProvider>) => {
     return (
-        <NextThemesProvider defaultTheme="mono" {...props}>
+        <NextThemesProvider {...props}>
             <Toast.Provider placement="top end" />
             {children}
         </NextThemesProvider>

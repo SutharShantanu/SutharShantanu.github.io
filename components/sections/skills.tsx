@@ -1,17 +1,45 @@
 "use client";
 
-import { RevealText } from "../ui/motion";
-
 import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Avatar, Card, Tabs } from "@heroui/react";
+import { motion } from "framer-motion";
+import { Card, Chip, Tabs } from "@heroui/react";
+import { Bento, RevealText, Tile } from "../ui/motion";
 import { SKILLS, type SkillCategory } from "./constants/skills.constant";
 
-const CATEGORIES: ("All" | SkillCategory)[] = ["All", "Frontend", "Backend", "Deployment", "Tools"];
+const CATEGORIES: { id: SkillCategory; note: string; span: string; cols: string }[] = [
+    // lg: Frontend fills two columns and three rows; the small categories stack beside it, AI spans the bottom.
+    { id: "Frontend", note: "Interfaces, design systems & motion", span: "lg:col-span-2 lg:row-span-3", cols: "grid-cols-3 sm:grid-cols-4" },
+    { id: "Backend", note: "APIs & data", span: "", cols: "grid-cols-3" },
+    { id: "Deployment", note: "Shipping & hosting", span: "", cols: "grid-cols-3" },
+    { id: "Tools", note: "Daily drivers", span: "", cols: "grid-cols-3" },
+    { id: "AI", note: "Agents & assistants I build with", span: "lg:col-span-3", cols: "grid-cols-3 sm:grid-cols-6" },
+];
+
+const spring = { type: "spring", stiffness: 420, damping: 24 } as const;
+
+function SkillTile({ title, icon }: { title: string; icon: string }) {
+    return (
+        <motion.li
+            className="flex min-w-0 flex-col items-center gap-2 rounded-2xl bg-default/60 px-2 py-3 text-center"
+            initial="rest"
+            animate="rest"
+            whileHover="hover"
+            variants={{ rest: { y: 0 }, hover: { y: -3, transition: spring } }}
+        >
+            <motion.span
+                className="grid size-11 place-items-center overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5"
+                variants={{ rest: { rotate: 0, scale: 1 }, hover: { rotate: -8, scale: 1.12, transition: spring } }}
+            >
+                {/* eslint-disable-next-line @next/next/no-img-element -- tiny local SVGs */}
+                <img src={icon} alt="" width={28} height={28} className="size-7 object-contain" draggable={false} />
+            </motion.span>
+            <span className="w-full truncate font-display text-xs font-medium text-foreground">{title}</span>
+        </motion.li>
+    );
+}
 
 export default function Skills() {
-    const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
-    const visible = category === "All" ? SKILLS : SKILLS.filter((s) => s.category === category);
+    const [focus, setFocus] = useState<"All" | SkillCategory>("All");
 
     return (
         <div className="grid grid-cols-1 gap-4">
@@ -20,53 +48,59 @@ export default function Skills() {
                     <h2 className="text-lg font-semibold text-foreground">
                         <RevealText text="Skills & technologies" />
                     </h2>
-                    <p className="font-hand text-lg text-muted">Tools I use across the stack</p>
+                    <p className="font-hand text-lg text-muted">{SKILLS.length} tools I use across the stack</p>
                 </div>
                 <div className="w-full min-w-0 overflow-x-auto [scrollbar-width:none] sm:w-auto">
-                <Tabs selectedKey={category} onSelectionChange={(k) => setCategory(k as typeof category)}>
-                    <Tabs.ListContainer className="max-w-full">
-                        <Tabs.List aria-label="Skill categories">
-                            {CATEGORIES.map((c) => (
-                                <Tabs.Tab key={c} id={c}>
-                                    {c}
-                                    <Tabs.Indicator />
-                                </Tabs.Tab>
-                            ))}
-                        </Tabs.List>
-                    </Tabs.ListContainer>
-                </Tabs>
+                    <Tabs selectedKey={focus} onSelectionChange={(k) => setFocus(k as typeof focus)}>
+                        <Tabs.ListContainer className="max-w-full">
+                            <Tabs.List aria-label="Highlight a skill category">
+                                {["All", ...CATEGORIES.map((c) => c.id)].map((c) => (
+                                    <Tabs.Tab key={c} id={c}>
+                                        {c}
+                                        <Tabs.Indicator />
+                                    </Tabs.Tab>
+                                ))}
+                            </Tabs.List>
+                        </Tabs.ListContainer>
+                    </Tabs>
                 </div>
             </div>
 
-            <motion.ul layout className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                <AnimatePresence mode="popLayout" initial={false}>
-                    {visible.map((skill, i) => (
-                        <motion.li
-                            key={skill.title}
-                            layout
-                            initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0, transition: { delay: i * 0.02, type: "spring", stiffness: 320, damping: 26 } }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            whileHover={{ y: -4, rotate: -1 }}
-                            // Bento rhythm: every 5th tile spans two columns on wide screens
-                            className={i % 5 === 0 ? "lg:col-span-2" : undefined}
-                        >
-                            <Card className="h-full">
-                                <Card.Content className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-3">
-                                    <Avatar size="md" className="shrink-0 bg-white p-1.5 dark:bg-white/90">
-                                        {skill.icon ? <Avatar.Image src={skill.icon} alt="" className="object-contain" /> : null}
-                                        <Avatar.Fallback>{skill.title.slice(0, 2)}</Avatar.Fallback>
-                                    </Avatar>
-                                    <div className="min-w-0">
-                                        <p className="font-display text-sm font-medium text-foreground sm:truncate">{skill.title}</p>
-                                        <p className="font-mono text-[11px] text-muted">{skill.category}</p>
-                                    </div>
-                                </Card.Content>
-                            </Card>
-                        </motion.li>
-                    ))}
-                </AnimatePresence>
-            </motion.ul>
+            {/* Picking a tab spotlights its card and dims the rest, so the layout never jumps. */}
+            <Bento className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                {CATEGORIES.map((cat) => {
+                    const items = SKILLS.filter((s) => s.category === cat.id);
+                    const dimmed = focus !== "All" && focus !== cat.id;
+                    return (
+                        <Tile key={cat.id} className={cat.span} lift={false}>
+                            <motion.div
+                                className="h-full"
+                                animate={{ opacity: dimmed ? 0.35 : 1, scale: dimmed ? 0.985 : 1, filter: dimmed ? "grayscale(1)" : "grayscale(0)" }}
+                                transition={{ duration: 0.25 }}
+                            >
+                                <Card className="h-full">
+                                    <Card.Header className="flex flex-row items-start justify-between gap-2">
+                                        <div>
+                                            <Card.Title>{cat.id}</Card.Title>
+                                            <Card.Description>{cat.note}</Card.Description>
+                                        </div>
+                                        <Chip size="sm" variant="soft">
+                                            {items.length}
+                                        </Chip>
+                                    </Card.Header>
+                                    <Card.Content>
+                                        <ul className={`grid gap-2 ${cat.cols}`} aria-label={`${cat.id} skills`}>
+                                            {items.map((s) => (
+                                                <SkillTile key={s.title} title={s.title} icon={s.icon} />
+                                            ))}
+                                        </ul>
+                                    </Card.Content>
+                                </Card>
+                            </motion.div>
+                        </Tile>
+                    );
+                })}
+            </Bento>
         </div>
     );
 }

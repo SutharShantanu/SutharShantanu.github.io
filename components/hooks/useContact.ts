@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "@heroui/react";
 
-// Updated subject field to accept only defined options
+// Subjects available in the contact form
 const allowedSubjects = ["general", "proposal", "feedback", "other"] as const;
 
 const contactFormSchema = z.object({
@@ -28,7 +28,7 @@ export type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export function useContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [formStartTime] = useState(() => Date.now());
+    const [formStartTime, setFormStartTime] = useState(() => Date.now());
 
     const form = useForm<ContactFormData>({
         resolver: zodResolver(contactFormSchema),
@@ -36,7 +36,7 @@ export function useContactForm() {
         defaultValues: {
             name: "",
             email: "",
-            subject: undefined, // Dropdown default (Select component handles placeholder)
+            subject: undefined,
             message: "",
         },
     });
@@ -45,14 +45,30 @@ export function useContactForm() {
         setIsSubmitting(true);
 
         try {
-            // Honeypots: real users never see these inputs; bots that fill them get a silent 200.
-            const formEl = event?.target instanceof HTMLFormElement ? event.target : null;
-            const honeypot = (name: string) => String(formEl ? (new FormData(formEl).get(name) ?? "") : "");
+            // Find form element to extract stealth honeypot fields
+            const formEl =
+                (event?.currentTarget instanceof HTMLFormElement ? event.currentTarget : null) ||
+                (event?.target instanceof HTMLFormElement ? event.target : null) ||
+                (typeof document !== "undefined"
+                    ? document.querySelector<HTMLFormElement>("form[aria-label='Contact form']")
+                    : null);
+
+            const getHoneypotValue = (name: string): string => {
+                if (!formEl) return "";
+                const element = formEl.elements.namedItem(name);
+                if (element instanceof HTMLInputElement) {
+                    return element.value.trim();
+                }
+                return "";
+            };
+
             const submissionData = {
                 ...data,
                 formStartTime,
-                website: honeypot("website"),
-                phone: honeypot("phone"),
+                website: getHoneypotValue("website"),
+                phone: getHoneypotValue("phone"),
+                companyFax: getHoneypotValue("companyFax"),
+                _gotcha: getHoneypotValue("_gotcha"),
             };
 
             const response = await fetch("/api/contact", {
@@ -61,36 +77,75 @@ export function useContactForm() {
                 body: JSON.stringify(submissionData),
             });
 
+            const result = await response.json().catch(() => null);
+
+            // Handle non-200 responses with dedicated toast styles according to status
             if (!response.ok) {
                 if (response.status === 429) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || "Too many requests. Please try again later.");
+                    // Rate limit triggered (IP or Email limit)
+                    toast.warning("Rate limit exceeded", {
+                        description:
+                            result?.message ||
+                            "You have submitted multiple requests recently. Please wait before trying again.",
+                    });
+                    return;
                 }
 
-                let errorMessage = "Failed to send message.";
-                try {
-                    const errorData = await response.json();
-                    errorMessage = errorData.error || errorMessage;
-                } catch {
-                    errorMessage = `Server error: ${response.status} ${response.statusText}`;
+                if (response.status === 413) {
+                    // Message too large
+                    toast.danger("Message too large", {
+                        description: result?.message || "Please shorten your message and try again.",
+                    });
+                    return;
                 }
 
-                throw new Error(errorMessage);
+                if (response.status === 400) {
+                    // Validation failure
+                    toast.danger("Validation error", {
+                        description:
+                            result?.message || "Please double-check the form fields and try again.",
+                    });
+                    return;
+                }
+
+                // 500 / 503 / others
+                toast.danger("Delivery failed", {
+                    description:
+                        result?.message ||
+                        "Unable to send your message right now. Please try reaching out directly via email.",
+                });
+                return;
             }
 
-            await response.json();
+            // Status 200 OK: Check confirmation email status
+            if (result?.simulated) {
+                toast.info("Message sent (Simulation)", {
+                    description:
+                        "Development environment: Email sending and confirmation receipt were simulated.",
+                });
+            } else if (result?.confirmationSent) {
+                toast.success("Message sent successfully!", {
+                    description: `A confirmation email has been sent to ${data.email}. I'll get back to you soon.`,
+                });
+            } else {
+                toast.success("Message received!", {
+                    description:
+                        result?.message || "Thank you for reaching out. I'll get back to you shortly.",
+                });
+            }
 
-            toast.success("Message sent successfully! We'll get back to you shortly.");
-
+            // Reset form and refresh form start time
             form.reset();
+            setFormStartTime(Date.now());
         } catch (error) {
-            console.error("Form submission error:", error);
+            console.error("Form submission network error:", error);
 
-            toast.danger(
-                error instanceof Error
-                    ? `Failed to send message: ${error.message}`
-                    : "Failed to send message. Please try again later."
-            );
+            toast.danger("Network error", {
+                description:
+                    error instanceof Error
+                        ? error.message
+                        : "Failed to connect to the server. Please check your internet connection.",
+            });
         } finally {
             setIsSubmitting(false);
         }

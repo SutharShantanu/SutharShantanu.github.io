@@ -44,13 +44,16 @@ export function createCachedFetcher<TArgs extends unknown[], TResult>(
 }
 
 /**
- * Safely calls a cached fetcher with fallback on error.
+ * Safely calls a cached fetcher. On error: last good value from this instance, else `fallback`.
  * Used in page.tsx to ensure UI components never break.
  *
  * @param fetchFn - The cached fetcher to call
  * @param fallback - Fallback value if fetcher throws
  * @param label - Label for error logging
  */
+// Last successful value per label, kept for the life of the server instance.
+const lastGood = new Map<string, unknown>();
+
 export async function safeFetch<T>(
     fetchFn: () => Promise<T>,
     fallback: T,
@@ -58,12 +61,14 @@ export async function safeFetch<T>(
 ): Promise<T> {
     try {
         const result = await fetchFn();
-        return result ?? fallback;
+        if (result == null) throw new Error("empty result");
+        lastGood.set(label, result);
+        return result;
     } catch (error) {
         console.warn(
             `[API Cache] Handled fallback for ${label}:`,
             error instanceof Error ? error.message : error
         );
-        return fallback;
+        return (lastGood.get(label) as T | undefined) ?? fallback;
     }
 }

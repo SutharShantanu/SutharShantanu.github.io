@@ -194,9 +194,9 @@ export function LogoLoop({ logos, speed = 28 }: { logos: { src: string; alt: str
         x.set(next);
     });
     const row = (copy: number) =>
-        logos.map((l) => (
+        logos.map((l, i) => (
             // eslint-disable-next-line @next/next/no-img-element -- tiny local SVGs; next/image adds nothing here
-            <img key={`${copy}-${l.src}`} src={l.src} alt="" className="size-7 shrink-0 opacity-80 transition-none" draggable={false} />
+            <img key={`${copy}-${i}`} src={l.src} alt="" className="size-7 shrink-0 opacity-80 transition-none" draggable={false} />
         ));
     return (
         <div
@@ -249,35 +249,50 @@ export function RevealText({ text, delay = 0 }: { text: string; delay?: number }
 }
 
 /**
- * Hand-drawn marker (adapted from Magic UI "Highlighter"). Drawn with an SVG path animated via
- * framer-motion pathLength instead of rough-notation, so no extra dependency and it respects MotionConfig.
+ * Hand-drawn marker (adapted from Magic UI "Highlighter").
+ * - highlight: a background sweep (background-size 0% to 100%). Wraps across lines with
+ *   box-decoration-break, so long phrases highlight every line instead of one SVG blob.
+ * - underline: an SVG stroke drawn with framer-motion pathLength.
  */
 export function Marker({
     children,
     variant = "highlight",
-    color = "var(--mesh-1)",
+    color,
 }: {
     children: React.ReactNode;
     variant?: "highlight" | "underline";
     color?: string;
 }) {
-    const highlight = variant === "highlight";
+    if (variant === "highlight") {
+        const c = color ?? "oklch(0.85 0.13 60 / 0.55)";
+        return (
+            <motion.span
+                className="rounded-[0.3em] px-0.5 [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+                style={{ backgroundImage: `linear-gradient(${c}, ${c})`, backgroundRepeat: "no-repeat", backgroundPosition: "0 85%", backgroundSize: "0% 70%" }}
+                initial={{ backgroundSize: "0% 70%" }}
+                whileInView={{ backgroundSize: "100% 70%" }}
+                viewport={{ once: true, amount: 0.8 }}
+                transition={{ duration: 0.8, delay: 0.25, ease: [0.65, 0, 0.35, 1] }}
+            >
+                {children}
+            </motion.span>
+        );
+    }
     return (
         <span className="relative isolate inline-block whitespace-nowrap">
             <svg
                 aria-hidden="true"
                 viewBox="0 0 100 20"
                 preserveAspectRatio="none"
-                className={`pointer-events-none absolute -inset-x-1 -z-10 ${highlight ? "inset-y-0 h-full" : "-bottom-1 h-2"}`}
+                className="pointer-events-none absolute -inset-x-1 -bottom-1 -z-10 h-2"
                 style={{ width: "calc(100% + 0.5rem)" }}
             >
                 <motion.path
-                    d={highlight ? "M2 11 C 25 7, 55 15, 98 9" : "M2 12 C 30 6, 65 16, 98 8"}
+                    d="M2 12 C 30 6, 65 16, 98 8"
                     fill="none"
-                    stroke={color}
-                    strokeWidth={highlight ? 16 : 4}
+                    stroke={color ?? "var(--mesh-1)"}
+                    strokeWidth={4}
                     strokeLinecap="round"
-                    style={{ opacity: highlight ? 0.45 : 0.9 }}
                     initial={{ pathLength: 0 }}
                     whileInView={{ pathLength: 1 }}
                     viewport={{ once: true, amount: 0.8 }}
@@ -312,47 +327,5 @@ export function SpinningText({ text, radius = 5, duration = 14, className = "" }
                 </span>
             ))}
         </motion.div>
-    );
-}
-
-/**
- * Scoped cursor-follow label (inspired by Animate UI "CursorFollow"), framer-motion springs.
- * Keeps the native pointer; mouse only; reduced motion = follows without spring.
- */
-export function CursorLabel({ label, children, className = "" }: { label: React.ReactNode; children: React.ReactNode; className?: string }) {
-    const reduce = useReducedMotion();
-    const [active, setActive] = useState(false);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-    const sx = useSpring(x, { stiffness: 500, damping: 50 });
-    const sy = useSpring(y, { stiffness: 500, damping: 50 });
-    return (
-        <div
-            className={`relative ${className}`}
-            onPointerMove={(e) => {
-                if (e.pointerType !== "mouse") return;
-                const r = e.currentTarget.getBoundingClientRect();
-                x.set(e.clientX - r.left + 14);
-                y.set(e.clientY - r.top + 14);
-                if (!active) setActive(true);
-            }}
-            onPointerLeave={() => setActive(false)}
-        >
-            {children}
-            <AnimatePresence>
-                {active && (
-                    <motion.span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute top-0 left-0 z-20 rounded-full bg-accent px-3 py-1 text-xs font-medium whitespace-nowrap text-accent-foreground shadow-lg"
-                        style={{ x: reduce ? x : sx, y: reduce ? y : sy }}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1, transition: { type: "spring", stiffness: 550, damping: 30 } }}
-                        exit={{ scale: 0, opacity: 0, transition: { duration: 0.15 } }}
-                    >
-                        {label}
-                    </motion.span>
-                )}
-            </AnimatePresence>
-        </div>
     );
 }

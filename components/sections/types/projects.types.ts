@@ -11,6 +11,8 @@ export interface GitHubRepo {
     forks_count: number;
     open_issues_count: number;
     updated_at: string;
+    pushed_at?: string;
+    fork?: boolean;
     size: number;
     license: { name: string } | null;
     topics?: string[];

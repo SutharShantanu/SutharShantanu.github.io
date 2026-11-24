@@ -3,142 +3,114 @@
 import React, { useMemo, useState } from "react";
 import { ExternalLink, GitFork, Github, Star } from "@/components/icons";
 import { AnimatePresence, motion } from "framer-motion";
-import { Button, Card, Chip, Label, ListBox, Pagination, SearchField, Select, Separator } from "@heroui/react";
-import { Bento, CursorLabel, Tile, Tilt, RevealText } from "../ui/motion";
+import { Button, Card, Chip, Label, ListBox, Pagination, SearchField, Select } from "@heroui/react";
+import { Bento, Tile, Tilt, RevealText } from "../ui/motion";
 import type { RepoItem } from "@/lib/portfolio-data";
-
-interface ProjectPreviewCard {
-    title: string;
-    caption: string;
-    badge?: string;
-    type: "interface" | "architecture";
-    metrics?: string[];
-}
-
-interface ProjectItem {
-    id: string;
-    title: string;
-    subtitle: string;
-    description: string;
-    liveUrl?: string;
-    githubUrl: string;
-    tech: string[];
-    previews: ProjectPreviewCard[];
-}
-
-const PROJECTS: ProjectItem[] = [
-    {
-        id: "boozeblues",
-        title: "Boozeblues E-Commerce",
-        subtitle: "Storefront & checkout engine",
-        description:
-            "High-performance modern beverage storefront with React Server Components (RSC), real-time cart mutations, streaming SSR, and sub-second Largest Contentful Paint (LCP 0.9s).",
-        liveUrl: "https://boozeblues.vercel.app",
-        githubUrl: "https://github.com/SutharShantanu/boozeblues",
-        tech: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS", "TanStack Query"],
-        previews: [
-            {
-                title: "Curated Storefront UI",
-                caption: "Fluid product catalog with sub-second LCP and edge-cached catalog assets",
-                badge: "LCP 0.9s",
-                type: "interface",
-                metrics: ["RSC Streaming", "Instant Cart", "Zero-CLS"],
-            },
-            {
-                title: "Checkout & Inventory Engine",
-                caption: "Optimistic UI mutations, atomic stock validation, and Stripe integration",
-                badge: "99.9% Uptime",
-                type: "architecture",
-                metrics: ["TanStack Query", "Zod Validation", "Edge Middleware"],
-            },
-        ],
-    },
-    {
-        id: "geekycart",
-        title: "Geekycart Tech Store",
-        subtitle: "Full-stack MERN application",
-        description:
-            "Electronics marketplace featuring multi-tiered category filtering, Redux Toolkit cart synchronization, JWT session authorization, and compound-indexed MongoDB queries.",
-        liveUrl: "https://geekycart.vercel.app",
-        githubUrl: "https://github.com/SutharShantanu/geekycart",
-        tech: ["React", "Redux Toolkit", "Node.js", "Express", "MongoDB"],
-        previews: [
-            {
-                title: "Interactive Catalog Grid",
-                caption: "Multi-parameter facet search, price sliders, and real-time stock levels",
-                badge: "MERN Stack",
-                type: "interface",
-                metrics: ["Redux Toolkit", "Compound Indexes", "JWT Auth"],
-            },
-            {
-                title: "Scalable API & Cache Pipeline",
-                caption: "RESTful architecture with token refreshes and optimized aggregation pipelines",
-                badge: "40ms API",
-                type: "architecture",
-                metrics: ["Express Routing", "Mongo Aggregations", "Bcrypt Hashing"],
-            },
-        ],
-    },
-];
+import { PROJECTS, type ProjectItem } from "./constants/featured-projects.constant";
 
 const openExternal = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 4;
 const SORTS = [
-    { id: "updated", label: "Recently updated" },
+    { id: "updated", label: "Recently active" },
     { id: "stars", label: "Most stars" },
     { id: "name", label: "Name (A–Z)" },
 ] as const;
 
-function FeaturedCard({ project, featured }: { project: ProjectItem; featured?: boolean }) {
+/** Browser-window panel: domain bar + every highlight with its metrics (stands in for a screenshot). */
+function BrowserPanel({ project }: { project: ProjectItem }) {
+    const domain = (project.liveUrl ?? project.githubUrl).replace(/^https?:\/\//, "");
+    return (
+        <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-separator bg-default/60">
+            <div className="flex items-center gap-2 border-b border-separator px-3 py-2">
+                <span className="flex gap-1" aria-hidden="true">
+                    <span className="size-2 rounded-full bg-danger/70" />
+                    <span className="size-2 rounded-full bg-warning/70" />
+                    <span className="size-2 rounded-full bg-success/70" />
+                </span>
+                <span className="min-w-0 flex-1 truncate rounded-full bg-surface px-3 py-0.5 text-center font-mono text-[11px] text-muted">{domain}</span>
+            </div>
+            <div className="grid flex-1 content-start gap-2 p-3">
+                {project.previews.map((preview) => (
+                    <motion.div
+                        key={preview.title}
+                        className="grid gap-2 rounded-xl bg-surface p-3 shadow-sm"
+                        whileHover={{ y: -2 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 26 }}
+                    >
+                        <div className="flex items-start justify-between gap-2">
+                            <span className="text-sm font-medium text-foreground">{preview.title}</span>
+                            {preview.badge && (
+                                <Chip size="sm" variant="soft" color="success" className="shrink-0">
+                                    {preview.badge}
+                                </Chip>
+                            )}
+                        </div>
+                        <p className="text-xs leading-relaxed text-muted">{preview.caption}</p>
+                        {preview.metrics && (
+                            <div className="flex flex-wrap gap-1">
+                                {preview.metrics.map((m) => (
+                                    <span key={m} className="rounded-md bg-default px-1.5 py-0.5 font-mono text-[10px] text-muted">
+                                        {m}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </motion.div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+/** Featured project: copy + actions beside a browser panel; `flip` mirrors it on lg for a zigzag rhythm. */
+function FeaturedCard({ project, index, flip }: { project: ProjectItem; index: number; flip?: boolean }) {
     return (
         <Card className="h-full">
-            <Card.Header>
-                <Card.Title className={featured ? "text-xl" : "text-base"}>{project.title}</Card.Title>
-                <Card.Description className="font-serif text-base italic">{project.subtitle}</Card.Description>
-            </Card.Header>
-
-            <Card.Content className="flex flex-1 flex-col gap-4">
-                <p className="text-sm leading-relaxed text-muted">{project.description}</p>
-
-                <div className={featured ? "grid gap-2 sm:grid-cols-2" : "grid gap-2"}>
-                    {(featured ? project.previews : project.previews.slice(0, 1)).map((preview) => (
-                        <Card key={preview.title} variant="secondary" className="gap-1 p-3">
-                            <div className="flex items-start justify-between gap-2">
-                                <span className="text-sm font-medium text-foreground">{preview.title}</span>
-                                {preview.badge && (
-                                    <Chip size="sm" variant="soft" color="success" className="shrink-0">
-                                        {preview.badge}
-                                    </Chip>
-                                )}
-                            </div>
-                            <p className="text-xs leading-relaxed text-muted">{preview.caption}</p>
-                        </Card>
-                    ))}
+            <Card.Content className="grid gap-5 lg:grid-cols-2 lg:items-stretch">
+                <div className={`flex min-w-0 flex-col gap-4 ${flip ? "lg:order-2" : ""}`}>
+                    <div className="flex items-start gap-3">
+                        <span className="font-hand text-4xl leading-none text-muted" aria-hidden="true">
+                            {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <div className="min-w-0">
+                            <h3 className="text-xl font-semibold text-foreground">{project.title}</h3>
+                            <p className="font-serif text-base text-muted italic">{project.subtitle}</p>
+                        </div>
+                    </div>
+                    <p className="text-sm leading-relaxed text-muted">{project.description}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                        {project.tech.map((t) => (
+                            <Chip key={t} size="sm" variant="secondary">
+                                {t}
+                            </Chip>
+                        ))}
+                    </div>
+                    <div className="mt-auto flex flex-wrap gap-2 border-t border-separator pt-4">
+                        {project.liveUrl && (
+                            <Button size="sm" variant="primary" onPress={() => openExternal(project.liveUrl!)}>
+                                <ExternalLink className="size-3.5" />
+                                Live demo
+                            </Button>
+                        )}
+                        <Button size="sm" variant="secondary" onPress={() => openExternal(project.githubUrl)}>
+                            <Github className="size-3.5" />
+                            Source
+                        </Button>
+                    </div>
                 </div>
-
-                <div className="mt-auto flex flex-wrap gap-1.5">
-                    {project.tech.map((t) => (
-                        <Chip key={t} size="sm" variant="secondary">
-                            {t}
-                        </Chip>
-                    ))}
+                {/* Panel opens the live site (or repo); the glass cursor shows where it goes. */}
+                <div
+                    role="link"
+                    tabIndex={0}
+                    aria-label={`Open ${project.title} ${project.liveUrl ? "live demo" : "source"}`}
+                    data-cursor={project.liveUrl ? "View live ↗" : "View source ↗"}
+                    onClick={() => openExternal(project.liveUrl ?? project.githubUrl)}
+                    onKeyDown={(e) => e.key === "Enter" && openExternal(project.liveUrl ?? project.githubUrl)}
+                    className={`min-w-0 cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-focus ${flip ? "lg:order-1" : ""}`}
+                >
+                    <BrowserPanel project={project} />
                 </div>
             </Card.Content>
-
-            <Separator />
-
-            <Card.Footer className="flex gap-2">
-                {project.liveUrl && (
-                    <Button size="sm" variant="primary" onPress={() => openExternal(project.liveUrl!)}>
-                        <ExternalLink className="size-3.5" />
-                        Live demo
-                    </Button>
-                )}
-                <Button size="sm" variant="secondary" onPress={() => openExternal(project.githubUrl)}>
-                    <Github className="size-3.5" />
-                    Source
-                </Button>
-            </Card.Footer>
         </Card>
     );
 }
@@ -168,34 +140,27 @@ export default function Projects({ repos }: { repos: RepoItem[] }) {
         setPage(1);
     };
 
-    const [first, ...rest] = PROJECTS;
-
     return (
-        <div className="grid gap-8">
-            {/* Featured: full-width hero tile + two half tiles */}
-            <Bento className="grid gap-4 lg:grid-cols-2">
-                <Tile className="lg:col-span-2" lift={false}>
-                    <Tilt className="h-full" max={3}>
-                        <CursorLabel label={first.liveUrl ? "View live ↗" : "View source ↗"} className="h-full">
-                            <FeaturedCard project={first} featured />
-                        </CursorLabel>
-                    </Tilt>
-                </Tile>
-                {rest.map((p) => (
-                    <Tile key={p.id} className={rest.length === 1 ? "lg:col-span-2" : undefined}>
-                        <FeaturedCard project={p} />
+        <div className="grid grid-cols-1 gap-8">
+            {/* Featured projects: zigzag split cards */}
+            <Bento className="grid grid-cols-1 gap-4">
+                {PROJECTS.map((p, i) => (
+                    <Tile key={p.id} lift={false}>
+                        <Tilt className="h-full" max={2}>
+                            <FeaturedCard project={p} index={i} flip={i % 2 === 1} />
+                        </Tilt>
                     </Tile>
                 ))}
             </Bento>
 
             {/* All repositories (live from GitHub) */}
-            <section aria-labelledby="repos-heading" className="grid gap-4">
+            <section aria-labelledby="repos-heading" className="grid min-w-0 grid-cols-1 gap-4">
                 <div className="flex flex-wrap items-end justify-between gap-3">
                     <div>
                         <h2 id="repos-heading" className="text-lg font-semibold text-foreground">
                             <RevealText text="All repositories" />
                         </h2>
-                        <p className="font-hand text-lg text-muted">Live from GitHub — {repos.length} most recently updated</p>
+                        <p className="font-hand text-lg text-muted">Live from GitHub — {repos.length} repos, latest pushes first</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2">
                         <SearchField aria-label="Search repositories" value={query} onChange={reset(setQuery)} className="w-48">
@@ -246,7 +211,7 @@ export default function Projects({ repos }: { repos: RepoItem[] }) {
                     </div>
                 </div>
 
-                <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <AnimatePresence mode="popLayout" initial={false}>
                         {visible.map((repo) => (
                             <motion.div
@@ -267,7 +232,7 @@ export default function Projects({ repos }: { repos: RepoItem[] }) {
                                         {repo.language && <Chip size="sm" variant="secondary">{repo.language}</Chip>}
                                         <span className="inline-flex items-center gap-1"><Star className="size-3.5" />{repo.stars}</span>
                                         <span className="inline-flex items-center gap-1"><GitFork className="size-3.5" />{repo.forks}</span>
-                                        <span>{new Date(repo.updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</span>
+                                        <span title="Last push" className="basis-full">Pushed {new Date(repo.updatedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</span>
                                     </Card.Content>
                                     <Card.Footer className="mt-auto flex gap-2">
                                         {repo.homepage && (
@@ -290,11 +255,11 @@ export default function Projects({ repos }: { repos: RepoItem[] }) {
                 {filtered.length === 0 && <p className="py-8 text-center text-sm text-muted">No repositories match.</p>}
 
                 {totalPages > 1 && (
-                    <Pagination>
+                    <Pagination className="flex-wrap justify-center gap-2 sm:justify-between">
                         <Pagination.Summary>
                             {(current - 1) * PAGE_SIZE + 1}–{Math.min(current * PAGE_SIZE, filtered.length)} of {filtered.length}
                         </Pagination.Summary>
-                        <Pagination.Content>
+                        <Pagination.Content className="flex-wrap justify-center">
                             <Pagination.Item>
                                 <Pagination.Previous isDisabled={current === 1} onPress={() => setPage(current - 1)}>
                                     <Pagination.PreviousIcon />

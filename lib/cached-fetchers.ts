@@ -13,7 +13,7 @@
 
 import { createCachedFetcher } from "./api-cache";
 import { GitHubRepo } from "@/components/sections/types/projects.types";
-import { GitHubActivityDay, GitHubUser } from "@/components/sections/types/social.types";
+import { GitHubActivityDay, GitHubActivityEvent, GitHubUser } from "@/components/sections/types/social.types";
 
 // ─── Default Fallback Data ───────────────────────────────────
 
@@ -85,103 +85,24 @@ export const DEFAULT_LINKEDIN_PROFILE = {
     recommendations_received: [
         {
             username: "ishan-bhatia-a",
+            name: "Ishan Bhatia",
             profile_url: "https://linkedin.com/in/ishan-bhatia-a",
             text: "Shantanu consistently demonstrated strong technical expertise, problem-solving abilities, and a keen eye for detail. One of his greatest strengths is his ability to complete projects efficiently and on time, without compromising on quality. … Any team would be fortunate to have him.",
         },
         {
             username: "sudhanshu-singh-",
+            name: "Sudhanshu Singh",
             profile_url: "https://linkedin.com/in/sudhanshu-singh-",
             text: "…he is one of the most dependable and skilled frontend developers I’ve worked with. … The result? A 30% increase in lead conversions and a much lower bounce rate.",
         },
         {
             username: "ayushbhatia",
+            name: "Ayush Bhatia",
             profile_url: "https://linkedin.com/in/ayushbhatia",
             text: "He took the time to understand my vision and delivered a beautiful, user-friendly, and responsive website that exceeded my expectations. … The project was completed ahead of schedule without compromising on quality.",
         },
     ],
 };
-
-export const DEFAULT_GITHUB_USER: GitHubUser = {
-    login: "SutharShantanu",
-    id: 110021464,
-    node_id: "U_kgDOBo7LWA",
-    avatar_url: "https://avatars.githubusercontent.com/u/110021464?v=4",
-    gravatar_id: "",
-    url: "https://api.github.com/users/SutharShantanu",
-    html_url: "https://github.com/SutharShantanu",
-    followers_url: "https://api.github.com/users/SutharShantanu/followers",
-    following_url: "https://api.github.com/users/SutharShantanu/following{/other_user}",
-    gists_url: "https://api.github.com/users/SutharShantanu/gists{/gist_id}",
-    starred_url: "https://api.github.com/users/SutharShantanu/starred{/owner}{/repo}",
-    subscriptions_url: "https://api.github.com/users/SutharShantanu/subscriptions",
-    organizations_url: "https://api.github.com/users/SutharShantanu/orgs",
-    repos_url: "https://api.github.com/users/SutharShantanu/repos",
-    events_url: "https://api.github.com/users/SutharShantanu/events{/privacy}",
-    received_events_url: "https://api.github.com/users/SutharShantanu/received_events",
-    type: "User",
-    site_admin: false,
-    name: "Shantanu Suthar",
-    company: "Infyni",
-    blog: "https://sutharshantanu.github.io",
-    location: "Gurugram, India",
-    email: null,
-    hireable: true,
-    bio: "Frontend Developer crafting interactive and user-friendly web experiences with React, Next.js & TypeScript.",
-    public_repos: 28,
-    public_gists: 0,
-    followers: 48,
-    following: 52,
-    created_at: "2022-06-01T00:00:00Z",
-    updated_at: new Date().toISOString(),
-};
-
-export const DEFAULT_GITHUB_REPOS: GitHubRepo[] = [
-    {
-        id: 783238895,
-        name: "SutharShantanu.github.io",
-        html_url: "https://github.com/SutharShantanu/SutharShantanu.github.io",
-        description: "Interactive personal developer portfolio built with Next.js, HeroUI, Tailwind CSS, and Framer Motion featuring dynamic GitHub data integrations.",
-        homepage: "https://shantanusuthar.vercel.app",
-        language: "TypeScript",
-        stargazers_count: 12,
-        forks_count: 3,
-        open_issues_count: 0,
-        updated_at: "2026-11-13T12:00:00Z",
-        size: 3200,
-        license: { name: "MIT" },
-        topics: ["portfolio", "nextjs", "tailwindcss", "typescript"],
-    },
-    {
-        id: 750192834,
-        name: "Boozeblues",
-        html_url: "https://github.com/SutharShantanu/Boozeblues",
-        description: "A modern e-commerce platform designed to streamline online beverage purchasing with real-time cart updates and secure checkout flows.",
-        homepage: "https://boozeblues.vercel.app",
-        language: "TypeScript",
-        stargazers_count: 5,
-        forks_count: 1,
-        open_issues_count: 0,
-        updated_at: "2025-10-15T12:00:00Z",
-        size: 1200,
-        license: { name: "MIT" },
-        topics: ["nextjs", "react", "typescript", "tailwind"],
-    },
-    {
-        id: 742189201,
-        name: "Geekycart",
-        html_url: "https://github.com/SutharShantanu/Geekycart",
-        description: "Full-featured consumer electronics e-commerce web application inspired by Best Buy with category navigation, product filters, and cart management.",
-        homepage: "https://geekycart.vercel.app",
-        language: "JavaScript",
-        stargazers_count: 8,
-        forks_count: 2,
-        open_issues_count: 0,
-        updated_at: "2025-08-20T12:00:00Z",
-        size: 2400,
-        license: { name: "MIT" },
-        topics: ["react", "redux", "javascript", "ecommerce"],
-    },
-];
 
 export const DEFAULT_CONTRIBUTIONS: { total: Record<string, number>; contributions: GitHubActivityDay[] } = {
     total: { "2024": 72, "2025": 76, "2026": 147 },
@@ -189,74 +110,44 @@ export const DEFAULT_CONTRIBUTIONS: { total: Record<string, number>; contributio
 };
 
 // ─── GitHub ──────────────────────────────────────────────────
+// Fetchers THROW on failure: unstable_cache never stores an error, so a single bad
+// response can't blank the page for an hour. safeFetch (api-cache.ts) then serves the
+// last good result, falling back to the committed snapshot (scripts/snapshot-github.mjs).
+
+const ghHeaders = (accept = "application/vnd.github+json") => ({
+    Accept: accept,
+    ...(process.env.NEXT_GITHUB_TOKEN && { Authorization: `Bearer ${process.env.NEXT_GITHUB_TOKEN}` }),
+});
+
+async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
+    const res = await fetch(url, { signal: AbortSignal.timeout(10_000), ...init });
+    if (!res.ok) throw new Error(`${res.status} ${url}`);
+    return res.json() as Promise<T>;
+}
 
 export const getGithubRepos = createCachedFetcher(
     async (username: string) => {
-        try {
-            const res = await fetch(
-                `https://api.github.com/users/${username}/repos?sort=updated&per_page=30`,
-                {
-                    headers: {
-                        Accept: "application/vnd.github.mercy-preview+json",
-                        ...(process.env.NEXT_GITHUB_TOKEN && {
-                            Authorization: `Bearer ${process.env.NEXT_GITHUB_TOKEN}`,
-                        }),
-                    },
-                }
-            );
-            if (!res.ok) {
-                return DEFAULT_GITHUB_REPOS;
-            }
-            const data = await res.json();
-            return Array.isArray(data) && data.length > 0 ? data : DEFAULT_GITHUB_REPOS;
-        } catch {
-            return DEFAULT_GITHUB_REPOS;
-        }
+        const data = await getJson<GitHubRepo[]>(`https://api.github.com/users/${username}/repos?sort=pushed&per_page=100`, {
+            headers: ghHeaders("application/vnd.github.mercy-preview+json"),
+        });
+        if (!Array.isArray(data) || !data.length) throw new Error("no repos");
+        return data;
     },
-    ["github-repos"],
+    ["github-repos-v2"],
     { revalidate: 3600, tags: ["github"] }
 );
 
 export const getGithubUser = createCachedFetcher(
-    async (username: string) => {
-        try {
-            const res = await fetch(
-                `https://api.github.com/users/${username}`,
-                {
-                    headers: {
-                        Accept: "application/vnd.github.v3+json",
-                        ...(process.env.NEXT_GITHUB_TOKEN && {
-                            Authorization: `Bearer ${process.env.NEXT_GITHUB_TOKEN}`,
-                        }),
-                    },
-                }
-            );
-            if (!res.ok) {
-                return DEFAULT_GITHUB_USER;
-            }
-            return res.json();
-        } catch {
-            return DEFAULT_GITHUB_USER;
-        }
-    },
+    (username: string) => getJson<GitHubUser>(`https://api.github.com/users/${username}`, { headers: ghHeaders() }),
     ["github-user"],
     { revalidate: 3600, tags: ["github"] }
 );
 
 export const getGithubContributions = createCachedFetcher(
     async (username: string) => {
-        try {
-            const res = await fetch(
-                `https://github-contributions-api.jogruber.de/v4/${username}`,
-                { signal: AbortSignal.timeout(5000) }
-            );
-            if (!res.ok) {
-                return DEFAULT_CONTRIBUTIONS;
-            }
-            return res.json();
-        } catch {
-            return DEFAULT_CONTRIBUTIONS;
-        }
+        const data = await getJson<typeof DEFAULT_CONTRIBUTIONS>(`https://github-contributions-api.jogruber.de/v4/${username}`);
+        if (!data?.contributions?.length) throw new Error("empty contributions");
+        return data;
     },
     ["github-contributions"],
     { revalidate: 3600, tags: ["github"] }
@@ -264,26 +155,9 @@ export const getGithubContributions = createCachedFetcher(
 
 export const getGithubActivity = createCachedFetcher(
     async (username: string) => {
-        try {
-            const res = await fetch(
-                `https://api.github.com/users/${username}/events/public`,
-                {
-                    headers: {
-                        Accept: "application/vnd.github.v3+json",
-                        ...(process.env.NEXT_GITHUB_TOKEN && {
-                            Authorization: `Bearer ${process.env.NEXT_GITHUB_TOKEN}`,
-                        }),
-                    },
-                }
-            );
-            if (!res.ok) {
-                return [];
-            }
-            const data = await res.json();
-            return Array.isArray(data) ? data : [];
-        } catch {
-            return [];
-        }
+        const data = await getJson<GitHubActivityEvent[]>(`https://api.github.com/users/${username}/events/public?per_page=100`, { headers: ghHeaders() });
+        if (!Array.isArray(data) || !data.length) throw new Error("no events");
+        return data;
     },
     ["github-activity"],
     { revalidate: 1800, tags: ["github"] }

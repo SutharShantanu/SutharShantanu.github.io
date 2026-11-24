@@ -1,8 +1,6 @@
 import { safeFetch } from "./api-cache";
+import SNAPSHOT from "./snapshots/github.json";
 import {
-    DEFAULT_CONTRIBUTIONS,
-    DEFAULT_GITHUB_REPOS,
-    DEFAULT_GITHUB_USER,
     DEFAULT_LINKEDIN_PROFILE,
     getGithubActivity,
     getGithubContributions,
@@ -65,12 +63,16 @@ export interface PortfolioData {
         joined: string;
         linkedinUrl: string;
         experienceYears: number;
+        /** LinkedIn photo when the API returns one, else the GitHub avatar. */
+        avatar: string;
     };
     roles: Role[];
-    certifications: { name: string; authority: string; issued: string; url: string }[];
-    recommendations: { text: string; username: string; profileUrl: string }[];
+    /** `preview`: optional image/PDF under /public (e.g. "/certificates/masai.pdf"), shown in a dialog. */
+    certifications: { name: string; authority: string; issued: string; url: string; preview?: string }[];
+    recommendations: { text: string; name: string; username: string; profileUrl: string }[];
     github: {
         login: string;
+        avatar: string;
         bio: string;
         url: string;
         publicRepos: number;
@@ -132,15 +134,23 @@ export function toRole(e: RawExperience, now = new Date()): Role {
 }
 
 const usernameFromUrl = (url = "") => url.replace(/\/+$/, "").split("/").pop() ?? "";
+/** "ishan-bhatia-a" → "Ishan Bhatia" (drops LinkedIn's 1-char / numeric suffixes). */
+const humanize = (slug: string) =>
+    slug
+        .split(/[-_]+/)
+        .filter((p) => p.length > 1 && !/\d/.test(p))
+        .map((p) => p[0].toUpperCase() + p.slice(1))
+        .join(" ") || slug;
 
 export async function getPortfolioData(githubUsername: string, linkedinUsername: string): Promise<PortfolioData> {
     const [linkedinRaw, recsRaw, ghUser, repos, contributions, activity] = await Promise.all([
         safeFetch(() => getLinkedInProfile(linkedinUsername), { data: DEFAULT_LINKEDIN_PROFILE }, "LinkedIn profile"),
         safeFetch(() => getLinkedInRecommendations(linkedinUsername), { data: [] }, "LinkedIn recommendations"),
-        safeFetch(() => getGithubUser(githubUsername), DEFAULT_GITHUB_USER, "GitHub user"),
-        safeFetch(() => getGithubRepos(githubUsername), DEFAULT_GITHUB_REPOS, "GitHub repos"),
-        safeFetch(() => getGithubContributions(githubUsername), DEFAULT_CONTRIBUTIONS, "GitHub contributions"),
-        safeFetch(() => getGithubActivity(githubUsername), [], "GitHub activity"),
+        // Fallback = committed snapshot (`npm run snapshot`), so these sections are never empty.
+        safeFetch(() => getGithubUser(githubUsername), SNAPSHOT.user as unknown as GitHubUser, "GitHub user"),
+        safeFetch(() => getGithubRepos(githubUsername), SNAPSHOT.repos as unknown as GitHubRepo[], "GitHub repos"),
+        safeFetch(() => getGithubContributions(githubUsername), SNAPSHOT.contributions, "GitHub contributions"),
+        safeFetch(() => getGithubActivity(githubUsername), SNAPSHOT.events as unknown as GitHubActivityEvent[], "GitHub activity"),
     ]);
 
     // ── LinkedIn ────────────────────────────────────────────
@@ -159,18 +169,20 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
     const experienceYears = Math.floor((now.getFullYear() * 12 + now.getMonth() + 1 - earliest) / 12);
 
     const apiRecs = ((recsRaw as { data?: { text?: string; profile_url?: string }[] })?.data ?? []).filter((r) => r?.text);
-    const recSource: { text?: string; profile_url?: string; username?: string }[] = apiRecs.length
+    const recSource: { text?: string; profile_url?: string; username?: string; name?: string; full_name?: string }[] = apiRecs.length
         ? apiRecs
         : (li.recommendations_received ?? []);
-    const recommendations = recSource.map((r) => ({
-        text: r.text ?? "",
-        profileUrl: r.profile_url ?? "",
-        username: r.username || usernameFromUrl(r.profile_url),
-    }));
+    const recommendations = recSource.map((r) => {
+        const username = r.username || usernameFromUrl(r.profile_url);
+        return { text: r.text ?? "", profileUrl: r.profile_url ?? "", username, name: r.name || r.full_name || humanize(username) };
+    });
 
     // ── GitHub ──────────────────────────────────────────────
-    const user = (ghUser ?? DEFAULT_GITHUB_USER) as GitHubUser;
-    const repoList: GitHubRepo[] = Array.isArray(repos) && repos.length ? repos : DEFAULT_GITHUB_REPOS;
+    const user = ghUser as GitHubUser;
+    // Own work only, most recently pushed first ("recent activity" order).
+    const repoList = (repos as GitHubRepo[])
+        .filter((r) => !r.fork)
+        .sort((a, b) => (b.pushed_at ?? b.updated_at).localeCompare(a.pushed_at ?? a.updated_at));
 
     const langCounts = new Map<string, number>();
     for (const r of repoList) if (r.language) langCounts.set(r.language, (langCounts.get(r.language) ?? 0) + 1);
@@ -178,10 +190,10 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
     const languages = [...langCounts].map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count).slice(0, 6);
 
     const today = now.toISOString().slice(0, 10);
-    const contrib = contributions as typeof DEFAULT_CONTRIBUTIONS;
+    const contrib = contributions as typeof SNAPSHOT.contributions;
     // Full history (up to today) for the activity calendar's year filter, sorted so day i = start + i.
     const days = [...(contrib?.contributions ?? [])].filter((d) => d.date <= today).sort((x, y) => x.date.localeCompare(y.date));
-    const totals = contrib?.total ?? {};
+    const totals: Record<string, number> = contrib?.total ?? {};
 
     const events = (Array.isArray(activity) ? activity : []) as GitHubActivityEvent[];
     const activityItems = await buildActivity(events, now);
@@ -199,12 +211,18 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
             joined: (li as { profile_status?: { joined_date?: string } }).profile_status?.joined_date ?? "",
             linkedinUrl: li.linkedin_url,
             experienceYears,
+            avatar: (li as { profile_image_url?: string }).profile_image_url || user.avatar_url,
         },
         roles,
-        certifications: li.certifications ?? [],
+        // API certs win; local `preview` files (DEFAULT_LINKEDIN_PROFILE) are matched by name.
+        certifications: (li.certifications as PortfolioData["certifications"] | undefined ?? []).map((c) => ({
+            ...c,
+            preview: c.preview ?? (DEFAULT_LINKEDIN_PROFILE.certifications as PortfolioData["certifications"]).find((d) => d.name === c.name)?.preview,
+        })),
         recommendations,
         github: {
             login: user.login,
+            avatar: user.avatar_url,
             bio: user.bio ?? "",
             url: `https://github.com/${user.login}`,
             publicRepos: user.public_repos,
@@ -228,7 +246,7 @@ export async function getPortfolioData(githubUsername: string, linkedinUsername:
             language: r.language,
             stars: r.stargazers_count || 0,
             forks: r.forks_count || 0,
-            updatedAt: r.updated_at,
+            updatedAt: r.pushed_at ?? r.updated_at,
             topics: r.topics ?? [],
         })),
     };
@@ -303,7 +321,7 @@ async function buildActivity(events: GitHubActivityEvent[], now: Date): Promise<
             last.pushes++;
             continue;
         }
-        if (groups.length >= 6) break;
+        if (groups.length >= 3) break;
         groups.push({ e, p, before: p.before, pushes: 1 });
     }
 

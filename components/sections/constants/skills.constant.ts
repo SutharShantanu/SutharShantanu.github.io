@@ -1,6 +1,6 @@
 // Skills shown on the Skills tab. Logos are local copies from theSVG (https://thesvg.org),
 // licences: CC0-1.0 / MIT / brand-use (trademarks used only to name the technology).
-export type SkillCategory = "Frontend" | "Backend" | "Deployment" | "Tools";
+export type SkillCategory = "Frontend" | "Backend" | "Deployment" | "Tools" | "AI";
 
 const logo = (slug: string) => `/brands/${slug}.svg`;
 
@@ -31,4 +31,10 @@ export const SKILLS: { title: string; category: SkillCategory; icon: string }[] 
     { title: "VS Code", category: "Tools", icon: logo("visual-studio-code") },
     { title: "Postman", category: "Tools", icon: logo("postman") },
     { title: "GitHub", category: "Tools", icon: logo("github") },
+    { title: "Antigravity IDE", category: "AI", icon: logo("google-antigravity") },
+    { title: "Antigravity CLI", category: "AI", icon: logo("google-antigravity") },
+    { title: "Claude Code", category: "AI", icon: logo("claude-code") },
+    { title: "Codex CLI", category: "AI", icon: logo("codex") },
+    { title: "Gemini AI Studio", category: "AI", icon: logo("gemini") },
+    { title: "GitHub Copilot", category: "AI", icon: logo("github-copilot") },
 ];

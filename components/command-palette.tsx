@@ -27,6 +27,7 @@ interface CommandPaletteProps {
     onOpenChange: (open: boolean) => void;
     onNavigate: (tab: TabKey) => void;
     onOpenResume: () => void;
+    visibility: Record<TabKey, boolean>;
 }
 
 interface Command {
@@ -38,7 +39,7 @@ interface Command {
 
 const openExternal = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
 
-export function CommandPalette({ open, onOpenChange, onNavigate, onOpenResume }: CommandPaletteProps) {
+export function CommandPalette({ open, onOpenChange, onNavigate, onOpenResume, visibility }: CommandPaletteProps) {
     const { setTheme } = useTheme();
     const [query, setQuery] = useState("");
 
@@ -53,8 +54,8 @@ export function CommandPalette({ open, onOpenChange, onNavigate, onOpenResume }:
         return () => document.removeEventListener("keydown", down);
     }, [open, onOpenChange]);
 
-    const commands = useMemo<Command[]>(
-        () => [
+    const commands = useMemo(
+        () => ([
             { id: "overview", label: "Go to Overview", icon: LayoutDashboard, run: () => onNavigate("overview") },
             { id: "work", label: "Go to Work", icon: FolderGit2, run: () => onNavigate("work") },
             { id: "experience", label: "Go to Experience", icon: Briefcase, run: () => onNavigate("experience") },
@@ -77,8 +78,8 @@ export function CommandPalette({ open, onOpenChange, onNavigate, onOpenResume }:
             { id: "system", label: "Use system theme", icon: Monitor, run: () => setTheme("system") },
             { id: "github", label: "Open GitHub profile", icon: Github, run: () => openExternal(GITHUB_URL) },
             { id: "linkedin", label: "Open LinkedIn profile", icon: Linkedin, run: () => openExternal(LINKEDIN_URL) },
-        ],
-        [onNavigate, onOpenResume, setTheme]
+        ] satisfies Command[]).filter(({ id }) => !Object.hasOwn(visibility, id) || visibility[id as TabKey]),
+        [onNavigate, onOpenResume, setTheme, visibility]
     );
 
     const filtered = commands.filter((c) => c.label.toLowerCase().includes(query.trim().toLowerCase()));

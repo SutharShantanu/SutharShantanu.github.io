@@ -14,7 +14,9 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
 // Must be set in the same module that renders <Document> (react-pdf README).
-pdfjs.GlobalWorkerOptions.workerSrc = new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).toString();
+if (typeof window !== "undefined") {
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL("/pdf.worker.min.mjs", window.location.origin).toString();
+}
 
 type ViewMode = "single" | "scroll" | "book";
 
@@ -37,16 +39,37 @@ export function PdfViewer({ file, downloadUrl, className }: { file: string; down
     useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
-        const ro = new ResizeObserver(([entry]) => setContainerWidth(entry.contentRect.width));
+
+        // Immediate measurement if container already has layout dimensions
+        if (el.clientWidth > 0) {
+            setContainerWidth(Math.round(el.clientWidth / 8) * 8);
+        }
+
+        // Debounce resize updates so dialog opening animation or rapid resizing
+        // doesn't thrash or cancel in-flight PDF canvas rendering.
+        let timer: ReturnType<typeof setTimeout> | null = null;
+        const ro = new ResizeObserver(([entry]) => {
+            if (!entry) return;
+            const newWidth = Math.round(entry.contentRect.width / 8) * 8;
+            if (newWidth <= 0) return;
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(() => {
+                setContainerWidth((prev) => (prev !== newWidth ? newWidth : prev));
+            }, 80);
+        });
+
         ro.observe(el);
-        return () => ro.disconnect();
+        return () => {
+            if (timer) clearTimeout(timer);
+            ro.disconnect();
+        };
     }, []);
 
     const step = mode === "book" ? 2 : 1;
     const lastPage = mode === "book" ? Math.max(1, numPages - 1) : numPages;
     const prev = () => setPage((p) => Math.max(1, p - step));
     const next = () => setPage((p) => Math.min(lastPage, p + step));
-    const pageWidth = Math.max(200, ((mode === "book" ? containerWidth / 2 - 24 : containerWidth - 32) || 600) * zoom);
+    const pageWidth = Math.max(200, Math.round((mode === "book" ? containerWidth / 2 - 24 : containerWidth - 32) * zoom));
     const bookSecond = mode === "book" && page > 1 && page + 1 <= numPages ? page + 1 : null;
 
     const pageSkeleton = <Skeleton className="aspect-[1/1.414] rounded-xl" style={{ width: pageWidth }} />;
@@ -124,13 +147,21 @@ export function PdfViewer({ file, downloadUrl, className }: { file: string; down
                 }}
                 className="min-h-0 flex-1 overflow-auto p-4 outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset"
             >
-                {failed ? (
+                {containerWidth === 0 ? (
+                    <div className="flex justify-center">{pageSkeleton}</div>
+                ) : failed ? (
                     <LoadError downloadUrl={downloadUrl} />
                 ) : (
                 <Document
                     file={file}
-                    onLoadError={() => setFailed(true)}
-                    onSourceError={() => setFailed(true)}
+                    onLoadError={(err) => {
+                        console.error("PDF preview load error:", err);
+                        setFailed(true);
+                    }}
+                    onSourceError={(err) => {
+                        console.error("PDF preview source error:", err);
+                        setFailed(true);
+                    }}
                     onLoadSuccess={({ numPages: n }) => {
                         setNumPages(n);
                         setPage(1);
@@ -141,21 +172,39 @@ export function PdfViewer({ file, downloadUrl, className }: { file: string; down
                 >
                     {mode === "scroll" ? (
                         Array.from({ length: numPages }, (_, i) => (
-                            <Page key={i} pageNumber={i + 1} width={pageWidth} loading={pageSkeleton} className="overflow-hidden rounded-xl shadow-lg" />
+                            <Page
+                                key={`p-${i + 1}`}
+                                pageNumber={i + 1}
+                                width={pageWidth}
+                                loading={pageSkeleton}
+                                className="relative overflow-hidden rounded-xl shadow-lg bg-white"
+                            />
                         ))
                     ) : (
                         <AnimatePresence mode="wait" initial={false}>
                             <motion.div
                                 key={`${mode}-${page}`}
                                 className="flex gap-4"
-                                initial={{ opacity: 0, x: 16, filter: "blur(4px)" }}
-                                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                                exit={{ opacity: 0, x: -16, filter: "blur(4px)" }}
+                                initial={{ opacity: 0, x: 16 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -16 }}
                                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
                             >
-                                <Page pageNumber={page} width={pageWidth} loading={pageSkeleton} className="overflow-hidden rounded-xl shadow-lg" />
+                                <Page
+                                    key={`p-${page}`}
+                                    pageNumber={page}
+                                    width={pageWidth}
+                                    loading={pageSkeleton}
+                                    className="relative overflow-hidden rounded-xl shadow-lg bg-white"
+                                />
                                 {bookSecond && (
-                                    <Page pageNumber={bookSecond} width={pageWidth} loading={pageSkeleton} className="overflow-hidden rounded-xl shadow-lg" />
+                                    <Page
+                                        key={`p-${bookSecond}`}
+                                        pageNumber={bookSecond}
+                                        width={pageWidth}
+                                        loading={pageSkeleton}
+                                        className="relative overflow-hidden rounded-xl shadow-lg bg-white"
+                                    />
                                 )}
                             </motion.div>
                         </AnimatePresence>

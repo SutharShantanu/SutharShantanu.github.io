@@ -113,6 +113,29 @@ body {
   isolation: isolate;
 }
 
+/* Warm peach selection matching the theme, instead of the native blue */
+::selection {
+  background: oklch(0.82 0.13 55 / 0.45);
+  color: var(--foreground);
+}
+.dark ::selection {
+  background: oklch(0.6 0.14 50 / 0.5);
+}
+
+/* Higher-contrast skeletons: solid grey blocks with a bright sweep (HeroUI's default is too faint on glass) */
+.skeleton {
+  background-color: color-mix(in oklch, var(--foreground) 11%, transparent);
+}
+.skeleton--shimmer::after {
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.65), transparent);
+}
+.dark .skeleton {
+  background-color: color-mix(in oklch, var(--foreground) 13%, transparent);
+}
+.dark .skeleton--shimmer::after {
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.12), transparent);
+}
+
 /* Blurred colour mesh behind everything */
 body::before {
   content: "";

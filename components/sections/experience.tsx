@@ -1,11 +1,56 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { Accordion, Avatar, Card, Chip } from "@heroui/react";
-import { Award, ChevronDown, MapPin } from "@/components/icons";
+import { Accordion, Avatar, Button, Card, Chip, Modal, Skeleton } from "@heroui/react";
+import { ArrowUpRight, Award, ChevronDown, ExternalLink, MapPin, ZoomIn } from "@/components/icons";
 import { Bento, Tile, RevealText } from "../ui/motion";
 import type { PortfolioData } from "@/lib/portfolio-data";
+
+const PdfViewer = dynamic(() => import("../pdf-viewer"), { ssr: false, loading: () => <Skeleton className="h-full rounded-2xl" /> });
+
+type Cert = PortfolioData["certifications"][number];
+
+/** Certificate preview: image or PDF (`preview` path, e.g. /certificates/x.pdf) plus a link to the credential page. */
+function CertPreview({ cert, onClose }: { cert: Cert | null; onClose: () => void }) {
+    const isPdf = cert?.preview?.toLowerCase().endsWith(".pdf");
+    return (
+        <Modal.Backdrop isOpen={!!cert} onOpenChange={(open) => !open && onClose()}>
+            <Modal.Container>
+                <Modal.Dialog className={`flex w-full flex-col sm:max-w-3xl ${isPdf ? "h-[85vh]" : ""}`}>
+                    <Modal.CloseTrigger />
+                    <Modal.Header>
+                        <Modal.Heading>{cert?.name}</Modal.Heading>
+                        <p className="text-sm text-muted">
+                            {cert?.authority} · Issued {cert?.issued}
+                        </p>
+                    </Modal.Header>
+                    <Modal.Body className="min-h-0 flex-1">
+                        {cert?.preview &&
+                            (isPdf ? (
+                                <PdfViewer file={cert.preview} downloadUrl={cert.preview} className="h-full" />
+                            ) : (
+                                // eslint-disable-next-line @next/next/no-img-element -- arbitrary certificate sizes; next/image needs dimensions
+                                <img src={cert.preview} alt={`${cert.name} certificate`} className="w-full rounded-2xl border border-separator" />
+                            ))}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button slot="close" variant="secondary">
+                            Close
+                        </Button>
+                        {cert?.url && (
+                            <Button variant="primary" onPress={() => window.open(cert.url, "_blank", "noopener,noreferrer")}>
+                                <ExternalLink className="size-3.5" />
+                                Verify credential
+                            </Button>
+                        )}
+                    </Modal.Footer>
+                </Modal.Dialog>
+            </Modal.Container>
+        </Modal.Backdrop>
+    );
+}
 
 export default function Experience({
     roles,
@@ -14,8 +59,10 @@ export default function Experience({
     roles: PortfolioData["roles"];
     certifications: PortfolioData["certifications"];
 }) {
+    const [preview, setPreview] = useState<Cert | null>(null);
     return (
         <div className="grid gap-8">
+            <CertPreview cert={preview} onClose={() => setPreview(null)} />
             <Card>
                 <Card.Header>
                     <Card.Title>Experience</Card.Title>
@@ -106,7 +153,7 @@ export default function Experience({
                     <Bento className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {certifications.map((c) => {
                             const body = (
-                                <Card className="h-full">
+                                <Card className="flex h-full flex-col">
                                     <Card.Header className="flex flex-row items-start gap-3">
                                         <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-default">
                                             <Award className="size-5 text-foreground" />
@@ -116,15 +163,29 @@ export default function Experience({
                                             <Card.Description>{c.authority}</Card.Description>
                                         </div>
                                     </Card.Header>
-                                    <Card.Content>
+                                    <Card.Content className="mt-auto flex w-full flex-row items-center justify-between gap-2">
                                         <span className="font-mono text-xs text-muted">Issued {c.issued}</span>
+                                        {c.preview ? (
+                                            <span className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+                                                <ZoomIn className="size-3.5" /> Preview
+                                            </span>
+                                        ) : c.url ? (
+                                            <span className="inline-flex items-center gap-1 text-xs font-medium text-foreground">
+                                                Verify <ArrowUpRight className="size-3.5" />
+                                            </span>
+                                        ) : null}
                                     </Card.Content>
                                 </Card>
                             );
+                            const cls = "block h-full w-full rounded-3xl text-left outline-none focus-visible:ring-2 focus-visible:ring-focus";
                             return (
                                 <Tile key={`${c.name}-${c.issued}`}>
-                                    {c.url ? (
-                                        <a href={c.url} target="_blank" rel="noopener noreferrer" className="block h-full rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-focus">
+                                    {c.preview ? (
+                                        <button type="button" onClick={() => setPreview(c)} className={cls}>
+                                            {body}
+                                        </button>
+                                    ) : c.url ? (
+                                        <a href={c.url} target="_blank" rel="noopener noreferrer" className={cls}>
                                             {body}
                                         </a>
                                     ) : (

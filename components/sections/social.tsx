@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Card, Chip, Separator } from "@heroui/react";
+import { Avatar, Button, Card, Chip } from "@heroui/react";
 import { BadgeCheck, CalendarDays, FolderGit2, GitCommitHorizontal, GitFork, Github, Linkedin, Quote, Sparkles, Star } from "@/components/icons";
 import { Bento, CountUp, Tile } from "../ui/motion";
 import { ActivityCalendar } from "./activity-calendar";
@@ -28,6 +28,28 @@ const recSpan = (i: number, n: number) => {
     return ["lg:col-span-4", "lg:col-span-3", "lg:col-span-2", undefined][before % 4];
 };
 
+/** Profile photo with a small brand badge in the corner. Plain <img>: avatar hosts aren't in next/image remotePatterns. */
+function ProfileAvatar({ src, alt, badge: Badge }: { src: string; alt: string; badge: React.ComponentType<{ className?: string }> }) {
+    return (
+        <span className="relative shrink-0">
+            <Avatar size="lg" className="ring-2 ring-surface">
+                <Avatar.Image src={src} alt={alt} referrerPolicy="no-referrer" />
+                <Avatar.Fallback>SS</Avatar.Fallback>
+            </Avatar>
+            <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-foreground text-background ring-2 ring-surface">
+                <Badge className="size-3" />
+            </span>
+        </span>
+    );
+}
+
+const initials = (name: string) =>
+    name
+        .split(" ")
+        .map((w) => w[0])
+        .slice(0, 2)
+        .join("");
+
 function Stat({ label, value }: { label: string; value: number }) {
     return (
         <div className="rounded-2xl bg-default px-3 py-2">
@@ -50,9 +72,7 @@ export default function Social({ data }: { data: PortfolioData }) {
                 <Card className="h-full">
                     <Card.Header className="flex flex-row items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
-                            <span className="grid size-11 place-items-center rounded-2xl bg-default">
-                                <Github className="size-5 text-foreground" />
-                            </span>
+                            <ProfileAvatar src={github.avatar} alt={`@${github.login} on GitHub`} badge={Github} />
                             <div>
                                 <Card.Title>@{github.login}</Card.Title>
                                 <Card.Description className="flex items-center gap-1 font-mono text-xs">
@@ -81,9 +101,7 @@ export default function Social({ data }: { data: PortfolioData }) {
                 <Card className="h-full">
                     <Card.Header className="flex flex-row items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
-                            <span className="grid size-11 place-items-center rounded-2xl bg-default">
-                                <Linkedin className="size-5 text-foreground" />
-                            </span>
+                            <ProfileAvatar src={profile.avatar} alt={`${profile.name} on LinkedIn`} badge={Linkedin} />
                             <div>
                                 <Card.Title className="flex items-center gap-1">
                                     {profile.name} <BadgeCheck className="size-4 text-focus" aria-label="Verified" />
@@ -142,7 +160,7 @@ export default function Social({ data }: { data: PortfolioData }) {
                     </Card.Header>
                     <Card.Content>
                         {github.activity.length ? (
-                            <ul className="grid gap-3 md:grid-cols-2">
+                            <ul className="grid gap-3 md:grid-cols-3">
                                 {github.activity.map((a) => {
                                     const Icon = ACTIVITY_ICON[a.kind];
                                     return (
@@ -200,15 +218,22 @@ export default function Social({ data }: { data: PortfolioData }) {
                     <Card className="h-full">
                         <Card.Content className="grid h-full content-between gap-3">
                             <Quote className="size-5 text-muted" />
-                            <p className={`font-serif leading-snug text-foreground italic ${i === 0 ? "text-xl" : "text-base"}`}>&ldquo;{r.text}&rdquo;</p>
-                            <Separator />
+                            <p className={`font-serif leading-snug text-pretty text-foreground italic ${i === 0 ? "text-xl" : "text-base"}`}>&ldquo;{r.text}&rdquo;</p>
                             <a
                                 href={r.profileUrl || profile.linkedinUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex min-h-6 items-center font-mono text-xs text-muted hover:text-foreground"
+                                className="group flex items-center gap-3 border-t border-separator pt-3"
                             >
-                                @{r.username} · LinkedIn recommendation
+                                <Avatar size="sm" className="shrink-0">
+                                    <Avatar.Fallback className="font-display text-xs font-semibold">{initials(r.name)}</Avatar.Fallback>
+                                </Avatar>
+                                <span className="min-w-0">
+                                    <span className="block truncate font-display text-sm font-semibold text-foreground group-hover:underline">{r.name}</span>
+                                    <span className="flex items-center gap-1 text-xs text-muted">
+                                        <Linkedin className="size-3" /> Recommendation on LinkedIn
+                                    </span>
+                                </span>
                             </a>
                         </Card.Content>
                     </Card>

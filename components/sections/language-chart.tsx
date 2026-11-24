@@ -13,7 +13,7 @@ export default function LanguageChart({ languages }: { languages: PortfolioData[
             </Card.Header>
             <Card.Content>
                 <div className="h-36 text-foreground" aria-hidden="true">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={144}>
                         <BarChart accessibilityLayer={false} data={languages} margin={{ top: 8, right: 0, bottom: 0, left: -24 }}>
                             <CartesianGrid vertical={false} stroke="currentColor" strokeOpacity={0.08} />
                             <XAxis dataKey="name" interval={0} tickLine={false} axisLine={false} tick={{ fill: "var(--muted)", fontSize: 11 }} />
