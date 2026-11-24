@@ -4,5 +4,5 @@
   "experience": true,
   "skills": true,
   "social": true,
-  "contact": false
+  "contact": true
 }
