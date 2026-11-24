@@ -15,7 +15,8 @@ import "react-pdf/dist/Page/TextLayer.css";
 
 // Must be set in the same module that renders <Document> (react-pdf README).
 if (typeof window !== "undefined") {
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL("/pdf.worker.min.mjs", window.location.origin).toString();
+    const workerVersion = pdfjs.version || "6.5.438";
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(`/pdf.worker.min.mjs?v=${workerVersion}`, window.location.origin).toString();
 }
 
 type ViewMode = "single" | "scroll" | "book";
