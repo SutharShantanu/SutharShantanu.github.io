@@ -2,22 +2,36 @@
 
 package dev.shantanusuthar.portfolio
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
@@ -42,6 +56,180 @@ internal fun Heading(title: String, page: Boolean = false) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun SectionHeader(
+    title: String,
+    page: Boolean = false,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(top = if (page) 0.dp else 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            title,
+            style = if (page) MaterialTheme.typography.displaySmall else MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.weight(1f).semantics { heading() }
+        )
+        actions()
+    }
+}
+
+@Composable
+internal fun dangerButtonColors() = ButtonDefaults.buttonColors(
+    containerColor = MaterialTheme.colorScheme.error,
+    contentColor = MaterialTheme.colorScheme.onError,
+)
+
+@Composable
+internal fun dangerTonalButtonColors() = ButtonDefaults.filledTonalButtonColors(
+    containerColor = MaterialTheme.colorScheme.errorContainer,
+    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+)
+
+@Composable
+internal fun dangerOutlinedButtonColors() = ButtonDefaults.outlinedButtonColors(
+    contentColor = MaterialTheme.colorScheme.error,
+)
+
+@Composable
+internal fun ConfirmDangerDialog(
+    title: String,
+    text: String,
+    confirmLabel: String,
+    enabled: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = { if (enabled) onDismiss() },
+        title = { Text(title) },
+        text = { Text(text) },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                enabled = enabled,
+                shapes = ButtonDefaults.shapes(),
+                colors = dangerButtonColors(),
+            ) { Text(confirmLabel) }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, enabled = enabled) { Text("Cancel") }
+        },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ActionIconButton(
+    icon: ImageVector,
+    description: String,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    destructive: Boolean = false,
+    onClick: () -> Unit,
+) {
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below),
+        tooltip = { PlainTooltip { Text(description) } },
+        state = rememberTooltipState(),
+        modifier = modifier,
+    ) {
+        val colors = if (destructive) {
+            IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            )
+        } else {
+            IconButtonDefaults.filledTonalIconButtonColors()
+        }
+        FilledTonalIconButton(
+            onClick = onClick,
+            enabled = enabled,
+            shape = RoundedCornerShape(12.dp),
+            colors = colors,
+        ) {
+            Icon(icon, contentDescription = description)
+        }
+    }
+}
+
+@Composable
+internal fun RefreshIconButton(
+    onClick: () -> Unit,
+    enabled: Boolean,
+    description: String,
+) {
+    ActionIconButton(
+        icon = Icons.Default.Refresh,
+        description = description,
+        enabled = enabled,
+        onClick = onClick,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ExpandToggleIconButton(
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    showDescription: String,
+    hideDescription: String,
+) {
+    val label = if (expanded) hideDescription else showDescription
+    val motion = MaterialTheme.motionScheme
+    val rotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        animationSpec = motion.fastSpatialSpec(),
+        label = "expandChevron",
+    )
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Below),
+        tooltip = { PlainTooltip { Text(label) } },
+        state = rememberTooltipState(),
+    ) {
+        FilledTonalIconToggleButton(
+            checked = expanded,
+            onCheckedChange = { onToggle() },
+            shapes = IconButtonDefaults.toggleableShapes(),
+            colors = IconButtonDefaults.filledTonalIconToggleButtonColors(
+                checkedContainerColor = selectedTint(),
+                checkedContentColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Icon(
+                Icons.Default.KeyboardArrowDown,
+                contentDescription = label,
+                modifier = Modifier.graphicsLayer { rotationZ = rotation },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun ExpressiveExpandable(
+    visible: Boolean,
+    modifier: Modifier = Modifier,
+    content: @Composable AnimatedVisibilityScope.() -> Unit,
+) {
+    val motion = MaterialTheme.motionScheme
+    AnimatedVisibility(
+        visible = visible,
+        modifier = modifier,
+        enter = expandVertically(
+            animationSpec = motion.defaultSpatialSpec(),
+            expandFrom = Alignment.Top,
+        ) + fadeIn(animationSpec = motion.defaultEffectsSpec()),
+        exit = shrinkVertically(
+            animationSpec = motion.fastSpatialSpec(),
+            shrinkTowards = Alignment.Top,
+        ) + fadeOut(animationSpec = motion.fastEffectsSpec()),
+        content = content,
+    )
+}
+
 @Composable
 internal fun Group(content: @Composable ColumnScope.() -> Unit) {
     Surface(
@@ -57,6 +245,28 @@ internal fun Group(content: @Composable ColumnScope.() -> Unit) {
 /** Selected-state tint used app-wide: primary at 20% with primary content (light, not a solid fill). */
 @Composable
 internal fun selectedTint() = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+
+@Composable
+internal fun FeedbackBanner(message: String, isError: Boolean = true) {
+    Surface(
+        color = if (isError) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = if (isError) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onSecondaryContainer,
+        shape = MaterialTheme.shapes.large
+    ) {
+        Row(
+            Modifier.fillMaxWidth().padding(14.dp).semantics { liveRegion = LiveRegionMode.Polite },
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                if (isError) Icons.Default.Warning else Icons.Default.Info,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Text(message, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+}
 
 internal enum class Tone { Positive, Negative, Pending, Neutral }
 
@@ -96,6 +306,46 @@ internal fun toneOf(state: String): Tone = when (state.lowercase()) {
     else -> Tone.Neutral
 }
 
+/**
+ * Empty-state placeholder shown when a list or section has no content.
+ * Uses a tonal surface with an icon, title, and optional description.
+ */
+@Composable
+internal fun EmptyState(
+    icon: ImageVector,
+    title: String,
+    description: String = "",
+    action: (@Composable () -> Unit)? = null,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        shape = PortfolioTokens.SectionShape,
+    ) {
+        Column(
+            Modifier.padding(28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Icon(
+                icon,
+                contentDescription = null,
+                modifier = Modifier.size(36.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(title, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+            if (description.isNotBlank()) {
+                Text(
+                    description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            action?.invoke()
+        }
+    }
+}
+
 @Composable
 internal fun Supporting(text: String) {
     if (text.isNotBlank()) {
@@ -107,11 +357,10 @@ internal fun Supporting(text: String) {
 internal fun Link(label: String, url: String) {
     val uri = LocalUriHandler.current
     var failed by rememberSaveable(url) { mutableStateOf(false) }
-    val target = url
-    if (target.startsWith("https://")) {
+    if (url.startsWith("https://")) {
         TextButton(onClick = {
             try {
-                uri.openUri(target)
+                uri.openUri(url)
                 failed = false
             } catch (_: IllegalArgumentException) {
                 failed = true
@@ -123,3 +372,60 @@ internal fun Link(label: String, url: String) {
     }
 }
 
+internal enum class ActionStyle { Filled, Tonal, Outlined, Text, Danger }
+
+internal class GroupAction(
+    val label: String,
+    val onClick: () -> Unit,
+    val style: ActionStyle = ActionStyle.Filled,
+    val enabled: Boolean = true,
+    val icon: ImageVector? = null,
+)
+
+/**
+ * M3 Expressive standard button group: the pressed button widens while its neighbours give way.
+ * Actions that do not fit collapse into the overflow menu.
+ */
+@Composable
+internal fun ActionGroup(actions: List<GroupAction>, modifier: Modifier = Modifier) {
+    ButtonGroup(
+        overflowIndicator = { ButtonGroupDefaults.OverflowIndicator(it) },
+        modifier = modifier,
+    ) {
+        actions.forEach { action ->
+            customItem(
+                buttonGroupContent = {
+                    val interaction = remember { MutableInteractionSource() }
+                    val itemModifier = Modifier.animateWidth(interaction)
+                    val content: @Composable RowScope.() -> Unit = {
+                        action.icon?.let {
+                            Icon(it, contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))
+                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        }
+                        Text(action.label, maxLines = 1)
+                    }
+                    when (action.style) {
+                        ActionStyle.Filled -> Button(onClick = action.onClick, modifier = itemModifier, enabled = action.enabled,
+                            shapes = ButtonDefaults.shapes(), interactionSource = interaction, content = content)
+                        ActionStyle.Tonal -> FilledTonalButton(onClick = action.onClick, modifier = itemModifier, enabled = action.enabled,
+                            shapes = ButtonDefaults.shapes(), interactionSource = interaction, content = content)
+                        ActionStyle.Danger -> FilledTonalButton(onClick = action.onClick, modifier = itemModifier, enabled = action.enabled,
+                            shapes = ButtonDefaults.shapes(), colors = dangerTonalButtonColors(),
+                            interactionSource = interaction, content = content)
+                        ActionStyle.Outlined -> OutlinedButton(onClick = action.onClick, modifier = itemModifier, enabled = action.enabled,
+                            shapes = ButtonDefaults.shapes(), interactionSource = interaction, content = content)
+                        ActionStyle.Text -> TextButton(onClick = action.onClick, modifier = itemModifier, enabled = action.enabled,
+                            shapes = ButtonDefaults.shapes(), interactionSource = interaction, content = content)
+                    }
+                },
+                menuContent = { menu ->
+                    DropdownMenuItem(
+                        text = { Text(action.label) },
+                        onClick = { action.onClick(); menu.dismiss() },
+                        enabled = action.enabled,
+                    )
+                },
+            )
+        }
+    }
+}

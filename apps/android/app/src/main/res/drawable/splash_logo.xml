@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 240dp splash icon: the disc fills the 160dp circle the system shows. -->
+<!-- 192dp splash icon (within Android Lint's 200dp limit) scaled cleanly from 240x240 viewport. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="240dp"
-    android:height="240dp"
+    android:width="192dp"
+    android:height="192dp"
     android:viewportWidth="240"
     android:viewportHeight="240">
     <!-- Elevated emerald disc container -->

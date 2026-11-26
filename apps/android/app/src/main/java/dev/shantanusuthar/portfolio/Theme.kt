@@ -5,8 +5,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalContext
@@ -106,11 +104,7 @@ val PortfolioShapes = Shapes(
 )
 
 object PortfolioTokens {
-    val HeroShape = RoundedCornerShape(32.dp)
     val SectionShape = RoundedCornerShape(24.dp)
-    val FloatingBarCorner = 28.dp
-    val FloatingNavBarShape = RoundedCornerShape(FloatingBarCorner)
-    val CardShape = RoundedCornerShape(20.dp)
 }
 
 fun ColorScheme.amoled(): ColorScheme = copy(
@@ -126,26 +120,21 @@ fun ColorScheme.amoled(): ColorScheme = copy(
 
 private fun Color.towardsBlack(fraction: Float) = lerp(this, Color.Black, fraction)
 
-val LocalFloatingNavBar = staticCompositionLocalOf { true }
-
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PortfolioTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false,
-    amoled: Boolean = true,
-    floatingNavBar: Boolean = true,
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
-    val baseColors = when {
+    val colors = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> PortfolioDarkColors
+        darkTheme -> PortfolioDarkColors.amoled()
         else -> PortfolioLightColors
     }
-    val finalColors = if (darkTheme && amoled) baseColors.amoled() else baseColors
 
     val type = Typography()
     val typography = type.copy(
@@ -157,13 +146,11 @@ fun PortfolioTheme(
         labelLarge = type.labelLarge.copy(fontWeight = FontWeight.Medium),
     )
 
-    CompositionLocalProvider(LocalFloatingNavBar provides floatingNavBar) {
-        MaterialExpressiveTheme(
-            colorScheme = finalColors,
-            motionScheme = MotionScheme.expressive(),
-            shapes = PortfolioShapes,
-            typography = typography,
-            content = content
-        )
-    }
+    MaterialExpressiveTheme(
+        colorScheme = colors,
+        motionScheme = MotionScheme.expressive(),
+        shapes = PortfolioShapes,
+        typography = typography,
+        content = content
+    )
 }

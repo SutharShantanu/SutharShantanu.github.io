@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "dev.shantanusuthar.portfolio"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 37
         val baseVersion = "1.0"
         versionCode = System.getenv("VERSION_CODE")?.toIntOrNull() ?: 1
         versionName = System.getenv("VERSION_NAME")?.ifBlank { null } ?: baseVersion
@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
