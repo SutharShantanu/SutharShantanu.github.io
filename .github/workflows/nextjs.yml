@@ -1,5 +1,3 @@
-# .github/workflows/deploy.yml
-
 name: Deploy Next.js site to Pages
 
 on:
@@ -24,63 +22,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/yarn.lock" ]; then
-            echo "manager=yarn" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=yarn" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "${{ github.workspace }}/package.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-            exit 0
-          else
-            echo "Unable to determine package manager"
-            exit 1
-          fi
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
-
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
-
-      - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-
-      - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      # The portfolio needs server routes (contact mailer, resume, admin API), so it lives on Vercel.
+      # Pages only serves a redirect that keeps the visitor's path, query and hash.
+      - name: Build redirect site
         env:
-          SITE_NAME: ${{ secrets.SITE_NAME }}
-          SITE_URL: ${{ secrets.SITE_URL }}
-          CONTACT_TO_EMAIL: ${{ secrets.CONTACT_TO_EMAIL }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          NEXT_GITHUB_TOKEN: ${{ secrets.NEXT_GITHUB_TOKEN }}
-          NEXT_GITHUB_USERNAME: ${{ secrets.NEXT_GITHUB_USERNAME }}
-          LINKEDIN_USERNAME: ${{ secrets.LINKEDIN_USERNAME }}
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
-          RAPIDAPI_HOST: ${{ secrets.RAPIDAPI_HOST }}
-          REVALIDATION_SECRET: ${{ secrets.REVALIDATION_SECRET }}
+          TARGET: https://shantanusuthar.vercel.app
+        run: |
+          mkdir -p out
+          cat > out/index.html <<HTML
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Shantanu Suthar</title>
+            <link rel="canonical" href="$TARGET/">
+            <meta name="robots" content="noindex">
+            <meta http-equiv="refresh" content="0; url=$TARGET/">
+            <script>location.replace("$TARGET" + location.pathname + location.search + location.hash)</script>
+          </head>
+          <body><p>Moved to <a href="$TARGET/">$TARGET</a>.</p></body>
+          </html>
+          HTML
+          cp out/index.html out/404.html
+          touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

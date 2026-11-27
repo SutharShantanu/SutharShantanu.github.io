@@ -5,5 +5,5 @@ import nextTs from "eslint-config-next/typescript";
 export default defineConfig([
   ...nextVitals,
   ...nextTs,
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", ".heroui-docs/**", "apps/**"]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", ".heroui-docs/**", "apps/**", "public/**/*.min.mjs"]),
 ]);
