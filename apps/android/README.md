@@ -34,7 +34,7 @@ The bridge uses `adb` from `ANDROID_HOME`, `ANDROID_SDK_ROOT`, or PATH. Set `AND
 
 - **Sections** saves public navigation and panel visibility to `config/portfolio-visibility.json`. Keep at least one section visible. Commit and deploy the configuration to publish changes.
 - **Env** sets supported values in the checkout’s ignored `.env.local` file. Current values are never returned by the bridge. Restart the local site to apply them.
-- **Git** shows local branch status and recent commits. Under **CI runs**, it also shows GitHub Actions and GitHub Pages deployment history. You can retry eligible workflows or dispatch GitHub Pages from remote `main` after confirming.
+- **Git** shows local branch status and recent commits. Under **CI runs**, it shows GitHub Actions runs; you can retry eligible ones after confirming.
 - **Vercel** shows Production and Preview deployments reported to GitHub. The bridge uses the host’s GitHub CLI session for both tabs. Run `gh auth status` on the host to check it.
 - **Preview** opens the public Vercel production URL in the app, with reload and an external browser link.
 - **Settings** shows the host bridge, GitHub CLI account, and Vercel CLI account and project link. The bridge uses `vercel` from its PATH by default. Set `PORTFOLIO_VERCEL_CLI` to the executable path if it is installed elsewhere.

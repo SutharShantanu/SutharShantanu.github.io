@@ -1006,13 +1006,6 @@ private fun GitHubActions(state: AdminState) {
         }
     }
     val data = state.delivery ?: return LoadState(state.busy, "Couldn’t load CI runs", state::loadDelivery)
-    Button(enabled = !state.busy, shapes = ButtonDefaults.shapes(), onClick = {
-        state.clearFeedback()
-        pending = WorkflowAction(
-            "deploy-pages", null, "Deploy GitHub Pages?",
-            "This starts the Pages workflow from the remote main branch and can publish the site."
-        )
-    }) { Text("Deploy GitHub Pages") }
     WorkflowRuns(data, enabled = !state.busy) { run ->
         state.clearFeedback()
         pending = WorkflowAction(
@@ -1020,7 +1013,6 @@ private fun GitHubActions(state: AdminState) {
             "GitHub will rerun ${run.workflowName} at the original commit."
         )
     }
-    DeploymentTracks(data, setOf("github-pages"), "GitHub Pages deployment history")
     pending?.let { action ->
         AlertDialog(
             onDismissRequest = { if (!state.busy) pending = null },
@@ -1034,7 +1026,7 @@ private fun GitHubActions(state: AdminState) {
             confirmButton = {
                 Button(enabled = !state.busy, onClick = {
                     state.workflowAction(action.action, action.runId) { pending = null }
-                }) { Text(if (action.runId == null) "Start deploy" else "Retry run") }
+                }) { Text("Retry run") }
             },
             dismissButton = {
                 TextButton(enabled = !state.busy, onClick = { pending = null }) { Text("Cancel") }
@@ -1228,7 +1220,7 @@ private fun DeploymentTracks(
     if (tracks.isEmpty()) EmptyState(Icons.Default.Inbox, "No deployments yet", "Deployments reported to GitHub appear here.")
     tracks.forEach { track ->
         Group {
-            Text(if (track.environment == "github-pages") "GitHub Pages" else track.environment, style = MaterialTheme.typography.titleMedium)
+            Text(track.environment, style = MaterialTheme.typography.titleMedium)
             if (track.error.isNotEmpty()) FeedbackBanner(track.error, isError = true)
             else if (track.records.isEmpty()) Supporting("No deployments recorded.")
             track.records.forEachIndexed { index, deployment ->

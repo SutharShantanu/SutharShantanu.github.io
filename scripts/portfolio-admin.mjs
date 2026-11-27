@@ -318,7 +318,7 @@ async function state() {
 async function deliveries() {
     const [runs, deployments] = await Promise.allSettled([
         run("gh", ["run", "list", "-R", repository, "-L", "12", "--json", "databaseId,displayTitle,status,conclusion,workflowName,headBranch,url,createdAt"]).then(JSON.parse),
-        Promise.all(["Production", "Preview", "github-pages"].map(async environment => {
+        Promise.all(["Production", "Preview"].map(async environment => {
             try {
                 const recent = JSON.parse(await run("gh", ["api",
                     `repos/${repository}/deployments?per_page=3&environment=${encodeURIComponent(environment)}`,
@@ -387,22 +387,18 @@ const retryable = new Set(["failure", "timed_out", "cancelled"]);
 let actionInProgress = false;
 
 async function workflowAction({ action, runId }) {
-    if (action !== "deploy-pages" && (action !== "retry" || typeof runId !== "string" || !/^\d{1,18}$/.test(runId))) {
+    if (action !== "retry" || typeof runId !== "string" || !/^\d{1,18}$/.test(runId)) {
         throw new RequestError(400, "Choose a supported workflow action.");
     }
     if (actionInProgress) throw new RequestError(409, "A workflow request is already in progress.");
     actionInProgress = true;
     try {
-        if (action === "deploy-pages") {
-            await run("gh", ["workflow", "run", "nextjs.yml", "--ref", "main", "-R", repository]);
-        } else {
-            const current = JSON.parse(await run("gh", ["run", "view", runId, "-R", repository, "--json", "status,conclusion"]));
-            if (current.status !== "completed" || !retryable.has(current.conclusion)) {
-                throw new RequestError(409, "This run is no longer eligible for retry. Refresh delivery.");
-            }
-            await run("gh", ["run", "rerun", runId, "-R", repository]);
+        const current = JSON.parse(await run("gh", ["run", "view", runId, "-R", repository, "--json", "status,conclusion"]));
+        if (current.status !== "completed" || !retryable.has(current.conclusion)) {
+            throw new RequestError(409, "This run is no longer eligible for retry. Refresh delivery.");
         }
-        return { message: action === "deploy-pages" ? "GitHub accepted the Pages deploy request." : "GitHub accepted the workflow retry." };
+        await run("gh", ["run", "rerun", runId, "-R", repository]);
+        return { message: "GitHub accepted the workflow retry." };
     } catch (error) {
         if (error instanceof RequestError) throw error;
         throw new RequestError(502, "Couldn’t confirm the request with GitHub. Check delivery before trying again.");

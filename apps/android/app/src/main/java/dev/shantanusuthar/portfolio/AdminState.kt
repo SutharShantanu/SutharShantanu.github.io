@@ -491,18 +491,14 @@ internal class AdminState(application: Application) : AndroidViewModel(applicati
     }
 
     fun workflowAction(action: String, runId: String?, onAccepted: () -> Unit) = perform {
-        val outcome = if (action == "deploy-pages") {
-            call("POST", "$GH/actions/workflows/nextjs.yml/dispatches", github, JSONObject().put("ref", "main"))
-            "GitHub accepted the Pages deploy request."
-        } else {
-            val id = runId?.takeIf { it.matches(Regex("\\d{1,18}")) } ?: throw AdminError("Choose a supported workflow action.")
-            val run = JSONObject(call("GET", "$GH/actions/runs/$id", github))
-            if (run.optString("status") != "completed" || run.optString("conclusion") !in AdminRegistry.retryableConclusions) {
-                throw AdminError("This run is no longer eligible for retry. Refresh delivery.")
-            }
-            call("POST", "$GH/actions/runs/$id/rerun", github)
-            "GitHub accepted the workflow retry."
+        if (action != "retry") throw AdminError("Choose a supported workflow action.")
+        val id = runId?.takeIf { it.matches(Regex("\\d{1,18}")) } ?: throw AdminError("Choose a supported workflow action.")
+        val run = JSONObject(call("GET", "$GH/actions/runs/$id", github))
+        if (run.optString("status") != "completed" || run.optString("conclusion") !in AdminRegistry.retryableConclusions) {
+            throw AdminError("This run is no longer eligible for retry. Refresh delivery.")
         }
+        call("POST", "$GH/actions/runs/$id/rerun", github)
+        val outcome = "GitHub accepted the workflow retry."
         onAccepted()
         delivery = fetchDelivery()
         feedback = UiFeedback(outcome, isError = false)
@@ -711,10 +707,10 @@ internal class AdminState(application: Application) : AndroidViewModel(applicati
                 null
             } else null
         }
-        val tracks = listOf("Production", "Preview", "github-pages").map { environment ->
+        val tracks = listOf("Production", "Preview").map { environment ->
             async {
                 try {
-                    if (linked && environment != "github-pages") fetchVercelTrack(environment, project.await())
+                    if (linked) fetchVercelTrack(environment, project.await())
                     else fetchGithubTrack(environment)
                 } catch (cancelled: CancellationException) {
                     throw cancelled
